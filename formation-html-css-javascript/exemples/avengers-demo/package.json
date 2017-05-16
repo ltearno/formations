@@ -1,0 +1,15 @@
+{
+  "name": "avengers-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/avengers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "webpack app/avengers.js dist/bundle.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}

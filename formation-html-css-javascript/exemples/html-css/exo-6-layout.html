@@ -1,0 +1,135 @@
+<html>
+
+<!-- Objectif de l'exercice : reproduire cette page :
+        http://www.alsacreations.com/static/gabarits/modele09.html
+    -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #2C2F22;
+            font-family: "roboto", Georgia, "Bitstream Vera Serif", Norasi, serif;
+            font-weight: normal;
+            padding: 1em;
+        }
+        
+        #header {
+            color: #F0E39E;
+            margin-bottom: 2em;
+        }
+        
+        #parent {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: flex-start;
+        }
+        
+        #parent > div {
+            margin: 0.5em;
+        }
+        
+        #nav {
+            order: 0;
+            flex: 0 1 180px;
+            color: #FF6533;
+            background-color: #181A12;
+        }
+
+        #nav ul { 
+            padding: 0.2em;
+            width: 100%; 
+            background: #181A12; 
+            color: FF6533; 
+            list-style: none;
+        }
+        
+        #nav li { 
+            padding-left: 10px; 
+        }
+
+        #nav li a { 
+            color: FF6533; 
+            text-decoration: none;
+        }
+
+        #nav li:hover {
+            background-color: #282A22;
+        }
+        
+        #aside {
+            order: 2;
+            flex: 0 1 180px;
+            color: #F0E39E;
+            background: #181A12;
+            padding: 0.5em;
+        }
+        
+        #content {
+            order: 1;
+            flex: 1;
+            background-color: #cbd888;
+            color: #181A12;
+            padding: 0.5em;
+        }
+
+        .code {
+            background-color: white;
+            margin: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"><h1>Gabarit 09</h1>Caractéristiques: minimaliste, largeur fluide, colonnes latérales positionnées en absolu</div>
+    <div id="parent">
+        <div id="nav">
+            <ul>
+                <li><a href="">Acceuil</a></li>
+                <li><a href="">Les gabarits</a></li>
+                <li><a href="">Utilisation</a></li>
+                <li><a href="">License</a></li>
+                <li><a href="">Crédits</a></li>
+            </ul>
+        </div>
+        <div id="aside">
+            <h1>Contenu secondaire</h1>
+            Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor tellus, aliquam faucibus, convallis id, congue
+            eu, quam. Mauris ullamcorper felis vitae erat. Vivamus leo. Aliquam euismod libero eu enim. Nulla nec felis sed
+            leo placerat imperdiet. Aenean suscipit nulla in justo. Suspendisse cursus rutrum augue.
+        </div>
+        <div id="content">
+            <h1>À propos du gabarit 09</h1>
+            <h2>Code HTML et CSS</h2>
+            Ce gabarit est structuré de la manière suivante:
+
+            <pre class="code">
+                &lt;div id=&quot;global&quot;&gt;
+                    &lt;div id=&quot;entete&quot;&gt;...&lt;/div&gt;
+                    &lt;div id=&quot;centre&quot;&gt;
+                        &lt;div id=&quot;navigation&quot;&gt;...&lt;/div&gt;
+                        &lt;div id=&quot;principal&quot;&gt;...&lt;/div&gt;
+                        &lt;div id=&quot;secondaire&quot;&gt;...&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            </pre>
+            Il est mis en forme par deux feuilles de styles: 
+            
+            <ol>
+                <li>base.css (mise en forme minimale du texte, commune à tous les gabarits)</li>
+                <li>modele09.css, qui contient tous les styles propres à ce gabarit, et que je vous invite à consulter.</li>
+            </ol>
+            <p>Pour voir le détail du code HTML de cette page, utilisez la fonction d'affichage de la source de votre navigateur web (ex:
+            «Affichage > Code source de la page»).</p>
+            <p>Attention: si nous souhaitons placer un pied de page dans ce gabarit, il faudra nécessairement le placer (visuellement) sous le contenu central. En effet, si le pied de page s'étend sur toute la largeur de div#global il risque d'être survolé par les colonnes latérales positionnées en absolu.
+Pour rappel, un élément positionné en absolu est «ignoré» par les autres éléments de la page qui ne sont pas des descendants de l'élément positionné en absolu. (Voilà pourquoi on utilise souvent les flottants pour positionner les principaux blocs d'une page web.)</p>
+        </div>
+    </div>
+</body>
+
+</html>

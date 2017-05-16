@@ -1,0 +1,29 @@
+memory model
+
+	transient
+	volatile
+	
+concurrency
+	https://docs.oracle.com/javase/tutorial/essential/concurrency/atomic.html
+
+
+algorithmes de tri
+	en place ?, stable ?
+	complexité optimale : pourquoi c'es n.log(n) pour un tri à comparaison?
+	
+	quick sort
+	merge sort
+	heap sort
+	Timsort (used in Python, takes advantages of already ordered elements).
+
+structures de données
+	https://docs.oracle.com/javase/8/docs/technotes/guides/collections/index.html
+
+	HashMap => bien revoir la méthode 'resize()'
+
+red-black tree
+
+java
+	class loader
+	java agent
+	fork join pool

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true"/>
+
+    <package name="identification" namespace="/identification" extends="struts-default">
+        <action name="identification" class="fr.lteconsulting.training.struts.actions.Identification">
+            <result name="input">/WEB-INF/Identification.jsp</result>
+            <result type="redirectAction">
+                <param name="actionName">consultation</param>
+                <param name="namespace">/</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="default" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="identification" class="fr.lteconsulting.training.struts.interceptors.IdentificationInterceptor"></interceptor>
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="identification"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="myStack"></default-interceptor-ref>
+
+        <default-action-ref name="consultation"/>
+
+        <global-results>
+            <result name="error">/WEB-INF/Error.jsp</result>
+            <result name="login_required" type="redirectAction">
+                <param name="actionName">identification</param>
+                <param name="namespace">/identification</param>
+            </result>
+        </global-results>
+
+        <action name="consultation" class="fr.lteconsulting.training.struts.actions.Consultation">
+            <result name="success">/WEB-INF/Consultation.jsp</result>
+        </action>
+
+        <action name="suppression" class="fr.lteconsulting.training.struts.actions.Suppression">
+            <result name="success" type="redirectAction">consultation</result>
+        </action>
+
+        <action name="edition" class="fr.lteconsulting.training.struts.actions.Edition">
+            <result name="show_form">/WEB-INF/Edition.jsp</result>
+            <result name="success" type="redirectAction">consultation</result>
+            <result name="error" type="redirectAction">consultation</result>
+        </action>
+
+        <action name="creation" class="fr.lteconsulting.training.struts.actions.Creation">
+            <result type="redirectAction">
+                <param name="actionName">edition</param>
+                <param name="id">${createdMarvelId}</param>
+            </result>
+        </action>
+    </package>
+</struts>

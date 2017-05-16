@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery-3.1.1.js"></script>
+
+    <script type="text/javascript">
+        let url = 'https://data.toulouse-metropole.fr/api/records/1.0/search/?dataset=sanisettes&rows=10000'
+
+        let map = null;
+        let sanisettes = null;
+
+        $(function () {
+            requete('get', url, function (data) {
+                sanisettes = data;
+                maybeStart();
+            })
+        })
+
+        function maybeStart() {
+            if (map == null || sanisettes == null)
+                return;
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                let totalLat = 0
+                let totalLong = 0
+
+                let filteredSanisettes = sanisettes.records//.filter((record) => record.fields.type.indexOf('grable') > 0)
+
+                for (let record of filteredSanisettes) {
+                    let lat = 1 * record.geometry.coordinates[1]
+                    let long = 1 * record.geometry.coordinates[0]
+                    $(`<tr class='${record.fields.emplacement_valide == "oui" ? "" : "invalide"}'>
+                            <td>${record.fields.type}</td>
+                            <td>${lat}</td>
+                            <td>${long}</td>
+                        </tr>`).appendTo($('#listeSanisettes'))
+
+                    var marker = new google.maps.Marker({
+                        position: { lat: lat, lng: long },
+                        map: map,
+                        title: `Sanisette ${record.fields.type}<br/>(${record.recordid})`
+                    });
+
+                    totalLat += lat;
+                    totalLong += long;
+                }
+
+                totalLat /= filteredSanisettes.length;
+                totalLong /= filteredSanisettes.length;
+
+                if (position) {
+                    map.setCenter({ lat: position.coords.latitude, lng: position.coords.longitude })
+
+                    var image = 'smiley.png';
+                    var beachMarker = new google.maps.Marker({
+                        position: { lat: position.coords.latitude, lng: position.coords.longitude },
+                        map: map,
+                        icon: image
+                    });
+                }
+                else {
+                    map.setCenter({ lat: totalLat, lng: totalLong });
+                }
+            })
+        }
+
+
+
+
+
+
+        function requete(method, url, data, fonctionDeRappel) {
+            if (typeof data == "function") {
+                fonctionDeRappel = data
+                data = null
+            }
+
+            let request = new XMLHttpRequest()
+            request.open(method, url)
+            request.onload = function () {
+                let data = request.responseText ? JSON.parse(request.responseText) : null
+
+                fonctionDeRappel(data)
+            }
+
+            if (data != null) {
+                request.setRequestHeader("Content-Type", "application/json")
+                let json = JSON.stringify(data)
+                request.send(json)
+            }
+            else {
+                request.send()
+            }
+        }
+
+        function initMap() {
+            // Create a map object and specify the DOM element for display.
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                scrollwheel: true,
+                zoom: 14
+            });
+            maybeStart();
+        }
+    </script>
+
+<style>
+    .invalide{
+        background-color: grey;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <table id="listeSanisettes"></table>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJluJ1olY-2KLGOqU9YDXs67wsCmIZkng&callback=initMap" async
+        defer></script>
+</body>
+
+</html>

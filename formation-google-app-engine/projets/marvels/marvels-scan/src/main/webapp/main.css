@@ -1,0 +1,67 @@
+body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body > header, body > footer {
+    flex: 0 0 auto;
+}
+
+#application {
+    flex: 1 1 auto;
+    position: relative;
+}
+
+.application {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.application > [x-id=buttonBar] {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.application > [x-id=characters] {
+    flex-grow: 1;
+}
+
+.marvel-character {
+    padding: 1em;
+    margin: 0.5em;
+    min-width: 20em;
+    width: 20%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+    overflow: auto;
+}
+
+[x-id=characters] {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow: auto;
+}
+
+.marvel-character > img {
+    width: 100%;
+}
+
+[x-id=commentZone] {
+    padding: 0.5em;
+    background-color: rgba(187, 197, 205, 0.17);
+}
+
+[x-id=commentZone] [x-id=form] {
+    padding-top: 1em;
+}

@@ -1,0 +1,13 @@
+<h1>Licornes</h1>
+
+<button (click)="addLicorne()">Add a Licorne</button>
+
+<div style="display:flex; flex-flow:row nowrap;">
+  <div style="margin: 10px;">
+    <licorne-list [licornes]="licornes" (selection)="onSelectedLicorne($event)"></licorne-list>
+  </div>
+
+  <div style="margin: 10px;">
+    <licorne-editor *ngIf="selectedLicorne" [licorne]="selectedLicorne"></licorne-editor>
+  </div>
+</div>

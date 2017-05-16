@@ -1,0 +1,1263 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Angular 2</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Angular 2</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Email: <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div>
+<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div>
+<div class="paragraph"><p>Web: <a href="http://www.lteconsulting.fr">www.lteconsulting.fr</a></p></div>
+<div class="paragraph"><p><strong>LTE Consulting</strong> société de Développement, Conseil et Formation.</p></div>
+<div class="paragraph"><p>Speaker à Java One, Devoxx, GDG, JUG, GWTCon&#8230;&#8203;</p></div></section>
+<section><section id="_ecmascript_6"><h2>ECMASCRIPT 6</h2><div class="paragraph"><p>Spécification standardisée du Javascript : ECMAScript.</p></div><div class="paragraph"><p>La version 5 est la plus largement répandue aujourd&#8217;hui.</p></div><div class="paragraph"><p>La version suivante est ECMAScript 6 (ou ES6, ou ECMASCRIPT 2015). Elle propose de nombreuses fonctionnalités comme les <em>classes</em>, les <em>constantes</em>, les <em>arrow functions</em>, les <em>générateurs</em>&#8230;&#8203;</p></div><div class="paragraph"><p>Angular se base sur cette version d&#8217;ECMAScript, bien qu&#8217;une API existe pour écrire des applications en ECMAScript 5.</p></div><div class="paragraph"><p>Les navigateurs modernes sont déjà à jour pour cette version. Il existe des transpileurs (Babeljs, Traceur par exemple) pour générer du code ECMAScript 5 à partir de code en version 6.</p></div><div class="paragraph"><p>Nous allons découvrir les nouveautés d&#8217;ECMAScript à connaître impérativement pour avoir une expérience de développement optimale avec Angular.</p></div><div class="paragraph"><p>Ces nouveautés permettent en général soit de corriger un défaut du langage javascript, soit d&#8217;amener un <em>sucre syntaxique</em> permettant d&#8217;exprimer des constructions issues des languages <em>POO</em>. D&#8217;autres améliorations permettent tout simplement d&#8217;être plus efficace dans son développement. Enfin, l&#8217;ensemble des améliorations permet un meilleur traitement des sources dans les environnements de développement (IDE).</p></div></section><section id="__code_code_optionnel"><h2><code>;</code> optionnel</h2><div class="paragraph"><p>Le point-virgule <code>;</code> est désormais optionnel dans les sources Javascript.</p></div>
+<div class="paragraph"><p>Sauf rares cas, il est pratiquement possible de purement et simplement les supprimer de vos sources.</p></div></section><section id="__code_let_code"><h2><code>let</code></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let maVariable = 5</code></pre></div></div>
+<div class="paragraph"><p>Le mot-clé <code>let</code> corrige les défauts de <code>var</code> utilisé pour déclarer des variables en Javascript, notamment :</p></div>
+<div class="ulist"><ul><li><p>la portée des variable. Les variables <code>let</code> ont une durée de vie limitée au bloc dans lequel elles se trouvent. Et non à la <em>fonction</em> dans laquelle elles se trouvent.</p></li><li><p>le <em>hoisting</em>. Les variables <code>let</code> ne sont pas accessibles avant la ligne qui les déclare.</p></li></ul></div>
+<div class="paragraph"><p>La déclaration de variable en Javascript se comporte enfin de la manière attendue !</p></div></section><section id="__code_const_code"><h2><code>const</code></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">const maConstante = 53
+
+// provoque une erreur :
+maConstante = 42</code></pre></div></div>
+<div class="paragraph"><p>Le mot-clé <code>const</code> permet de déclarer une constante, c&#8217;est à dire une variable dont on ne peut pas changer la valeur.</p></div>
+<div class="paragraph"><p>C&#8217;est une fonctionnalité de language qui manquait à Javascript.</p></div></section><section id="_construction_rapide_d_objets"><h2>Construction rapide d&#8217;objets</h2><div class="paragraph"><p>Une nouvelle forme de syntaxe pour créer des objets rapidement :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function creerUser( nom, prenom ) {
+  return {
+    nom, <b>(1)</b>
+    prenom
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>La propriété de l&#8217;objet aura le même nom que la variable utilisée comme valeur</p></li></ol></div>
+<div class="paragraph"><p>est équivalent à :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function creerUser( nom, prenom ) {
+  return {
+    nom: nom,
+    prenom: prenom
+  }
+}</code></pre></div></div></section><section id="_affectations_destructurées"><h2>Affectations destructurées</h2><div class="paragraph"><p>Nouvelle syntaxe qui permet de facilement affecter des variables à partir de propriétés d&#8217;objets ou d&#8217;éléments de tableaux.</p></div>
+<div class="paragraph"><p>En ES5, pour extraire des variables à partir d&#8217;un objet, on écrit souvent :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// en entrée un objet data = { id: 3, name: 'toto' }
+var id = data.id;
+var name = data.name;</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;affectation destructurée permet ceci :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id, name } = data <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>L&#8217;affectation destructurée déclare et initialise les variables <code>id</code> et <code>name</code>.</p></li></ol></div>
+<div class="paragraph"><p>Si on souhaite affecter des variables avec des noms différents des propriétés de l&#8217;objet, on peut faire ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id: userId, name: userName } = data <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>L&#8217;affectation destructurée déclare et initialise les variables <code>userId</code> et <code>userName</code>.</p></li></ol></div>
+<div class="paragraph"><p>Ceci fonctionne aussi avec les objets imbriqués :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id: userId, address: { street: userStreet } } = data</code></pre></div></div>
+<div class="paragraph"><p>Cette syntaxe fonctionne aussi avec les tableaux :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// avec un tableau t = [3, 6, 4, 7]
+
+let [ premier, deuxieme ] = t</code></pre></div></div></section><section id="_l_opérateur_de_reste"><h2>L&#8217;opérateur de reste</h2><div class="paragraph"><p>Cet opérateur permet d&#8217;accepter facilement un nombre de paramètres variable dans une fonction :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function ajouterProduits( ...produits ) {
+  for(let produit of produits) {
+    ...
+  }
+}</code></pre></div></div>
+<div class="paragraph"><p>On peut aussi utiliser cet opérateur avec les affectations destructurées :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let [head, ...tail] = list <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p><code>head</code> contient le premier élément et <code>tail</code> la suite de la liste</p></li></ol></div></section><section id="_l_opérateur_d_étalement"><h2>L&#8217;opérateur d&#8217;étalement</h2><div class="paragraph"><p>C&#8217;est le complémentaire de l&#8217;opérateur de reste. Il permet de <em>convertir</em> un tableau en liste d&#8217;arguments :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let coordonnees = [12, 32]
+let point = new Point(...coordonnees)</code></pre></div></div></section><section id="_valeurs_par_défaut"><h2>Valeurs par défaut</h2><div class="paragraph"><p>Il est maintenant possible de donner des valeurs par défaut aux paramètres de fonctions et éléments d&#8217;affectation destructurée.</p></div>
+<div class="paragraph"><p>Au lieu d&#8217;écrire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function faireChose( size, value ) {
+  value = value || 0 // valeur par défaut
+}</code></pre></div></div>
+<div class="paragraph"><p>On préfèrera :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function faireChose( size, value = 0 ) {
+}</code></pre></div></div>
+<div class="paragraph"><p>La valeur par défaut peut aussi être un appel de fonction, ou même une expression faisant référence à d&#8217;autres paramètres de la fonction (<em>quand ils sont à gauche de là où on les utilise</em>). Voyez cet exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function autreChose( factory = defaultFactory(), type = factory.type ) { <b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction <code>defaultFactory</code> ne sera appelée que lorsque l&#8217;appelant ne fournit pas de valeur au paramètre. Si le deuxième paramètre n&#8217;est pas fourni, sa valeur sera affectée à l&#8217;expression <code>factory.type</code>.</p></li></ol></div>
+<div class="paragraph"><p>Utilisée avec l&#8217;affectation destructurée des variables, cette construction s&#8217;écrit :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">const { timeout = 1000 } = httpOptions</code></pre></div></div></section><section id="_interpolation_dans_les_chaines_de_caractères"><h2>Interpolation dans les chaines de caractères</h2><div class="paragraph"><p>L&#8217;interpolation de chaines est maintenant facilitée en ES6 grâce aux patrons de chaine :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">var description = user.name.toUpperCase() + ' (' + user.id + ')';
+
+// devient
+
+let description = `${user.name.toUpperCase()} (${user.id})`</code></pre></div></div></section><section id="_les_classes"><h2>Les classes</h2><div class="paragraph"><p>L&#8217;introduction des classes en Javascript se fait par l&#8217;ajout d&#8217;une syntaxe équivalente à un <em>sucre syntaxique</em> pour le moteur d&#8217;exécution JS. En effet javascript repose sur un modèle d&#8217;héritage par prototype qui permet de simuler l&#8217;héritage de classes.</p></div>
+<div class="paragraph"><p>Voici un exemple de classe :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class Livre {
+  constructor(private titre) { <b>(1)</b> <b>(2)</b>
+  }
+
+  description() {
+    return `Livre: ${this.titre}`
+  }
+
+  static fonctionStatique(toto) {
+    return toto
+  }
+}
+
+let livre = new Livre('Les frameworks JS')</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction spéciale <code>constructor</code> est appelée lorsque l&#8217;objet est créé.</p></li><li><p>l&#8217;utilisation de <code>private</code> ou <code>public</code> crée automatiquement un attribut dans la classe (<strong>Typescript seulement</strong>).</p></li></ol></div></section><section id="_accesseurs"><h2>Accesseurs</h2><div class="paragraph"><p>Une classe peut fournir des fonctions <em>getter</em> et/ou <em>setter</em> en plus des attributs classiques.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class EditionService {
+  get description() { <b>(1)</b>
+    return `service ${this.name}`
+  }
+
+  private value
+
+  set longueur(value) { <b>(2)</b>
+    if(value.charAt(value.length-1)=='k')
+      this._value = value * 1000
+    else
+      this.value = value
+  }
+}
+
+let service = new EditionService()
+
+console.log(service.description)
+
+service.longueur = '100k'
+service.longueur = 24</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le mot-clé <code>get</code> permet de déclarer un accesseur <em>getter</em> pour la propriété <code>description</code>.</p></li><li><p>le mot-clé <code>set</code> permet de déclarer un accesseur <em>setter</em> pour la propriété <code>longueur</code>.</p></li></ol></div></section><section id="_héritage"><h2>Héritage</h2><div class="paragraph"><p>L&#8217;héritage de classe est possible avec le mot-clé <code>extends</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class Animal {
+  constructor(private name) {}
+}
+
+class Mamifere extends Animal {
+  constructor() {
+    super('baleine') <b>(1)</b>
+  }
+
+  affiche() {
+    console.log('je suis une baleine')
+
+    super.affiche() <b>(2)</b>
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le mot-clé <code>super</code> permet de faire référence au constructeur de la classe parente.</p></li><li><p>le mot-clé <code>super</code> permet de faire référence à l&#8217;implémentation de la fonction dans la classe parente.</p></li></ol></div></section><section id="__em_fat_arrow_functions_em"><h2><em>fat arrow functions</em></h2><div class="paragraph"><p>Comme il est extrêmement fréquent d&#8217;écrire des fonctions de rappel (<em>callbacks</em>), la syntaxe d&#8217;ES6 intègre un nouvel élément permettant de déclarer des fonctions de manière plus concise. C&#8217;est l&#8217;opérateur <em>fat arrow</em> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let maFonction = (arg1, arg2) =&gt; arg1 + arg2 <b>(1)</b>
+
+let autreFonction = (arg1) =&gt; { <b>(2)</b>
+  ...
+  return result
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>pas besoin du mot-clé <code>return</code> si la valeur retournée est directe.</p></li><li><p>sinon on déclare un bloc comme d&#8217;habitude.</p></li></ol></div>
+<div class="paragraph"><p>ATTENTION Les fonctions <em>fat arrow</em> présentent un différence notable avec les fonctions traditionnelles : le mot-clé <code>this</code> garde sa valeur au moment où la <em>fat arrow</em> function est créée. Aucun <code>this</code> particulier n&#8217;est attaché aux <em>fat arrow functions</em>&#8230;&#8203;</p></div></section><section id="__code_set_code_et_code_map_code"><h2><code>Set</code> et <code>Map</code></h2><div class="paragraph"><p>Javascript intègre désormais les structures de données <code>Set</code> et <code>Map</code>.</p></div></section><section id="_les_promises"><h2>Les promises</h2><div class="paragraph"><p>Avec les versions précédentes de Javascript et l&#8217;utilisation intensive des traitements asynchrones, de nombreuses bibliothèques de <em>promises</em> ont vu le jour ces dernières années. Avec même la création de certains standards <em>de-facto</em>.</p></div>
+<div class="paragraph"><p>ES5 apporte une normalisation de la gestion des traitements asynchrones avec les <em>Promises</em>. Cette API permet d&#8217;éviter le <em>callback hell</em>.</p></div>
+<div class="paragraph"><p>Une <em>promise</em> est un objet qui représente la mise à disposition d&#8217;un résultat <em>plus tard</em> dans le temps. On peut dire qu&#8217;il s&#8217;agit de la représentation d&#8217;un traitement asynchrone.</p></div>
+<div class="paragraph"><p>On peut chainer les traitements asynchrones grâce à la fonction <code>then</code> des <code>Promise</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id) <b>(1)</b>
+  .then( function(user) { return this.userService.getRights() } ) <b>(2)</b>
+  .then( function(rights) { this.doSomething(rights) } ) <b>(3)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction <code>getUser()</code> retourne une <code>Promise</code>.</p></li><li><p>l&#8217;appel à la fonction <code>then</code> permet de spécifier la fonction qui sera appelée quand la première promesse aura fourni son résultat. Le traitement suivant est retourné, c&#8217;est-à-dire la promesse retournée par la fonction <code>getRights()</code>. Une valeur aurait pu être directement retournée.</p></li><li><p>on peut chaîner les appels à <code>then</code> pour faire des traitements successifs. Chaque fonction de rappel reçoit le résultat du traitement précédent. Ici aucune valeur n&#8217;est retournée pour le potentiel prochain traitement.</p></li></ol></div></section><section id="_les_promises_2"><h2>Les promises</h2><div class="paragraph"><p>Une promesse peut être dans un des trois états suivants : <em>pending</em>, <em>fulfilled</em> ou <em>rejected</em>.</p></div>
+<div class="paragraph"><p>Lorsqu&#8217;une promesse est rejetée, on peut récupérer l&#8217;erreur en passant une fonction de rappel en deuxième paramètre de <code>then</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id)
+  .then( function(user) { ... },
+         function(error) { ... } )</code></pre></div></div>
+<div class="paragraph"><p>On peut aussi laisser les erreurs se propager automatiquement au fil de la chaîne de traitement et les récupérer avec la fonction <code>catch</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id)
+  .then( function(user) { ... } )
+  .then( function(rights) { ... } )
+  .catch( function(error) { ... } )</code></pre></div></div></section><section id="_création_d_une_code_promise_code"><h2>Création d&#8217;une <code>Promise</code></h2><div class="ulist"><ul><li><p>fournir un traitement :</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function getUser(id) {
+  return new Promise(function(resolve, reject) { <b>(1)</b>
+    let request = new XMLHttpRequest(...)
+    request.onStateChange = function(...) {
+      resolve(data) <b>(2)</b>
+      reject('unknown error') <b>(3)</b>
+    }
+  })
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>création de la promesse. L&#8217;exécution de la fonction passée en paramètre se produit aussitôt.</p></li><li><p>résolution de la promesse avec la valeur obtenu après un traitement asynchrone.</p></li><li><p>rejet de la promesse après erreur dans le traitement asynchrone.</p></li></ol></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let resolvedPromise = Promise.resolve(55) <b>(1)</b>
+let rejectedPromise = Promise.reject('description de l erreur') <b>(2)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>promesse résolue avec la valeur <code>55</code>.</p></li><li><p>promesse rejetée avec l&#8217;erreur passée en paramètre.</p></li></ol></div></section><section id="_plus_loin_avec_les_promise_s"><h2>Plus loin avec les `Promise`s</h2><div class="paragraph"><p>L&#8217;API des promesses est plus riche et flexible que le seul aperçu montré ici. Une documentation plus complète est disponible ici : <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="bare">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a>.</p></div>
+<div class="paragraph"><p>Combinées avec les <em>fat arrow functions</em>, les <em>Promises</em> sont très puissantes pour clarifier l&#8217;enchainement de traitements asynchrones.</p></div></section><section id="_les_modules"><h2>Les modules</h2><div class="paragraph"><p>Plusieurs problèmes :</p></div>
+<div class="ulist"><ul><li><p>tout le monde a besoin de charger des bibliothèques</p></li><li><p>différentes bibliothèques de chargement de modules ont vu le jour</p></li><li><p>différentes bibliothèques sont apparues en fonction de l&#8217;utilisation (front avec <em>AMD</em> ou back avec <em>CommonJS</em>)</p></li><li><p>le chargement de modules en ES5 fonctionne mais est encombrant et non optimal.</p></li></ul></div>
+<div class="paragraph"><p>Les nouveaux modules ES6 répondent à ces problèmes et unifient en une seule spécification le chargement de modules dans les mondes serveur et client.</p></div>
+<div class="paragraph"><p>Le chargement des modules (c&#8217;est-à-dire des dépendances de votre application) se fait de façon asynchrone en fonction des déclarations de dépendance faites au début du module.</p></div>
+<div class="paragraph"><p>La syntaxe d&#8217;importation des modules est stricte de façon à permettre aux outils de développement d&#8217;exécuter des analyses perfectionnées.</p></div>
+<div class="paragraph"><p>Les modules ES6 permettent également de définir clairement et facilement les parties d&#8217;un module que l&#8217;on souhaite <em>exporter</em>.</p></div></section><section id="_les_modules_2"><h2>Les modules</h2><div class="paragraph"><p>Exporter une fonction, une variable ou une classe :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">export class BookService {
+  ...
+}
+
+export function ean(value) { ... }</code></pre></div></div>
+<div class="paragraph"><p>Pour importer ces fonctions dans un autre module, on procède ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import {BookService, ean} from './book_service'
+
+let svc = new BookService()
+ean('12355')</code></pre></div></div>
+<div class="paragraph"><p>On peut également donner des alias aux éléments importés :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import {ean as EAN} from './book_service'
+
+let ean = EAN('634')</code></pre></div></div>
+<div class="paragraph"><p>Ou importer tout le module avec :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import * from './book_service'</code></pre></div></div>
+<div class="paragraph"><p>Les modules en ES6 permettent de séparer son code en petites parties, dont la responsabilité est limitée et clairement établie.</p></div>
+<div class="paragraph"><p>Ils facilitent également le travail des usines logicielles.</p></div></section></section>
+<section><section id="_typescript"><h2>Typescript</h2><div class="paragraph"><p>Nécessité du typage dans les grosses applications maintenues par de grandes équipes.</p></div><div class="paragraph"><p>Typescript est un sur-ensemble de Javascript qui lui ajoute un typage flexible (<em>duck typing</em>).</p></div><div class="paragraph"><p>Le compilateur Typescript analyse les fichiers source Typescript et produit des fichiers Javascript exécutables dans n&#8217;importe quel navigateur (ou NodeJS pour le serveur).</p></div><div class="paragraph"><p>Participe maintenant à l&#8217;élaboration des futures versions d&#8217;ECMAScript.</p></div><div class="paragraph"><p>La philosophie de Typescript est d&#8217;ajouter dans le code source Javascript des annotations de type permettant au compilateur de garantir l&#8217;absence d&#8217;erreurs vérifiables par le système de typage.</p></div><div class="paragraph"><p>Typescript est écrit et maintenu par <em>Microsoft</em>. C&#8217;est un outil open source. Il est le langage préféré lorsqu&#8217;on écrit une application <em>Angular</em> (bien qu&#8217;il soit aussi possible d&#8217;écrire des applications <em>Angular</em> en <em>Java</em>, en <em>Dart</em> et en <em>ES5/6</em>).</p></div><div class="paragraph"><p>Documentation disponible ici <a href="https://www.typescriptlang.org/docs/tutorial.html" class="bare">https://www.typescriptlang.org/docs/tutorial.html</a>.</p></div></section><section id="_les_annotations_de_type"><h2>Les annotations de type</h2><div class="paragraph"><p>Le compilateur Typescript propage les informations de typage dont il dispose. Il procède à l&#8217;inférence de type au maximum pour vérifier la cohérence du code et fournir aux IDE les informations nécessaires aux fonctionnalités d'<em>auto-complétion</em>.</p></div>
+<div class="paragraph"><p>Néanmoins, le compilateur Typescript a besoin d&#8217;informations que seul le développeur connaît.</p></div>
+<div class="paragraph"><p>Le typage dans Typescript est complètement débrayable et on se retrouve avec le langage ECMAScript 6.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function greeter(person: string) {
+  return "Hello, " + person
+}
+
+greeter("Jane")
+greeter(42) // COMPILATION ERROR</code></pre></div></div>
+<div class="paragraph"><p>Typescript possède un système de typage complet, comprenant la généricité, les types optionels, etc. Une liste d&#8217;objets implémentant l&#8217;interface <code>Utilisateur</code> est typée :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let list : Array&lt;Utilisateur&gt; = []</code></pre></div></div></section><section id="_les_types_de_base"><h2>Les types de base</h2><div class="paragraph"><p>Les types de bases sont :</p></div>
+<div class="ulist"><ul><li><p>les mêmes que ceux de Javascript : <code>boolean</code>, <code>number</code>, <code>string</code>, <code>Array&lt;&gt;</code> ou <code>[]</code>, <code>null</code>, <code>undefined</code>.</p></li><li><p>Et des types <em>augmentés</em> : les <em>tuples</em>, <code>enum</code>, <code>void</code>, <code>never</code>.</p></li></ul></div>
+<div class="paragraph"><p>Le type <code>any</code> décrit des variables dont le type n&#8217;est pas connu à l&#8217;avance. Lorsqu&#8217;une variable est de ce type, le compilateur Typescript désctive la vérification de type dans les expressions qui l&#8217;utilisent.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let notSure: any = 4;
+notSure.ifItExists(); // okay, ifItExists might exist at runtime
+notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+let prettySure: Object = 4;
+prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.</code></pre></div></div></section><section id="_assertions_de_type_em_cast_em"><h2>Assertions de type (<em>cast</em>)</h2><div class="paragraph"><p>Il est possible de <em>transtyper</em> les variables, c&#8217;est-à-dire les utiliser comme un autre type que celui qui est inféré par Typescript. Ceci se fait avec l&#8217;opérateur d&#8217;assertion de type, qui contrairement aux opérateurs <code>cast</code> d&#8217;autres langages ne réalise aucune opération sur les opérandes.</p></div>
+<div class="paragraph"><p>Il existe deux formes d&#8217;assertion de type :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let someValue: any = "this is a string";
+
+let strLength: number = (&lt;string&gt;someValue).length;
+
+let strLength2: number = (someValue as string).length;</code></pre></div></div></section><section id="_interfaces"><h2>Interfaces</h2><div class="paragraph"><p>Les interfaces permettent de décrire les variables que l&#8217;on manipule dans un programme. Le langage Typescript utilise le <em>duck typing</em>, ce qui signifie que deux types sont considérés équivalents s&#8217;ils ont la même forme.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function printLabel(labelledObj: { label: string }) { <b>(1)</b>
+    console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: "Size 10 Object"};
+printLabel(myObj);</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>l&#8217;interface du paramètre <code>labelledObj</code> est décrite comme un objet possédant au moins une propriété <code>label</code> de type <code>string</code>.</p></li></ol></div>
+<div class="paragraph"><p>Il est bien sûr possible de nommer les interfaces :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface Person { <b>(1)</b>
+  firstName: string; <b>(2)</b>
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName
+}
+
+greeter({ firstName: "Jane", lastName: "User" })
+greeter({ firstName: "Toto"}) // COMPILATION ERROR</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>déclaration de l&#8217;interface <code>Person</code></p></li><li><p>description de l&#8217;attibut <code>firstName</code>. Il est de type <code>string</code></p></li></ol></div>
+<div class="paragraph"><p>Dans une interface, les propriétés peuvent être <em>optionnelles</em> (mot-clé <code>?</code>), en lecture seule (mot-clé <code>readonly</code>).</p></div></section><section id="_décrire_une_fonction"><h2>Décrire une fonction</h2><div class="paragraph"><p>Une interface peut aussi décrire les fonctions.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(src: string, subString: string) { <b>(1)</b>
+    let result = src.search(subString);
+    return result &gt; -1;
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>les annotations de type peuvent être retirées car la variable est de type <code>SearchFunc</code> qui les contient déjà.</p></li></ol></div></section><section id="_décrire_un_objet_em_indexable_em"><h2>Décrire un objet <em>indexable</em></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];</code></pre></div></div></section><section id="_implémenter_une_interface"><h2>Implémenter une interface</h2><div class="paragraph"><p>Les <em>classes</em> Typescript peuvent implémenter des interfaces. Cela permet au compilateur de vérifier que la classe possède bien les méthodes et attributs spécifiés par l&#8217;interface, et de générer des erreurs de compilation si ce n&#8217;est pas le cas.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;héritage fonctionne aussi entre interfaces (une interface peut hériter d&#8217;une autre).</p></div></section><section id="_types_hybrides"><h2>Types hybrides</h2><div class="paragraph"><p>En Javascript il est possible de définir toutes sortes d&#8217;objets bizarres. Typescript prend cet état de fait en compte et permet de décrire un maximum des possibilités offertes par Javascript.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = &lt;Counter&gt;function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;</code></pre></div></div>
+<div class="paragraph"><p>Pouvoir décrire des types ainsi permet aussi de décrire le fonctionnement des bibliothèques Javascript que vous intégrez dans vos projet. Ceci permet de les utiliser de façon sure et prouvée par le compilateur !</p></div></section><section id="_les_génériques"><h2>Les génériques</h2><div class="paragraph"><p>Typescript supporte l&#8217;utilisation des types génériques. Cette fonctionnalité permet de décrire un type en fonction d&#8217;autres types.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function identity&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+let myIdentity: &lt;U&gt;(arg: U) =&gt; U = identity;</code></pre></div></div>
+<div class="paragraph"><p>Voici un exemple plus avancé de l&#8217;utilisation des génériques :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class BeeKeeper {
+    hasMask: boolean;
+}
+
+class ZooKeeper {
+    nametag: string;
+}
+
+class Animal {
+    numLegs: number;
+}
+
+class Bee extends Animal {
+    keeper: BeeKeeper;
+}
+
+class Lion extends Animal {
+    keeper: ZooKeeper;
+}
+
+function findKeeper&lt;A extends Animal, K&gt; (a: {new(): A;
+    prototype: {keeper: K}}): K {
+
+    return a.prototype.keeper;
+}
+
+findKeeper(Lion).nametag;  // typechecks!</code></pre></div></div></section><section id="_typage_avancé"><h2>Typage avancé</h2><div class="paragraph"><p>D&#8217;autres éléments du système de type de Typescript existent comme :</p></div>
+<div class="ulist"><ul><li><p>les <em>intersections</em>,</p></li><li><p>les <em>unions</em>,</p></li><li><p>les <em>types de protection</em> (type guards),</p></li><li><p>les types <em>nullable</em>,</p></li><li><p>les <em>alias</em>,</p></li><li><p>les <em>string literals</em>,</p></li><li><p>les unions <em>discriminées</em> (discriminated unions),</p></li><li><p>le <code>this</code> <em>polymorphique</em>,</p></li><li><p><em>index types</em>,</p></li><li><p>types <em>mappés</em>,
+&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p>Voir la page de documentation officielle ici <a href="https://www.typescriptlang.org/docs/handbook/advanced-types.html" class="bare">https://www.typescriptlang.org/docs/handbook/advanced-types.html</a>.</p></div></section><section id="_décorateurs"><h2>Décorateurs</h2><div class="paragraph"><p>Un décorateur est une déclaration qui peut être attachée à une <em>classe</em>, une <em>fonction</em>, un <em>accesseur</em>, une <em>propriété</em> ou un <em>paramètre</em>.</p></div>
+<div class="paragraph"><p>Les décorateurs utilisent la forme <code>@expression</code>, dans laquelle <code>expression</code> est une fonction qui sera appelée avec les les informations sur la déclaration décorée.</p></div>
+<div class="paragraph"><p>Utilisés intensément par Angular pour décrire des méta données sur les composants. En conjonction avec la bibliothèque <code>reflect-metadata</code> qui devrait être incessament sous peu intégrée dans le standard Javascript.</p></div>
+<div class="paragraph"><p>Pour plus d&#8217;informations, consultez cette page <a href="https://www.typescriptlang.org/docs/handbook/decorators.html" class="bare">https://www.typescriptlang.org/docs/handbook/decorators.html</a> pour les décorateurs et celle-ci pour la bibliothèque <em>reflect-metadata</em> <a href="https://rbuckton.github.io/reflect-metadata/" class="bare">https://rbuckton.github.io/reflect-metadata/</a>.</p></div>
+<div class="paragraph"><p>Un décorateur peut avoir la forme</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function decorator(target: any, name: string, descriptor: any) {
+  logger.log(`call to ${name}`)
+  return descriptor
+}</code></pre></div></div></section><section id="_fichiers_de_déclaration_de_type"><h2>Fichiers de déclaration de type</h2><div class="paragraph"><p>Il est courant d&#8217;utiliser à partir d&#8217;un programme Typescript des bibliothèques écrites en Javascript.</p></div>
+<div class="paragraph"><p>Typescript permet de fournir un fichier de déclaration de type qui décrit au compilateur comment la bibliothèque externe fonctionne.</p></div>
+<div class="paragraph"><p>Voici une page avec plus d&#8217;information <a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html" class="bare">https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html</a>.</p></div>
+<div class="paragraph"><p>Un projet très connu recense un grand nombre de fichiers de déclarations de types pour de nombreuses bibliothèques javascript. Il s&#8217;agit du projet <em>Definitely Typed</em>.</p></div></section></section>
+<section><section id="_angular"><h2>Angular</h2></section><section id="_qu_est_ce_que_c_est"><h2>Qu&#8217;est-ce que c&#8217;est ?</h2><div class="paragraph"><p>Angular est un framework RIA orienté composant.</p></div>
+<div class="paragraph"><p>Angular 2 est la réécriture repensée de AngularJS, qui a connu un succès incroyable et a pu apprendre de ses erreurs grâce au nombre de ses déploiements. Il est optimisée pour les performances et la rapidité et propose des outils évolués améliorant la productivité.</p></div>
+<div class="paragraph"><p>Site web : <a href="https://angular.io/" class="bare">https://angular.io/</a></p></div></section><section id="_architecture"><h2>Architecture</h2><div class="paragraph"><p>La brique élémentaire d&#8217;une application Angular est le composant. Il est responsable d&#8217;une partie du DOM. Il peut contenir d&#8217;autres composants et donc être contenu par son parent. Le mode de communication entre les différents composants est imposé par Angular. De multiples possibilités sont offertes.</p></div>
+<div class="paragraph"><p>Un composant possède deux facettes :</p></div>
+<div class="ulist"><ul><li><p>la vue (<em>template</em>) : du code HTML spécifiant le rendu du composant,</p></li><li><p>le modèle : le code Typescript ou Javascript manipulant les données.</p></li></ul></div>
+<div class="paragraph"><p>Les intéractions entre vue et modèle sont gérées par le framework grâce au <em>data-binding</em>. Celui-ci est assuré entre autres grâce au mécanisme des <em>zones</em> hérité du monde <em>Dart</em>.</p></div>
+<div class="paragraph"><p>Une application est donc conceptuellement un arbre de composants.</p></div></section><section id="_architecture_2"><h2>Architecture</h2><div class="paragraph"><p>Les composants sont regroupés en modules pour former des entités cohérentes traitées par le runtime Angular.</p></div>
+<div class="paragraph"><p>Un module de <em>bootstrap</em> lui-même référençant un composant de <em>bootstrap</em> est utilisé pour le démarrage de l&#8217;application. Ensuite le cycle de vie des composants est pris en charge par le framework Angular.</p></div>
+<div class="paragraph"><p>La mise en place des composants dans une application Angular est prise en charge par le mécanisme d'<em>injection de dépendance</em>. Angular fournit aux composants les objets nécessaires à leur fonctionnement. Ainsi chaque composant est naturellement aisément testable, et la structure de l&#8217;application reste claire.</p></div>
+<div class="paragraph"><p>Angular fournit aussi de nombreuses bibliothèques permettant de faire notamment des requêtes <em>http</em>, le <em>routage</em>, les <em>animations</em> etc.</p></div>
+<div class="paragraph"><p>Angular offre aussi des outils d'<em>AOT</em> qui consistent à optimiser la phase de compilation pour générer des fichiers javascript les plus légers possible.</p></div></section><section id="_concepts_clé_d_angular"><h2>Concepts clé d&#8217;Angular</h2><div class="paragraph"><p>Angular 2 paut être vu comme la composition des éléments suivants :</p></div>
+<div class="ulist"><ul><li><p>les <em>Modules</em>,</p></li><li><p>les <em>Composants</em>,</p></li><li><p>les <em>Templates</em>,</p></li><li><p>le <em>Data-binding</em>,</p></li><li><p>l'<em>Injection de dépendances</em>,</p></li><li><p>les <em>Métadonnées</em>,</p></li><li><p>les <em>Directives</em>,</p></li><li><p>les <em>Services</em>.</p></li></ul></div></section><section id="_" data-background="images/overview.png" data-background-size="contain"></section><section id="_mais_ce_n_est_pas_tout"><h2>Mais ce n&#8217;est pas tout !</h2><div class="paragraph"><p>Angular est un framework déjà très riche. Voici en vrac quelques autres fonctionnalités offertes :</p></div>
+<div class="ulist"><ul><li><p>les <em>Animations</em>,</p></li><li><p>les <em>Formulaires</em>,</p></li><li><p>la communication <em>Http</em>,</p></li><li><p>les <em>hooks</em> de cycle de vie,</p></li><li><p>les <em>pipes</em>,</p></li><li><p>le <em>routeur</em>,</p></li><li><p>des outils pour <em>tester</em> vos applications.</p></li></ul></div></section><section id="_exercice"><h2>Exercice</h2><div class="paragraph"><p>Faire l&#8217;exercice de création d&#8217;un projet Angular dans les Travaux Pratiques.</p></div></section><section id="__code_angular_cli_code_pour_la_gestion_d_une_appli_angular"><h2><code>angular-cli</code> pour la gestion d&#8217;une appli Angular</h2><div class="paragraph"><p>Il est possible de configurer un projet Angular entièrement à la main (voir exercice 1 dans Travaux Pratiques).</p></div>
+<div class="paragraph"><p>Mais cela est fastidieux et Angular propose aussi un outil en ligne de commande pour gérer les différents aspects d&#8217;un projet : <code>angular-cli</code>.</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Commande</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Création d&#8217;un projet</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng new NOM_PROJET</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Démarrage de l&#8217;application</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng serve</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Créer un nouveau composant</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng generate component COMPONENT_NAME</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Plugin Github Pages</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng github-pages:deploy</code></p></td></tr></tbody></table></section></section>
+<section><section id="_modules"><h2>Modules</h2><div class="paragraph"><p>Un module décrit un ensemble fonctionnel et cohérent de code.</p></div><div class="paragraph"><p>Une application Angular possède au moins un module, son module <em>racine</em>.</p></div><div class="paragraph"><p>Concrètement un module sera représenté par une classe décorée avec <code>@NgModule</code>. Ce décorateur prend les paramètres suivants :</p></div><div class="ulist"><ul><li><p><code>declarations</code> : la liste des composants, directives et pipes contenues dans le module,</p></li><li><p><code>exports</code> : une sous-liste de <code>declarations</code> définissant les composants accessibles à d&#8217;autres modules,</p></li><li><p><code>imports</code> : liste des modules que l&#8217;on souhaite utiliser dans ce module,</p></li><li><p><code>providers</code> : liste des fournisseurs de service pour ce module,</p></li><li><p><code>bootstrap</code> : le composant racine du module, qui sera utilisé pour créer la vue principale de l&#8217;application.</p></li></ul></div></section><section id="_exemple"><h2>Exemple</h2><div class="paragraph"><p>Voici un simple module :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+@NgModule({
+  imports:      [ BrowserModule ],
+  providers:    [ Logger ],
+  declarations: [ AppComponent ],
+  exports:      [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }</code></pre></div></div>
+<div class="paragraph"><p>Angular fournit une partie de ses fonctionnalités optionnelles sous forme de modules (<code>FormModule</code>, <code>Http</code>&#8230;&#8203;).</p></div></section></section>
+<section><section id="_composant"><h2>Composant</h2><div class="paragraph"><p>C&#8217;est la brique fondamentale d&#8217;une application Angular, regroupant une vue HTML et un comportement Typescript. Côté code, un composant est une classe décorée avec <code>@Composant</code>. Celui-ci reçoit un objet avec des propriétés pour chaque option :</p></div><div class="ulist"><ul><li><p><code>selector</code> : nom de l&#8217;élément HTML qui déclenche l&#8217;injection du composant dans l&#8217;application.</p></li><li><p><code>template</code> : la vue du composant, écrite en HTML avec une syntaxe additionnelle spécifique à Angular.</p></li></ul></div><div class="paragraph"><p>D&#8217;autres options sont facultatives:</p></div><div class="ulist"><ul><li><p><code>templateUrl</code> : à utiliser à la place de <code>template</code> pour déclarer la vue dans un fichier externe (<a href="https://angular.io/docs/ts/latest/cookbook/component-relative-paths.html">attention aux chemins</a>).</p></li><li><p><code>styles</code> : un tableau de styles CSS spécifiques au composant.</p></li><li><p><code>styleUrls</code> : un tableau de lien vers des feuilles externes.</p></li><li><p><code>providers</code> : un tableau de classes fournies en tant que dépendances à sa descendance.</p></li></ul></div><div class="paragraph"><p>Et encore d&#8217;autres (<code>animations</code>, <code>encapsulation</code>, <code>interpolation</code>, <code>moduleId</code>, <code>viewProviders</code>).</p></div><div class="paragraph"><p>Ce n&#8217;est pas le développeur qui crée les composants mais Angular grâce au mécanisme d&#8217;injection de dépendances et aux méta-données fournies dans les décorateurs.</p></div></section><section id="_les_templates"><h2>Les templates</h2><div class="paragraph"><p>Une template est la partie <em>vue</em> d&#8217;un composant.</p></div>
+<div class="paragraph"><p>Elle s&#8217;écrit en HTML avec une syntaxe étendue pour les fonctionnalités d&#8217;Angular.</p></div>
+<div class="paragraph"><p>La template d&#8217;un composant peut s&#8217;écrire dans le fichier du composant lui-même (attribut <code>template</code> du décorateur <code>@Component</code>).</p></div>
+<div class="paragraph"><p>Elle peut aussi être écrite dans un fichier HTML à part, en précisant le chemin de celui-ci dans l&#8217;attribut <code>templateUrl</code> du décorateur <code>@Composant</code>.</p></div></section><section id="_interpolation"><h2>Interpolation</h2><div class="paragraph"><p>Angular permet d&#8217;injecter très facilement les données du composant dans sa template.</p></div>
+<div class="paragraph"><p>Exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: '&lt;h1&gt;Hello {{userName}} !&lt;/h1&gt;'
+})
+export class AngularAppComponent {
+  userName: string = 'Monsieur Développeur'
+}</code></pre></div></div>
+<div class="paragraph"><p>Dans la partie template, l&#8217;expression <code>{{userName}}</code> demande à Angular d&#8217;effectuer l&#8217;interpolation de la variable <code>userName</code> en utilisant l&#8217;instance du composant comme contexte d&#8217;évaluation.</p></div>
+<div class="paragraph"><p>Le flux HTML inséré dans la page sera donc <code>&lt;h1&gt;Hello Monsieur Développeur !&lt;/h1&gt;</code>.</p></div></section><section id="_interpolation_2"><h2>Interpolation</h2><div class="paragraph"><p>L&#8217;interpolation ne se limite pas à vider le contenu d&#8217;une variable dans le flux HTML. On peut accéder aux éléments imbriqués d&#8217;un objet, ou encore fournir des expressions dans l&#8217;élément d&#8217;interpolation <code>{{ }}</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: '&lt;h1&gt;Hello {{user?.name}} !&lt;/h1&gt;'
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;expression <code>{{user?.name}}</code> utilise l&#8217;opérateur de navigation sûr, qui renvoie <code>null</code> si la variable <code>user</code> vaut <code>null</code> (au lieu de provoquer une exception du type "cannot access to property XXX for undefined").</p></div></section><section id="_le_binding_de_propriétés_dom"><h2>Le binding de propriétés DOM</h2><div class="paragraph"><p>La syntaxe <code>{{}}</code> est en fait un raccourci vers la fonctionnalité de <em>liaison de propriété</em>.</p></div>
+<div class="paragraph"><p>La syntaxe une fois développée correspond en fait à :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;p&gt;{{ user.name }}&lt;/p&gt;
+
+&lt;p [textContent]="user.name"&gt;</code></pre></div></div>
+<div class="paragraph"><p>La syntaxe d&#8217;interpolation ne fait en fait que positionner la valeur de l&#8217;attribut DOM <code>textContent</code> de l&#8217;élément.</p></div>
+<div class="paragraph"><p>Et l&#8217;ensemble complet des attributs DOM est accessible avec cette syntaxe <code>[attributDom]="expression évaluée dans le contexte du composant"</code>.</p></div></section><section id="_binding_de_propriétés"><h2>Binding de propriétés</h2><div class="paragraph"><p>Il est donc par exemple possible de faire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      &lt;h1 [hidden]="!user"&gt;Hello {{user?.name}} !&lt;/h1&gt; <b>(1)</b>
+      &lt;users-list&gt;&lt;/users-list&gt;`
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Lie la propriété DOM <a href="https://developer.mozilla.org/fr/docs/Web/HTML/Attributs_universels/hidden"><code>hidden</code></a> (propriété standard) à la valeur de l&#8217;expression <code>!user</code> dans le contexte du composant.</p></li></ol></div></section><section id="_binding_de_propriétés_2"><h2>Binding de propriétés</h2><div class="paragraph"><p>Donc, ces deux syntaxes sont équivalentes (notez l&#8217;appel de fonction !) :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;users-list users="{{getUsersList()}}"&gt;&lt;/users-list&gt;
+
+&lt;users-list [users]="getUsersList()"&gt;&lt;/users-list&gt;</code></pre></div></div></section><section id="_la_liaison_d_evénements"><h2>La liaison d&#8217;evénements</h2><div class="paragraph"><p>La syntaxe des template permet de définir les liens entre les événements que produit le navigateur et les méthodes de votre composant à déclencher.</p></div>
+<div class="paragraph"><p>Par exemple, pour déclencher la méthode <code>onButtonClick()</code> du composant, on écrit :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;button (click)="onButtonClick()"&gt;Cliquez-moi !&lt;/button&gt;</code></pre></div></div>
+<div class="paragraph"><p>Voilà l&#8217;exemple d&#8217;un composant plus complet :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      &lt;h1&gt;Hello&lt;/h1&gt;
+      &lt;button (click)="onButtonClick()"&gt;Cliquez-moi !&lt;/button&gt;
+      &lt;p&gt;{{users.length}}&lt;/p&gt;`
+})
+export class AngularAppComponent {
+  users = []
+
+  onButtonClick() {
+    this.users.push({})
+  }
+}</code></pre></div></div></section><section id="_la_liaison_d_evénements_2"><h2>La liaison d&#8217;evénements</h2><div class="paragraph"><p>Cette syntaxe pour capter les événements fonctionne aussi bien avec :</p></div>
+<div class="ulist"><ul><li><p>les éléments DOM natifs (pour récupérer <em>click</em>, <em>focus</em>, &#8230;&#8203;)</p></li><li><p>les web composants,</p></li><li><p>les composants Angular (les composants peuvent emettre des événements qui peuvent être captés par le composant parent)</p></li></ul></div>
+<div class="paragraph"><p>L&#8217;événement généré est accessible avec la <em>pseudo-variable</em> <code>$event</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;button (click)="onButtonClick($event)"&gt;Cliquez-moi !&lt;/button&gt;</code></pre></div></div>
+<div class="paragraph"><p>La méthode appelée peut ensuite utiliser l&#8217;événement :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>onButtonClick(event) {
+  event.stopPropagation()
+  event.preventDefault()
+}</code></pre></div></div></section><section id="_la_liaison_d_evénements_3"><h2>La liaison d&#8217;evénements</h2><div class="paragraph"><p>Angular prend aussi en charge les événements clavier et permet un traitement spécifique :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;textarea (keydown.space)="onSpacePress()"&gt;Press space!&lt;/textarea&gt;</code></pre></div></div>
+<div class="paragraph"><p>Ici la méthode <code>onSpacePress</code> ne sera appelée que lorsque la touche <code>space</code> sera actionnée. Ceci fonctionne aussi avec les combinaisons de touches (par exemple <code>keydown.shift.space</code>).</p></div></section><section id="_la_liaison_double"><h2>La liaison double</h2><div class="paragraph"><p>La liaison double combine la liaison dévénements et la liaison de propriétés. Ceci se fait avec la directive <code>NgModel</code>.</p></div>
+<div class="paragraph"><p>Ceci permet de lier dans les deux sens notamment un champ de saisie avec une propriété de la classe du composant :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;input [(ngModel)]="hero.name"&gt;</code></pre></div></div>
+<div class="paragraph"><p>Nous découvrirons plus en détail ce mécanisme dans le chapître sur les formulaires.</p></div></section><section id="_variables_locales"><h2>Variables locales</h2><div class="paragraph"><p>Il est possible de déclarer des variables au sein d&#8217;une template afin de référencer des éléments de cette template. Par exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;input type="text" #monInput&gt; <b>(1)</b>
+
+&lt;p&gt;La valeur de la zone est {{monInput.value}}&lt;/p&gt;</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Crée la variable locale <code>monInput</code> de type <code>HTMLInputElement</code> référençant le champ de saisie.</p></li></ol></div></section><section id="_directives_structurelles"><h2>Directives structurelles</h2><div class="paragraph"><p>Les directives sont des composants légers ne possédant pas de vue propre. Elles permettent de modifier le comportement d&#8217;un élément.</p></div>
+<div class="paragraph"><p>Angular propose aussi les <em>directives structurelles</em> qui permettent de modifier la <em>structure</em> du DOM d&#8217;un composant en fonction de ses données. Ceci permet entre autre de générer des éléments DOM pour chaque élément dans une liste de votre composant etc&#8230;&#8203;</p></div>
+<div class="paragraph"><p>L&#8217;utilisation des directives structurelles est marquée par un astérisque (*) devant le nom de la directive.</p></div></section><section id="__code_ngif_code"><h2><code>NgIf</code></h2><div class="paragraph"><p>Directive permettant d&#8217;afficher ou pas une template en fonction de l&#8217;évaluation d&#8217;une expression.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div *ngIf="user"&gt;
+  Bonjour {{user.name}}
+&lt;/div&gt;</code></pre></div></div></section><section id="__code_ngfor_code"><h2><code>NgFor</code></h2><div class="paragraph"><p>La directive <code>NgFor</code> permet de répéter une template pour chacun des éléments d&#8217;une collection. Voici comment afficher une liste de produits :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div&gt;
+  &lt;h3&gt;Produits&lt;/h3&gt;
+  &lt;div *ngFor="let produit of produits; let i=index"&gt;
+    &lt;div&gt;{{produit.nom}}&lt;/div&gt;
+    &lt;div&gt;{{produit.prix}}&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;expression <code>let i=index</code> est facultative et on peut alors retirer le point-virgule. Cette expression capte dans la variable locale <code>i</code> la variable <code>index</code> exportée par la directive <code>NgFor</code>.</p></div>
+<div class="paragraph"><p><code>NgFor</code> exporte aussi d&#8217;autres variables : <code>even</code>, <code>odd</code>, <code>first</code> et <code>last</code>.</p></div></section><section id="__code_ngswitch_code"><h2><code>NgSwitch</code></h2><div class="paragraph"><p>Cette directive permet d&#8217;afficher un template en fonction de la valeur d&#8217;une expression en entrée.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div [ngSwitch]="messageCount"&gt;
+  &lt;p *ngSwitchCase="0"&gt;You have no message&lt;/p&gt;
+  &lt;p *ngSwitchCase="1"&gt;You have a message&lt;/p&gt;
+  &lt;p *ngSwitchDefault&gt;You have some messages&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div></section><section id="_directives_structurelles_avancées"><h2>Directives structurelles avancées</h2><div class="paragraph"><p>La notation <code>*ngFor</code> ou <code>*ngIf</code> est en réalité un raccourci vers la syntaxe primitive des templates d&#8217;Angular.</p></div>
+<div class="paragraph"><p>Le code suivant :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div *ngFor="let produit of produits; let i=index"&gt;
+  &lt;div&gt;{{produit.nom}}&lt;/div&gt;
+  &lt;div&gt;{{produit.prix}}&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="paragraph"><p>Est équivalent à ceci :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;template ngFor let-produit [ngForOf]="produits"&gt;
+  &lt;div&gt;
+    &lt;div&gt;{{produit.nom}}&lt;/div&gt;
+    &lt;div&gt;{{produit.prix}}&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre></div></div>
+<div class="paragraph"><p>Les directives structurelles s&#8217;appuient en effet sur l&#8217;élément HTML5 <code>template</code> pour gérer les modèles à générer.</p></div></section><section id="_directives_fournies_par_angular"><h2>Directives fournies par Angular</h2><div class="paragraph"><p>Angular fournit quelques directives utiles.</p></div>
+<div class="paragraph"><p><code>NgStyle</code> permet d&#8217;affecter plusieurs propriétés CSS en un seul attribut :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div [ngStyle]="{fontWeight: fontWeight, color: color}"&gt;I've got style&lt;/div&gt;</code></pre></div></div>
+<div class="paragraph"><p><code>NgClass</code> permet de faire la même chose avec les classes CSS :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div [ngClass]="{'awesome-div': isAnAwesomeDiv(), 'colored-div': isAColoredDiv()}"&gt;I've got style&lt;/div&gt;</code></pre></div></div></section><section id="_injecter_des_composants_dans_les_templates"><h2>Injecter des composants dans les templates</h2><div class="paragraph"><p>A partir du moment où un composant est déclaré dans le module de l&#8217;application ou que celui-ci est importé à partir d&#8217;un autre module, on peut demander la création du composant en insérant dans la template une balise dont le nom correspond au <em>selecteur</em> du composant à insérer.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import {Component} from '@angular/core'
+
+// Ce composant doit être déclaré dans notre module (dans la partie `declarations` du décorateur `NgModule`)
+@Component({
+    selector: 'users-list',
+    template: `UNE LISTE D'UTILISATEURS`
+})
+export class UsersListComponent {
+}
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      &lt;h1&gt;Hello {{user?.name}} !&lt;/h1&gt;
+      &lt;users-list&gt;&lt;/users-list&gt;`
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}</code></pre></div></div></section><section id="_synthèse"><h2>Synthèse</h2><div class="paragraph"><p>Les templates Angular permettent d&#8217;exprimer les vues des composants en HTML standard.</p></div>
+<div class="paragraph"><p>Une syntaxe additionnelle, assez légère permet de spécifier les liaisons entre la vue et les données et comportements du composant. Le mécanisme fourni par Angular est très bien pensé et s&#8217;adapte aussi bien aux noeuds HTML standards, aux autres composants Angular et aux <em>Web Components</em>.</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Interpolation</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>{{expression}}</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Liaison de propriété</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>[propriete]</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Liaison d&#8217;événement</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>(evenement)</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Variable locale</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>#variable</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Directives structurelles</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>*directive</code></p></td></tr></tbody></table>
+<div class="paragraph"><p><a href="http://lteconsulting.fr/angular/cheat-sheet.pdf">Feuille de triche&#8230;&#8203;</a></p></div></section></section>
+<section><section id="_communication_entre_composants"><h2>Communication entre composants</h2><div class="paragraph"><p>La communication entre les différents composants d&#8217;une application Angular est clairement définie.</p></div><div class="paragraph"><p>Cela permet au mécanisme du <em>data binding</em> de détecter efficacement le flots des changements dans les états des composants.</p></div><div class="paragraph"><p>Quand un composant souhaite recevoir des données provenant de son parent, il déclare des <em>entrées</em>.</p></div><div class="paragraph"><p>Quand un composant souhaite emettre des informations à destination de son parent, il déclare des <em>sorties</em>.</p></div></section><section id="__code_input_code"><h2><code>@Input</code></h2><div class="paragraph"><p>Le décorateur <code>@Input</code> est utilisé pour déclarer une entrée dans un composant.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  selector: 'app-produit',
+  template: '&lt;div&gt;{{produit.id}}&lt;/div&gt;'
+})
+export class ProduitComponent {
+  @Input() produit
+}</code></pre></div></div>
+<div class="paragraph"><p>Le parent peut ensuite fournir une valeur à cette entrée en utilisant le mécanisme des templates.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  selector: 'produits,
+  template: `
+&lt;ul&gt;
+  &lt;li *ngFor='let p of produits'&gt;&lt;app-produit [produit]='p'&gt;&lt;/app-produit&gt;&lt;/li&gt;
+&lt;ul&gt;`
+})
+export class ProduitsComponent {
+  ...
+  produits = [{...}, {...}]
+}</code></pre></div></div>
+<div class="paragraph"><p>On peut définir un nom d&#8217;entrée différent de celui de la propriété à laquelle elle est liée :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Input('produit') p</code></pre></div></div>
+<div class="paragraph"><p>Et on peut bien sûr mettre à profit les accesseurs ES6 :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Input() set produits(value) {
+  ...
+}</code></pre></div></div></section><section id="__code_output_code"><h2><code>@Output</code></h2><div class="paragraph"><p>On déclare un <em>sortie</em> pour permettre à un composant d&#8217;envoyer des informations vers son parent.</p></div>
+<div class="paragraph"><p>A chaque sortie correspond un <code>EventEmitter</code>. C&#8217;est un <em>Observable</em> implémenté pour les besoins d&#8217;Angular. Il permet au producteur d&#8217;information d&#8217;emettre des événements et au consommateur de s&#8217;abonner au flux d&#8217;événements.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component(...)
+export class EmailComponent {
+  @Output() markedAsRead = new EventEmitter&lt;EMail&gt;() <b>(1)</b>
+
+  onClick() {
+    this.markedAsRead.emit(this.email) <b>(2)</b>
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>déclaration de la sortie qui est nommée d&#8217;après la propriété.</p></li><li><p>emission d&#8217;un événement contenant un référence à l&#8217;email du composant.</p></li></ol></div>
+<div class="paragraph"><p>On consomme l&#8217;information ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  template: `
+&lt;app-email *ngFor='let email of emails' (markedAsRead)='doSomething($event)'&gt;&lt;/app-email&gt;` <b>(1)</b>
+})
+export class SommaireComponent {
+  doSomething(email) { <b>(2)</b>
+    ...
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>on s&#8217;abonne à la sortie du composant avec la syntaxe standard des templates. Pour passer la donnée de l&#8217;événement à la fonction on utilise le mot-clé consacré <code>$event</code>.</p></li><li><p>on reçoit la donnée de l&#8217;événement dans la fonction.</p></li></ol></div></section></section>
+<section><section id="_injection_de_dépendances"><h2>Injection de dépendances</h2><div class="paragraph"><p>L&#8217;injection de dépendance est un patron de conception dans lequel un composant applicatif ne construit pas les composants dont il dépend mais les reçoit de l&#8217;extérieur (généralement par le constructeur ou un accesseur).</p></div><div class="paragraph"><p>Ce pattern implique qu&#8217;un autre composant est en charge de fournir les dépendances des composants, c&#8217;est l&#8217;injecteur de dépendances.</p></div><div class="paragraph"><p>Ce pattern améliore la séparation des responsabilités (consommateur et producteur) et facilite la testabilité de chaque composant. Chaque composant "déclare" les composants dont il a besoin.</p></div><div class="paragraph"><p>Le modèle suivi par Angular est le suivant :</p></div><div class="ulist"><ul><li><p>chaque composant possède son propre injecteur de dépendances et peut lui ajouter des services.</p></li><li><p>les injecteurs de dépendances sont organisés hiérarchiquement (parent/enfants).</p></li><li><p>les composants déclarent les dépendances dont ils ont besoin dans leur constructeur.</p></li></ul></div></section><section id="_injecter_un_service_dans_un_composant"><h2>Injecter un service dans un composant</h2><div class="paragraph"><p>Le service est la classe qui fournit un service :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Injectable() <b>(1)</b>
+export class DataService {
+  produits() {
+    return [{id:3, nom:"Livre"}]
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le décorateur <code>@Injectable</code> permettra plus tard d&#8217;injecter des dépendances dans la classe <code>DataService</code>.</p></li></ol></div>
+<div class="paragraph"><p>Pour la rendre disponible dans l&#8217;application entière, nous allons la déclarer dans l&#8217;injecteur racine :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@NgModule({
+    imports: [BrowserModule],
+    declarations: [AngularAppComponent],
+    providers: [DataService], <b>(1)</b>
+    bootstrap: [AngularAppComponent]
+})
+export class AppModule {
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>ceci enregistre la classe <code>DataService</code> dans le panel des classes que peut fournir l&#8217;injecteur de dépendances.</p></li></ol></div></section><section id="_injecter_un_service_dans_un_composant_2"><h2>Injecter un service dans un composant</h2><div class="paragraph"><p>Pour demander une instance de cette classe, on procède ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({...})
+export class MonComposant {
+  constructor(private dataService: DataService) {
+  }
+
+  uneMethode() {
+    this.dataService.getData()
+  }
+}</code></pre></div></div>
+<div class="paragraph"><p>Une seule instance par injecteur est créée, pour chaque classe fournie. Les injecteurs étant organisés en hiérarchie, la recherche des dépendances se fait en remontant l&#8217;arbre des injecteurs.</p></div>
+<div class="paragraph"><p>Un injecteur enregistre les dépendances qu&#8217;il sait résoudre en relation avec leur <em>clé</em>.</p></div>
+<div class="paragraph"><p>Les composants aussi peuvent enregistrer des classes dans leur injecteur de dépendances. Ceci se fait avec l&#8217;attribut <code>providers</code> du décorateur <code>@Composant</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  providers: [AutreService] <b>(1)</b>
+})
+export class MonComposant {
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>ici le composant <code>MonComposant</code> ajoute à son injecteur la classe <code>AutreService</code>. Celle-ci sera donc disponible dans les composants fils de celui-ci.</p></li></ol></div></section><section id="_injection_paramétrée"><h2>Injection paramétrée</h2><div class="paragraph"><p>Le moteur d&#8217;injection de dépendances d&#8217;Angular permet sa configuration.</p></div>
+<div class="paragraph"><p>La configuration précédente aurait pu être écrite dans sa forme complète :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>providers: [
+  {provide: DataService, useClass: DataService} <b>(1)</b>
+]</code></pre></div></div>
+<div class="colist arabic"><ol><li><p><code>provide</code> désigne le <em>token</em> et <code>useClass</code> est le service fourni.</p></li></ol></div>
+<div class="paragraph"><p>Une seule instance du service est créée par token.</p></div>
+<div class="paragraph"><p>Si on veut demander l&#8217;injection d&#8217;une autre classe pour le même token, on peut écrire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>providers: [
+  {provide: DataService, useClass: MockDataService} <b>(1)</b>
+]</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le service mocké est utilisé pour les tests.</p></li></ol></div></section><section id="_injection_de_valeurs"><h2>Injection de valeurs</h2><div class="paragraph"><p>Les injecteurs de dépendances peuvent aussi injecter des valeurs ou n&#8217;importe quel autre objet javascript. Comme dans ce cas, la clé de dépendance n&#8217;est pas une classe, il faut utiliser un <code>OpaqueToken</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>// Dans un fichier à part
+
+import { OpaqueToken } from '@angular/core'
+
+export let APP_CONFIG = new OpaqueToken('app.config');
+
+// Dans un module ou un composant on enregistre le fournisseur :
+
+providers: [
+  {provide:APP_CONFIG, useValue:{production: false, title: 'Sandrero'}}
+]</code></pre></div></div>
+<div class="paragraph"><p>On peut ensuite demander la fourniture de la dépendance :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component(...)
+export class AngularAppComponent {
+    constructor( @Inject(APP_CONFIG) private config: { production; title; }) {
+    }
+}</code></pre></div></div></section><section id="_injection_avec_alias"><h2>Injection avec alias</h2><div class="paragraph"><p>Il est possible de réutiliser une instance fournie même si sa classe est déjà enregistrée avec une autre clé. Ceci est fait avec la propriété <code>useExisting</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">[ NewLogger,
+  // Alias OldLogger w/ reference to NewLogger
+  { provide: OldLogger, useExisting: NewLogger}
+]</code></pre></div></div></section><section id="_injection_avec_fabrique"><h2>Injection avec fabrique</h2><div class="paragraph"><p>Si on veut soit même décider de la classe à fournir dynamiquement, il est possible de donner à l&#8217;injecteur une fonction <em>fabrique</em> (<em>factory</em>) dont le rôle est de créer la dépendance.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>const IS_PROD = true;
+
+// dans le module
+providers: [
+  LogService,
+  {
+    // clé du service fourni
+    provide: DataService,
+
+    // dépendances nécessaires pour la création du service DataService
+    deps: [LogService],
+
+    // la fonction factory reçoit les dépendances déclarées dans `deps` afin de pouvoir initialiser
+    // le service qu'elle produit.
+    useFactory: logService =&gt; IS_PROD ? new DataService(logService) : new MockDataService(logService)
+  }
+]</code></pre></div></div></section></section>
+<section><section id="_les_directives"><h2>Les directives</h2><div class="paragraph"><p>Une directive ajoute un comportement aux éléments du DOM. Elle est attachée à volonté sur les éléments des templates. Plusieurs directives différentes peuvent être attachées au même élément DOM.</p></div><div class="paragraph"><p>Le décorateur correspondant est <code>@Directive</code>.</p></div><div class="paragraph"><p>Les directives possèdent un <em>sélecteur</em> qui permet à Angular de savoir quand l&#8217;activer. C&#8217;est la même syntaxe que les sélecteurs CSS (<code>div</code>, <code>.info</code>, <code>[state]</code>, <code>.info:not(.urgent)</code>, &#8230;&#8203;) avec quelques interdictions.</p></div><div class="paragraph"><p>La directive est la classe mère des composants, ceux-ci en hérite de toutes les fonctionnalités.</p></div><div class="listingblock"><div class="content"><pre class="highlight"><code>@Directive( selector = "[myHighlight]" )
+export class HighlightDirective
+{
+  defaultColor = "red"
+  highlightColor = null
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer) {
+  }
+
+  @Input() set highlightColor(color) {
+    this.highlightColor = color
+  }
+
+  @Input() set defaultColor(colorName) {
+    this.defaultColor = this.colorName ? this.colorName : this.defaultColor
+  }
+
+  @HostListener() mouseenter() {
+    this.highlight(this.highlightColor ? this.highlightColor : this.defaultColor)
+  }
+
+  @HostListener() mouseleave() {
+    this.highlight(null)
+  }
+
+  private highlight(String color) {
+    this.renderer.setElementStyle(this.elementRef.nativeElement(), "backgroundColor", color)
+  }
+}</code></pre></div></div></section><section id="_relation_entre_directive_composant_et_directive_structurelle"><h2>Relation entre Directive, Composant et Directive Structurelle</h2><div class="paragraph"><p>La <em>Directive</em> est le concept de base. Il existe en fait trois sortes de directives :</p></div>
+<div class="ulist"><ul><li><p>les <em>directives d&#8217;attribut</em> permettant d&#8217;altérer le comportement d&#8217;un noeud DOM,</p></li><li><p>les <em>directives structurelles</em> modifient le layout en ajoutant, retirant ou remplaçant des éléments dans le DOM.</p></li><li><p>et les <em>Composants</em> sont des directives qui possèdent une <em>template</em>,</p></li></ul></div></section></section>
+<section id="_formulaires"><h2>Formulaires</h2><div class="paragraph"><p>Il existe deux façon d&#8217;écrire des forumaires avec Angular :</p></div>
+<div class="ulist"><ul><li><p>les formulaires conduits par <em>template</em>,</p></li><li><p>les formulaires conduits par le <em>code</em>.</p></li></ul></div>
+<div class="paragraph"><p>Le second est pllus puissant que le premier mais nécessite un peu plus de code pour sa mise en place.</p></div></section>
+<section><section id="_template_driven_forms"><h2>Template-driven forms</h2><div class="paragraph"><p>Le module à importer est <code>FormsModule</code>.</p></div><div class="paragraph"><p>Plusieurs étapes :</p></div><div class="ulist"><ul><li><p>importer <code>FormsModule</code>,</p></li><li><p>création du <em>modèle</em>,</p></li><li><p>création du composant <em>formulaire</em>,</p></li><li><p>création de la <em>template</em> pour le composant,</p></li><li><p>liaison du modèle avec chaque contrôle du formulaire (directive <code>ngModel</code>),</p></li><li><p>alimentation des attributs <em>name</em> des contrôles,</p></li><li><p><em>CSS</em> pour le retour visuel de la validation,</p></li><li><p>afficher les messages de <em>validation</em>,</p></li><li><p>traiter la soumission du formulaire avec la directive <code>ngSubmit</code>.</p></li></ul></div></section><section id="_création_du_modèle"><h2>Création du modèle</h2><div class="paragraph"><p>Il s&#8217;agit de représenter les données manipulées par le formulaire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>export class Hero {
+  constructor(
+    public id: number,
+    public name: string,
+    public power: string,
+    public alterEgo?: string
+  ) {}
+}</code></pre></div></div></section><section id="_composant_formulaire"><h2>Composant formulaire</h2><div class="paragraph"><p>Il s&#8217;agit ici de créer le composant responsable de la gestion du formulaire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  selector: 'hero-form',
+  templateUrl: './hero-form.component.html'
+})
+export class HeroFormComponent {
+  powers = ['Really Smart', 'Super Flexible',
+  'Super Hot', 'Weather Changer'];
+
+  model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+
+  submitted = false;
+
+  onSubmit() { this.submitted = true; }
+
+  // TODO: Remove this when we're done
+  get diagnostic() { return JSON.stringify(this.model); }
+}</code></pre></div></div></section><section id="_la_template"><h2>La template</h2><div class="paragraph"><p>Pour l&#8217;instant il ne s&#8217;agit que d&#8217;un formulaire purement HTML5 (à part le <code>ngFor</code> c&#8217;est vrai ;) :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div&gt;
+  &lt;h1&gt;Hero Form&lt;/h1&gt;
+  {{diagnostic}}
+  &lt;form&gt;
+    &lt;div&gt;
+      &lt;label for="name"&gt;Name&lt;/label&gt;
+      &lt;input type="text" required id="name"&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;label for="alterEgo"&gt;Alter Ego&lt;/label&gt;
+      &lt;input type="text" id="alterEgo"&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;label for="power"&gt;Hero Power&lt;/label&gt;
+      &lt;select id="power" required&gt;
+        &lt;option *ngFor="let pow of powers" [value]="pow"&gt;{{pow}}&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre></div></div></section><section id="_utilisation_de_la_liaison_de_donnée_bidirectionnelle"><h2>Utilisation de la liaison de donnée bidirectionnelle</h2><div class="paragraph"><p>La directive <code>ngModel</code> permet de faire une liaison bidirectionnelle avec les champs de formulaire.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;input type="text" id="name"
+       required
+       [(ngModel)]="model.name"
+       name="name"&gt;</code></pre></div></div>
+<div class="paragraph"><p>Ici la syntaxe <code>[(ngModel)]="model.name"</code> fait la liaison bidirectionnelle.</p></div>
+<div class="paragraph"><p>Cette directive (<code>ngModel</code>) nécessite aussi que l&#8217;on alimente l&#8217;attribut <code>name</code> du noeud DOM.</p></div></section><section id="_mise_à_jour_de_la_template"><h2>Mise à jour de la template</h2><div class="paragraph"><p>On place les <code>ngModel</code> et <em>name</em> sur tous les champs :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div&gt;
+  &lt;h1&gt;Hero Form&lt;/h1&gt;
+  {{diagnostic}}
+  &lt;form&gt;
+    &lt;div&gt;
+      &lt;label for="name"&gt;Name&lt;/label&gt;
+      &lt;input type="text" required id="name" [(ngModel)]="model.name" name="name"&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;label for="alterEgo"&gt;Alter Ego&lt;/label&gt;
+      &lt;input type="text" id="alterEgo" [(ngModel)]="model.alterEgo" name="alterEgo"&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;label for="power"&gt;Hero Power&lt;/label&gt;
+      &lt;select id="power" required  [(ngModel)]="model.power" name="power"&gt;
+        &lt;option *ngFor="let pow of powers" [value]="pow"&gt;{{pow}}&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre></div></div></section><section id="_utilisation_des_classes_css_positionnées_par_angular"><h2>Utilisation des classes CSS positionnées par Angular</h2><div class="paragraph"><p>Angular gère l&#8217;état du formulaire et affecte certaines classes aux éléments en fonction de son état :</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Etat</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Oui</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Non</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Le contrôle a été visité</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-touched</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-untouched</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">La valeur du contrôle a changé</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-dirty</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-pristine</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">La valeur est valide</p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-valid</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ng-invalid</code></p></td></tr></tbody></table>
+<div class="paragraph"><p>Ces classes sont à mettre à profit dans le CSS du composant pour réaliser le feedback visuel&#8230;&#8203;</p></div></section><section id="_afficher_un_message_de_validation"><h2>Afficher un message de validation</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;label for="name"&gt;Name&lt;/label&gt;
+&lt;input type="text" class="form-control" id="name"
+      required
+      [(ngModel)]="model.name" name="name"
+      #name="ngModel"&gt; <b>(1)</b>
+&lt;div [hidden]="name.valid || name.pristine"
+      class="alert alert-danger"&gt;
+      Name is required
+&lt;/div&gt;</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>La directive <code>ngModel</code> exporte la <em>variable</em> <code>ngModel</code>.</p></li></ol></div></section><section id="_soumettre_le_formulaire"><h2>Soumettre le formulaire</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;form (ngSubmit)="onSubmit()" #heroForm="ngForm"&gt;
+
+...
+
+&lt;button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid"&gt;Submit&lt;/button&gt;</code></pre></div></div></section></section>
+<section><section id="_template_guidée_par_le_code"><h2>Template guidée par le code</h2><div class="paragraph"><p>Le module à importer est <code>ReactiveFormsModule</code>.</p></div><div class="paragraph"><p>Le principe est de créer côté code une hiérarchie de <code>FormControl</code> (objets contrôlant un champ). Ces objets sont ensuite liés à la template du composant.</p></div><div class="paragraph"><p>Du coup toutes les informations du formulaires dont controllables depuis le code, et vous pouvez influer sur tous les aspects de la validation.</p></div><div class="paragraph"><p>Contrairement aux formulaires par template, ici on ne va pas amener le formulaire à modifier directement le modèle mais plutôt à produire un modèle et laisser le modèle original immutable.</p></div><div class="paragraph"><p><a href="https://angular.io/docs/ts/latest/guide/reactive-forms.html">Documentation officielle&#8230;&#8203;</a></p></div></section><section id="_création_d_un_code_formcontrol_code"><h2>Création d&#8217;un <code>FormControl</code></h2><div class="listingblock"><div class="content"><pre class="highlight"><code>export class HeroDetailComponent1 {
+  name = new FormControl(); <b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>création d&#8217;un <code>FormControl</code> nommé <code>name</code>.</p></li></ol></div>
+<div class="paragraph"><p>Le constructeur de <code>FormControl</code> accepte trois paramètres : la valeur initiale du champ, un tableau de validateurs, et un tableau de validateurs asynchrones.</p></div></section><section id="_création_de_la_template"><h2>Création de la template</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;h2&gt;Hero Detail&lt;/h2&gt;
+&lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;
+&lt;label&gt;Name:
+  &lt;input [formControl]="name"&gt;
+&lt;/label&gt;</code></pre></div></div></section><section id="_classes_de_contrôles"><h2>Classes de contrôles</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>AbstractControl</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Classe abstraite de base pour les trois autres classes.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormControl</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;un contrôle de champ. Il correspond à un noeud <code>&lt;input&gt;</code> ou <code>&lt;select&gt;</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormGroup</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;un <em>groupe</em> de contrôles (<code>AbstractControl</code>).</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormArray</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;une séquence indexée (<code>Array</code>) de contrôles.</p></td></tr></tbody></table></section><section id="_création_d_un_groupe_de_contrôles"><h2>Création d&#8217;un groupe de contrôles</h2><div class="paragraph"><p>En général un formulaire contient plusieurs contrôles.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>export class HeroDetailComponent2 {
+  heroForm = new FormGroup ({
+    name: new FormControl()
+  });
+}</code></pre></div></div>
+<div class="paragraph"><p>La structure logique du formulaire est <em>mappée</em> dans la template :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;h2&gt;Hero Detail&lt;/h2&gt;
+&lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;
+&lt;form [formGroup]="heroForm" novalidate&gt; <b>(1)</b>
+  &lt;div&gt;
+    &lt;label&gt;Name:
+      &lt;input formControlName="name"&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre></div></div>
+<div class="colist arabic"><ol><li><p><code>novalidate</code> demande au navigateur de ne pas procéder aux validations standard.</p></li></ol></div></section><section id="_le_modèle_du_formulaire"><h2>Le modèle du formulaire</h2><div class="paragraph"><p>Contrairement aux formulaires par template, le modèle initial n&#8217;est pas mis à jour automatiquement. A la place, les données sont générées dans les <code>FormControl</code>.</p></div>
+<div class="ulist"><ul><li><p>la propriété <code>value</code> du contrôle représente le modèle,</p></li><li><p>sa propriété <code>status</code> représente son état de validation.</p></li></ul></div></section><section id="__code_formbuilder_code"><h2><code>FormBuilder</code></h2><div class="paragraph"><p>C&#8217;est une classe d&#8217;aide pour construire des hiérarchies de contrôles :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({...})
+export class SendTxComponent {
+  constructor(private fb: FormBuilder) {
+    this.createForm();
+  }
+
+  txForm: FormGroup
+
+  createForm() {
+    this.txForm = this.fb.group({
+      serviceId: [0, Validators.required],
+      commandId: [0, Validators.required],
+      data: this.fb.array([])
+    })
+  }
+}</code></pre></div></div></section><section id="_consulter_le_modèle_et_l_état_d_un_contrôle"><h2>Consulter le modèle et l&#8217;état d&#8217;un contrôle</h2><div class="paragraph"><p>La fonction <code>get()</code> permet d&#8217;accéder à la valeur du modèle. Elle accepte les notations '.'.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;p&gt;Street value: {{ heroForm.get('address.street').value}}&lt;/p&gt;</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;objet obtenu avec <code>get()</code> contient les propriétés suivantes :</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>value</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Modèle</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Etat de validation : <code>VALID</code>, <code>INVALID</code>, <code>PENDING</code>, <code>DISABLED</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>pristine</code>/<code>dirty</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Si utilisateur a modifié le modèle initial.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>untouched</code>/<code>touched</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Si utilisateur est entré dans un contrôle (<code>focus</code>).</p></td></tr></tbody></table></section><section id="__code_setvalue_code_et_code_patchvalue_code"><h2><code>setValue</code> et <code>patchValue</code></h2><div class="paragraph"><p><code>setValue</code> permet de mettre à jour un groupe complet de contrôle en une seule opération.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>this.heroForm.setValue({
+  name:    this.hero.name,
+  address: this.hero.addresses[0] || new Address()
+});</code></pre></div></div>
+<div class="paragraph"><p><code>patchValue</code> permet de mettre à jour les champs individuellement.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>this.heroForm.patchValue({
+  name: this.hero.name
+});</code></pre></div></div></section><section id="__code_reset_code"><h2><code>reset</code></h2><div class="paragraph"><p>Pour remettre l&#8217;état du formulaire à zéro, on utilise la fonction <code>reset()</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>ngOnChanges() {
+  this.heroForm.reset({
+    name: this.hero.name,
+    address: this.hero.addresses[0] || new Address()
+  });
+}</code></pre></div></div></section><section id="__code_formarray_code"><h2><code>FormArray</code></h2><div class="paragraph"><p>Permet de présenter un nombre de contrôles variables à l&#8217;utilisateur.</p></div>
+<div class="paragraph"><p>Création :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>this.heroForm = this.fb.group({
+  name: ['', Validators.required ],
+  secretLairs: this.fb.array([]),
+  power: '',
+  sidekick: ''
+});</code></pre></div></div>
+<div class="paragraph"><p>Initialisation :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>setAddresses(addresses: Address[]) {
+  const addressFGs = addresses.map(address =&gt; this.fb.group(address));
+  const addressFormArray = this.fb.array(addressFGs);
+  this.heroForm.setControl('secretLairs', addressFormArray);
+}</code></pre></div></div>
+<div class="paragraph"><p>Consultation :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>get secretLairs(): FormArray {
+  return this.heroForm.get('secretLairs') as FormArray;
+};</code></pre></div></div></section><section id="_affichage"><h2>Affichage</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div formArrayName="secretLairs"&gt;
+  &lt;div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i" &gt;
+    &lt;!-- The repeated address template --&gt;
+    &lt;input formControlName="street"&gt;
+    &lt;input formControlName="city"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div></section><section id="_ajout_suppression_dans_la_liste_de_contrôles"><h2>Ajout suppression dans la liste de contrôles</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>addLair() {
+  this.secretLairs.push(this.fb.group(new Address()));
+}</code></pre></div></div>
+<div class="paragraph"><p>Idem pour la suppression&#8230;&#8203;</p></div></section><section id="_observation_des_changements"><h2>Observation des changements</h2><div class="paragraph"><p>Les contrôles de formulaire fournissent des <code>Observables</code> permettant d&#8217;être mis au courant des modifications.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>nameChangeLog: string[] = [];
+
+logNameChange() {
+  const nameControl = this.heroForm.get('name');
+  nameControl.valueChanges.forEach(
+    (value: string) =&gt; this.nameChangeLog.push(value)
+  );
+}</code></pre></div></div></section><section id="_récupération_du_modèle"><h2>Récupération du modèle</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>prepareSaveHero(): Hero {
+  const formModel = this.heroForm.value;
+
+  // deep copy of form model lairs
+  const secretLairsDeepCopy: Address[] = formModel.secretLairs.map(
+    (address: Address) =&gt; Object.assign({}, address)
+  );
+
+  // return new `Hero` object containing a combination of original hero value(s)
+  // and deep copies of changed form model values
+  const saveHero: Hero = {
+    id: this.hero.id,
+    name: formModel.name as string,
+    // addresses: formModel.secretLairs // &lt;-- bad!
+    addresses: secretLairsDeepCopy
+  };
+  return saveHero;
+}</code></pre></div></div></section></section>
+<section><section id="_pipes"><h2>Pipes</h2><div class="paragraph"><p>Un <em>pipe</em> permet de transformer les informations à afficher dans la vue au sein d&#8217;une template.</p></div><div class="paragraph"><p>Quelques pipes sont fournies par Angular :</p></div><div class="paragraph"><p><code>json</code> affiche la donnée en format <em>JSON</em>.</p></div><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div&gt;{{ users | json }}&lt;/div&gt;</code></pre></div></div><div class="paragraph"><p><code>slice</code> permet d&#8217;extraire une partie d&#8217;une collection ou d&#8217;une chaine de caractères.</p></div><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;div&gt;{{ users | slice:0:2 | json }}&lt;/div&gt;</code></pre></div></div><div class="paragraph"><p><code>uppercase</code> et <code>lowercase</code> changent la casse des chaines de caractères.</p></div><div class="paragraph"><p><code>number</code> permet de formatter un nombre, avec le format des paramètres suivants : <code>{integerDigits}.{minFractionDigits}-{maxFractionDigits}</code>.</p></div><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;p&gt;{{ 5.13 | number:'.1-1' }}&lt;/p&gt;
+&lt;!-- affichera '5.1' --&gt;</code></pre></div></div><div class="paragraph"><p><code>percent</code> affiche un pourcentage.</p></div><div class="paragraph"><p><code>currency</code> affiche une devise.</p></div><div class="paragraph"><p><code>date</code> formatte une date.</p></div></section><section id="_pipes_2"><h2>Pipes</h2><div class="paragraph"><p><code>async</code> permet d&#8217;attendre l&#8217;arrivée des données d&#8217;une <code>Promise</code> ou d&#8217;un <code>Observable</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@Component({
+  selector: 'test-async',
+  template: `&lt;div&gt;{{ promesse | async }}&lt;/div&gt;`
+})
+export class TestAsyncComponent {
+  promesse = new Promise(resolve =&gt; {
+    window.setTimeout(() =&gt; resolve('BONJOUR!'), 1000);
+  });
+}</code></pre></div></div></section><section id="_création_d_une_pipe"><h2>Création d&#8217;une pipe</h2><div class="paragraph"><p>Il est bien sûr possible d&#8217;implémenter ses propres pipes.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { PipeTransform, Pipe } from '@angular/core';
+
+@Pipe({name: 'fromNow'})
+export class FromNowPipe implements PipeTransform {
+  transform(value, args) {
+    // do something here
+  }
+}</code></pre></div></div>
+<div class="paragraph"><p>Une fois déclarée dans le module, elle est utilisable dans les template avec le mot-clé <code>fromNow</code>.</p></div></section></section>
+<section><section id="_inclure_une_bibliothèque_externe_avec_angular_cli"><h2>Inclure une bibliothèque externe avec Angular-CLI</h2></section><section id="_une_bibliothèque_non_angular"><h2>Une bibliothèque non-Angular</h2><div class="paragraph"><p>Avoir la bibliothèque dans le répertoire du projet, par exemple en faisant : <code>npm install --save bootstrap</code>.</p></div>
+<div class="paragraph"><p>Si le projet est configuré avec <em>angular-cli</em>, ajouter les chemins relatifs aux fichiers <em>CSS</em> et/ou <em>JS</em> dans les champs prévus à cet effet dans le fichier <code>angular-cli.json</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>"apps": [
+    {
+      ...
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
+      ],
+      "scripts": [
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+      ]
+    }
+  ],</code></pre></div></div></section><section id="_inclure_une_bibliothèque_prévue_pour_angular"><h2>Inclure une bibliothèque prévue pour Angular</h2><div class="paragraph"><p>Rapatriement de la dépendance (et enregistrement dans <em>package.json</em>) :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>npm install --save @angular/material</code></pre></div></div>
+<div class="paragraph"><p>Utilisation des modules de la bibliothèque :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { MaterialModule } from '@angular/material';
+
+@NgModule({
+  imports: [
+    ...
+    MaterialModule.forRoot()
+  ],
+  ...
+})</code></pre></div></div>
+<div class="paragraph"><p>Inclusion des CSS en tant que module <em>webpack</em>. Dans le fichier <code>styles.css</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';</code></pre></div></div></section></section>
+<section><section id="_services_du_framework"><h2>Services du framework</h2></section><section id="_title"><h2>Title</h2></section></section>
+<section><section id="_http"><h2>Http</h2><div class="paragraph"><p>Le modules de fonctionnalités http sont disponibles : <code>HttpModule</code> et <code>JsonpModule</code> (dans le package <code>@angular/http</code>).</p></div></section><section id="__code_get_code"><h2><code>get</code></h2><div class="paragraph"><p>Exemple d&#8217;utilisation :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { Injectable }              from '@angular/core';
+import { Http, Response }          from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import { Hero } from './hero';
+
+@Injectable()
+export class HeroService {
+  private heroesUrl = 'app/heroes';  // URL to web API
+
+  constructor (private http: Http) {}
+
+  getHeroes (): Observable&lt;Hero[]&gt; {
+    return this.http.get(this.heroesUrl)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
+
+  private handleError (error: Response | any) {
+    let errMsg: string;
+    ...
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+}</code></pre></div></div></section><section id="_envoi_de_données"><h2>Envoi de données</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>addHero (name: string): Observable&lt;Hero&gt; {
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers });
+
+  return this.http.post(this.heroesUrl, { name }, options)
+                  .map(this.extractData)
+                  .catch(this.handleError);
+}</code></pre></div></div></section><section id="_promise"><h2>Promise</h2><div class="paragraph"><p>Les méthodes du module Http retournent naturellemet des <code>Observables</code>. Si vous préférez travailler avec les <code>Promise</code>, pas de problème, la fonction <code>toPromise()</code> permet de convertir l&#8217;observable retourné en une promesse :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>return this.http.post(this.heroesUrl, { name }, options)
+             .toPromise()
+             .then(this.extractData)
+             .catch(this.handleError);</code></pre></div></div></section><section id="_json_p"><h2>JSON-P</h2><div class="paragraph"><p>Le module <code>JsonpModule</code> permet de prendre en charge facilement les services de type JSON-P.</p></div>
+<div class="paragraph"><p>Voir la <a href="https://angular.io/docs/ts/latest/guide/server-communication.html">documentation officielle</a>.</p></div></section><section id="_mocker_le_backend"><h2>Mocker le backend</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>import { InMemoryDbService } from 'angular-in-memory-web-api';
+export class HeroData implements InMemoryDbService {
+  createDb() {
+    let heroes = [
+      { id: 1, name: 'Windstorm' },
+      { id: 2, name: 'Bombasto' },
+      { id: 3, name: 'Magneta' },
+      { id: 4, name: 'Tornado' }
+    ]
+
+    return {heroes}
+  }
+}</code></pre></div></div>
+<div class="paragraph"><p>Ensuite il suffit d&#8217;injecter ce provider dans le module de l&#8217;application :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>InMemoryWebApiModule.forRoot(HeroData)</code></pre></div></div></section></section>
+<section><section id="_tests"><h2>Tests</h2><div class="paragraph"><p>Les mécanismes de test d&#8217;Angular reposent sur trois briques :</p></div><div class="ulist"><ul><li><p><em>Jasmine</em>: utilitaire standard pour écrire des test en JS.</p></li><li><p><em>Karma</em> : outil développé pour Angular permettant d&#8217;effectuer des tests <em>Jasmine</em> dans un navigateur.</p></li><li><p><em>Protractor</em> : utilitaire standard pour faire des tests intégration en JS (pilotage navigateur).</p></li></ul></div></section><section id="_tests_unitaires"><h2>Tests unitaires</h2><div class="paragraph"><p>Angular utilise <em>Jasmine</em> et fournit des outils adaptés à ce framework de test.</p></div></section><section id="_jasmine"><h2>Jasmine</h2><div class="paragraph"><p>Un test <em>Jasmine</em> s&#8217;écrit dans un fichier dont le nom correspond au composant à tester avec en suffixe <code>.spec.ts</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>describe('Test suite', () =&gt; {
+  let service = new Service()
+
+  beforeEach(()=&gt;{
+    // initialisation...
+    spyOn(service, 'getUsers').and.returnValue([{id:3,name:'toto'}])
+  })
+
+  // afterEach
+
+  it('should construct a User', () =&gt; {
+    const user = new User('Bertrand', 25);
+    expect(user.name).toBe('Bertrand');
+    expect(pony.age).not.toBe(21);
+
+    service.getUsers()
+    expect(service.getUsers).toHaveBeenCalled()
+  });
+
+  it(...)
+});</code></pre></div></div></section><section id="_execution"><h2>Execution</h2><div class="paragraph"><p>On utilise l&#8217;outil <em>Karma</em> développé par l&#8217;équipe d&#8217;Angular, qui permet de lancer les tests unitaires dans le navigateur.</p></div>
+<div class="paragraph"><p>Avec <em>angular-cli</em>, c&#8217;est aussi simple que cela :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>ng test</code></pre></div></div></section><section id="_injection_de_dépendances_2"><h2>Injection de dépendances</h2><div class="paragraph"><p>Lorsqu&#8217;on teste des composants, on a besoin de leur fournir leurs dépendances (elles arrivent par le constructeur).</p></div>
+<div class="paragraph"><p>Angular fournit des outils s&#8217;intégrant à <em>Jasmine</em> permettant d&#8217;intégrer le mécanisme DI d&#8217;Angular dans les tests.</p></div>
+<div class="paragraph"><p>La classe principale de cet outil est la classe <code>TestBed</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { TestBed } from '@angular/core/testing';
+
+describe('DataService', () =&gt; {
+  let service: DataService
+
+  beforeEach(() =&gt; TestBed.configureTestingModule({
+    providers: [DateService]
+  }))
+
+  beforeEach(() =&gt; service = TestBed.get(DateService))
+
+  it('should return data when list() is called', () =&gt; {
+    expect(service.list().length).toBe(2)
+  });
+});</code></pre></div></div></section><section id="_asynchronicité"><h2>Asynchronicité</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>describe('DateService', () =&gt; {
+  let service: DateService
+
+  beforeEach(() =&gt; TestBed.configureTestingModule({
+    { provide: LocalStorageService, useClass: FakeLocalStorage },
+    providers: [DateService, AutreService]
+  }))
+
+  beforeEach(() =&gt; service = TestBed.get(DateService))
+
+  it('should return a promise of 2 races', async(() =&gt; { <b>(1)</b>
+    service.list().then(items =&gt; {
+      expect(items.length).toBe(2) <b>(2)</b>
+    })
+  }))
+
+  it('', ()=&gt;{
+    localStorage.get.and.returnValue([{ name: 'Toulouse' }, { name: 'Paris' }])
+
+    // AutreService dépend de LocalStorageService
+    let autreService = TestBed.get(AutreService)
+    let villes = autreService.getVilles()
+
+    expect(LocalStorageService.get).toHaveBeenCalledWith('cities')
+  })
+})</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction <code>async</code> permet de déclarer que le test est asynchrone.</p></li><li><p>l&#8217;appel à <code>expect</code> se fait donc dans la callback de l&#8217;appel asynchrone.</p></li></ol></div></section><section id="_tester_un_composant"><h2>Tester un composant</h2><div class="paragraph"><p>On utilise encore <code>TestBed</code>, avec la fonction <code>createComponent()</code>. Celle-ci retourne un objet <code>ComponentFixture</code> qui représente le composant créé pour le test.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>import { TestBed } from '@angular/core/testing'
+import { LicorneComponent } from './licorne.component'
+
+describe('LicorneComponent', () =&gt; {
+  it('should have an image', () =&gt; {
+    TestBed.configureTestingModule({
+      declarations: [LicorneComponent]
+    })
+
+    const fixture = TestBed.createComponent(LicorneComponent)
+
+    const licorneComponent = fixture.componentInstance
+
+    licorneComponent.licorne = { name: 'toto', image: 'toto.png' }
+
+    // déclenchement de la détection des changements
+    fixture.detectChanges()
+
+    const element = fixture.nativeElement;
+    expect(element.querySelector('img').getAttribute('src')).toBe('toto.png');
+  })
+})</code></pre></div></div>
+<div class="paragraph"><p>On peut espionner les sorties en <em>spyant</em> la méthode <code>emit</code> de la sortie.</p></div></section><section id="_surcharge_de_template"><h2>Surcharge de template</h2><div class="paragraph"><p>Il est possible lorsqu&#8217;on teste un composant de venir modifier sa template.</p></div>
+<div class="paragraph"><p>Ceci se fait avec la fonction <code>TestBed.overrideComponent()</code></p></div></section><section id="_tests_end_to_end"><h2>Tests End to End</h2><div class="paragraph"><p>Ces tests s&#8217;appuient sur l&#8217;outil <em>Protractor</em>.</p></div>
+<div class="paragraph"><p>On utilise toujours <em>Jasmine</em> pour écrire les tests, mais en utilisant l&#8217;API de <em>Protractor</em> pour piloter le navigateur.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>describe('Home', () =&gt; {
+  it('should display title, tagline and logo', () =&gt; {
+    browser.get('/')
+
+    expect(element.all(by.css('img')).count()).toEqual(1)
+    expect($('h1').getText()).toContain('My super application')
+    expect($('small').getText()).toBe('How cool is that?')
+  })
+})</code></pre></div></div></section></section>
+<section id="_style_des_compodants_et_encapsulation"><h2>Style des compodants et encapsulation</h2></section>
+<section id="_transclusion"><h2>Transclusion</h2></section>
+<section id="_cycle_de_vie_des_composants_et_hooks"><h2>Cycle de vie des composants et hooks</h2><div class="paragraph"><p>Il est possible de demander au runtime Angular d&#8217;exécuter des fonctions spécifiques de nos composants à différentes étapes du cycle de vie des composants. Pour ceci il suffit à un composant d&#8217;implémenter certaines méthodes (prédéfinies dans des interfaces Typescript).</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Méthode de Hook</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Utilisation</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnChanges</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">A chaque fois qu&#8217;une entrée (<code>@Input</code>) change de valeur. Reçoit une liste de <code>SimpleChanges</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnInit</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Appellé une fois après le premier <code>ngOnChanges</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngDoCheck</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Détection et gestion des changements custom. Offre la possibilité de faire un traitement pendant le cycle de détection des changements.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngAfterViewInit</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Après l&#8217;initialisation de la vue et des vues enfant.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnDestroy</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">A la destruction du composant.</p></td></tr></tbody></table>
+<div class="paragraph"><p>D&#8217;autres encore : <code>ngAfterContentInit</code>, <code>ngAfterContentChecked</code>, <code>ngAfterViewChecked</code></p></div></section>
+<section id="_fonctionnement_du_em_data_binding_em"><h2>Fonctionnement du <em>data-binding</em></h2><div class="paragraph"><p>Il s&#8217;agit de relier automatiquement le rendu des vues aux données de l&#8217;application, et de prendre en charge le rafraîchissement dand les deux sens (vue vers modèle et modèle vers vue). Les vues sont fonction des données présentes dans les composants.</p></div>
+<div class="paragraph"><p>La gestion du data-binding dans Angular implique deux choses :</p></div>
+<div class="ulist"><ul><li><p>savoir <em>quand</em> les changements ont lieu,</p></li><li><p>savoir <em>quels</em> changements ont eu lieu.</p></li></ul></div>
+<div class="paragraph"><p>Pour le premier point, Angular utilise le projet <em>ZoneJS</em>, qui patche toutes les fonctions asynchrones de l&#8217;API du navigateur. Ceci lui permet de maintenir un <em>contexte d&#8217;exécution</em> au long de traitements asynchrones successifs. Il est également possible de mettre en place des <em>hooks</em> correspondant aux différentes phases des traitements (début, fin, &#8230;&#8203;).</p></div>
+<div class="paragraph"><p>Dès qu&#8217;un événement a lieu dans l&#8217;application, Angular déclenche un cycle de détection des changements dans l&#8217;arborescence des composants de l&#8217;application.</p></div>
+<div class="paragraph"><p>Cette phase, comme très consommatrice de resources par nature, est assez optimisée dans Angular. Les fonctions de détection des changements sont <em>compilées</em> en sites d&#8217;appels monomorphiques permettant aux machines virtuelles de produire des optimisations&#8230;&#8203; optimales.</p></div>
+<div class="paragraph"><p>Une petite ballade dans <a href="https://github.com/angular/angular">les sources</a> de la bête vaut le détour.</p></div></section>
+<section id="_créer_un_composant_par_programmation"><h2>Créer un composant par programmation</h2></section>
+<section id="_rxjs"><h2>RxJs</h2></section>
+<section id="_programme"><h2>Programme</h2><div class="ulist"><ul><li><p>Jour 1
+    Installation / introduction
+    Philosophie du framework
+    Installation minimale
+Ecosystème
+    TypeScript et ES2015, Modules ES6
+    Types
+    Classes
+    Modules
+   &#8201;&#8212;&#8201;déclaration d&#8217;un module : imports et exports
+   &#8201;&#8212;&#8201;lazy loading des modules avec le router
+   &#8201;&#8212;&#8201;les providers d&#8217;un module
+    Promesses
+    Décorateurs
+    Outils
+    Composants
+    Définition
+    Décorateur
+    Vue
+    Contrôleur
+    Composants natifs
+    Cycle de vie
+    Directives : structurelles et d&#8217;attribut
+    IOC : injection de dépendances : par type et hiérarchique
+    Providers</p></li><li><p>Jour 2
+    Pipes
+    Pipes natifs
+    Écrire un pipe
+    Formulaires
+   &#8201;&#8212;&#8201;créer un formulaire
+   &#8201;&#8212;&#8201;validation et erreurs
+   &#8201;&#8212;&#8201;template-driven forms
+   &#8201;&#8212;&#8201;model-driven forms
+   &#8201;&#8212;&#8201;formulaires dynamiques
+   &#8201;&#8212;&#8201;créer ses propres validateurs
+   &#8201;&#8212;&#8201;Control et ControlGroup
+   &#8201;&#8212;&#8201;FormBuilder
+    Contrôles
+Validateurs
+Observateurs
+ngModel
+Reactive Programming
+Concept
+RxJS : introduction&#8201;&#8212;&#8201;Observables&#8201;&#8212;&#8201;principes des opérations sur les Observables&#8201;&#8212;&#8201;ReactiveX avec RxJS&#8201;&#8212;&#8201;lien avec les promesses
+    Services
+    Créer un service
+    Injection de service
+    Template : interpolation/expression, "Binding" et filtres.
+    Directives de transformation : ngIf, ngFor, ngSwitch&#8230;&#8203;
+    Evènements utilisateur.</p></li><li><p>Jour 3
+Service HTTP
+Communication avec une API&#8201;&#8212;&#8201;requetes HTTP vers un serveur&#8201;&#8212;&#8201;WebSockets
+Options
+Routeur&#8201;&#8212;&#8201;<code>router-outlet</code>&#8201;&#8212;&#8201;configuration des routes et URLs&#8201;&#8212;&#8201;définition des routes, liens et redirections, paramètres&#8201;&#8212;&#8201;hiérarchie des routes&#8201;&#8212;&#8201;vues imbriquées&#8201;&#8212;&#8201;Cycle de vie du routage&#8201;&#8212;&#8201;Route guards
+Principe
+Composant de route
+Paramètres
+Routes imbriqués
+Tests : Karma et Jasmine
+Tests asynchrones
+Tests end-to-end avec protractor
+Injection de dépendance
+Recettes de tests
+Concepts avancés
+Webworkers
+Rendus alternatifs
+Injection de dépendance avancée
+Animations
+Web Components
+Authentification&#8201;&#8212;&#8201;faire des requêtes HTTP, recevoir ou envoyer des données au format JSON</p></li></ul></div>
+<div class="paragraph"><p>Rendu côté serveur
+Rendu dans les Web Workers
+Application mobile</p></div>
+<div class="literalblock"><div class="content"><pre>Zones
+Directives avancées
+Injection de dépendances avancée</pre></div></div>
+<div class="paragraph"><p>OPTIONNELS (5 jours)</p></div>
+<div class="paragraph"><p>Animations : états, transitions et animations avec le routeur
+Material design
+Bibliothèques de Composants
+Server-side rendering avec Angular Universal
+Compilation statique des templates (AOT)</p></div></section>
+<section id="_objectifs"><h2>Objectifs</h2><div class="paragraph"><p>● Découvrir les fonctionnalités du framework Angular2
+● Savoir développer une nouvelle application Web de façon autonome
+● Savoir concevoir une application Angular2 avec JavaScript et TypeScript
+● Connaître les mécanismes avancés du framework
+Savoir commmuniquer avec un serveur
+Savoir tester son application
+Connaître les bonnes pratiques de développement</p></div>
+<div class="paragraph"><p>Théorique</p></div>
+<div class="paragraph"><p>Pratique : TP pour être sur d&#8217;avoir compris chaque point.</p></div>
+<div class="paragraph"><p>Liste des exercices NinjaSquad : <a href="https://angular-exercises.ninja-squad.com/" class="bare">https://angular-exercises.ninja-squad.com/</a></p></div></section>
+<section id="_forms"><h2>Forms</h2><div class="paragraph"><p>DOCUMENTATION OFFICIELLE</p></div>
+<div class="paragraph"><p>Form by template <a href="https://angular.io/docs/ts/latest/guide/forms.html" class="bare">https://angular.io/docs/ts/latest/guide/forms.html</a></p></div>
+<div class="paragraph"><p>NgForm directive API <a href="https://angular.io/docs/ts/latest/api/forms/index/NgForm-directive.html" class="bare">https://angular.io/docs/ts/latest/api/forms/index/NgForm-directive.html</a></p></div>
+<div class="paragraph"><p>Form reactive (code-driven) <a href="https://angular.io/docs/ts/latest/guide/reactive-forms.html" class="bare">https://angular.io/docs/ts/latest/guide/reactive-forms.html</a></p></div>
+<div class="paragraph"><p>Form validation <a href="https://angular.io/docs/ts/latest/cookbook/form-validation.html" class="bare">https://angular.io/docs/ts/latest/cookbook/form-validation.html</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

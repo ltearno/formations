@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+	<Valve className="org.apache.catalina.valves.PersistentValve"/>
+
+	<Manager className="org.apache.catalina.session.PersistentManager" >
+		<Store
+			className="org.apache.catalina.session.JDBCStore"
+			connectionURL="jdbc:mysql://database/tomcat_sessions?user=root&amp;password=root"
+			driverName="com.mysql.jdbc.Driver"
+			sessionAppCol="app_name"
+			sessionDataCol="session_data"
+			sessionIdCol="session_id"
+			sessionLastAccessedCol="last_access"
+			sessionMaxInactiveCol="max_inactive"
+			sessionTable="tomcat_sessions"
+			sessionValidCol="valid_session" />
+	</Manager>
+</Context>

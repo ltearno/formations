@@ -1,0 +1,401 @@
+= Google App Engine - Travaux pratiques
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:imagesdir: images
+:source-highlighter: highlightjs
+
+== Objectif
+
+L'objectif est d'écrire une application qui permette à ses utilisateurs de partager des commentaires sur des personnages Marvel.
+
+=== Vue d'ensemble
+
+image::ecrans.png[]
+
+image::overview.png[]
+
+=== Idées complémentaires
+
+Pour aller plus loin lorsque le premier objectif sera atteint, voici quelques idées supplémentaires.
+
+Avoir des statistiques sur les personnages (personnages préférés des utilisateurs...).
+
+Jeu: l'utilisateur se voit proposé deux personnages, il doit dire lequel gagne. L'application AppEngine décide des personnages à faire combattre et les propose périodiquement aux utilisateurs. Les résultats des combats sont publiés et analysés pour en tirer des stats sur les personnages.
+
+Autre jeu : l'application organise des tournois et les utilisateurs peuvent parier sur le ou les personnages gagnants.
+
+=== Liste des personnages
+
+Les personnages marvels sont stockés dans un service extérieur à l'application (lteconsulting.fr).
+
+== Instructions
+
+Pour gérer une application App Engine en production, on a besoin d'un compte Google. Si tu as déjà un email chez eux, c'est parfait on utilisera ton compte. Sinon crée un compte, c'est assez rapide.
+
+Ce tutoriel est basé sur l'utilisation de l'environnement Java et de Maven pour créer l'application. App Engine permet d'écrire son programme aussi en Go, Python ou PHP. Tu peux choisir un de ces trois langages si tu penses que tu vas te débrouiller à adapter ces instructions dans ton langage préféré !
+
+_Ces instructions sont basées sur cette https://cloud.google.com/appengine/docs/standard/java/tools/maven[page] si tu as besoin d'informations plus détaillées_.
+
+=== Installation du SDK App Engine
+
+Va le télécharger https://cloud.google.com/appengine/docs/standard/java/download[ici] et installe le.
+
+=== Création du projet
+
+Va sur la https://console.cloud.google.com/projectselector/appengine/create?lang=java[console de gestion App Engine] et crée un projet. Il faut pour cela que tu lui trouves un nom universellement unique. L'identifiant de ton projet sera généré à partir du nom que tu as choisi mais tu peux aussi choisir toi même l'identifiant avec les paramètres avancés.
+
+Choisi la zone d'Europe de l'ouest pour héberger ton application, elle sera plus rapide.
+
+Une fois le projet créé dans la console, on peut repasser en local pour préparer l'application (une _coquille vide_ pour l'instant) à envoyer sur l'infrastructure google.
+
+=== Installation du kit de développement Google cloud
+
+Tout d'abord, on a besoin de ce kit pour parler aux services Google (notamment le SDK d'AppEngine a besoin de cet outil).
+
+Va sur cette https://cloud.google.com/sdk/docs/[page] et télécharge le SDK correspondant à ton environnement de développement.
+
+Installe-le, cela te permettra de gérer tes projets et services depuis la ligne de commande. C'est un peu long en fonction du réseau, pendant que l'installation est en cours, tu peux passer à l'étape suivante.
+
+Une fois l'installation terminée, il faut installer les composants App Engine pour Java avec cette commande :
+
+[source]
+----
+gcloud components install app-engine-java
+----
+
+=== Création du projet Maven
+
+Tu vas créer un projet minimal avec l'archetype maven prévu à cet effet. Ouvre une ligne de commande et tape ceci en n'oubliant pas d'indiquer l'id de ton appli :
+
+[source]
+----
+mvn archetype:generate -Dappengine-version=1.9.50 -Dapplication-id=IDENTIFIANT-DE-TON-APPLICATION -DarchetypeGroupId=com.google.appengine.archetypes -DarchetypeArtifactId=appengine-standard-archetype
+----
+
+Change ceci dans le `pom.xml` :
+
+[source]
+----
+<appengine.maven.plugin.version>1.2.1</appengine.maven.plugin.version>
+----
+
+Rentre dans le projet et exécute `mvn install` pour vérifier que le projet se construit bien.
+
+Supprime la servlet du projet et modifie `web.xml` en conséquence.
+
+Réduit le fichier `index.jsp` à son minimum.
+
+Dans le fichier `appengine-web.xml`, ajoute ton identifiant d'application : `<application>IDENTIFIANT</application>`.
+
+Fait `mvn appengine:run` pour lancer le projet en mode _développement_. L'adresse de ton application est alors `http://localhost:8080`.
+
+Tu peux arrêter la commande précédente et lancer `mvn appengine:deploy` pour déployer ton application sur le cloud.
+
+Tu dois maintenant pouvoir te connecter à ton application avec l'url `https://TON-ID.appspot.com`.
+
+Tape `gcloud app logs tail -s default` dans la console pour te connecter aux logs de ton application et les voir apparaître en direct.
+
+=== Connecter l'utilisateur
+
+Utilise maintenant le `UserService` pour t'assurer que l'utilisateur est connecté (une instance de ce service t'est fournie par l'appel à `UserServiceFactory.getUserService()`).
+
+Tu crée un filtre sur toutes les URLs qui redirige toutes les requêtes vers une jsp `login.jsp` proposant à l'utilisateur d'aller se connecter.
+
+Si l'utilisateur est déjà connecté, le filtre laisse s'exécuter le traitement normal de la requête.
+
+=== Prendre les informations utilisateur
+
+Avec un formulaire et le datastore, enregistrer les infos utilisateur : son email, son pseudo.
+
+Créer une entité 'Utilisateur' pour chaque utilisateur. Ceci permettra de relier les entités entre-elles avec des clés.
+
+=== Afficher les marvels dans la page
+
+Dans ta page principale (`index.jsp`), ajoute le javascript nécessaire pour aller chercher les personnages marvels sur le web service externe.
+
+Le service REST fournissant les marvels répond aux URLs :
+
+http://ks387039.kimsufi.com:9793/marvels?offset=0
+
+Le paramètre `offset` permet de naviguer dans la collection de personnages. Seuls un nombre de limité de personnages est retourné à chaque requête.
+
+=== Fournir le service REST au client web
+
+Pour fournir un client Web, le moyen le plus naturel avec App Engine est d'utiliser Google Endpoint. Néanmoins cette technologie est payante, on va donc utiliser `RestEasy` - le fournisseur JAX-RS de JBoss.
+
+Ajoute ceci dans ton pom :
+
+[source]
+----
+<properties>
+    <resteasy.version>3.1.1.Final</resteasy.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxrs</artifactId>
+        <version>${resteasy.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jackson-provider</artifactId>
+        <version>${resteasy.version}</version>
+    </dependency>
+</dependencies>
+----
+
+Implémente le service REST :
+
+[source]
+----
+@Path( "/api/marvel-metadata" )
+public class MarvelMetadataWS
+{
+	@GET
+	@Produces( MediaType.APPLICATION_JSON )
+	public MarvelMetadata get()
+	{
+		MarvelMetadata metadata = new MarvelMetadata();
+
+		// rempli un MarvelMetadata en dur...
+
+		return metadata;
+	}
+}
+----
+
+Configure RestEasy avec la classe suivante :
+
+[source,language=java]
+----
+@ApplicationPath( "api" )
+public class ApplicationConfig extends Application
+{
+	private final Set<Class<?>> classes;
+
+    public ApplicationConfig()
+	{
+		classes = new HashSet<>();
+		classes.add( MarvelMetadataWS.class );
+	}
+
+	@Override
+	public Set<Class<?>> getClasses()
+	{
+		return classes;
+	}
+}
+----
+
+Dans le fichier `web.xml` ajoute ceci pour activer RestEasy et le relier à ta classe de configuration :
+
+[source]
+----
+<context-param>
+    <param-name>javax.ws.rs.Application</param-name>
+    <param-value>fr.lteconsulting.training.appengine.ws.ApplicationConfig</param-value>
+</context-param>
+
+<listener>
+    <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+</listener>
+
+<servlet>
+    <servlet-name>Resteasy</servlet-name>
+    <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>Resteasy</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+</servlet-mapping>
+----
+
+Relance le serveur de développement App Engine, et navigue à l'adresse `http://localhost:8080/api/marvel-metadata`. Tu devrais obtenir comme :
+
+[source]
+----
+{
+    "marvelId":12543,
+    "comment":"nonono non no no",
+    "author":"user pseudo"
+}
+----
+
+=== Accepter les commentaires
+
+Il va maintenant falloir enrichir ce service web pour fournir à notre application cliente les commentaires associés aux différents personnages que l'utilisateur affiche.
+
+De plus les commentaires doivent être stockés dans le Datastore d'App Engine pour rendre les données persistentes.
+
+Ajoute une méthode permettant de récupérer les commentaires pour **un** personnage, en spécifiant son *id*.
+
+Dans la partie cliente, ajoute à l'interface graphique l'affichage des commentaires pour chaque personnage.
+
+Crée ensuite la fonctionalité d'ajout de commentaire, c'est-à-dire un formulaire dans la partie cliente et une méthode en plus dans le service REST.
+
+Pour manipuler les entités du datastore, utilise l'API native décrite https://cloud.google.com/appengine/docs/standard/java/datastore/entities[ici]. Une fois que tu auras bien compris comment elle fonctionne, tu pourras utiliser https://github.com/objectify/objectify[_Objectify_] sans difficultés.
+
+=== Utiliser Memcache
+
+Afin de réduire les I/O sur ton application, utilise le Memcache pour mettre en cache mémoire les entités les plus utilisées.
+
+Attention, il ne s'agit pas de ne plus stocker ces informations dans le Datastore (car Memcache n'est pas permanent), mais de réduire les coûts de l'application tout en améliorant ses performances.
+
+Vérifie ensuite avec la console que tu utilises moins le Datastore.
+
+=== Envoi d'emails
+
+Utilise une combinaison des _Task Queues_ et _Email API_ pour envoyer des emails aux utilisateurs concernés quand un commentaire est publié sur un personnage.
+
+- L'ajout d'un commentaire déclenche l'empilement d'une tâche qui...
+- Effectue une requête Datastore pour connaitre les utilisateurs qui ont commenté le même personnage. A la suite de cette requête des tache sont empilées pour chaque utilisateur...
+- Et celle-ci effectue réellement l'envoi de l'email.
+
+== Conclusion
+
+Ton application peut être utilisée par des millions d'utilisateurs simulatanément sans que tu n'ais quoique ce soit à changer !
+
+
+
+////
+==== Utiliser Google Cloud Endpoints
+
+Dans l'application App Engine, écrire un service rest qui permette de demander les commentaires et les likes sur les personnages. Les personnages seront identifiés par l'id provenant du web service.
+
+Dans le `pom.xml`, ajoute les dépendances :
+
+[source]
+----
+<dependency>
+    <groupId>com.google.endpoints</groupId>
+    <artifactId>endpoints-framework</artifactId>
+    <version>${endpoints.framework.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.google.endpoints</groupId>
+    <artifactId>endpoints-management-control-appengine-all</artifactId>
+    <version>${endpoints.management.version}</version>
+</dependency>
+----
+
+Change également les valeurs des propriétés :
+
+[source]
+----
+<endpoints.framework.version>2.0.5</endpoints.framework.version>
+<endpoints.management.version>1.0.2</endpoints.management.version>
+----
+
+Ajoute aussi la propriété suivante pour renseigner l'id de ton projet :
+
+[source]
+----
+<endpoints.project.id>MY_PROJECT_ID</endpoints.project.id>
+----
+
+Maintenant crée la classe de service `MarvelsScanService` qui va répondre aux requêtes endpoints.
+
+Pour commencer voici un modèle d'exemple minimal :
+
+[source]
+----
+@Api(   name = "marvels",
+		version = "v1",
+		namespace = @ApiNamespace(
+				ownerDomain = "lteconsulting.fr",
+				ownerName = "LTE Consulting",
+				packagePath = "" ) )
+public class MarvelsScanService
+{
+	@ApiMethod( httpMethod = ApiMethod.HttpMethod.GET,
+			    name = "marvel",
+			    path = "marvel/{id}" )
+	public MarvelMetadata getMarvelMetadata( @Named( "id" ) String id )
+	{
+        // classe des données à retourner
+		MarvelMetadata res = new MarvelMetadata();
+
+        // ...
+
+		return res;
+	}
+}
+----
+
+La classe `MarvelMetadata` est une classe que tu dois écrire. Elle représente les messages retournés par cette méthode et dois comprendre l'identifiant du personnage ainsi que ses commentaires, likes et dislikes.
+
+Maintenant on va ajouter l'outil spécifique à Endpoints dans le `pom.xml`. Ajoute ceci :
+
+[source]
+----
+<profiles>
+    <profile>
+        <id>GetSwaggerDoc</id>
+        <activation>
+            <property>
+                <name>GetSwaggerDoc</name>
+            </property>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                    <configuration>
+                        <includePluginDependencies>true</includePluginDependencies>
+                        <mainClass>com.google.api.server.spi.tools.EndpointsTool</mainClass>
+                        <arguments>
+                            <argument>get-swagger-doc</argument>
+                            <argument>--hostname=echo-api.endpoints.${endpoints.project.id}.cloud.goog</argument>
+                            <argument>--war=target/${project.artifactId}-${project.version}</argument>
+                            <argument>fr.lteconsulting.training.appengine.MarvelsScanService</argument>
+                        </arguments>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.google.endpoints</groupId>
+                            <artifactId>endpoints-framework-tools</artifactId>
+                            <version>${endpoints.framework.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.google.appengine</groupId>
+                            <artifactId>appengine-api-1.0-sdk</artifactId>
+                            <version>${appengine.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+----
+
+Pour initialiser le framework Endpoint et permettre de générer les services REST pour ton application, exécute ensuite :
+
+[source]
+----
+mvn package
+
+mvn exec:java -DGetSwaggerDoc
+----
+
+Ceci doit produire la sortie suivante :
+
+[source]
+----
+OpenAPI document written to ./openapi.json
+----
+
+Pour activer Endpoints sur ton projet :
+
+[source]
+----
+gcloud service-management enable endpoints.googleapis.com
+----
+////
+
+////
+pour set lel projet courant gcloud config set project marvels-scan
+////

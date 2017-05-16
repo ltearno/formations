@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+    <!-- L'objectif de cet exercice est :
+    
+    - d'imiter le design proposé ici : https://dribbble.com/shots/1089229-Scaligent-Contact-page-and-form
+    - d'ajouter les fonctionnalités Responsive design de façon à avoir un affichage correct sur mobile'
+    -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="exo-7-layout-formulaire.css">
+</head>
+
+<body>
+
+    <div id="bandeauFond">
+    </div>
+
+    <div id="principal">
+        <div id="headquarters">
+            <h1>Maison mère</h1>
+            <p>
+                60 impasse Barthe<br/> 31200 TOULOUSE
+            </p>
+        </div>
+
+        <h1>Contactez-nous</h1>
+
+        <div id="formAndMap">
+            <form id="form" action="">
+                <input type="text" placeholder="Votre nom"><br/>
+
+                <input type="email" placeholder="Adresse email"><br/>
+
+                <select style="color:#999;">
+                    <option value="">Subject</option>
+                    <option value="">Tatata</option>
+                    <option value="">Tatati</option>
+                </select>
+                <br/>
+
+                <textarea placeholder="Votre message" name="" id="" cols="30" rows="10"></textarea>
+                <br/>
+
+                <button type="submit">Envoyez votre message</button>
+            </form>
+
+            <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13735.789112556207!2d1.449334759293543!3d43.635809421948586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sfr!4v1477046131527"
+                height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+            <a id="mapLink" href="https://www.google.fr/maps/@43.6369175,1.4485553,15z">Voir la carte</a>
+        </div>
+    </div>
+
+    <div id="header">
+        <div>LTE Consulting</div>
+        <div>
+            <a href="">Home</a>
+            <a href="">About</a>
+            <a href="">Careers</a>
+            <a href="">Contact</a>
+            <button>We are hiring</button>
+        </div>
+    </div>
+</body>
+
+</html>

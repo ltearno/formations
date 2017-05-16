@@ -1,0 +1,154 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <!-- Liste des propriétés CSS utilisées
+  - padding
+  - margin
+  - border
+  - color
+  - background-color
+
+  - font-style, font-family
+  - text-align
+
+  - border-collapse
+  - caption-side
+  -->
+
+  <style>
+    #outerDiv {
+      border: 2px solid black;
+      padding: 3px;
+      display: inline-block;
+    }
+    
+    #innerDiv {
+      border: 2px solid blue;
+      padding: 5px;
+    }
+
+    table.stats {
+      padding: 5px;
+      border: 1px solid green;
+      caption-side: bottom;
+      background-color: #eee;
+      border-collapse: collapse;
+    }
+    
+    table.stats td {
+      border: 1px solid green;
+      padding: 5px;
+    }
+    
+    table.stats > caption {
+      margin-top: 5px;
+      border-top: 10px solid green;
+      text-align: right;
+      font-family: sans-serif;
+      font-style: italic;
+    }
+    
+    table.stats > thead > tr:first-child {
+      color: blue;
+    }
+    
+    table.stats > tfoot > tr > td:first-child {
+      color: blue;
+    }
+    
+    .sousTitre {
+      font-style: italic;
+    }
+    
+    .nombre,
+    table.stats > tbody tr td:nth-child(2),
+    table.stats > tbody tr td:nth-child(3) {
+      text-align: right;
+      background-color: #88f;
+    }
+    
+    table.stats .bt {
+      border-top: 5px solid green;
+    }
+    
+    table.stats .lightBorder,
+    table.stats .lightBorderBottom,
+    table.stats > tbody tr td:first-child {
+      border-bottom: 1px solid #ccc;
+    }
+    
+    table.stats .lightBorder,
+    table.stats .lightBorderRight,
+    table.stats > tbody tr td:first-child {
+      border-right: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="outerDiv">
+    <div id="innerDiv">
+      <table class="stats">
+        <caption>Océans</caption>
+
+        <thead>
+          <tr>
+            <td class="lightBorder"></td>
+            <td class="lightBorder">Aire</td>
+            <td class="lightBorderBottom">Profondeur moyenne</td>
+          </tr>
+          <tr>
+            <td class="lightBorder"></td>
+            <td class="sousTitre lightBorder">million de km²</td>
+            <td class="sousTitre lightBorderBottom">m</td>
+          </tr>
+        </thead>
+
+        <tfoot>
+          <tr>
+            <td class="lightBorder">Total:</td>
+            <td class="nombre bt lightBorder">361,000</td>
+            <td class="nombre bt lightBorderBottom"></td>
+          </tr>
+          <tr>
+            <td class="lightBorderRight">Moyenne:</td>
+            <td class="nombre lightBorderRight">72,000</td>
+            <td class="nombre">3,800</td>
+          </tr>
+        </tfoot>
+
+        <tbody>
+          <tr>
+            <td>Arctique</td>
+            <td>20,000</td>
+            <td>4,500</td>
+          </tr>
+          <tr>
+            <td>Atlantique</td>
+            <td>20,000</td>
+            <td>4,500</td>
+          </tr>
+          <tr>
+            <td>Pacifique</td>
+            <td>20,000</td>
+            <td>4,500</td>
+          </tr>
+          <tr>
+            <td>Indien</td>
+            <td>20,000</td>
+            <td>4,500</td>
+          </tr>
+          <tr>
+            <td>Antartique</td>
+            <td>20,000</td>
+            <td>4,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>

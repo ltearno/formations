@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        var NOMBRE_ETAGES = 50;
+        var CLASS_PRESENCE_ASCENSEUR = "presenceAscenseur";
+        var NOMBRE_MAX_MEMOIRE = 10;
+        var DELAI_PASSAGE_ETAGE = 500;
+
+        var ascenseur = {
+            position: 0,
+            destinations: []
+        }
+
+        var etages = [];
+
+        var timerId = null;
+
+        function positionnerAscenseur(etage) {
+            // retirer la class csss 'presenceAscenseur' à la position de l'asceseur
+            var divEtageCourant = etages[ascenseur.position];
+            divEtageCourant.classList.remove(CLASS_PRESENCE_ASCENSEUR);
+
+            // mettre a jour la position
+            ascenseur.position = etage;
+
+            // ajouter 'presenceAscenseur' sur la div correspondant au nouvel étage
+            divEtageCourant = etages[etage];
+            divEtageCourant.classList.add(CLASS_PRESENCE_ASCENSEUR);
+        }
+
+        function demanderAscenseur(etageDemande) {
+            if (ascenseur.destinations.length == 0 && ascenseur.position == etageDemande) {
+                console.warn('je suis là, rentre');
+                return;
+            }
+
+            if (ascenseur.destinations.length >= NOMBRE_MAX_MEMOIRE) {
+                console.warn("désolé je....j'ai oublié");
+                return;
+            }
+
+            // mémoriser l'étage demandé
+            ascenseur.destinations.push(etageDemande);
+
+            // toutes les 500ms, aller vers la destination
+            if (timerId != null)
+                return;
+
+            timerId = setInterval(function () {
+                console.log(`destinations : ${ascenseur.destinations}`);
+
+                // destination en cours
+                var destination = ascenseur.destinations[0];
+
+                // trouver le nouvel étage ou se trouve l'ascenseur (monte ou descend?)
+                var nouvellePosition;
+                if (destination > ascenseur.position)
+                    nouvellePosition = ascenseur.position + 1;
+                else if (destination < ascenseur.position)
+                    nouvellePosition = ascenseur.position - 1;
+                else
+                    nouvellePosition = ascenseur.position;
+
+                // appeler positionnerAscenseur(...) pour positionner l'ascenseur
+                positionnerAscenseur(nouvellePosition);
+
+                if (ascenseur.position == destination) {
+                    console.log('on est arrivé !');
+                    ascenseur.destinations.shift();
+                }
+
+                if (ascenseur.destinations.length == 0) {
+                    console.log('la liste des destinations est épuisée');
+                    clearInterval(timerId);
+                    timerId = null;
+                }
+            }, DELAI_PASSAGE_ETAGE);
+        }
+
+        function creerEtage(numero) {
+            var divEtage = document.createElement('div');
+
+            var buttonEtage = document.createElement('button');
+            buttonEtage.innerText = "Appel Etage " + numero;
+            buttonEtage.addEventListener('click', function () {
+                demanderAscenseur(numero);
+            });
+
+            var div = document.createElement('div');
+            div.appendChild(buttonEtage);
+            div.appendChild(divEtage);
+            div.classList.add('etage');
+
+            return div;
+        }
+
+        window.addEventListener('load', function () {
+            var immeuble = document.getElementById('immeuble');
+
+            for (var i = 0; i < NOMBRE_ETAGES; i++) {
+                var etage = creerEtage(i);
+
+                etages.push(etage);
+
+                immeuble.appendChild(etage);
+            }
+
+            positionnerAscenseur(0);
+        });
+    </script>
+
+<style>
+    #immeuble {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+
+    .etage {
+        display: flex;
+        flex-flow: row;
+    }
+
+    .etage>div {
+        width:3em;
+        height:3em;
+
+        border: 1px solid grey;
+    }
+
+    .etage>button {
+        width: 10em;
+    }
+
+    .presenceAscenseur.etage>div {
+        transition: 500ms;
+        background-color: pink;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="immeuble"></div>
+</body>
+
+</html>

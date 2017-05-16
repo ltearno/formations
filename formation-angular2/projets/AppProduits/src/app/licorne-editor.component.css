@@ -1,0 +1,11 @@
+input.ng-valid, select.ng-valid {
+  border: 3px solid green;
+}
+
+input.ng-touched, select.ng-touched {
+  background-color: deepskyblue;
+}
+
+input.ng-dirty, select.ng-dirty {
+  border-width: 5px;
+}

@@ -1,0 +1,1 @@
+pandoc -s -t revealjs git-formation.md -o git-formation.html --css reveal.js/css/theme/beige.css --slide-level 2

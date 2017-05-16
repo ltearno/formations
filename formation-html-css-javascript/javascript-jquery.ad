@@ -1,0 +1,246 @@
+= Javascript et JQuery
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Notes sur Javascript et JQuery
+:source-highlighter: highlightjs
+:imagesdir: images
+
+LTE Consulting (C) - 2016
+
+toc::[]
+
+== Javascript et JQuery
+
+Référence javascript : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference
+
+Types de base du langage. Instruction `typeof`.
+
+Mécanisme d'héritage de prototype. Attention pas de notion de classe en JS.
+
+Chaque objet possède un lien vers son _prototype_.
+
+La recherche d'une propriété d'un objet se fait en parcourant la chaîne des prototypes.
+
+=== Construction d'un objet
+
+Avec des littéraux :
+
+[source,language=java]
+----
+var o = { a : 1 };
+// o ---> Object.prototype ---> null
+
+var a = ["super", 66, true];
+// a ---> Array.prototype ---> Object.prototype ---> null
+
+function f() {
+	return 42;
+}
+// f ---> Function.prototype ---> Object.prototype ---> null
+----
+
+Ou l'opérateur `new` et un constructeur :
+
+[source,language=java]
+----
+function Graph() {
+  this.sommets = [];
+  this.aretes = [];
+}
+
+Graph.prototype = {
+  ajouteSommet: function(v) {
+    this.sommets.push(v);
+  }
+};
+----
+
+Ou avec `Object.create()`
+
+[source,language=java]
+----
+var a = {a: 1}; 
+// a ---> Object.prototype ---> null
+
+var b = Object.create(a);
+// b ---> a ---> Object.prototype ---> null
+console.log(b.a); // 1 (hérité)
+
+var c = Object.create(b);
+// c ---> b ---> a ---> Object.prototype ---> null
+
+var d = Object.create(null);
+// d ---> null
+console.log(d.hasOwnProperty); // undefined, en effet d n'hérite pas de Object.prototype
+----
+
+Avec ES6, on peut aussi utiliser le mot-clé `class`.
+
+==== `Object.hasOwnProperty()`
+
+==== `Object.setPrototypeOf()`
+
+==== `Object.isPrototypeOf()`
+
+==== `instanceof`
+
+=== Opérateur new
+
+https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Op%C3%A9rateurs/L_op%C3%A9rateur_new
+
+Exemple de création d'une chaine de prototype :
+
+https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/prototype
+
+[source,language=java]
+----
+var Personne = function() {
+  this.peutParler = true;
+  this.salutation = function() {
+    if (this.peutParler) {
+      console.log('Bonjour, je suis ' + this.nom);
+    }
+  };
+};
+
+var Employe = function(nom, titre) {
+  this.nom = nom;
+  this.titre = titre;
+  this.salutation = function() {
+    if (this.peutParler) {
+      console.log("Bonjour, je suis " + this.nom + ", le " + this.titre);
+    }
+  };
+};
+Employe.prototype = new Personne();
+
+var Client = function(nom) {
+  this.nom = nom;
+};
+Client.prototype = new Personne();
+
+var Mime = function(nom) {
+  this.nom = nom;
+  this.peutParler = false;
+};
+Mime.prototype = new Personne();
+
+var bob = new Employe('Bob', 'bricoleur');
+var joe = new Client('Joe');
+var rg = new Employe('Red Green', 'réparateur');
+var mike = new Client('Mike');
+var mime = new Mime('Mime');
+
+bob.salutation();
+// Bonjour, je suis Bob, le bricoleur
+
+joe.salutation();
+// Bonjour, je suis Joe
+
+rg.salutation();
+// Bonjour, je suis Red Green, le réparateur
+
+mike.salutation();
+// Bonjour, je suis Mike
+
+mime.salutation();
+----
+
+=== Le mot-clé `this`
+
+C'est un mot-clé spécial pour qui est habitué au développement en Java.
+
+Sa valeur dépend de la façon dont une fonction a été appelée (sauf à utiliser `bind`...).
+
+En dehors de toute fonction, `this` pointe sur le contexte global (`this.document`, `this.window`).
+
+Dans un appel de fonction sans applicatioin sur un objet, `this` vaut `undefined` (en mode strict).
+
+On peut préciser la valeur que l'on souhaite pour `this` avec les méthodes `call` et `apply` (qui font parti du prototype du type `Function`).
+
+Avec la fonction `bind`, on peut créer une fonction qui sera toujours appelée avec le même `this`.
+
+Par contre pour les fonctions fléchées, `this` aura toujours la valeur qui est celle qu'il y avait lors de la création de la fonction.
+
+Lorsqu'une fonction est appelée en tant que méthode d'un objet, le mot-clé `this` fait référence à l'objet en question.
+
+Dans une fonction constructeur, le mot-clé `this` pointe vers l'objet en cours de construction.
+
+Dans un gestionnaire d'événement DOM, `this` pointe vers l'élément ayant déclenché l'événement (`event.currentTarget`).
+
+=== Le mode _strict_
+
+=== DOM API
+
+Manipulation de la partie graphique du navigateur. Chaque noeud du DOM possède sa représentation sous forme d'objet JS. Avec :
+
+- des propriétés (lecture/écriture ou lecture seule)
+- des fonctions
+
+S'abonner aux évènements utilisateur.
+
+`document`, `window`...
+
+`getElementById`, `addEventListener`...
+
+=== API Réseau
+
+`XMLHttpRequest` inventée par IE 6.
+
+`FetchAPI` plus moderne...
+
+Utilisation des `Promises`
+
+==== Transfert de données
+
+Souvent en JSON
+
+=== Canvas
+
+=== Web Components...
+
+=== Exercices
+
+- Input, Bouton et DIV, quand je clique tu loggues ce que j'ai écrit...
+- Menu déroulant
+- Notes de bas de page
+- Afficher des infos sur un objet => prototype, type, chaine d'héritage, ...
+- Todo liste, avec animations css3
+- Une calculatrice
+
+=== Javascript coté serveur
+
+NodeJS est un serveur avec comme principe une gestion des I/O monothread par évènements.
+
+En plus du langage, on a un binding vers les libs standards C/C++.
+
+==== Ecosystème
+
+Vaste et dynamique...
+
+- npm,
+- yarn...
+- yeoman...
+
+Langages ciblant JS :
+
+- Typescript,
+- Coffeescript,
+- Dart,
+- Java (GWT),
+- ...
+
+=== Le navigateur sans navigateur
+
+Architectures de type Electron.
+
+=== Optimisations
+
+`eval` is not evil anymore ! Compilation. Appels monomorphique, polymorphiques, mégamorphiques.
+
+=== ES6
+
+EcmaScript 2015.
+
+Voir formation Angular 2.

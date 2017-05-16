@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        div {
+            border: 5px solid black;
+        }
+        
+        #parent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: stretch;
+        }
+        
+        #corps {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="parent">
+        <div id="header">HEADER</div>
+        <div id="corps">CORPS</div>
+        <div id="footer">FOOTER</div>
+    </div>
+</body>
+
+</html>

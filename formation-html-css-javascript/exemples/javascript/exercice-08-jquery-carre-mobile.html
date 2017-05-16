@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="jquery-3.1.1.js" type="text/javascript"></script>
+
+    <script>
+        $(function () {
+            function majPositionCarre() {
+                var x = $('#x').val()
+                var y = $('#y').val()
+
+                $('#carre').css('left', x + '%')
+                $('#carre').css('top', y + '%')
+            }
+
+            $('#x').on('input', majPositionCarre)
+            $('#y').on('input', majPositionCarre)
+
+            var position = {
+                x: 0,
+                y: 0
+            }
+
+            // l'état des touches
+            var touches = {
+                'ArrowUp': false,
+                'ArrowDown': false,
+                'ArrowLeft': false,
+                'ArrowRight': false
+            }
+
+            // timer toutes les 50ms qui teste l'etat des touches
+            // et qui met à jour la position du carre
+            setInterval(function () {
+                // maj la position
+                if (touches['ArrowUp'])
+                    position.y--
+                if (touches['ArrowDown'])
+                    position.y++
+                if (touches['ArrowRight'])
+                    position.x++
+                if (touches['ArrowLeft'])
+                    position.x--
+
+                // deplacer le carre
+                $('#carre').css('left', position.x + '%')
+                $('#carre').css('top', position.y + '%')
+            }, 20)
+
+            $('body').on('keydown', function (e) {
+                console.log('KEY DOWN ' + e.key)
+
+                touches[e.key] = true
+            })
+
+            $('body').on('keyup', function (evenement) {
+                console.log('KEY UP ' + evenement.key)
+
+                touches[evenement.key] = false
+            })
+
+
+
+            majPositionCarre()
+        })
+    </script>
+
+<style>
+        #carre {
+            width: 3em;
+            height: 3em;
+            background-color: red;
+
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="x" type="range" min="0" max="100" value='50' />
+    <input id="y" type="range" min="0" max="100" value='50' />
+
+    <div id="carre"></div>
+</body>

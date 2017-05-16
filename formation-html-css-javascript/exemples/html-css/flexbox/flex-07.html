@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 1em;
+        }
+        
+        .wrapper {
+            flex: 1 1 auto;
+            display: flex;
+        }
+        
+        nav,
+        aside {
+            width: 10em;
+        }
+        
+        article {
+            flex: 1;
+        }
+        
+        nav {
+            order: -1;
+        }
+        
+        @media (max-width: 640px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            nav,
+            aside {
+                width: auto;
+            }
+            nav,
+            aside,
+            article {
+                flex-basis: auto;
+            }
+            nav {
+                order: 0;
+            }
+        }
+        
+        body {
+            margin: 0;
+            background: #999;
+            font-family: arial, sans-serif;
+        }
+        
+        header,
+        nav,
+        aside,
+        article,
+        footer {
+            margin: .4em;
+            padding: 1em;
+            border-radius: 6px;
+        }
+        
+        header {
+            background: #ffeebb;
+        }
+        
+        nav {
+            background: #ccccff;
+        }
+        
+        aside {
+            background: #ccccff;
+        }
+        
+        article {
+            background: #dddd88;
+        }
+        
+        footer {
+            background: #ffeebb;
+        }
+    </style>
+</head>
+
+<body>
+    <header>header</header>
+
+    <div class="wrapper">
+        <article>article</article>
+        <nav>navigation</nav>
+        <aside>aside</aside>
+    </div>
+
+    <footer>footer</footer>
+</body>
+
+</html>

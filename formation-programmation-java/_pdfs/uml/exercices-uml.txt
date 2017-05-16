@@ -1,0 +1,49 @@
+Exercices UML
+
+Fonctionnel
+
+1.
+
+Dans un établissement scolaire, on désire gérer la réservation des salles de cours ainsi que du matériel pédagogique (ordinateur portable ou/et Vidéo projecteur).
+
+Seuls les enseignants sont habilités à effectuer des réservations (sous réserve de disponibilité de la salle ou du matériel).
+Le planning des salles peut quant à lui être consulté par tout le monde (enseignants et étudiants).
+Par contre, le récapitulatif horaire par enseignant (calculé à partir du planning des salles) ne peut être consulté que par les enseignants.
+Enfin, il existe pour chaque formation un enseignant responsable qui seul peut éditer le récapitulatif horaire pour l’ensemble de la formation.
+
+Modéliser cette situation par un diagramme de cas d’utilisation
+
+2.
+
+Dans un magasin, le processus de vente est le suivant : le client entre, passe dans les rayons, demande éventuellement des renseignements ou procède à des essais, prend des articles (si le stock est suffisant), passe à la caisse où il règle ses achats (avec tout moyen de paiement accepté). Il peut éventuellement bénéficier d’une réduction.
+
+Modéliser cette situation par un diagramme de cas d’utilisation
+
+
+3.
+
+Dans le cadre d’un projet de recherche en viticulture, on désire collecter les temps de travaux sur des exploitations agricoles pilotes, pour travailler en particulier sur les opérations
+phytosanitaires.
+Pour ce faire, un glossaire des opérations culturales types a été mis en place (afin que tout le monde ait le même cadre analytique).
+Des contraintes assez fortes sont apparues sur le projet : les ouvriers agricoles des exploitations pilotes n’ont pas accès aux outils informatiques et la lourdeur d’enregistrement des temps de travaux a donc de fait écarté l’utilisation d’un outil informatique.
+La procédure suivante a ainsi été définie : chaque ouvrier agricole saisit ses temps de travaux sur un cahier au format prédéfini. (dans ce cahier, il peut consulter en annexes le glossaire
+afin d’identifier l’opération culturale type).
+Nb : pour les opérations de type phytosanitaire, les informations complémentaires sont demandées : liste des maladies visées, stade phénologique, méthodes de traitements et observation.
+En fin de mois, le chef d’exploitation vérifie la saisie effectuée sur le cahier et apporte
+d’éventuelles corrections.
+Il saisit ensuite les opérations du mois sur une application internet connectée à une base de
+données.
+Le chercheur en charge du projet reçoit automatiquement un mail qui lui indique que la saisie mensuelle a été effectuée.
+Après avoir vérifié la pertinence de la saisie, il notifie au chef d’exploitation que tout s’est
+bien passé et que les données intégrées dans la base de données sont valides et prêtes à être
+exploitées.
+Le chef d’exploitation imprime alors 2 documents sur le mois écoulé :
+- l’état mensuel des travaux pour chaque salarié (qui est remis à chaque salarié)
+- l’état des opérations phytosanitaires (état Terravitis)
+En fin d’année, le chercheur analyse toutes les opérations saisies et rédige une synthèse générale sur les temps de travaux dans les différentes exploitations.
+Cette synthèse est alors transmise à tous les chefs d’exploitation.
+
+Réaliser les diagrammes des cas d'utilisation, le diagramme des classes et le diagramme de séquence.
+
+
+

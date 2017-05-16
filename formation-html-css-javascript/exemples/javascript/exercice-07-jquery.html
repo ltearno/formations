@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<!--
+    EXERCICE : Créer une <table> à partir des données présentes dans la page
+-->
+
+<head>
+    <script src="jquery-3.1.1.js" type="text/javascript"></script>
+
+    <script>
+        var applicationData = [
+            {
+                nom: "Toto",
+                age: 33,
+                ville: "Toulouse",
+                couleur: "pink"
+            },
+            {
+                nom: "Titi",
+                age: 13,
+                ville: "Paris",
+                couleur: "#e5f"
+            },
+            {
+                nom: "fabla",
+                age: 32,
+                ville: "Perpignan",
+                couleur: "#a23"
+            },
+            {
+                nom: "Youpo",
+                age: 43,
+                ville: "Valence",
+                couleur: "#eee"
+            },
+            {
+                nom: "Pierre",
+                age: 3,
+                ville: "Stone",
+                couleur: "red"
+            },
+            {
+                nom: "Walter",
+                age: 23,
+                ville: "Gif sur Yvette",
+                couleur: "blue"
+            }
+        ];
+    </script>
+
+<script>
+
+        $$("<li><span></span></li>")
+            .find("span")
+            .html("About Us")
+            .andSelf()
+            .addClass("menu")
+            .end()
+            .end()
+            .appendTo("ul.main-menu");
+
+
+        $(function () {
+            // créer une table
+            let table = $("<table><tr><th>NOM</th><th>AGE</th><th>VILLE</th><th>COULEUR</th></tr></table>");
+
+            // faire chaque ligne
+            applicationData.forEach(function (personne) {
+                table.append($(`<tr><td>${personne.nom}</td><td>${personne.age}</td><td>${personne.ville}</td><td style="background-color: ${personne.couleur};">${personne.couleur}</td></tr>`))
+            })
+
+            // insérer la table dans le body
+            $('body').append(table)
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

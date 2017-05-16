@@ -1,0 +1,30 @@
+Commandes indispensables
+
+git init : initialiser un dépot git
+git add : ajouter un fichier dans la zone de staging
+git rm : retirer un fichier
+git diff : afficher les différences
+git commit : créer un commit à partir des informations de la zone de staging
+git log : afficher l'historique
+git reset : repositionne la branche courante sur le commit désiré, avec possibilité de mettre à jour le répertoire de travail
+git show [COMMIT_SHA] : afficher les détails d'un commit
+git origin : gestion des dépôts distants
+git fetch : ramener les derniers objets d'un dépot distant
+git push : envoyer des commits et des branches à un dépôt distant
+
+Commandes avancées
+
+git rebase [BRANCHE] : rebaser la branche courante sur une autre branche
+git rebase -i : réécrire l'historique
+git pull
+git pull --rebase
+git cherry-pick [COMMIT_SHA] : reproduire les effets d'un commit dans un nouveau commit
+git revert [COMMIT_SHA] : créer un commit d'annulation
+git reflog : journal de bord des derniers commits visités
+
+Commandes supplémentaires
+
+git blame [NOM DE FICHIER] : voir les dernières interventions sur un fichier
+git stash : mettre du code en réserve
+git mv : déplacer un fichier
+git fsck : vérifications bdd et recherche commits perdus

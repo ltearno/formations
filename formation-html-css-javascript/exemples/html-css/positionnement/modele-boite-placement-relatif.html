@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        div {
+            border: 3px solid black;
+            padding: 3px;
+            background-color: red;
+            margin: 5px;
+        }
+        
+        span {
+            border: 3px solid black;
+            padding: 3px;
+            background-color: yellow;
+            margin: 5px;
+        }
+        
+        .bougeRelativement {
+            position: relative;
+            left: 5px;
+            top: 12px;
+        }
+    </style>
+</head>
+
+<!--
+    Le mode de placement relatif permet de décaler des éléments sans altérer le flux normal
+    -->
+
+<body>
+    <div>BONJOUR</div>
+    <div class="bougeRelativement">BONJOUR</div>
+
+    <span>au revoir</span>
+    <span class="bougeRelativement">au revoir</span>
+    <span>au revoir</span>
+    <span>au revoir</span>
+    <div>BONJOUR</div>
+    <span>au revoir</span>
+</body>
+
+</html>

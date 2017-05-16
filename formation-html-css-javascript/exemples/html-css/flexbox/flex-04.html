@@ -1,0 +1,165 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        section {
+            border: 5px solid #3c2828;
+            margin: 5px;
+        }
+        
+        .conteneur {
+            background-color: bisque;
+            height: 100px;
+            display: flex;
+            border: 5px solid #b7ab9e;
+        }
+        
+        .conteneur>div {
+            width: 100px;
+            height: 50px;
+            background-color: red;
+            border: 5px solid #9a0000;
+        }
+        
+        .conteneur:nth-child(1) {
+            justify-content: flex-start;
+        }
+        
+        .conteneur:nth-child(2) {
+            justify-content: flex-end;
+        }
+        
+        .conteneur:nth-child(3) {
+            justify-content: center;
+        }
+        
+        .conteneur:nth-child(4) {
+            justify-content: space-around;
+        }
+        
+        .conteneur:nth-child(5) {
+            justify-content: space-between;
+        }
+        
+        
+        
+        section:nth-child(2) .conteneur:nth-child(1) {
+            align-items: baseline;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(2) {
+            align-items: flex-end;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(3) {
+            align-items: center;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(4) {
+            align-items: stretch;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(5) {
+            align-items: flex-start;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(1)>div:nth-child(2) {
+            font-size: 2em;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(1)>div:nth-child(3) {
+            font-size: 3em;
+            width: 5em;
+        }
+        
+        section:nth-child(2) .conteneur:nth-child(1)>div:nth-child(4) {
+            font-size: .5em;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="conteneur">
+            <div>Bonjour</div>
+            <div>nous</div>
+            <div>sommes</div>
+            <div>alignés</div>
+            <div>sur baseline</div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="conteneur">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </section>
+</body>
+
+</html>

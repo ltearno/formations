@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        div {
+            border: 5px solid black;
+        }
+        
+        #parent {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
+        #header,
+        #footer {
+            flex: 1 1 100%;
+        }
+        
+        #corps {
+            flex: 4 0 auto;
+        }
+        
+        #nav,
+        #aside {
+            flex: 1 0 content;
+        }
+        
+        @media (max-width: 768px) {
+            #parent {
+                flex-direction: column;
+                flex-wrap: nowrap;
+            }
+            #header,
+            #footer {
+                flex: 0 1;
+            }
+            #corps {
+                flex: 4 0 auto;
+            }
+            #nav,
+            #aside {
+                flex: 0 1 content;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="parent">
+        <div id="header">HEADER</div>
+        <div id="nav">NAV</div>
+        <div id="corps">CORPS</div>
+        <div id="aside">aside</div>
+        <div id="footer">FOOTER</div>
+    </div>
+</body>
+
+</html>

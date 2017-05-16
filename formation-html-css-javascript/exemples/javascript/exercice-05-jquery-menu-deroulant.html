@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+	<script src="jquery-3.1.1.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+			$('.menu *').hide();
+
+			$('.menu, .menu *').click(function(event) {
+				event.stopPropagation();
+
+				if( $(this).children().length == 0 )
+					alert( 'choix menu ! ' + $(this).text() )
+				else
+					$(this).children().toggle("slow");
+			})
+		});
+	</script>
+
+	<style>
+		.menu,
+		.menu * {
+			cursor: pointer;
+			font-family: monospace;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="menu">
+		MENU
+		<div>
+			FICHIER
+			<div>OUVRIR</div>
+			<div>FERMER</div>
+			<div>QUITTER</div>
+		</div>
+		<div>
+			EDITION
+			<div>COPIER</div>
+			<div>COLLER</div>
+			<div>PARAMETRES</div>
+		</div>
+		<div>
+			VUE
+			<div>PLEIN ECRAN</div>
+			<div>MOITIE D'ECRAN</div>
+			<div>DOUBLE ECRAN</div>
+		</div>
+		<div>
+			MON COMPTE
+			<div>PARAMETRES</div>
+			<div>CONFIDENTIALITE</div>
+			<div>SE DECONNECTER</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

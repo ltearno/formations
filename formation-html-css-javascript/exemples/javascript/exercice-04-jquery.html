@@ -1,0 +1,56 @@
+<!doctype html>
+
+<!-- 
+EXERCICE
+
+Ajouter du code utilisant JQuery pour :
+
+- générer une liste (ul) de notes de bas de page (chaque note est disposée dans un élément <li>) à partir des éléments a.footnote contenus dans le document
+- que les liens a.footnote présents dans le document soit modifiés pour amener l'utilisateur vers la note correspondante (par exemple <a href='#footNote1">Insee</a>)
+
+-->
+
+
+<html>
+
+<head>
+	<style>
+		a.footnote,
+		a.footnote:visited {
+			color: black;
+			text-decoration: none;
+			border-bottom: 1px dashed blue;
+		}
+		
+		a.footnote:hover {
+			cursor: pointer;
+		}
+		
+		#notes {
+			width: 100%;
+			background-color: #EAEAEA;
+		}
+	</style>
+
+	<script src="jquery-3.1.1.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+	<div id="texte">
+		<p>PARIS (AFP) - Les prix à la consommation en France ont encore grimpé de 0,4% en décembre par rapport au mois précédent,
+			pour atteindre 2,5% sur un an (+2,4% hors tabac), a annoncé jeudi l'
+			<a href="#" class="footnote" data-note="l'Institut national de la statistique et des études économiques">Insee</a>.
+		</p>
+
+		<p>Théoriquement, ce taux d'<a href="#" class="footnote" data-note="L'inflation est une baisse durable de la valeur de la monnaie">inflation</a>			devrait faire monter le taux du Livret A de 2,25% à 2,50%, voire 2,75% au 1er février.</p>
+
+		<p>Mais le gouverneur de la Banque de France (BdF) Christian Noyer a déjà préparé les esprits à son éventuel maintien en l'état,
+			expliquant que l'inflation devrait baisser dans les prochains mois et qu'il serait donc inutile de relever le rendement
+			du <a href="#" class="footnote" data-note="Le livret A est le compte d'épargne réglementé et défiscalisé français le plus utilisé">Livret A</a>			pour le diminuer dans la foulée.</p>
+	</div>
+
+	<div id="notes"></div>
+</body>
+
+</html>

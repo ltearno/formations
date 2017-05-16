@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            function e(id) { return document.getElementById(id) }
+
+            var resultatDiv = e('resultat')
+
+            var operandeGauche = null;
+            var operationEnCours = null;
+            var operandeDroite = null;
+
+            function saisieChiffre(chiffre) {
+                if (operationEnCours === null)
+                    operandeGauche = 10 * operandeGauche + chiffre
+                else
+                    operandeDroite = 10 * operandeDroite + chiffre
+                affiche()
+            }
+
+            function saisieOperation(operation) {
+                operationEnCours = operation
+                affiche()
+            }
+
+            function affiche() {
+                resultatDiv.innerHTML = "" + operandeGauche
+                if (operationEnCours !== null)
+                    resultatDiv.innerHTML += operationEnCours
+                if (operandeDroite != null)
+                    resultatDiv.innerHTML += operandeDroite
+            }
+
+            function calculer() {
+                if (operandeGauche === null)
+                    return "ERREUR 1 !"
+
+                if (operandeDroite === null)
+                    return "ERREUR 2 !"
+
+                if (operationEnCours === null)
+                    return "ERREUR 3 !"
+
+                switch (operationEnCours) {
+                    case '+': return operandeGauche + operandeDroite
+                    case '-': return operandeGauche - operandeDroite
+                    case 'x': return operandeGauche * operandeDroite
+                    case '/': return operandeGauche / operandeDroite
+                }
+            }
+
+            for (var c = 0; c < 10; c++) {
+                let cc = c * 1
+                e('chiffre-' + c).addEventListener('click', function () { saisieChiffre(cc) })
+            }
+            e('op-plus').addEventListener('click', function () { saisieOperation('+') })
+            e('op-moins').addEventListener('click', function () { saisieOperation('-') })
+            e('op-mult').addEventListener('click', function () { saisieOperation('*') })
+            e('op-div').addEventListener('click', function () { saisieOperation('/') })
+            e('egal').addEventListener('click', function () {
+                resultatDiv.innerHTML = calculer()
+
+                operandeGauche = null
+                operationEnCours = null
+                operandeDroite = null
+            })
+        })
+    </script>
+
+<style>
+    </style>
+</head>
+
+<body>
+    <div id="calculatrice">
+        <div id="resultat"></div>
+        <button id="chiffre-0">0</button>
+        <button id="chiffre-1">1</button>
+        <button id="chiffre-2">2</button>
+        <button id="chiffre-3">3</button>
+        <button id="chiffre-4">4</button>
+        <button id="chiffre-5">5</button>
+        <button id="chiffre-6">6</button>
+        <button id="chiffre-7">7</button>
+        <button id="chiffre-8">8</button>
+        <button id="chiffre-9">9</button>
+        <button id="op-plus">+</button>
+        <button id="op-moins">-</button>
+        <button id="op-mult">x</button>
+        <button id="op-div">/</button>
+        <button id="egal">=</button>
+    </div>
+</body>
+
+</html>

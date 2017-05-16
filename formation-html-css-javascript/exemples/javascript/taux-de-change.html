@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript">
+        function e(id) { return document.getElementById(id) }
+
+        window.addEventListener('load', function () {
+            var taux = e('taux')
+            var montant = e('montant')
+            var calculer = e('calculer')
+            var resultat = e('resultat')
+
+            function majResultat() {
+                resultat.innerText = taux.value * montant.value
+            }
+
+            calculer.addEventListener('click', majResultat)
+
+            // l'évènement "input" est levé lorsque la valeur du champ change
+            taux.addEventListener('input', majResultat)
+            montant.addEventListener('input', majResultat)
+        })
+    </script>
+</head>
+
+<body>
+    <label>Taux : <input id="taux" type="number"></label><br/>
+    <label>Montant : <input id="montant" type="number"></label><br/>
+    <button id="calculer">Calculer</button><br/>
+    <div id="resultat"></div>
+</body>
+
+</html>

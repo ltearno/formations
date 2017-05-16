@@ -1,0 +1,229 @@
+= Angular 2 - Travaux pratiques
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:imagesdir: images
+:source-highlighter: highlightjs
+
+== Installer l'environnement
+
+- NodeJS et NPM
+
+nodejs.org
+
+- Chrome
+
+- Typescript
+
+`npm install -g typescript`
+
+- Angular
+
+Un IDE
+
+- Visual Studio Code
+- ou Web Storm
+
+== Projet simple "HelloWorld"
+
+Création d'un projet simple avec Angular
+
+Créer un répertoire pour le projet.
+
+`tsc --init --target es5 --sourceMap --experimentalDecorators --emitDecoratorMetadata`
+
+Il est aussi possible d'éditer directement le fichier `tsconfig.json` à la main.
+
+Créer le projet NPM
+
+`npm init`
+
+Répondez aux questions.
+
+Ajout des dépendances à Angular
+
+`npm install --save @angular/core @angular/compiler @angular/common @angular/platform-browser @angular/platform-browser-dynamic rxjs reflect-metadata zone.js`
+
+Installation des typings
+
+`npm install --save-dev @types/core-js`
+
+Création du composant
+
+Créer un fichier `app.component.ts`.
+
+Y créer une classe : 
+
+[source,language=javascript]
+----
+import {Component} from '@angular/core'; <1>
+
+@Component({ <2>
+    selector: 'angular-app', <3>
+    template: '<h1>Hello !</h1>' <4>
+})
+export class AngularAppComponent { <5>
+}
+----
+<1> import de la bibliothèque centrale d'Angular
+<2> le décorateur `@Component` déclare un composant Angular
+<3> ce composant sera instancié en lieu et place de `<angular-app></angular-app>` dans le dom de l'application
+<4> la vue de notre composant en HTML
+<5> nous exportons la classe afin qu'elle puisse être utilisée par le framework.
+
+Création du module
+
+Créer un fichier `app.module.ts`.
+
+Y créer la classe du module principal de notre application :
+
+[source,language=javascript]
+----
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AngularAppComponent } from './app.component';
+
+@NgModule({ <1>
+    imports: [BrowserModule], <2>
+    declarations: [AngularAppComponent], <3>
+    bootstrap: [AngularAppComponent] <4>
+})
+export class AppModule {
+}
+----
+<1> le décorateur `NgModule` pour les classes module.
+<2> notre application importe le module `BrowserModule` fourni par Angular
+<3> notre module déclare le composant `AngularAppComponent`
+<4> c'est ce même composant qui est le composant principal de l'application et sert à la démarrer.
+
+Créer un fichier `main.ts`
+
+[source]
+----
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'; <1>
+import { AppModule } from './app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule); <2>
+----
+<1> module d'initialisation d'Angular pour les navigateurs
+<2> appel à la fonction d'initialisation d'Angular
+
+Création de la page html
+
+Créer un fichier `index.html` :
+
+[source,language=html]
+----
+<html>
+
+<head></head>
+
+<body>
+    <angular-app>
+        Message d'attente...
+    </angular-app>
+</body>
+
+</html>
+----
+
+Installation de SystemJS
+
+`npm install --save systemjs`
+
+Modification du fichier `index.html`
+
+[source,language=html]
+----
+<html>
+
+<head>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script>
+        System.config({
+            // the app will need the following dependencies
+            map: {
+                '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
+                '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
+                '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
+                '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
+                '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+                'rxjs': 'node_modules/rxjs'
+            },
+
+            packages: {
+                // we want to import our modules without writing '.js' at the end
+                // we declare them as packages and SystemJS will add the extension for us
+                '.': {}
+            }
+        });
+
+        // and to finish, let's boot the app!
+        System.import('main');
+    </script>
+</head>
+
+<body>
+    <angular-app>
+        Message d'attente...
+    </angular-app>
+</body>
+
+</html>
+----
+
+Compilation du projet
+
+Pour lancer le compilateur Typescript en mode surveillance des fichiers (les fichiers sources sont recompilés automatiquemen à chaque changement), on lance :
+
+`tsc`
+
+Installation d'un mini serveur HTTP
+
+`npm install -g http-server`
+
+Démarrage de l'application
+
+Aller dans le répertoire de l'application et taper :
+
+`http-server`
+
+Aller à l'adresse `http://localhost:8080`
+
+Normalement le message "Hello !" doit apparaître après chargement et initialisation de l'application.
+
+////
+== Exercice 1
+
+Je veux écrire un composant PoniesComponent, affichant une liste de poneys. Chacun de ces poneys
+devrait être représenté par son propre composant PonyComponent, mais nous n’avons pas encore vu
+comment passer des paramètres à un composant. Donc, pour l’instant, nous allons nous contenter
+d’afficher une simple liste. La liste devra s’afficher seulement si elle n’est pas vide, et j’aimerais
+avoir un peu de couleur sur les lignes paires. Et nous voulons pouvoir rafraîchir cette liste d’un
+simple clic sur un bouton.
+
+Ecrire le composant qui affiche une liste de produits
+
+[source]
+----
+import { Component } from '@angular/core';
+@Component({
+selector: 'ns-ponies',
+template: `<button (click)="refreshPonies()">Refresh</button>
+<ul>
+<li *ngFor="let pony of ponies; let isEven=even"
+[style.color]="isEven ? 'green' : 'black'">
+{{pony.name}}
+</li>
+</ul>`
+})
+export class PoniesComponent {
+ponies: Array<any> = [{ name: 'Rainbow Dash' }, { name: 'Pinkie Pie' }];
+refreshPonies() {
+this.ponies = [{ name: 'Fluttershy' }, { name: 'Rarity' }];
+}
+}
+----
+////
+

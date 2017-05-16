@@ -1,0 +1,3 @@
+<jboss-web>
+	<context-root>/hello-jpa</context-root>
+</jboss-web>

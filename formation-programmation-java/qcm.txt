@@ -1,0 +1,3 @@
+Peut-on appeller une méthode d'instance à partir d'une méthode statique ?
+
+Peut-on appeller une méthode statique à partir d'une méthode d'instance ?

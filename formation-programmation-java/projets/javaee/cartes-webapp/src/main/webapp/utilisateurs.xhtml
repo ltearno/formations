@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<h:title>Utilisateurs</h:title>
+	<f:loadBundle basename="fr.lteconsulting.bundle.messages" var="msg" />
+</h:head>
+
+<body>
+	<h3>Utilisateurs</h3>
+
+	<h:messages globalOnly="true" infoClass="info" />
+
+	<h:form rendered="#{not empty utilisateurCrudBean.utilisateurs}">
+		<h:dataTable value="#{utilisateurCrudBean.utilisateurs}" var="utilisateur">
+			<h:column>
+				<f:facet name="header">ID</f:facet>#{utilisateur.id}</h:column>
+			<h:column>
+				<f:facet name="header">Nom</f:facet>#{utilisateur.nom}</h:column>
+			<h:column>
+				<f:facet name="header">Prénom</f:facet>#{utilisateur.prenom}</h:column>
+			<h:column>
+				<f:facet name="header">Age</f:facet>#{utilisateur.age}</h:column>
+			<h:column>
+				<f:facet name="header">Login</f:facet>#{utilisateur.login}</h:column>
+			<h:column>
+				<f:facet name="header">Password</f:facet>#{utilisateur.motDePasse}</h:column>
+			<h:column>
+				<h:commandButton value="edit" action="#{utilisateurCrudBean.edit( utilisateur )}" />
+			</h:column>
+			<h:column>
+				<h:commandButton value="delete" action="#{utilisateurCrudBean.delete( utilisateur )}" />
+			</h:column>
+		</h:dataTable>
+	</h:form>
+
+	<h:panelGroup rendered="#{empty utilisateurCrudBean.utilisateurs}">
+		<p>Il n'y a aucun utilisateur !</p>
+	</h:panelGroup>
+
+	<h:panelGroup>
+		<h3>#{utilisateurCrudBean.edition ? "Edition utilisateur" : "Ajout utilisateur"}</h3>
+
+		<h:form>
+			<fieldset>
+				<legend>#{utilisateurCrudBean.edition ? "Edition utilisateur" : "Ajout utilisateur"}</legend>
+
+				<h:outputLabel for="nom">Nom<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="nom" label="Nom" value="#{utilisateurCrudBean.item.nom}" required="true" requiredMessage="#{msg['utilisateur.nom']}" size="20" maxlength="60">
+					<f:ajax event="blur" render="nomMessage" />
+<!-- 					<f:validator validatorId="categorieExistenceValidator" /> -->
+				</h:inputText>
+				<h:message id="nomMessage" for="nom" errorClass="erreur" />
+				<br />
+				
+				<h:outputLabel for="nom">Prénom<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="prenom" label="Prénom" value="#{utilisateurCrudBean.item.prenom}" required="true" requiredMessage="#{msg['utilisateur.prenom']}" size="20" maxlength="60">
+					<f:ajax event="blur" render="prenomMessage" />
+				</h:inputText>
+				<h:message id="prenomMessage" for="prenom" errorClass="erreur" />
+				<br />
+				
+				<h:outputLabel for="age">Age<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="age" label="Age" value="#{utilisateurCrudBean.item.age}" required="true" requiredMessage="#{msg['utilisateur.age']}" size="20" maxlength="60">
+					<f:ajax event="blur" render="ageMessage" />
+				</h:inputText>
+				<h:message id="ageMessage" for="age" errorClass="erreur" />
+				<br />
+				
+				<h:outputLabel for="login">Login<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="login" label="Login" value="#{utilisateurCrudBean.item.login}" required="true" requiredMessage="#{msg['utilisateur.login']}" size="20" maxlength="60">
+					<f:ajax event="blur" render="loginMessage" />
+					<f:attribute name="recordId" value="#{utilisateurCrudBean.item.id}" />
+					<f:validator binding="#{utilisateurExistenceValidator}" />
+				</h:inputText>
+				<h:message id="loginMessage" for="login" errorClass="erreur" />
+				<br />
+
+				<h:outputLabel for="motDePasse">Mot de passe<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="motDePasse" label="Mot de passe" value="#{utilisateurCrudBean.item.motDePasse}" binding="#{composantMotDePasse}" requiredMessage="#{msg['utilisateur.motdepasse']}"
+					required="true" size="5" maxlength="6">
+					<f:ajax event="blur" execute="motDePasse confirmationMotDePasse" render="motDePasseMessage confirmationMotDePasseMessage" />
+				</h:inputText>
+				<h:message id="motDePasseMessage" for="motDePasse" errorClass="erreur" />
+				<br />
+
+				<h:outputLabel for="confirmationMotDePasse">Confirmation<span class="requis">*</span>
+				</h:outputLabel>
+				<h:inputText id="confirmationMotDePasse" label="Confirmation du mot de passe" value="#{utilisateurCrudBean.item.motDePasse}" requiredMessage="#{msg['utilisateur.motdepasse']}" required="true" size="5" maxlength="6">
+					<f:ajax event="blur" execute="motDePasse confirmationMotDePasse" render="motDePasseMessage confirmationMotDePasseMessage" />
+					<f:attribute name="composantMotDePasse" value="#{composantMotDePasse}" />
+					<f:validator validatorId="utilisateurMotDePasseValidator" />
+				</h:inputText>
+				<h:message id="confirmationMotDePasseMessage" for="confirmationMotDePasse" errorClass="erreur" />
+				<br />
+
+				<h:panelGroup rendered="#{utilisateurCrudBean.creation}">
+					<p>
+						<h:commandButton value="Ajouter" action="#{utilisateurCrudBean.valider}" />
+						<h:commandButton value="Annuler" action="#{utilisateurCrudBean.resetItem}" />
+					</p>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{utilisateurCrudBean.edition}">
+					<p>
+						<h:commandButton value="Enregistrer" action="#{utilisateurCrudBean.valider}" />
+						<h:commandButton value="Annuler" action="#{utilisateurCrudBean.resetItem}" />
+					</p>
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+	</h:panelGroup>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            font-family: sans-serif;
+        }
+        
+        header {
+            order: 1;
+            flex: 0 0 auto;
+            color: beige;
+            background-color: black;
+        }
+        
+        footer {
+            order: 3;
+            flex: 0 0 auto;
+            color: beige;
+            background-color: black;
+        }
+        
+        main {
+            order: 2;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background-color: hsla(34, 13%, 53%, 0.56);
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        
+        .badge {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 410px;
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+        }
+        
+        .entete {
+            flex: 0 0 auto;
+            font-size: 2em;
+            font-variant: small-caps;
+            color: hsl(34, 1%, 50%);
+            background-color: #140f14;
+            padding-left: 1em;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .principal {
+            flex: 1 1 auto;
+            overflow: auto;
+            background-color: #e2ebe2;
+            padding: .5em;
+        }
+        
+        .pied {
+            flex: 0 0 auto;
+            background-color: #7099e8;
+            padding-bottom: 1em;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            padding: .5em;
+        }
+        
+        .photo {
+            float: right;
+            width: 80px;
+            height: 110px;
+            margin: 10px;
+            background-color: dimgrey;
+        }
+        
+        nav ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin: 0;
+            list-style: none;
+        }
+        
+        nav ul li {
+            flex: 0 1 auto;
+            line-height: 2em;
+            padding: 0 3em;
+            transition-duration: 4s;
+            transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        nav ul li:hover {
+            background-color: #fff;
+            font-size: 3em;
+            transform: rotateY(360deg);
+            transition-duration: 1.0s;
+        }
+        
+        @media (max-width:15cm) {
+            header {
+                border-bottom: 3px solid #292929;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+            nav ul li {
+                flex: 0 1 100%;
+            }
+            main {
+                flex: 1 1 auto;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                align-items: stretch;
+                align-content: stretch;
+            }
+            .badge:first-child {
+                margin-top: 0;
+            }
+            .badge:last-child {
+                margin-bottom: 0;
+            }
+            .badge {
+                flex: 1 0 auto;
+                width: auto;
+                height: auto;
+                margin: 5px 0;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+            }
+            .principal {
+                padding: .25em;
+            }
+            .photo {
+                float: left;
+                width: 40px;
+                height: 55px;
+                margin: 5px;
+            }
+            .entete {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+            .pied {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>Fichier</li>
+                <li>Affichage</li>
+                <li>A propos</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="badge">
+            <div class="entete">Entete</div>
+            <div class="principal">
+                <div class="photo">photo</div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolor quaerat adipisci, sed odio eaque voluptatum optio ut,
+                fugit incidunt ratione ducimus at. Facere neque voluptates perspiciatis quo, sapiente deserunt. Lorem ipsum
+                dolor sit amet, consectetur adipisicing elit. Qui dolor quaerat adipisci, sed odio eaque voluptatum optio
+                ut, fugit incidunt ratione ducimus at. Facere neque voluptates perspiciatis quo, sapiente deserunt. Lorem
+                ipsum dolor sit amet, consectetur adipisicing elit. Qui dolor quaerat adipisci, sed odio eaque voluptatum
+                optio ut, fugit incidunt ratione ducimus at. Facere neque voluptates perspiciatis quo, sapiente deserunt.</div>
+            <div class="pied">Pied</div>
+        </div>
+        <div class="badge">
+            <div class="entete">Entete</div>
+            <div class="principal">
+                <div class="photo">photo</div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolor quaerat adipisci, sed odio eaque voluptatum optio ut,
+                fugit incidunt ratione ducimus at. Facere neque voluptates perspiciatis quo, sapiente deserunt.</div>
+            <div class="pied">Pied</div>
+        </div>
+        <div class="badge">
+            <div class="entete">Entete</div>
+            <div class="principal">
+                <div class="photo">photo</div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolor quaerat adipisci, sed odio eaque voluptatum optio ut,
+                fugit incidunt ratione ducimus at. Facere neque voluptates perspiciatis quo, sapiente deserunt.</div>
+            <div class="pied">Pied</div>
+        </div>
+    </main>
+    <footer>Footer</footer>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FunkoPops CRUD</title>
+
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection" />
+<link href="application.css" rel="stylesheet">
+
+<script type="text/javascript" src="jquery-3.1.1.js"></script>
+<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+<script type="text/javascript" src="application.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+<body>
+	<div id="crudFlipContainer" class="flip-container">
+		<div class="flipper">
+			<div class="front">
+				<table class="funkoPops">
+					<thead>
+						<th>Nom</th>
+						<th>Universe</th>
+						<th>Waterproof</th>
+						<th>Location</th>
+						<th></th>
+					</thead>
+				</table>
+				<a id="createButton" class="waves-effect waves-light btn">Ajouter</a>
+			</div>
+			<div class="back">
+				<div class="row">
+					<form class="col s12">
+						<div class="row">
+							<div class="input-field col s12">
+								<input placeholder="" id="name" type="text" class="validate">
+								<label for="name">Name</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input placeholder="" id="universe" type="text" class="validate">
+								<label for="universe">Universe</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input type="checkbox" class="filled-in" id="waterproof"
+									checked="checked" /> <label for="waterproof">Waterproof</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s6">
+								<input placeholder="" id="latitude" type="number" class="validate">
+								<label for="latitude">Latitude</label>
+							</div>
+							<div class="input-field col s6">
+								<input placeholder="" id="longitude" type="number"
+									class="validate"> <label for="longitude">Longitude</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col s12">
+								<a id="okButton" class="waves-effect waves-light btn">OK</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

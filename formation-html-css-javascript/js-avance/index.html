@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Javascript Avancé</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Javascript Avancé</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section><section id="_npm"><h2>NPM</h2><div class="paragraph"><p>Au fur et à mesure que l&#8217;application grandit, on voit apparaître deux problématiques :</p></div><div class="ulist"><ul><li><p>la gestion des dépendances (bibliothèques utilisées par le projet, montées de version&#8230;&#8203;)</p></li><li><p>lancement d&#8217;outils de builds (SASS, Less, Minifier, &#8230;&#8203;)</p></li></ul></div><div class="paragraph"><p>Plusieurs outils existent, notamment <em>NPM</em> (Node Package Manager), initialement conçu pour écrire des programmes Javascript pour serveur.</p></div></section><section id="_installation"><h2>Installation</h2><div class="paragraph"><p>NPM est inclu lorsqu&#8217;on installe <a href="https://nodejs.org/en/">NodeJS</a>.</p></div></section><section id="_initialisation_d_un_projet"><h2>Initialisation d&#8217;un projet</h2><div class="paragraph"><p>Dans le répertoire du projet, exécuter</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>npm init</code></pre></div></div>
+<div class="paragraph"><p>Et répondre au questions.</p></div>
+<div class="paragraph"><p>Ceci crée un fichier <code>package.json</code> qui décrit le projet et ses dépendances.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>{
+  "name": "avengers-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/avengers.js",
+  "scripts": {
+	"start": "webpack app/avengers.js dist/bundle.js"
+  },
+  "author": "Arnaud Tourniers",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "2.4"
+  },
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}</code></pre></div></div></section><section id="_rapatriement_d_une_dépendance"><h2>Rapatriement d&#8217;une dépendance</h2><div class="paragraph"><p>Comme <em>Maven</em>, <em>NPM</em> s&#8217;appuie sur un dépôt public contenant des milliers de bibliothèques.</p></div>
+<div class="paragraph"><p>Demandons par exemple à npm de nous télécharger jquery :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>npm install jquery --save</code></pre></div></div>
+<div class="paragraph"><p>NPM va télécharger <em>jquery</em> ainsi que <em>toutes</em> ses dépendances.</p></div>
+<div class="paragraph"><p>On retrouve ensuite JQuery dans le répertoire <code>node_modules/jquery</code></p></div>
+<div class="paragraph"><p>Pour importer JQuery à partir d&#8217;une page web, il suffit d&#8217;ajouter :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;script src='node_modules/jquery/dist/jquery.min.js'&gt;&lt;/script&gt;</code></pre></div></div></section></section>
+<section><section id="_les_modules"><h2>Les modules</h2></section><section id="_modules"><h2>Modules</h2><div class="paragraph"><p>Au bout d&#8217;un moment, travailler sur un seul fichier n&#8217;est plus possible !</p></div>
+<div class="paragraph"><p>On pourrait donc <em>couper</em> notre fichier en plusieurs parties&#8230;&#8203;</p></div></section><section id="_gestion_manuelle_des_dépendances"><h2>Gestion manuelle des dépendances</h2><div class="paragraph"><p>Mais ceci nous oblige à gérer nous même l&#8217;inclusion (et l&#8217;ordre d&#8217;inclusion) des scripts.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;script src="js/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="js/data-service.js"&gt;&lt;/script&gt;
+&lt;script src="js/composant-graphique.js"&gt;&lt;/script&gt;
+&lt;script src="js/outils.js"&gt;&lt;/script&gt;
+&lt;script src="js/avengers.js"&gt;&lt;/script&gt;</code></pre></div></div>
+<div class="paragraph"><p>Ceci devient <em>très</em> rapidement l&#8217;enfer !</p></div>
+<div class="paragraph"><p>Note: surtout si on prend en compte que certains modules ne sont pas nécessaire au <em>démarrage</em> de l&#8217;application.</p></div></section><section id="_solution_les_modules"><h2>Solution : les modules</h2><div class="paragraph"><p>Javascript ne possédant pas la notion de modules, les développeurs ont progressivement convergé vers un (euh plusieurs en fait) <em>standards</em> pour la déclaration des modules :</p></div>
+<div class="ulist"><ul><li><p><a href="https://en.wikipedia.org/wiki/Asynchronous_module_definition">AMD</a>, asynchrone, cible les navigateurs,</p></li><li><p>CommonJS, synchrone, cible les serveurs,</p></li><li><p>et enfin ES6 Modules qui met tout le monde d&#8217;accord.</p></li></ul></div>
+<div class="paragraph"><p>Des bibliothèques de chargement modules sont apparues peu à peu (<a href="http://requirejs.org/">requirejs</a>, browserify, &#8230;&#8203;).</p></div></section><section id="_principe"><h2>Principe</h2><div class="paragraph"><p>Chaque fichier JS définit un <em>module</em>.</p></div>
+<div class="paragraph"><p>Ce module peut avoir des dépendances vers d&#8217;autres modules, qu&#8217;il déclare.</p></div>
+<div class="paragraph"><p>Le gestionnaire de modules effectue le chargement optimisé des différents modules.</p></div></section><section id="_bundling"><h2>Bundling</h2><div class="paragraph"><p>Mais cette approche peut poser de gros problèmes lorsque l&#8217;application utilise de nombreux (petits) modules : le coût réseau devient très grand, et le temps de chargement s&#8217;allonge.</p></div>
+<div class="paragraph"><p>Des outils permettent de combiner l&#8217;ensemble des modules de l&#8217;application en un seul fichier à charger par le navigateur.</p></div>
+<div class="paragraph"><p>Outils : <code>browserify</code>, <code>rollup</code>, <code>bundle-js</code>, &#8230;&#8203;</p></div></section><section id="_problèmes"><h2>Problèmes</h2><div class="paragraph"><p>Comme JS ne spécifie rien au niveau de sa norme, différentes façon d&#8217;implémenter les modules ont vu le jour, ce qui n&#8217;est pas pour simplifier la tâche du développeur&#8230;&#8203;</p></div></section><section id="_es_harmony"><h2>ES Harmony</h2><div class="paragraph"><p>Heureusement, tout ceci est (presque) de l&#8217;histoire ancienne : la version <em>ECMAScript 2015</em> (ES6) de Javascript amène la normalisation des modules.</p></div>
+<div class="paragraph"><p>Et ceci autant pour un runtime navigateur que serveur.</p></div>
+<div class="paragraph"><p>La syntaxe est simple et claire.</p></div>
+<div class="paragraph"><p>Seule la partie chargement des modules n&#8217;est pas spécifiée et là encore plusieurs outils sont disponibles.</p></div></section><section id="_es6_modules"><h2>ES6 Modules</h2><div class="paragraph"><p>Chaque fichier est un module. Voici la <a href="http://2ality.com/2014/09/es6-modules-final.html">syntaxe</a> à utiliser.</p></div>
+<div class="paragraph"><p>Il peut <em>exporter</em> un ou des symboles. Il peut également <em>importer</em> des symboles depuis d&#8217;autres modules :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">//------ lib.js ------
+export const sqrt = Math.sqrt;
+
+export function square(x) {
+    return x * x;
+}
+
+export function diag(x, y) {
+    return sqrt(square(x) + square(y));
+}</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">//------ main.js ------
+import { square, diag } from 'lib';
+
+console.log(square(11)); // 121
+console.log(diag(4, 3)); // 5</code></pre></div></div>
+<h3>Importation d&#8217;un module complet</h3><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">//------ main.js ------
+import * as lib from 'lib';
+
+console.log(lib.square(11)); // 121
+console.log(lib.diag(4, 3)); // 5</code></pre></div></div>
+<h3>Exportation d&#8217;un seul symbole</h3><div class="paragraph"><p>Lorsqu&#8217;un module n&#8217;exporte qu&#8217;un seul symbole, on peut utiliser l&#8217;export par défaut :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">//------ myFunc.js ------
+export default function () { ... };</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">//------ main1.js ------
+import myFunc from 'myFunc';
+myFunc();</code></pre></div></div></section></section>
+<section id="_bilan"><h2>Bilan</h2><div class="paragraph"><p>On peut découper notre application en plusieurs fichiers.</p></div>
+<div class="paragraph"><p>Chaque fichier est appelé un <em>module</em> et il peut dépendre (<em>importer</em>) d&#8217;autres modules.</p></div>
+<div class="paragraph"><p>Une syntaxe permet d&#8217;importer et exporter les modules (<code>export</code> et <code>import</code>).</p></div>
+<div class="paragraph"><p>Par contre rien ne définit la façon de charger ces modules ni comment les combiner !</p></div></section>
+<section><section id="_bundling_2"><h2>Bundling</h2><div class="paragraph"><p>Retour à la notion de bundling.</p></div><div class="paragraph"><p>Comme vu précédemment, de nombreux outils de bundling existent.</p></div><div class="paragraph"><p>Nous allons voir ceux qui se rapportent au modules ES6.</p></div><div class="paragraph"><p>Deux bundlers sont assez populaires : <em>SystemJS</em> et <em>Webpack</em>.</p></div></section><section id="_webpack"><h2>Webpack</h2><div class="paragraph"><p>Nous allons utiliser <code>WebPack</code>, un bundler qui a le vent en poupe en ce moment&#8230;&#8203;</p></div>
+<div class="paragraph"><p>Installation (avec npm) :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>npm install webpack --save-dev</code></pre></div></div></section><section id="_lancer_webpack"><h2>Lancer WebPack</h2><div class="paragraph"><p>Pour combiner l&#8217;ensemble des fichiers modules de l&#8217;application en un seul 'bundle', on demande à webpack de travailler sur le fichier principal. Il va tout seul trouver les modules et les assembler ensemble.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>node_modules/.bin/webpack FICHIER_PRINCIPAL FICHIER_DE_SORTIE</code></pre></div></div>
+<div class="paragraph"><p>C&#8217;est le fichier de sortie que l&#8217;on chargera dans le navigateur.</p></div>
+<div class="paragraph"><p>Note: pour ne pas avoir à se souvenir de cette commande, il est possible de pré-enregistrer des scripts dans le fichier <code>package.json</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;script src='bundle.js'&gt;&lt;/script&gt;</code></pre></div></div>
+<div class="paragraph"><p>Note: de <em>très</em> nombreuses options existent pour WebPack, il ne s&#8217;agit ici que d&#8217;une mini-initiation !</p></div></section><section id="_exemple"><h2>Exemple</h2><div class="paragraph"><p>Vous avez un exemple de projet à cette url :</p></div>
+<div class="paragraph"><p><a href="https://github.com/ltearno/formation-html-css-javascript/tree/master/exemples/avengers-demo" class="bare">https://github.com/ltearno/formation-html-css-javascript/tree/master/exemples/avengers-demo</a></p></div>
+<div class="paragraph"><p>Une fois rapatrié sur votre machine, pour initialiser npm sur ce projet, faire <code>npm install</code> dans le répertoire du projet.</p></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

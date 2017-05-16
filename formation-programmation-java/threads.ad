@@ -1,0 +1,292 @@
+= Les threads
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: beige
+:revealjs_history: true
+:imagesdir: images-javaee
+:source-highlighter: highlightjs
+
+== Les threads
+
+=== Définition
+
+Un thread est un fil d'exécution.
+
+Au sein d'un thread, l'exécution des instructions se fait en séquence (les unes après les autres).
+
+Une instruction est exécutée après que la précédente soit terminée.
+
+Concrètement, un thread possède principalement un pointeur d'instruction (IP) et une pile (Stack).
+
+=== Organisation
+
+Un programme en cours d'exécution s'appelle un **processus**. Au lancement d'un processus, le **thread principal** est créé, c'est celui qui exécute la méthode **main()** de l'application.
+
+Un programme peut demander au système d'exploitation de créer plusieurs *threads*. Plusieurs threads s'exécutent ainsi au sein du _même_ processus.
+
+Cela permet d'effectuer **plusieurs calculs en parallèle** (en même temps).
+
+=== Gestion mémoire
+
+Dans un processus, l'ensemble de l'**espace mémoire est commun** à toutes les threads.
+
+Mais chaque thread possède sa propre **pile d'exécution**.
+
+=== Ordonnancement
+
+L'ordinateur ne possédant qu'un **nombre fini de processeurs**, seul un nombre limité de threads peut s'exécuter de façon réellement parallèle.
+
+Le système d'exploitation simule la simultanéité de l'exécution des threads grâce à des algorithmes de **scheduling**, c'est le multi-tâche.
+
+=== Accès au Thread courant
+
+[source,language='java']
+----
+Thread threadCourant = Thread.currentThread();
+long id = threadCourant.getId();
+String nom = threadCourant.getName();
+----
+
+=== Création d'un thread
+
+En Java, on peut demander la création et le lancement d'un nouveau thread, qui exécutera le code demandé. Deux possibilités:
+
+- créer une classe héritant de la classe `Thread`
+- instancier une implémentation de l'interface `Runnable` et la passer au constructeur de la classe `Thread`.
+
+=== Création en héritant de `Thread`
+
+On hérite de `Thread` et on implémente la méthode principale `run()` :
+
+[source,language='java']
+----
+public class TestThread extends Thread {
+	public TestThread(String name){
+		super(name);
+	}
+	
+	// méthode principale du thread
+	public void run(){
+		for(int i = 0; i < 10; i++)
+		{
+			System.out.println(getName());
+			
+			// attente de 50 millisencondes
+			sleep( 50 ); // il faut gérer InterruptedException
+		}
+	}       
+}
+----
+
+=== Lancer les threads
+
+On crée autant d'objets de la sous-classe de `Thread` que de threads à initialiser et exécuter.
+
+[source,language='java']
+----
+public class Test {
+	public static void main(String[] args) {
+		TestThread t = new TestThread("A");
+		TestThread t2 = new TestThread("  B");
+		
+		t.start();
+		t2.start();
+	}
+}
+----
+
+=== Exécution des threads
+
+L'ordre d'exécution semble (_et est_) aléatoire:
+
+[source]
+----
+A
+  B
+  B
+A
+  B
+A
+A
+  B
+----
+
+=== Bilan
+
+L'exécution des threads est régulée par le système d'exploitation.
+
+Il n'est pas possible de prédire l'ordre d'exécution.
+
+Donc nos programmes ne doivent pas faire d'hypothèses sur cet ordre.
+
+=== Etats des threads
+
+- `NEW` : tout juste créé.
+- `RUNNABLE` : lorsqu'on invoque la méthode start(), le thread est prêt à travailler.
+- `TERMINATED` : le thread a effectué toutes ses tâches, on dit aussi qu'il est _mort_. On ne peut plus le relancer par la méthode start().
+- `TIMED_WAITING` : le thread est en pause (appel de la méthode `sleep()`, par exemple).
+- `WAITING` : le thread est en attente indéfinie (opérations d'entrée/sortie).
+- `BLOCKED` : lorsque l'ordonnanceur place un thread en sommeil pour en utiliser un autre, il lui impose cet état.
+
+=== Fin d'un thread
+
+Un thread est terminé et s'arrête lorsque la méthode `run()` se termine.
+
+En effet, une nouvelle pile d'exécution contient à sa base la méthode `run()` de notre thread. Une fois celle-ci dépilée, le thread n'a plus rien à exécuter !
+
+== Accès concurrents à la mémoire
+
+=== Rappel : le modèle mémoire
+
+Les threads partagent tous l'espace mémoire du processus dans lequel elles s'exécutent.
+
+Comme toutes s'exécutent en (pseudo-)même temps, il faut faire attention aux problèmes de concurrence!
+
+=== Création d'un thread avec l'interface `Runnable`
+
+On écrit une classe implémentant l'interface `Runnable`...
+
+[source,language='java']
+----
+public class RunImpl implements Runnable
+{
+	private CompteEnBanque compte;
+	
+	// ...
+
+	public void run()
+	{
+		for( int i = 0; i < 5000; i++ )
+		{
+			compte.retrait( 1 );
+		}
+	}
+}
+----
+
+=== Lancement du thread
+
+Et on crée des instances de `Thread` en passant en paramètre du constructeur nos objets `Runnable` :
+
+[source,language='java']
+----
+CompteEnBanque compte = new CompteEnBanque( 5000 );
+
+Thread t1 = new Thread( new RunImpl( compte ) );
+Thread t2 = new Thread( new RunImpl( compte ) );
+
+t1.start();
+t2.start();
+
+// on attend que les 2 threads soient terminées
+t1.join();
+t2.join();
+
+System.out.println( "solde du compte (à priori -5000): " + compte.getSolde() );
+----
+
+=== Résultat
+
+Ce n'est pas le résultat attendu qui apparait !
+
+D'ailleurs il change à chaque exécution.
+
+[source]
+----
+-929
+----
+
+=== Pourquoi ?
+
+L'exécution des instructions d'un thread peut être interrompue à tout momment par le système d'exploitation pour _donner le processeur_ à une autre thread.
+
+DEMONSTRATION
+
+== Synchronisation
+
+La machine et le système d'exploitation fournissent les mécanismes nécessaires pour synchroniser les threads entre eux.
+
+Il est donc possible d'utiliser ces fonctionnalités dans un programme Java, grâce entre autres au mot-clé `synchronized`.
+
+=== Mot-clé `synchronized`
+
+`synchronized` est applicable aux méthodes et on peut le préfixer à un bloc de code.
+
+Il est toujours (implicitement ou pas) lié à une clé de verrou, qui peut être n'importe quel objet.
+
+En toutes circonstances, un seul thread a accès a(ux) zone(s) protégé(es) par la clé de verrou.
+
+=== Clé de verrou
+
+En fonction de l'élément sur lequel `synchronized` est appliqué, différents verrous sont utilisés :
+
+- Si appliqué à une méthode, la clé de verrou est l'objet sur lequel est exécutée cette méthode. 
+- Si la méthode est statique, le verrou est l'objet `Class` de la classe à laquelle elle appartient.
+- Si appliqué à un bloc, le verrou est précisé entre parenthèse après le mot-clé `synchronized`.
+
+=== Synchronized, exemple
+
+Dans notre exemple, il suffit de rajouter `synchronized` à la méthode `retrait(...)`
+
+[source,language='java']
+----
+public class CompteEnBanque
+{
+	// ...
+
+	// on ajoute 'synchronized' pour empêcher
+	// plusieurs threads de rentrer dans la
+	// méthode en "même" temps
+	public synchronized void retrait( int montant )
+	{
+		solde -= montant;
+	}
+}
+----
+
+=== Vérouillage d'un bloc
+
+[source,language='java']
+----
+synchronized(key) // key peut être n'importe quel objet
+{
+	// bloc synchronisé
+}
+----
+
+Pour entrer dans le bloc, le thread doit acquérir le verrou associé à l'objet `key`.
+
+Si le verrou est déjà détenu par un autre thread, le thread est mis en attente.
+
+En sortant du bloc le thread libère le verrou. S'il y en a, un des threads en attente acquiert le verrou et entre dans le bloc.
+
+=== Deadlock et autres
+
+Attention la programmation multi-thread est très complexe.
+
+En général, cette complexité est masquée par les bibliothèques de haut-niveau.
+
+=== Classes de synchronisation
+
+- Compteurs atomiques: **AtomicInteger**, et autres types...
+- Listes et structures **thread-safe**,
+- Objets de synchronisation de haut niveau (**Mutex**, **Semaphore**, ...)
+
+=== ForkJoin Pool
+
+Permet de traiter en parallèle un traitement facilement découpable en plusieurs sous-traitements.
+
+=== Plus loin
+
+L'idée est toujours de:
+
+- maximiser l'utilisation des processeurs pour aller plus vite,
+- paralléliser les traitements (algorithmes et structures de données),
+- avec la plus grande facilité possible pour le développeur!
+
+_Lire "Systèmes d'exploitation" d'Andrew Tannenbaum._
+
+[%notitle]
+=== .

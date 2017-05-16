@@ -1,0 +1,649 @@
+= Déploiement Java EE - Travaux pratiques
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Plan des exercices
+
+IUT Blagnac LP APSIO - 2017 - LTE Consulting
+
+Exercices liés au déploiement d'application Java EE.
+Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
+
+toc::[]
+
+Ce cours est open source et est disponible en ligne :
+
+- cours sur github : https://github.com/ltearno/formation-deploiement-jee-cours
+- cours en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html
+- exercices en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html
+- tp corrigé : https://github.com/ltearno/formation-deploiement-jee-sample
+
+== Exercice 1 : déployer une application dans Tomcat
+
+=== Télécharger Tomcat
+
+Télécharger Tomcat en version 8.5 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
+
+=== Installer Eclipse
+
+Utiliser la dernière version d'Eclipse (Neon en 2017) dans la variante "Java EE" de façon à profiter des outils Java EE.
+
+=== Création d'une application vraiment très simple
+
+Avec Eclipse, créer une application *Dynamic Web Application* avec un seul JSP simple qui affiche le répertoire de Tomcat.
+
+`index.jsp` :
+
+[source,jsp]
+----
+Le répertoire de déploiement est :
+<%= System.getProperty("catalina.base") %>
+----
+
+C'est une application vraiment simple (pas d'état car pas de session).
+
+Cette application affiche la propriété `catalina.base` qui reflète le répertoire d'installation de Tomcat.
+
+=== Création du fichier `.war`
+
+Pour créer le fichier `.war`, utiliser le menu `Fichier`/`Exporter...` d'Eclipse.
+
+_Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._
+
+=== Déploiement de l'application dans le serveur Tomcat
+
+Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `.war` dans le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle également le répertoire de déploiement.
+
+A chaque fois que vous copierez une nouvelle version du `war` dans le répertoire de déploiement de Tomcat, celui-ci relance l'application (c'est le comportement par défaut, il est configurable).
+
+=== Lancement de Tomcat
+
+Lancer Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la version Windows Batch (`.bat`)).
+
+Vous devez pouvoir accéder à l'adresse `http://localhost:8080/${NOM DE VOTRE APPLICATION}` dans un navigateur.
+
+=== Conclusions
+
+La mise en oeuvre est très simple !
+
+Mais quels sont les problèmes ?
+
+- Crash serveur = arrêt du service
+- Montée de version = arrêt du service
+- Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
+
+== Exercice 2 : déployer l'application sur deux Tomcat avec load balancing
+
+=== Comment faire face au problème de crash serveur ?
+
+Un crash serveur, c'est un service inaccessible pour le client, et c'est donc en général une perte d'argent pour l'entreprise.
+Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques de catastrophes naturelles).
+Un serveur frontal va router les requêtes http vers nos différents serveurs d'application. C'est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d'application.
+
+Nous allons installer un deuxième serveur Tomcat et NGINX configuré en Load balancer.
+
+=== Installer la seconde instance de Tomcat
+
+Dupliquez l'installation de Tomcat dans un autre répertoire de votre choix.
+
+Editez le ficher `server.xml` de la deuxième installation et changez les ports de cette façon :
+
+- HTTP : 8081
+- Redirection : 8444
+- AJP : 8010
+- Shutdown port : 8006
+
+Déployer l'application précédente sur les **deux** serveurs Tomcat.
+
+[NOTE]
+====
+On peut faire un lien symbolique du war crée avec maven vers les répertoire de déploiement des Tomcat, ceci vous évitera des opérations répétitives !
+Ceci se fait avec la commande `ln` :
+
+[source,bash]
+----
+ln -s cible nom_du_lien
+----
+====
+
+Dans deux terminaux différents, lancez chacun des Tomcat.
+
+Vérifiez dans un navigateur que les deux Tomcat sont lancés sur les ports 8080 et 8081 et que l'application est bien déployée sur les deux serveurs.
+
+=== Installer et configurer NGINX en Load Balancer
+
+==== Sous Linux
+
+Tapez la commande suivante pour installer `nginx` :
+
+----
+apt install nginx-full
+----
+
+==== Sous Windows
+
+Téléchargez l'archive de NGINX http://nginx.org/download/nginx-1.10.1.zip[ici].
+
+Il faut ensuite l'extraire, de préférence à la racine d'un disque.
+
+Configurez NGINX en Load Balancer avec la configuration suivante dans `/etc/nginx/nginx.conf` (sous Windows : `conf\nginx.conf`) :
+
+----
+http {
+	upstream application {
+		server 127.0.0.1:8080;
+		server 127.0.0.1:8081;
+	}
+
+	server {
+		listen 80;
+
+		location / {
+			proxy_pass http://application;
+			proxy_connect_timeout 1;
+		}
+	}
+}
+
+events {
+	worker_connections 768;
+}
+----
+
+Lancez nginx (`sudo service nginx start`, ou `nginx.exe` sous Windows) et vérifiez que celui ce fonctionne et redirige les requêtes vers les tomcats. 
+
+Le serveur nginx répond sur le port 80, il faut donc adapter l'url dans le navigateur. Rechargez plusieurs fois la page pour vérifier que le load balancing se fait bien alternativement entre les deux serveurs (le répertoire de déploiement affiché doit changer une fois sur deux).
+
+Tuez un des deux serveurs :
+
+- on recherche le bon processus Tomcat avec `ps -Af | grep java`,
+- puis on le tue avec `kill ID_PROCESSUS`.
+
+Vérifier que l'application fonctionne toujours quand on y accède par nginx.
+
+*Nginx détecte l'erreur sur le serveur arrêté et poursuit sur le serveur qui fonctionne.*
+
+=== Au passage, quels ont été les freins à l'automatisation ?
+
+- La dépendance à Eclipse ne permet pas de construire les projets en ligne de commande, il faut utiliser un gestionnaire de build (maven, gradle, ant etc).
+- Copie du fichier `.war` à la main, difficilement automatisable.
+- Lancement et arrêt des serveurs manuel.
+- Et en plus, les sources ne sont pas versionnées !
+
+=== Une application à état (simple)
+
+Une application a très souvent besoin de stocker l'état conversationnel http entre les clients et le serveur : c'est la **session**. Il s'agit souvent de l'utilisateur connecté ou encore du panier associé pour un site de commerce.
+
+Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.
+
+Nous allons donc introduire un état dans l'application : la session utilisateur et un cookie.
+
+Changez le contenu de la JSP pour :
+
+[source,jsp]
+----
+Server Id : <%= ManagementFactory.getRuntimeMXBean().getName() %><br/>
+<br /> Le répertoire de déploiement est :
+<%=System.getProperty("catalina.base")%><br />
+
+Identifiant de session : <%=session.getId()%><br />
+<!-- Session Java EE -->
+<%
+	String valeur = (String) session.getAttribute("VALEUR");
+%>
+
+La clé 'VALEUR' de la session est : <%=valeur%><br />
+<%
+	if (valeur == null) {
+		valeur = "VALEUR_" + UUID.randomUUID().toString();
+		session.setAttribute("VALEUR", valeur);
+		%>
+		Création de la VALEUR de session : <%=valeur %><br />
+		<%
+	}
+%>
+
+<!-- Utilisation d'un cookie -->
+<%
+	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
+%>
+La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
+<%
+	if (valeurCookie == null) {
+		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
+		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
+		%>
+		Création du cookie MONCOOKIE : <%=valeurCookie %><br />
+		<%
+	}
+%>
+----
+
+Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
+
+Compilez et déployez la nouvelle version sur un des deux serveurs Tomcat. Le LB envoie maintenant alternativement sur les deux versions. La gestion de montée des versions est un des autres domaines passionnants du déploiement !
+
+=== Déployer sur les deux Tomcats
+
+Mettez l'autre Tomcat à jour et vérifiez que le LB renvoie maintenant toujours vers la même version.
+
+Nouveau problème : la session est stockée localement par serveur Tomcat donc on a une fois sur deux la mauvaise session. Une fois sur deux Tomcat ne trouve pas la session puisqu'il s'agit de celle de l'autre Tomcat !!!
+
+En fait Java EE se base sur le cookie `JSESSIONID` pour retrouver la session.
+
+=== Problème des sessions
+
+Java EE ne prévoit pas de façon standardisée le stockage des sessions en environnement distribué. Chaque serveur d'application fournit sa propre solution.
+
+En standard Java EE prévoit que les données de session soient stokées relativement au serveur qui s'exécute.
+
+=== Trois solutions
+
+- Faire du sticky session. Nginx peut être configuré pour envoyer les clients sur le même serveur.
+
+- Stocker la session dans une même base de donnée pour tous les serveurs.
+
+- Utiliser JWT pour envoyer nos informations de "session" à partir du client. L'information est chifrée dans un cookie qui est transmis par le navigateur et qui reste le même quelque soit le client.
+
+==== Sticky load balancer
+
+Le Load Balancer (Nginx) calcule un hash basé sur l'adresse IP du client et route la requête  vers le serveur correspondant.
+
+Rajouter `ip_hash;` dans la section `upstream` de la configuration de Nginx.
+
+Relancer Nginx.
+
+Constater que maintenant la session est stable.
+
+Mais si on arrête le serveur choisi par Nginx, que se passe-t-il ?
+
+On perd la session quand le serveur crashe ! Donc l'utilisateur connecté, son panier etc...
+
+AVANTAGE :
+
+- on ne peut pas faire plus simple ! Et l'application survit bien au crash d'un de ses serveurs.
+
+INCONVENIENTS :
+
+- mauvaise répartition de la charge.
+- Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
+
+==== Déport de la session dans une base externe
+
+Le phénomène de perte de session précédent est l'effet du standard Java EE.
+
+Pour le résoudre, on déporte le stockage des données de session (l'"état" de l'application à chaque requête) à l'extérieur des serveurs d'application Java EE.
+
+On peut soit utiliser des solutions de clustering propre à chaque distributeur (JBoss, WebLogic, ...).
+
+Ou bien implémenter sa propre solution.
+
+Nous allons utiliser une solution simple proposée en standard par Apache Tomcat : le stockage des sessions dans une base de donnée MySQL.
+
+Retirer `ip_hash;` de la configuration de Nginx et redémarrer celui-ci.
+
+On va utiliser MySQL, mais il est plus intéressant dans un contexte distribué d'utiliser une base de données distribuée (Hazelcast, Redis, Memcached, CouchDB ou autre...)
+
+Installer MariaDB :
+
+===== Sous Linux
+
+		apt install mariadb-server
+
+Ne pas donner de mot de passe.
+
+===== Sous Windows
+
+Sous Windows une façon simple d'installer MySQL est d'installer http://www.wampserver.com/[WAMP] puis de ne démarrer que le serveur MySQL (on ne démarre pas Apache). 
+
+Ensuite on crée la base de donnée et la table qui va stocker les données de session pour les serveurs Tomcat :
+
+[NOTE]
+====
+Sous Windows, on peut utiliser PhpMyAdmin pour exécuter des instructions SQL. PhpMyAdmin est installé par défaut avec WAMP.
+====
+
+----
+mysql -u root
+
+create database tomcat_sessions;
+
+use tomcat_sessions;
+
+create table tomcat_sessions (
+  session_id     varchar(100) not null primary key,
+  valid_session  char(1) not null,
+  max_inactive   int not null,
+  last_access    bigint not null,
+  app_name       varchar(255),
+  session_data   mediumblob,
+  KEY kapp_name(app_name)
+);
+----
+
+Utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Prendre la dernière `5.1.x`.
+
+Copier le connecteur MySql dans le répertoire lib des deux tomcats :
+
+----
+cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35/lib/
+cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/
+----
+
+Créer un fichier de contexte pour l'application, de façon à spécifier au serveur d'application (Tomcat) que l'on désire stocker les sessions à l'extérieur sur une base de donnée. Le fichier à créer est `src/main/webapp/META-INF/context.xml` pour un projet Maven, et dans `WebContent/META-INF/context.xml`.
+
+Voici le contenu de ce fichier :
+
+[source,xml]
+----
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+	<Valve className="org.apache.catalina.valves.PersistentValve"/> <1>
+
+	<Manager className="org.apache.catalina.session.PersistentManager" > <2>
+		<Store
+			className="org.apache.catalina.session.JDBCStore" <3>
+			connectionURL="jdbc:mysql://localhost/tomcat_sessions?user=root" <4>
+			driverName="com.mysql.jdbc.Driver"
+			sessionAppCol="app_name"
+			sessionDataCol="session_data"
+			sessionIdCol="session_id"
+			sessionLastAccessedCol="last_access"
+			sessionMaxInactiveCol="max_inactive"
+			sessionTable="tomcat_sessions" <5>
+			sessionValidCol="valid_session" />
+	</Manager>
+</Context>
+----
+<1> utilisation du stockage à chaque session
+<2> utilisation du composant de persistance des sessions
+<3> utilisation du stockage par JDBC (implémentation de `org.apache.catalina.Store`)
+<4> url JDBC de connexion à la bdd des sessions
+<5> nom de la table utilisée pour le stockage les sessions
+
+Construire le projet (`mvn install` avec Maven, ou exporter un WAR avec Eclipse) et le déployer sur les deux Tomcats. Vérifier que Nginx est toujours actif.
+
+Rafraîchir la page, que se passe-t-il ?
+
+La session reste stable même si le serveur d'application sollicité change.
+
+AVANTAGES:
+
+- compatible Java EE, l'utilisation de l'API des sessions ne change pas
+- le load balancer est libre de choisir le serveur le plus adapté à la charge actuelle de l'infrastructure.
+
+INCONVENIENTS:
+
+- une connexion (ou pas) à la base de données à chaque requête.
+- crée un goulot d'étranglement vers la base de données.
+- mais on peut utiliser une base distribuée.
+- on a un serveur de base de donnée à gérer en plus !
+- les resources ne sont pas forcément bien gérées non plus : on va avoir tendance à ne pas remplir les serveurs ce qui empêche de les mettre à l'arrêt... Solution : remettre les sticky-sessions pour avoir le meilleur des deux mondes.
+
+==== Utilisation de JWT
+
+Il est possible de déporter les données de sessions directement dans le navigateur !
+
+Pour cela on chiffre les données sur le serveur avec une clée privée et on positionne le résultat du chiffrement dans un cookie.
+
+Au traitement des requêtes suivantes, il suffit de déchiffrer le cookie pour retrouver l'information et s'assurer de leur non-altération.
+
+Une spécification existe, c'est JWT (Json Web Token).
+
+Nous allons utiliser JJWT, une bibliothèque open source pour la gestion de JWT :
+
+[source,xml]
+----
+<dependency>
+	<groupId>io.jsonwebtoken</groupId>
+	<artifactId>jjwt</artifactId>
+	<version>0.6.0</version>
+</dependency>
+----
+
+Pour un projet n'utilisant pas Maven, vous pouvez télécharger le fichier jar en allant sur http://search.maven.org[maven central] et en recherchant l'artéfact `jjwt`. Le fichier jar est disponible en cliquant sur le lien `jar` qui doit apparaitre en résultat de recherche.
+
+Ce fichier est à copier dans le répertoire `WEB-INF/lib` de votre application (à créer si nécessaire).
+
+[source,java]
+----
+// chiffrer l'information 'Subject'
+String s = Jwts.builder().setSubject("Joe").signWith(SignatureAlgorithm.HS512, key).compact();
+
+// déchiffrer l'information
+Jwts.parser().setSigningKey(key).parseClaimsJws(s).getBody().getSubject(); // renvoie "Joe"
+
+// création d'une clé de chiffrement
+Key createKey() {
+	SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+	byte[] apiKeySecretBytes = "alja lkejhe kjhdaoiuha ofygfakhfkjhg".getBytes();
+
+	Key key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+	return key;
+}
+----
+
+AVANTAGES:
+
+- l'état est conservé côté client, ce qui allège considérablement la charge serveur.
+- permet une infrastructure réellement stateless
+- sécurisé
+
+INCONVENIENTS:
+
+- le chiffrement peut être couteux et nécessiter du métériel dédié
+- le stockage et la gestion des clés privés peut être problématique
+- impraticable pour stocker des données volumineuses
+
+===== Et la sécurité ?
+
+Attention à la gestion des clés avec l'utilisation de JWT !
+
+Pour HTTPS on peut utiliser des machines de chiffrement en bordure de réseau.
+
+Ne pas oublier cette dimension qui n'a été que très peu abordée dans ce cours...
+
+=== Conclusion
+
+Toujours une histoire de compromis, il faut choisir le meilleur entre :
+
+- réponse à la demande,
+- complexité de la solution,
+- productivité.
+
+== Exercice 3 : Déploiement de l'application avec Docker.
+
+=== Installation de Docker
+
+Voir la https://docs.docker.com/engine/installation/linux/debian/[documentation officielle]...
+
+----
+# La version noyau doit être supérieur à 3.10
+# Le système doit être 64 bits
+uname -r
+
+sudo apt-get install docker.io
+----
+
+Téléchargement de l'image officielle de Tomcat en version 8.0.35, avec un environnement Java 8 :
+
+----
+sudo docker pull tomcat:8.0.35-jre8
+----
+
+Nous créons un fichier `Dockerfile` pour créer une image consistant en :
+
+- l'image Tomcat que nous venons de télécharger
+- notre application, dans le répertoire de déploiement de Tomcat, à l'intérieur de l'image.
+
+Voici le contenu du fichier :
+
+----
+FROM tomcat:8.0.35-jre8 <1>
+COPY target/deploiement-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ <2>
+----
+<1> image officielle de Tomcat pour commencer
+<2> copie du war de l'application dans le répertoire de déploiement de Tomcat
+
+Ensuite nous créons effectivement l'image à partir du `Dockerfile` :
+
+----
+sudo docker build -t ltearno/application:latest .
+
+# => Successfully built a867b1c2e8ae
+----
+
+Lancez l'image en intéractif pour voir :
+
+----
+sudo docker run  -it --rm -p 8080:8080 ltearno/application:latest
+----
+
+Vous devez voir les logs de Tomcat s'imprimer à l'écran jusqu'au message de fin de démarrage.
+
+Comme nous avons indiqué un mappage de port (`-p 8080:8080`), il est possible d'accéder à l'application
+à partir de l'url 'http://localhost:8080'. Vérifiez que cela fonctionne bien.
+
+Tuez l'image avec `Ctrl+C`.
+
+Lancer l'image dix fois, en mode démon (`-d`) :
+
+----
+sudo docker run -d -p 8080:8080 ltearno/application:latest
+sudo docker run -d -p 8081:8080 ltearno/application:latest
+sudo docker run -d -p 8082:8080 ltearno/application:latest
+sudo docker run -d -p 8083:8080 ltearno/application:latest
+sudo docker run -d -p 8084:8080 ltearno/application:latest
+sudo docker run -d -p 8085:8080 ltearno/application:latest
+sudo docker run -d -p 8086:8080 ltearno/application:latest
+sudo docker run -d -p 8087:8080 ltearno/application:latest
+sudo docker run -d -p 8088:8080 ltearno/application:latest
+sudo docker run -d -p 8089:8080 ltearno/application:latest
+----
+
+[NOTE]
+====
+On n'a plus besoin de changer le port d'écoute de Tomcat dans sa configuration, 
+ceci est fait *depuis l'extérieur* de l'application avec docker.
+
+Pour l'application, l'exécution s'effectue dans des environnements strictement
+identiques, c'est un des bénéfices de Docker.
+====
+
+Il est possible de consulter la liste des containers :
+
+----
+arnaud@arnaud-debian:~/deploiement$ docker ps -a
+CONTAINER ID        IMAGE                        COMMAND             CREATED             STATUS              PORTS                    NAMES
+82fa4257fe41        ltearno/application:latest   "catalina.sh run"   21 seconds ago      Up 21 seconds       0.0.0.0:8089->8080/tcp   sharp_hodgkin
+689bf0375e14        ltearno/application:latest   "catalina.sh run"   24 seconds ago      Up 23 seconds       0.0.0.0:8088->8080/tcp   berserk_cori
+4be52fa3e953        ltearno/application:latest   "catalina.sh run"   24 seconds ago      Up 24 seconds       0.0.0.0:8087->8080/tcp   angry_colden
+fa7d70b4418a        ltearno/application:latest   "catalina.sh run"   25 seconds ago      Up 25 seconds       0.0.0.0:8086->8080/tcp   mad_leakey
+50d31fa22616        ltearno/application:latest   "catalina.sh run"   26 seconds ago      Up 26 seconds       0.0.0.0:8084->8080/tcp   stupefied_euclid
+744666ee4b0b        ltearno/application:latest   "catalina.sh run"   26 seconds ago      Up 25 seconds       0.0.0.0:8085->8080/tcp   agitated_bohr
+62aae97404a7        ltearno/application:latest   "catalina.sh run"   27 seconds ago      Up 27 seconds       0.0.0.0:8083->8080/tcp   distracted_elion
+2bce8ed38ed3        ltearno/application:latest   "catalina.sh run"   28 seconds ago      Up 28 seconds       0.0.0.0:8082->8080/tcp   distracted_mestorf
+b244f8af49fd        ltearno/application:latest   "catalina.sh run"   29 seconds ago      Up 28 seconds       0.0.0.0:8081->8080/tcp   happy_blackwell
+fc285815ea12        ltearno/application:latest   "catalina.sh run"   29 seconds ago      Up 29 seconds       0.0.0.0:8080->8080/tcp   sharp_kowalevski
+arnaud@arnaud-debian:~/deploiement$
+----
+
+Pour stopper tous les containers :
+
+----
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+----
+
+Editez la configuration Nginx pour prendre en compte les nouveaux ports TCP. Relancer Nginx (`sudo nginx -s reload`).
+
+Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement utilisés.
+
+Tuer quelques containers pour constater que l'application n'est nullement dérangée.
+
+== Exercice 4 : Gérer notre application avec Kubernetes
+
+Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
+
+=== Installation et création d'un cluster de développement
+
+Dans un environnement de production Kubernetes permet de gérer un cluster de machines physiques ou virtuelles.
+Il peut même piloter des services cloud (GCP, AWS, ...) pour créer des machines virtuelles et lancer les conteneurs
+apprpriés.
+
+Ici nous allons installer K8S sur notre machine de développement. Notre cluster sera donc réduit à un noeud.
+
+----
+# choix de la version de Kubernetes
+export K8S_VERSION=$(curl -sS https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+
+# lancement de Kubernetes au sein d'un container Docker
+export ARCH=amd64
+docker run -d \
+    --volume=/:/rootfs:ro \
+    --volume=/sys:/sys:rw \
+    --volume=/var/lib/docker/:/var/lib/docker:rw \
+    --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
+    --volume=/var/run:/var/run:rw \
+    --net=host \
+    --pid=host \
+    --privileged \
+    gcr.io/google_containers/hyperkube-${ARCH}:${K8S_VERSION} \
+    /hyperkube kubelet \
+        --containerized \
+        --hostname-override=127.0.0.1 \
+        --api-servers=http://localhost:8080 \
+        --config=/etc/kubernetes/manifests \
+        --cluster-dns=10.0.0.10 \
+        --cluster-domain=cluster.local \
+        --allow-privileged --v=2
+
+# installation de kubectl
+sudo bash
+curl -sSL "http://storage.googleapis.com/kubernetes-release/release/v1.2.0/bin/linux/amd64/kubectl" > /usr/bin/kubectl
+chmod +x /usr/bin/kubectl
+exit
+
+# configuration du cluster local
+kubectl config set-cluster mon-cluster --server=http://localhost:8080
+kubectl config set-context mon-cluster --cluster=mon-cluster
+kubectl config use-context mon-cluster
+
+# on vérifie que le tout est bien configuré
+kubectl get nodes
+# (on doit voir la liste des noeuds, c'est à dire un noeud 127.0.0.1)
+----
+
+=== Exécution de l'application
+
+Kubernetes est maintenant prêt à recevoir les commandes de création de clusters.
+
+----
+# création et lancement d'un déploiement de l'image nginx
+kubectl run nginx --image=nginx --port=80
+
+# on expose ce déploiement sur le port 80
+kubectl expose deployment nginx --port=80
+
+# pour obtenir l'adresse exposée par ce déploiement
+kubectl get svc nginx --template={{.spec.clusterIP}}
+----
+
+Tester le serveur Nginx dans sa version standard dans un navigateur puis pour arrêter et effacer ce cluster.
+
+----
+kubectl delete deployment nginx
+
+# création du pod
+kubectl create -f ./application-pod.yaml
+
+# liste des pods
+kubectl get pods
+
+kubectl delete pod application
+----
+
+Ceci termine l'exercice d'introduction à Kubernetes.
+

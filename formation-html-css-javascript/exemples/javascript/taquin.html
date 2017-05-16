@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript">
+        function e(id) { return document.getElementById(id) }
+
+        window.addEventListener('load', function () {
+            var plateau = e('taquin')
+
+            const LARGEUR = 4
+            const HAUTEUR = 4
+
+            var nombresAPlacer = []
+            for (var n = 1; n < LARGEUR * HAUTEUR; n++)
+                nombresAPlacer.push(n)
+
+            var modele = []
+
+            for (var j = 0; j < HAUTEUR; j++) {
+                var ligne = []
+
+                for (var i = 0; i < LARGEUR; i++) {
+                    if (nombresAPlacer.length > 0) {
+                        var index = Math.floor(Math.random() * nombresAPlacer.length)
+                        var nombreAPlacer = nombresAPlacer[index]
+                        nombresAPlacer.splice(index, 1)
+
+                        ligne.push(nombreAPlacer)
+                    }
+                    else {
+                        ligne.push(null)
+                    }
+                }
+
+                modele.push(ligne)
+            }
+
+            modele.permute = function (x, y) {
+                var valeur = this[x][y]
+
+                for (var pair of [[0, 1], [0, -1], [1, 0], [-1, 0]]) {
+                    var testX = x + pair[0]
+                    var testY = y + pair[1]
+                    if (testX < 0 || testX >= LARGEUR || testY < 0 || testY >= HAUTEUR)
+                        continue
+
+                    if (modele[testX][testY] === null) {
+                        modele[testX][testY] = modele[x][y]
+                        modele[x][y] = null
+                        break
+                    }
+                }
+
+                majPlateau()
+            }
+
+            function majPlateau() {
+                plateau.innerHTML = ""
+
+                function creerCase(y, x) {
+                    let button = document.createElement('button')
+
+                    button.innerHTML = modele[x][y]
+
+                    let caseDiv = document.createElement('div')
+                    caseDiv.appendChild(button)
+
+                    button.addEventListener('click', function () {
+                        modele.permute(x, y)
+                    })
+
+                    return caseDiv
+                }
+
+                function creerLigne(taille, indexLigne) {
+                    var ligne = document.createElement('div')
+
+                    while (taille--)
+                        ligne.appendChild(creerCase(indexLigne, taille))
+
+                    return ligne
+                }
+
+                function creerPlateau(largeur, hauteur) {
+                    while (hauteur--)
+                        plateau.appendChild(creerLigne(largeur, hauteur))
+                }
+
+                creerPlateau(LARGEUR, HAUTEUR)
+            }
+
+            majPlateau()
+        })
+    </script>
+
+<style>
+        #taquin {
+            display:flex;
+            flex-flow: column nowrap;
+        }
+
+        #taquin>div {
+            display:flex;
+            flex-flow: row nowrap;
+        }
+
+        #taquin>div>div {
+            width: 2em;
+            height: 2em;
+
+            line-height: 2em;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #taquin>div>div>button {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="taquin"></div>
+</body>
+
+</html>

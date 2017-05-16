@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript">
+        function e(id) { return document.getElementById(id) }
+
+        var pieces = ['O', 'X']
+        var joueurCourant = 0
+
+        window.addEventListener('load', function () {
+            var plateau = e('morpion')
+
+            function creerCase() {
+                let button = document.createElement('button')
+
+                let caseDiv = document.createElement('div')
+                caseDiv.appendChild(button)
+
+                button.addEventListener('click', function () {
+                    caseDiv.innerHTML = pieces[joueurCourant]
+
+                    joueurCourant = (joueurCourant + 1) % pieces.length
+                })
+
+                return caseDiv
+            }
+
+            function creerLigne(taille) {
+                var ligne = document.createElement('div')
+
+                while (taille--)
+                    ligne.appendChild(creerCase())
+
+                return ligne
+            }
+
+            function creerPlateau(largeur, hauteur) {
+                while (hauteur--)
+                    plateau.appendChild(creerLigne(largeur))
+            }
+
+            creerPlateau(3, 3)
+        })
+    </script>
+
+<style>
+        #morpion {
+            display:flex;
+            flex-flow: column nowrap;
+        }
+
+        #morpion>div {
+            display:flex;
+            flex-flow: row nowrap;
+        }
+
+        #morpion>div>div {
+            width: 2em;
+            height: 2em;
+
+            line-height: 2em;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #morpion>div>div>button {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="morpion"></div>
+</body>
+
+</html>

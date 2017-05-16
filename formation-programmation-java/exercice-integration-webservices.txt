@@ -1,0 +1,580 @@
+Intégration avec Google Maps Directions API
+
+- Les FunkoPop ont maintenant chacun un identifiant unique et une position sur la terre. Ajouter ces champs :
+
+		int id;
+		double longitude;
+		double latitude;
+
+- Consulter cette page pour savoir comment appeler les web services google.
+
+		https://developers.google.com/maps/documentation/directions/?hl=fr
+
+		Classes modélisant les résultats de Directions API :
+
+		S'inspirer dans ce dépot à partir de DirectionsResults.java
+		https://github.com/googlemaps/google-maps-services-java/tree/master/src/main/java/com/google/maps/model
+		
+		L'objectif ici est de modéliser la réponse du service web avec des classes que vous créerez (vous pouvez vous inspirer des classes présentes dans le dépot mentionné ci-dessus).
+
+- Integration de la bibliothèque Jackson Annotations
+
+		Vous aurez besoin de l'annotation @JsonIgnoreProperties lorsque vous modéliserez les résultats produits par le service web Google Directions.
+		
+		Cette annotation se trouve dans la bibliothèque jackson-annotations-2.7.4.jar.
+		
+		Voici comment la récupérer et comment l'intégrer dans votre projet :
+		
+		- Trouver le fichier 'jackson-annotations-2.7.4.jar' dans le répertoire de WildFly
+		
+		- Copier ce fichier dans votre projet dans WEB-INF/lib/
+		
+		- Dans Eclipse, rafraichir le projet. Puis dans WebContent/WEB-INF/lib/, faire bouton droit sur le fichier 'jackson-annotations-2.7.4.jar' et choisir Build Path > Add to Build path
+		
+		
+		
+- Ajouter au service web funko/pop une méthode getFunkoPopsDistanceInTime( int idFunkoPopOrigin, int idFunkoPopDestination )
+
+		Cette méthode WS doit renvoyer le temps nécessaire pour faire voyager le FunkyPop idFunkoPopOrigin jusqu'au FunkyPop idFunkoPopDestination.
+		
+		
+		
+		
+Exemple de requete donné sur le site google
+
+
+Les paramètres de requete
+
+origin: 75 9th Ave New York, NY
+destination: MetLife Stadium Dr East Rutherford, NJ 07073
+departure_time: 1541202457
+traffic_model: best_guess
+mode: driving
+key: API_KEY
+
+L'URL correspondante
+
+https://maps.googleapis.com/maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&departure_time=1541202457&traffic_model=best_guess&key=API_KEY
+
+Exemple de réponse
+
+Response
+{
+   "geocoded_waypoints" : [
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJyYfhZ79ZwokRMtXcL6CYxkA",
+         "types" : [ "premise" ]
+      },
+      {
+         "geocoder_status" : "OK",
+         "partial_match" : true,
+         "place_id" : "ChIJ8YWMWnz4wokRCOVf1CcJCbY",
+         "types" : [ "street_address" ]
+      }
+   ],
+   "routes" : [
+      {
+         "bounds" : {
+            "northeast" : {
+               "lat" : 40.8171321,
+               "lng" : -73.996854
+            },
+            "southwest" : {
+               "lat" : 40.7416627,
+               "lng" : -74.0728354
+            }
+         },
+         "copyrights" : "Map data ©2015 Google",
+         "legs" : [
+            {
+               "distance" : {
+                  "text" : "9.2 mi",
+                  "value" : 14856
+               },
+               "duration" : {
+                  "text" : "22 mins",
+                  "value" : 1345
+               },
+               "duration_in_traffic" : {
+                  "text" : "24 mins",
+                  "value" : 1417
+               },
+               "end_address" : "1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",
+               "end_location" : {
+                  "lat" : 40.814505,
+                  "lng" : -74.07272910000002
+               },
+               "start_address" : "75 Ninth Ave, New York, NY 10011, USA",
+               "start_location" : {
+                  "lat" : 40.7428759,
+                  "lng" : -74.00584719999999
+               },
+               "steps" : [
+                  {
+                     "distance" : {
+                        "text" : "440 ft",
+                        "value" : 134
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 34
+                     },
+                     "end_location" : {
+                        "lat" : 40.7422925,
+                        "lng" : -74.004457
+                     },
+                     "html_instructions" : "Head \u003cb\u003esoutheast\u003c/b\u003e on \u003cb\u003eW 16th St\u003c/b\u003e toward \u003cb\u003eNinth Ave\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "_rtwFpgubMtBuG"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7428759,
+                        "lng" : -74.00584719999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "49 ft",
+                        "value" : 15
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 29
+                     },
+                     "end_location" : {
+                        "lat" : 40.7421744,
+                        "lng" : -74.0045361
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e at the 1st cross street onto \u003cb\u003eNinth Ave\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "intwFz~tbMVN"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7422925,
+                        "lng" : -74.004457
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "226 ft",
+                        "value" : 69
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 24
+                     },
+                     "end_location" : {
+                        "lat" : 40.7416627,
+                        "lng" : -74.0049708
+                     },
+                     "html_instructions" : "Slight \u003cb\u003eright\u003c/b\u003e to stay on \u003cb\u003eNinth Ave\u003c/b\u003e",
+                     "maneuver" : "turn-slight-right",
+                     "polyline" : {
+                        "points" : "qmtwFj_ubMDN@@?@JFXP`@VTN"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7421744,
+                        "lng" : -74.0045361
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.2 mi",
+                        "value" : 266
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 74
+                     },
+                     "end_location" : {
+                        "lat" : 40.74282729999999,
+                        "lng" : -74.00773459999999
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eW 15th St\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "kjtwF`bubMIVeBlFEN{A|EWr@"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7416627,
+                        "lng" : -74.0049708
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "1.2 mi",
+                        "value" : 1894
+                     },
+                     "duration" : {
+                        "text" : "6 mins",
+                        "value" : 365
+                     },
+                     "end_location" : {
+                        "lat" : 40.7577372,
+                        "lng" : -73.996854
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e at the 1st cross street onto \u003cb\u003e10th Ave\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "uqtwFhsubMo@ ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.74282729999999,
+                        "lng" : -74.00773459999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "299 ft",
+                        "value" : 91
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 25
+                     },
+                     "end_location" : {
+                        "lat" : 40.7581447,
+                        "lng" : -73.9977895
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e onto \u003cb\u003eW 39th St\u003c/b\u003e",
+                     "maneuver" : "turn-left",
+                     "polyline" : {
+                        "points" : "{nwwFhosbMoAzD"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7577372,
+                        "lng" : -73.996854
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.7 mi",
+                        "value" : 1134
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 90
+                     },
+                     "end_location" : {
+                        "lat" : 40.7631296,
+                        "lng" : -74.00948579999999
+                     },
+                     "html_instructions" : "Slight \u003cb\u003eleft\u003c/b\u003e onto \u003cb\u003eNY-495 W\u003c/b\u003e\u003cdiv style=\"font-size:0.9em\"\u003e\u003c/div\u003e\u003cdiv style=\"font-size:0.9em\"\u003eEntering New Jersey\u003c/div\u003e",
+                     "maneuver" : "turn-slight-left",
+                     "polyline" : {
+                        "points" : "kqwwFdusbMSTINS^ ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7581447,
+                        "lng" : -73.9977895
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "2.8 mi",
+                        "value" : 4516
+                     },
+                     "duration" : {
+                        "text" : "5 mins",
+                        "value" : 301
+                     },
+                     "end_location" : {
+                        "lat" : 40.7767179,
+                        "lng" : -74.042813
+                     },
+                     "html_instructions" : "Continue onto \u003cb\u003eNJ-495 W\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "qpxwFh~ubM ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7631296,
+                        "lng" : -74.00948579999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.3 mi",
+                        "value" : 435
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 21
+                     },
+                     "end_location" : {
+                        "lat" : 40.7797406,
+                        "lng" : -74.04597939999999
+                     },
+                     "html_instructions" : "Keep \u003cb\u003eright\u003c/b\u003e at the fork to continue on \u003cb\u003eNJ-3 W\u003c/b\u003e, follow signs for \u003cb\u003eNew Jersey 3 W\u003c/b\u003e/\u003cb\u003eGarden State Parkway\u003c/b\u003e/\u003cb\u003eSecaucus\u003c/b\u003e",
+                     "maneuver" : "fork-right",
+                     "polyline" : {
+                        "points" : "oe{wFpn|bMc@ ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7767179,
+                        "lng" : -74.042813
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "2.2 mi",
+                        "value" : 3560
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 141
+                     },
+                     "end_location" : {
+                        "lat" : 40.8041562,
+                        "lng" : -74.0717843
+                     },
+                     "html_instructions" : "Keep \u003cb\u003eleft\u003c/b\u003e to stay on \u003cb\u003eNJ-3 W\u003c/b\u003e, follow signs for \u003cb\u003eNew Jersey 3 W\u003c/b\u003e/\u003cb\u003eClifton\u003c/b\u003e",
+                     "maneuver" : "keep-left",
+                     "polyline" : {
+                        "points" : "kx{wFjb}bMM ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.7797406,
+                        "lng" : -74.04597939999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.2 mi",
+                        "value" : 249
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 13
+                     },
+                     "end_location" : {
+                        "lat" : 40.8062905,
+                        "lng" : -74.07245929999999
+                     },
+                     "html_instructions" : "Take the \u003cb\u003eNJ-120 N\u003c/b\u003e exit toward \u003cb\u003eE Rutherford\u003c/b\u003e",
+                     "maneuver" : "ramp-right",
+                     "polyline" : {
+                        "points" : "_q`xFrcbcMSBA? ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8041562,
+                        "lng" : -74.0717843
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "410 ft",
+                        "value" : 125
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 6
+                     },
+                     "end_location" : {
+                        "lat" : 40.807415,
+                        "lng" : -74.07250909999999
+                     },
+                     "html_instructions" : "Keep \u003cb\u003eleft\u003c/b\u003e, follow signs for \u003cb\u003eState Route 503 N\u003c/b\u003e/\u003cb\u003eNew Jersey 120 N\u003c/b\u003e/\u003cb\u003eWashington Avenue\u003c/b\u003e/\u003cb\u003eMoonachie\u003c/b\u003e/\u003cb\u003ePaterson Plank Road\u003c/b\u003e",
+                     "maneuver" : "keep-left",
+                     "polyline" : {
+                        "points" : "i~`xFzgbcMaFH"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8062905,
+                        "lng" : -74.07245929999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.5 mi",
+                        "value" : 869
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 38
+                     },
+                     "end_location" : {
+                        "lat" : 40.8145647,
+                        "lng" : -74.06878929999999
+                     },
+                     "html_instructions" : "Continue onto \u003cb\u003eNJ-120 N\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "keaxFdhbcMc@@ ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.807415,
+                        "lng" : -74.07250909999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.2 mi",
+                        "value" : 339
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 16
+                     },
+                     "end_location" : {
+                        "lat" : 40.8170874,
+                        "lng" : -74.0665298
+                     },
+                     "html_instructions" : "Continue straight onto \u003cb\u003eWashington Ave\u003c/b\u003e",
+                     "maneuver" : "straight",
+                     "polyline" : {
+                        "points" : "_rbxF|pacMm@ ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8145647,
+                        "lng" : -74.06878929999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.2 mi",
+                        "value" : 358
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 38
+                     },
+                     "end_location" : {
+                        "lat" : 40.8143541,
+                        "lng" : -74.0648063
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003ePaterson Plank Rd\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "yacxFxbacME ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8170874,
+                        "lng" : -74.0665298
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "79 ft",
+                        "value" : 24
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 4
+                     },
+                     "end_location" : {
+                        "lat" : 40.8141899,
+                        "lng" : -74.06498189999999
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e toward \u003cb\u003eN Connection Rd\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "upbxF`x`cMTVHH"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8143541,
+                        "lng" : -74.0648063
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.1 mi",
+                        "value" : 177
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 25
+                     },
+                     "end_location" : {
+                        "lat" : 40.8138003,
+                        "lng" : -74.06693709999999
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eN Connection Rd\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "uobxFby`cMFHFFFHPPDzATtDFfA"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8141899,
+                        "lng" : -74.06498189999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.3 mi",
+                        "value" : 548
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 73
+                     },
+                     "end_location" : {
+                        "lat" : 40.8149711,
+                        "lng" : -74.0728354
+                     },
+                     "html_instructions" : "Continue straight onto \u003cb\u003eRd D\u003c/b\u003e",
+                     "maneuver" : "straight",
+                     "polyline" : {
+                        "points" : "gmbxFjeacMDj ...points truncated in this example"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8138003,
+                        "lng" : -74.06693709999999
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "174 ft",
+                        "value" : 53
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 28
+                     },
+                     "end_location" : {
+                        "lat" : 40.814505,
+                        "lng" : -74.07272910000002
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e onto \u003cb\u003eMetLife Stadium Dr\u003c/b\u003e\u003cdiv style=\"font-size:0.9em\"\u003eDestination will be on the right\u003c/div\u003e",
+                     "maneuver" : "turn-left",
+                     "polyline" : {
+                        "points" : "qtbxFfjbcMf@AHAFA^MBA"
+                     },
+                     "start_location" : {
+                        "lat" : 40.8149711,
+                        "lng" : -74.0728354
+                     },
+                     "travel_mode" : "DRIVING"
+                  }
+               ],
+               "via_waypoint" : []
+            }
+         ],
+         "overview_polyline" : {
+            "points" : "_rtwFpgubMtBuG ...points truncated in this example"
+         },
+         "summary" : "NJ-495 W and NJ-3 W",
+         "warnings" : [],
+         "waypoint_order" : []
+      }
+   ],
+   "status" : "OK"
+}

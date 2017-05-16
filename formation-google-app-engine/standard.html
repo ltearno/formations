@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Google App Engine (environnement standard)</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Google App Engine (environnement standard)</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section id="_google_app_engine_environnement_standard"><h2>Google App Engine (environnement standard)</h2></section>
+<section><section id="_user_api"><h2>User API</h2><div class="paragraph"><p>Authentification des utilisateurs.</p></div><div class="paragraph"><p>L&#8217;API gère les utilisateurs avec un compte Google, c&#8217;est la plus simple. D&#8217;autres existent pour gérer OAuth 2, Google Sign-in et OpenID.</p></div></section><section id="_description"><h2>Description</h2><div class="paragraph"><p>Quand l&#8217;utilisateur est connecté, on peut connaître :</p></div>
+<div class="ulist"><ul><li><p>son identifiant,</p></li><li><p>son adresse email,</p></li><li><p>s&#8217;il est administrateur de l&#8217;application.</p></li></ul></div></section><section id="_utilisation"><h2>Utilisation</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">UserService userService = UserServiceFactory.getUserService();
+
+User user = userService.getCurrentUser();
+if( user == null )
+    return;
+
+user.getUserId();
+user.getEmail();
+user.getNickname();
+
+userService.isUserAdmin();</code></pre></div></div></section><section id="_connecter_un_utilisateur"><h2>Connecter un utilisateur</h2><div class="paragraph"><p>Si l&#8217;utilisateur est déconnecté, il est possible de générer un lien web vers la page d&#8217;authentification de Google.</p></div>
+<div class="paragraph"><p>Une fois authentifié, l&#8217;utilisateur est redirigé vers notre application, à l&#8217;url spécifiée en paramètre :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">String url = userService.createLoginUrl( "welcome-page.html" );
+
+// l'url est à injecter dans la page.</code></pre></div></div></section><section id="_déconnecter_l_utilisateur"><h2>Déconnecter l&#8217;utilisateur</h2><div class="paragraph"><p>Pour déconnecter l&#8217;utilisateur, il faut le rediriger vers le lien fourni par l&#8217;API Users.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">String url = userService.createLogoutUrl( "bye-bye-page.html" );</code></pre></div></div></section></section>
+<section><section id="_datastore"><h2>Datastore</h2><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/datastore/api-overview">Documentation Datastore</a>.</p></div><div class="paragraph"><p>Les données sont encapulées dans des <em>Entity</em>.</p></div><div class="paragraph"><p>Une <em>Entity</em> peut contenir des <em>properties</em>, chacune ayant une ou plusieurs valeurs.</p></div><div class="paragraph"><p>Une <em>Entity</em> peut avoir une <em>entity</em> parente. Il y a donc des <em>root entities</em> et des <em>child entities</em> formant des <em>entity groups</em>. Les entités sont organisées de façon arborescente.</p></div></section><section id="_types_stockables"><h2>Types stockables</h2><div class="paragraph"><p>On peut stocker dans une <em>property</em> des objets de type :</p></div>
+<div class="ulist"><ul><li><p>entiers, flottants,</p></li><li><p>chaînes de caractères,</p></li><li><p>dates,</p></li><li><p>données binaires,</p></li><li><p>clés&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/datastore/entities#Java_Properties_and_value_types">Liste complète</a>.</p></div></section><section id="_key"><h2>Key</h2><div class="paragraph"><p>Chaque <em>Entity</em> est identifiée par sa clé (<em>Key</em>). Celle-ci est composée de :</p></div>
+<div class="ulist"><ul><li><p>(l&#8217;espace de nom de l&#8217;entité),</p></li><li><p>sa <em>Kind</em>, une chaîne de caractère catégorisant l&#8217;entité,</p></li><li><p>un identifiant qui peut être un nom (chaîne de caractère) ou un ID (entier),</p></li><li><p>chemin vers l&#8217;entité parente.</p></li></ul></div>
+<div class="paragraph"><p>Une application peut charger une ou des entités par sa <strong><em>clé</em></strong>, ou bien en exécutant des <strong><em>requêtes</em></strong> basées sur les clés ou valeurs des propriétés.</p></div>
+<div class="paragraph"><p>Le chemin complet d&#8217;une entité est la séquence de KIND+ID depuis l&#8217;entité racine.</p></div></section><section id="_gestion_des_identifiants"><h2>Gestion des identifiants</h2><div class="paragraph"><p>A l&#8217;enregistrement d&#8217;une entité, une application peut décider si elle le souhaite de valoriser <em>elle-même</em> la partie identifiant de la clé.</p></div>
+<div class="paragraph"><p>Ou bien de laisser App Engine le faire (génèrera un entier).</p></div></section><section id="_création_d_une_entité"><h2>Création d&#8217;une entité</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+// création d'une entité avec kind=Employee et name=asalieri
+Entity employee = new Entity( "Employee", "asalieri" );
+
+// création d'une entité avec kind=Employee et id généré automatiquement
+Entity employee = new Entity( "Employee" );
+
+employee.setProperty("firstName", "Antonio");
+employee.setProperty("lastName", "Salieri");
+employee.setProperty("hireDate", new Date());
+employee.setProperty("attendedHrTraining", true);
+
+datastore.put(employee);</code></pre></div></div></section><section id="_création_d_une_entité_fille"><h2>Création d&#8217;une entité fille</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Entity employee = new Entity("Employee");
+datastore.put(employee);
+
+// emplyee.getKey() renvoie la clé de l'entité
+Entity address = new Entity("Address", employee.getKey());
+datastore.put(address);
+
+// ou si l'entité fille doit aussi avoir un nom :
+Entity address = new Entity("Address", "addr1", employee.getKey());</code></pre></div></div></section><section id="_récupérer_une_entité"><h2>Récupérer une entité</h2><div class="paragraph"><p>Si on a sa clé, on peut demander le chargement d&#8217;une entité :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Key employeeKey = ...;
+Entity employee = datastore.get(employeeKey);</code></pre></div></div></section><section id="_construction_des_clés"><h2>Construction des clés</h2><div class="paragraph"><p>On utilise la classe <code>KeyFactory</code> pour générer des objets <code>Key</code> qui serve à représenter des clés d&#8217;entités.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Key k1 = KeyFactory.createKey("Person", "GreatGrandpa");
+Key k2 = KeyFactory.createKey("Person", 74219);</code></pre></div></div>
+<div class="paragraph"><p>Pour construire une clé à partir d&#8217;un chemin complet on préfère le <code>KeyFactory.Builder</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Key k = new KeyFactory.Builder("Person", "GreatGrandpa")
+        .addChild("Person", "Grandpa")
+        .addChild("Person", "Dad")
+        .addChild("Person", "Me")
+        .getKey();</code></pre></div></div></section><section id="_sérialisation_des_clés"><h2>Sérialisation des clés</h2><div class="paragraph"><p>Il peut être utile d&#8217;avoir une représentation textuelle de la clé d&#8217;une entité&#8230;&#8203;</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">String personKeyStr = KeyFactory.keyToString(k);
+
+// la chaine générée est "web-safe"</code></pre></div></div>
+<div class="paragraph"><p>et de pouvoir la retrouver sous forme d'<em>objet</em> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Key personKey = KeyFactory.stringToKey(personKeyStr);
+Entity person = datastore.get(personKey);</code></pre></div></div></section><section id="_mise_à_jour_d_une_entité"><h2>Mise à jour d&#8217;une entité</h2><div class="paragraph"><p>La mise-à-jour se fait en appelant la méthode <code>put</code>.</p></div>
+<div class="paragraph"><p>Un écrasement se produit si l&#8217;entité existait déjà.</p></div>
+<div class="paragraph"><p>Toute l&#8217;entité est envoyée au datastore (pas que le delta).</p></div></section><section id="_effacer_une_entité"><h2>Effacer une entité</h2><div class="paragraph"><p>Simplement avec la méthode <code>delete</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Key employeeKey = ...;
+datastore.delete(employeeKey);</code></pre></div></div></section><section id="_entités_embarquées"><h2>Entités embarquées</h2><div class="paragraph"><p>Il est possible de structurer les données au sein d&#8217;une entité grâce aux <em>embedded entities</em> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Entity employee = ...;
+EmbeddedEntity embeddedContactInfo = new EmbeddedEntity();
+embeddedContactInfo.setProperty("homeAddress", "123 Fake St, Made, UP 45678");
+embeddedContactInfo.setProperty("phoneNumber", "555-555-5555");
+embeddedContactInfo.setProperty("emailAddress", "test@example.com");
+
+employee.setProperty("contactInfo", embeddedContactInfo);</code></pre></div></div></section><section id="_transactions"><h2>Transactions</h2><div class="paragraph"><p>Les opérations d&#8217;écriture sont réalisées de façon transactionnelle (tout fonctionne ou tout échoue).</p></div>
+<div class="paragraph"><p>Au sein d&#8217;une transaction, les lectures à cohérence forte (requêtes ancêtre ou <code>get</code>) lisent un instantané cohérent des données.</p></div>
+<div class="paragraph"><p>Les <em>Entity groups</em> créent des contraintes sur les transactions :</p></div>
+<div class="ulist"><ul><li><p>une transaction ne peut toucher que 25 groupes au max,</p></li><li><p>les requêtes effectuées dans la transaction doivent être des requêtes <em>ancêtre</em>,</p></li><li><p>limite de <strong>une transaction par seconde</strong> par groupe d&#8217;entité.</p></li></ul></div>
+<div class="paragraph"><p>Une transaction ne peut durer plus de 60 secondes.</p></div>
+<div class="paragraph"><p>Par défaut une tx est limitée à un seul Entity Group car ceux-ci sont stockés sur le même noeud Datastore.</p></div></section><section id="_exemple"><h2>Exemple</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+Transaction txn = datastore.beginTransaction();
+
+try {
+    Transaction txn = datastore.beginTransaction();
+
+    Entity messageBoard;
+    Key boardKey;
+    try {
+        boardKey = KeyFactory.createKey("MessageBoard", boardName);
+        messageBoard = datastore.get(boardKey);
+    } catch (EntityNotFoundException e) {
+        messageBoard = new Entity("MessageBoard", boardName);
+        messageBoard.setProperty("count", 0L);
+        boardKey = datastore.put(txn, messageBoard);
+    }
+
+    txn.commit();
+} finally {
+  if (txn.isActive()) {
+    txn.rollback();
+  }
+}</code></pre></div></div></section><section id="_transactions_inter_groupe"><h2>Transactions inter-groupe</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+TransactionOptions options = TransactionOptions.Builder.withXG(true);
+Transaction txn = datastore.beginTransaction(options);
+
+Entity a = new Entity("A");
+a.setProperty("a", 22);
+datastore.put(txn, a);
+
+Entity b = new Entity("B");
+b.setProperty("b", 11);
+datastore.put(txn, b);
+
+txn.commit();</code></pre></div></div></section><section id="_notes"><h2>Notes</h2><div class="paragraph"><p>Les transactions utilisent un contrôle de concurrence <em>optimiste</em>.</p></div>
+<div class="paragraph"><p>Aucun verrou n&#8217;est acquis au début de la transaction.</p></div>
+<div class="paragraph"><p>Celle-ci peut donc échouer <em>au moment du commit</em>.</p></div>
+<div class="paragraph"><p>Au sein d&#8217;une transaction, le modèle d&#8217;isolation est <code>serializable isolation</code>.</p></div>
+<div class="paragraph"><p>En dehors des transactions, le modèle est proche de <code>read committed</code>.</p></div>
+<div class="paragraph"><p>Les index d&#8217;un groupe d&#8217;entités sont m-à-j complètement avant la première lecture dans une transaction.</p></div>
+<div class="paragraph"><p>ATTENTION : dans une transaction, on reçoit l&#8217;état des entités au début de la transaction et non l&#8217;état modifié si la transaction fait des écritures.</p></div>
+<div class="paragraph"><p>Il est possible d&#8217;intégrer l&#8217;ajout d&#8217;une tâche <em>TaskQueue</em> dans une transaction (pas plus de 5 par tx).</p></div></section><section id="_propriétés_et_valeurs"><h2>Propriétés et valeurs</h2><div class="paragraph"><p>Une propriété peut contenir une ou <em>plusieurs</em> valeurs.</p></div>
+<div class="paragraph"><p>Chaque valeur peut être de type différent.</p></div>
+<div class="paragraph"><p>Les propriétés peuvent indexées ou non (nécessaire pour effectuer des requêtes sur les valeurs).</p></div>
+<div class="paragraph"><p>Une entité peut avoir au <em>maximum</em> 20000 propriétés indexées.</p></div></section><section id="_stoker_une_propriété_à_valeurs_multiples"><h2>Stoker une propriété à valeurs multiples</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Entity employee = new Entity("Employee");
+
+List&lt;String&gt; favoriteFruit = new ArrayList&lt;String&gt;();
+favoriteFruit.add("Pear");
+favoriteFruit.add("Apple");
+
+employee.setProperty("favoriteFruit", favoriteFruit);
+
+datastore.put(employee);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Entity employee = datastore.get(employee.getKey());
+List&lt;String&gt; retrievedFruits = (List&lt;String&gt;) employee.getProperty("favoriteFruit");</code></pre></div></div>
+<div class="paragraph"><p><em>Attention : les listes vides sont considérées comme des valeurs `null`</em>.</p></div></section><section id="_opérations_par_lot"><h2>Opérations par lot</h2><div class="paragraph"><p>Les méthodes <code>put</code>, <code>get</code> et <code>delete</code> ont une version acceptant un <code>Iterable</code> pour effectuer les traitements en parallèle.</p></div>
+<div class="paragraph"><p>Il est fortement conseillé de les utiliser pour accélérer les traitement (parallélisme et coût unique d&#8217;appel au service).</p></div></section><section id="_coût_des_écritures"><h2>Coût des écritures</h2><div class="paragraph"><p>Pour une explication détaillée des opérations d&#8217;écritures impliquées par l&#8217;enregistrement d&#8217;une entité dans le Datastore, allez voir <a href="https://cloud.google.com/appengine/docs/standard/java/datastore/entities#Java_Understanding_write_costs">ici</a>.</p></div></section><section id="_requêtes"><h2>Requêtes</h2><div class="paragraph"><p>Il est possible de demander les entités satisfaisant un ensemble de conditions grâce aux requêtes.</p></div>
+<div class="paragraph"><p>Une requête inclue :</p></div>
+<div class="ulist"><ul><li><p>une <em>entity Kind</em> sur laquelle elle s&#8217;applique,</p></li><li><p>des filtres optionnels (valeurs, clés et ancêtre),</p></li><li><p>un ordre de tri (optionnel) pour séquencer les résultats.</p></li></ul></div></section><section id="_filtres_sur_propriété"><h2>Filtres sur propriété</h2><div class="paragraph"><p>On précise :</p></div>
+<div class="ulist"><ul><li><p>un <em>nom</em> de propriété,</p></li><li><p>un <em>opérateur de comparaison</em>,</p></li><li><p>une <em>valeur</em>.</p></li></ul></div>
+<div class="paragraph"><p>Par exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Filter propertyFilter =
+    new FilterPredicate("height", FilterOperator.GREATER_THAN_OR_EQUAL, minHeight);
+
+Query q = new Query("Person").setFilter(propertyFilter);</code></pre></div></div></section><section id="_filtres_sur_clés"><h2>Filtres sur clés</h2><div class="paragraph"><p>On peut aussi filtrer sur les clés des entités.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, lastSeenKey);
+
+Query q = new Query("Person").setFilter(keyFilter);</code></pre></div></div></section><section id="_filtres_sur_ancêtre"><h2>Filtres sur ancêtre</h2><div class="paragraph"><p>Il est possible de restreindre une requête aux entités <em>descendantes</em> d&#8217;une autre :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Query q = new Query("Person").setAncestor(ancestorKey);</code></pre></div></div>
+<div class="paragraph"><p><strong>NOTE</strong> : les requête ancêtre sont à cohérence forte, ce qui n&#8217;est pas le cas des autres requêtes (cohérence <em>à la fin</em>).</p></div></section><section id="_requêtes_sans_kind"><h2>Requêtes sans KIND</h2><div class="paragraph"><p>Une requête sans <em>Kind</em> ni ancêtre cherche dans <em>toutes</em> les entités de l&#8217;application ainsi que celles utilisées par App Engine pour gérer l&#8217;application.</p></div>
+<div class="paragraph"><p>Il n&#8217;est alors pas possible d&#8217;utiliser de filtre, ni de tri.</p></div>
+<div class="paragraph"><p>On peut cependant filtrer sur les clés&#8230;&#8203;</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, lastSeenKey);
+
+Query q = new Query().setFilter(keyFilter);</code></pre></div></div></section><section id="_requêtes_sans_kind_2"><h2>Requêtes sans KIND</h2><div class="paragraph"><p>Si elle contient un ancêtre, une requête sans <em>Kind</em> lit <em>toutes</em> les entités descendantes.</p></div>
+<div class="paragraph"><p>On ne peut filtrer ni demander de tri.</p></div>
+<div class="paragraph"><p>Mais on peut filtrer sur les clés.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, tomKey);
+
+Query mediaQuery = new Query().setAncestor(tomKey).setFilter(keyFilter);</code></pre></div></div></section><section id="_chargement_limité_aux_clés"><h2>Chargement limité aux clés</h2><div class="paragraph"><p>Il est possible de demander que seules les clés soient chargées et non les entités.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Query q = new Query("Person").setKeysOnly();</code></pre></div></div></section><section id="_projections"><h2>Projections</h2><div class="paragraph"><p>Il est possible (mais compliqué) d&#8217;effectuer des projections.</p></div>
+<div class="paragraph"><p>Aller voir la <a href="https://cloud.google.com/appengine/docs/standard/java/datastore/projectionqueries">documentation</a>.</p></div></section><section id="_tri"><h2>Tri</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Order alphabetically by last name:
+Query q1 = new Query("Person").addSort("lastName", SortDirection.ASCENDING);
+
+// Order by height, tallest to shortest:
+Query q2 = new Query("Person").addSort("height", SortDirection.DESCENDING);
+
+Query q =
+    new Query("Person")
+        .addSort("lastName", SortDirection.ASCENDING)
+        .addSort("height", SortDirection.DESCENDING);</code></pre></div></div></section><section id="_charger_les_résultats"><h2>Charger les résultats</h2><div class="paragraph"><p>Pour une entité :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Query q = ...;
+
+PreparedQuery pq = datastore.prepare(q);
+Entity result = pq.asSingleEntity();</code></pre></div></div>
+<div class="paragraph"><p>Attention : lève <code>TooManyResultsException</code> si plusieurs résultats.</p></div></section><section id="_charger_les_résultats_2"><h2>Charger les résultats</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Query q = ...;
+
+// Use PreparedQuery interface to retrieve results
+PreparedQuery pq = datastore.prepare(q);
+
+for (Entity result : pq.asIterable()) {
+    // ...
+}</code></pre></div></div></section><section id="_exemple_2"><h2>Exemple</h2><div class="paragraph"><p>Voici un exemple de requête :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+Filter heightMinFilter = new FilterPredicate("height", FilterOperator.GREATER_THAN_OR_EQUAL, minHeight);
+
+Filter heightMaxFilter = new FilterPredicate("height", FilterOperator.LESS_THAN_OR_EQUAL, maxHeight);
+
+// Use CompositeFilter to combine multiple filters
+CompositeFilter heightRangeFilter = CompositeFilterOperator.and(heightMinFilter, heightMaxFilter);
+
+// Use class Query to assemble a query
+Query q = new Query("Person").setFilter(heightRangeFilter);
+
+// Use PreparedQuery interface to retrieve results
+PreparedQuery pq = datastore.prepare(q);
+
+for (Entity result : pq.asIterable()) {
+  String firstName = (String) result.getProperty("firstName");
+  String lastName = (String) result.getProperty("lastName");
+  Long height = (Long) result.getProperty("height");
+
+  out.println(firstName + " " + lastName + ", " + height + " inches tall");
+}</code></pre></div></div></section><section id="_limitations"><h2>Limitations</h2><div class="ulist"><ul><li><p>Filtrer sur des propriétés non indexées ne produit pas de résultat,</p></li><li><p>Les filtres d&#8217;inégalité sont limités à une seule propriété,</p></li><li><p>Le tri est ignoré sur les propriétés avec filtre d&#8217;égalité,</p></li><li><p>Les propriétés avec filtre d&#8217;inégalité doivent être triées en premier,</p></li><li><p>Drôles de phénomènes avec les propriétés à valeurs multiples,</p></li><li><p>Au sein d&#8217;une transaction, les requêtes doivent être à ancêtre.</p></li></ul></div></section><section id="_cap_theorem"><h2>CAP theorem</h2><div class="paragraph"><p>Le théorème CAP a prouvé entre ces trois éléments une relation forte et l&#8217;impossibilité de fournir les trois en même temps :</p></div>
+<div class="ulist"><ul><li><p>Cohérence,</p></li><li><p>Disponibilité,</p></li><li><p>Tolérance aux pannes (réseau et machine).</p></li></ul></div>
+<div class="paragraph"><p><em>Mais permet l&#8217;implémentation de la cohérence à terme</em>.</p></div></section><section id="_index"><h2>Index</h2><div class="paragraph"><p>Les résultats des requêtes sont obtenus grâce aux index.</p></div>
+<div class="paragraph"><p>Ceux-ci contiennent une séquence de clés (d&#8217;entités avec ou sans ses ancêtres) dans un ordre spécifié par les propriétés de l&#8217;index.</p></div>
+<div class="paragraph"><p>Les index sont mis-à-jour de façon asynchrone, ce qui explique la cohérence <em>à la fin</em>.</p></div>
+<div class="paragraph"><p>Les index sont décrits dans le fichier <code>datastore-indexes.xml</code>. Celui-ci est rempli automatiquement par le serveur de développement quand il exécute les requêtes de l&#8217;application.</p></div>
+<div class="paragraph"><p>Il est bien sûr possible de rajouter des index à la main.</p></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/datastore/indexes">Plus loin</a>.</p></div></section><section id="_les_curseurs"><h2>Les curseurs</h2><div class="paragraph"><p>Fonctionnalité puissante pour traiter les résultats d&#8217;une requête par petits bouts.</p></div>
+<div class="paragraph"><p>A l&#8217;exécution d&#8217;une requête, on peut demander un curseur. Celui-ci peut ensuite être stocké sous forme de chaîne de caractère pour reprendre les résultats plus tard.</p></div>
+<div class="paragraph"><p>Il faut alors utiliser <code>QueryResultList</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">FetchOptions fetchOptions = FetchOptions.Builder.withLimit(PAGE_SIZE);
+
+// startCursor peut venir du navigateur
+fetchOptions.startCursor(Cursor.fromWebSafeString(startCursor));
+
+Query q = new Query("Person").addSort("name", SortDirection.ASCENDING);
+PreparedQuery pq = datastore.prepare(q);
+
+QueryResultList&lt;Entity&gt; results = pq.asQueryResultList(fetchOptions);
+
+String cursorString = results.getCursor().toWebSafeString();
+
+// stocker cursorString pour reprendre plus tard...</code></pre></div></div></section><section id="_limitations_2"><h2>Limitations</h2><div class="ulist"><ul><li><p>Pour réutiliser un curseur, il faut faire <em>identiquement</em> la même requête que celle qui l&#8217;a initié.</p></li><li><p>Non supportés sur les filtres <code>NOT_EQUAL</code> et <code>IN</code>.</p></li><li><p>Peut avoir des problèmes avec les filtres d&#8217;inégalité ou des tris sur des propriétés à valeur multiples.</p></li><li><p>Les mises à jour d&#8217;App Engine peuvent empêcher les curseurs créés auparavant de fonctionner.</p></li></ul></div>
+<div class="paragraph"><p>Les curseurs ne sont pas des <em>offsets</em>, si les résultats de la requête changent après création du curseur, celui peut les voir apparître (ou pas).</p></div></section><section id="_metadonnées"><h2>Metadonnées</h2><div class="paragraph"><p>Il est possible d&#8217;obtenir des méta données. Notamment la <em>version</em> d&#8217;un groupe d&#8217;entité.</p></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/datastore/metadataqueries">&#8230;&#8203;</a></p></div>
+<div class="paragraph"><p>On peut également obtenir des statistiques sur les données (<a href="https://cloud.google.com/appengine/docs/standard/java/datastore/stats">&#8230;&#8203;</a>).</p></div></section><section id="_api_asynchrone"><h2>API asynchrone</h2><div class="paragraph"><p>Il existe une version asynchrone de l&#8217;API du Datastore, lorsqu&#8217;on souhaite optimiser encore plus ses traitements.</p></div></section><section id="_callbacks"><h2>Callbacks</h2><div class="paragraph"><p>Il est possible d&#8217;enregistrer des méthodes de callback qui seront rappelées :</p></div>
+<div class="ulist"><ul><li><p>avant enregistrement d&#8217;une entité,</p></li><li><p>après enregistrement,</p></li><li><p>avant effacement,</p></li><li><p>après effacement,</p></li><li><p>avant <code>get</code>,</p></li><li><p>avant requête,</p></li><li><p>après chargement,</p></li></ul></div>
+<div class="paragraph"><p>Voir <a href="https://cloud.google.com/appengine/docs/standard/java/datastore/callbacks">ici</a>.</p></div></section><section id="_outils"><h2>Outils</h2><div class="paragraph"><p>App Engine permet d&#8217;utiliser l&#8217;API JPA pour manipuler le datastore (avec quelques limitations conceptuelles bien sûr).</p></div>
+<div class="paragraph"><p>Il existe aussi <code>Objectify</code> un ORM dédié au datastore, calqué sur l&#8217;ORM fourni avec le runtime Python.</p></div></section></section>
+<section><section id="_memcache"><h2>Memcache</h2><div class="paragraph"><p>Cache <em>clé-valeur</em> distribué.</p></div><div class="paragraph"><p>On peut préciser la durée de vie des données.</p></div><div class="paragraph"><p>Mais il faut s&#8217;attendre à leur disparition !</p></div><div class="paragraph"><p>On peut choisir l&#8217;option par défaut, ou un cache dédié (payant mais + cher, + de garanties).</p></div></section><section id="_utilisation_2"><h2>Utilisation</h2><div class="paragraph"><p>On utilise la classe <code>MemcacheService</code>.</p></div>
+<div class="paragraph"><p>Remarque : les clés peuvent faire au max 250 octets. Si l&#8217;objet est plus gros, il sera hashé.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
+
+Entity e = (Entity) cache.get( "lastSeenEntity" );
+if( e == null )
+{
+    e = store.get( KeyFactory.createKey( "Persons", userId ) );
+    cache.put( "lastSeenEntity", e );
+}</code></pre></div></div></section><section id="_concurrence"><h2>Concurrence</h2><div class="paragraph"><p>Les méthodes <code>putIfUntouched</code> et <code>getIdentifiable</code> permettent de gérer les accès concurrents au cache distribué.</p></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/memcache/MemcacheService#getIdentifiable(java.lang.Object)">documentation</a>.</p></div></section><section id="_cas_d_utilisation"><h2>Cas d&#8217;utilisation</h2><div class="paragraph"><p>Très pratique en coopération avec les <em>callbacks</em> du datastore (mise en cache post persist).</p></div>
+<div class="ulist"><ul><li><p>Mise en cache de certaines entités du Datastore pour éviter les I/O coûteuses.</p></li><li><p>Mise en cache de certaines entités pour fournir de la cohérence à l&#8217;utilisateur.</p></li><li><p>Stockage des données peu importantes ou temporaires.</p></li></ul></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/articles/best-practices-for-app-engine-memcache">Meilleures pratiques</a>.</p></div></section></section>
+<section><section id="_taskqueue"><h2>TaskQueue</h2><div class="paragraph"><p>Possibilité de faire des traitements en dehors des requêtes HTTP normales, en tâche de fond.</p></div><div class="paragraph"><p>On empile des tâches aux files <em>Task Queue</em>.</p></div><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/taskqueue/">Introduction</a>.</p></div><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/package-summary#package.description">Javadoc</a>.</p></div></section><section id="_deux_fonctionnements"><h2>Deux fonctionnements</h2><div class="paragraph"><p>Il existe deux façons de traiter les tâches :</p></div>
+<div class="ulist"><ul><li><p><em>Push queues</em> : dans ce mode, le moteur de tâche dispatche régulièrement les tâches à l&#8217;application. La fréquence de dispatch est ajustable. Le programme dispose de 10 minutes pour effectuer son traitement.</p></li><li><p><em>Pull queues</em> : aucun dispatch n&#8217;est effectué par AppEngine. C&#8217;est l&#8217;application (ou un tiers externe) qui doivent venir <em>emprunter</em> les tâches en attente.</p></li></ul></div></section><section id="_utilisation_3"><h2>Utilisation</h2><div class="paragraph"><p>Par exemple, à partir d&#8217;une action utilisateur, effectuer une grande série de tâches. Un utilisateur poste un message, qui doit être retransmis à tous ses followers :</p></div>
+<div class="ulist"><ul><li><p>une tache va faire la requête des followers,</p></li><li><p>et empiler une tâche pour chaque envoi&#8230;&#8203;</p></li></ul></div></section><section id="_création_d_une_tâche"><h2>Création d&#8217;une tâche</h2><div class="paragraph"><p>Les tâches sont empilés dans une file. L&#8217;application peut configurer différentes files, mais une file par défaut existe.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
+// Add the task to the default queue.
+Queue queue = QueueFactory.getDefaultQueue();
+
+queue.add(TaskOptions.Builder
+    .withUrl(“/url/path“) <b>(1)</b>
+    .param(“some-user-data”, 17)); <b>(2)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Il ne reste plus qu&#8217;à lier une servlet à cette url</p></li><li><p>Les paramètres sont passés dans la requête HTTP qui déclenche le worker.</p></li></ol></div>
+<div class="paragraph"><p>Voir <a href="https://cloud.google.com/appengine/docs/standard/java/taskqueue/push/creating-tasks">détails</a>.</p></div></section><section id="_tâche_dans_une_transaction"><h2>Tâche dans une transaction</h2><div class="paragraph"><p>Dans une transaction Datastore, il est possible d&#8217;ajouter une tâche, et les garanties transactionnelles s&#8217;appliquent :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+Queue queue = QueueFactory.getDefaultQueue();
+try {
+    Transaction txn = ds.beginTransaction();
+
+    // ...
+
+    queue.add(TaskOptions.Builder.withUrl("/path/to/my/worker"));
+
+    // ...
+    txn.commit();
+} catch (DatastoreFailureException e) {
+}</code></pre></div></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

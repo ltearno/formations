@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="jquery-3.1.1.js" type="text/javascript"></script>
+
+    <script>
+        $(function () {
+            // les données
+            var contacts = [
+                { id: 1, nom: 'FGrrg', prenom: 'FGEEG', telephone: '23445' },
+                { id: 2, nom: 'dfg', prenom: 'Adaf', telephone: '87654' },
+                { id: 3, nom: 'dfzhze', prenom: 'Ahfkjh', telephone: '268' },
+                { id: 4, nom: 'wvsdbdf', prenom: 'kjhKJ', telephone: '9852' }
+            ]
+
+            let contactEnCoursEdition = null
+
+            // partie données
+            // - liste de contacts
+            // - chaque contact a id, nom, prenom et téléphone
+            // on peut :
+            // ajouter un contact
+            // supprimer
+            // modifier
+            // consulter la liste des contacts
+            // consulter un contact (par ID)
+
+            // partie affichage
+            // un zone a gauche avec la liste des contacst
+            // une zone a droite qui est un formulaire avec :
+            // - nom
+            // - prenom
+            // - telephone
+            // - un bouton valider pour validaer la modification
+
+            // le lien entre les données et l'affichage
+            // ...
+
+            $('#valider').click(function () {
+                if (contactEnCoursEdition == null)
+                    return
+
+                contactEnCoursEdition.nom = $('#nom').val()
+                contactEnCoursEdition.prenom = $('#prenom').val()
+                contactEnCoursEdition.telephone = $('#telephone').val()
+
+                rafraichirListeContacts(contacts)
+            })
+
+            $('#ajouterContact').click(ajouterContact)
+
+            $('#supprimer').click(supprimerContactEnCoursEdition)
+
+            function supprimerContactEnCoursEdition() {
+                if (contactEnCoursEdition == null)
+                    return
+
+                // trouver l'index du contact en cours d'édition dans la liste des contacts
+                let index = contacts.indexOf(contactEnCoursEdition)
+
+                if (index >= 0) {
+                    // supprimer l'élément d'index index de la liste des contacts
+                    contacts.splice(index, 1)
+
+                    rafraichirListeContacts(contacts)
+                }
+            }
+
+            function editerContact(contact) {
+                // remplir les champs du formulaire avec les informations du contact
+                $('#nom').val(contact.nom)
+                $('#prenom').val(contact.prenom)
+                $('#telephone').val(contact.telephone)
+
+                contactEnCoursEdition = contact
+            }
+
+            function ajouterContact() {
+                contacts.push({ id: 444, nom: "toto", prenom: "ioiu", telephone: "?" })
+
+                rafraichirListeContacts(contacts)
+            }
+
+            function rafraichirListeContacts(contacts) {
+                let listeContacts = $('#listeContacts')
+
+                listeContacts.html('')
+
+                for (let contact of contacts) {
+                    // TODO mettre en forme les nom et prénom
+                    let div = $('<div>' + contact.nom + ' ' + contact.prenom + '</div>')
+                    listeContacts.append(div)
+
+                    // quand on clique sur la div,
+                    // on souhaite éditer le contact
+                    div.click(function () {
+                        editerContact(contact)
+                    })
+                }
+            }
+
+            rafraichirListeContacts(contacts)
+        })
+    </script>
+
+<style>
+    body {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    #listeContacts {
+        width: 30%;
+    }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div id='listeContacts'></div>
+        <button id='ajouterContact'>Ajouter</button>
+    </div>
+    <div>
+        <label>nom: <input id='nom'/></label><br/>
+        <label>prénom: <input id='prenom'/></label><br/>
+        <label>téléphone: <input id='telephone'/></label><br/>
+        <button id='valider'>OK</button>
+        <button id='supprimer'>SUPPRIMER</button>
+    </div>
+</body>
+
+</html>

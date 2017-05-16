@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Google App Engine</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Google App Engine</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section><section id="_google_app_engine"><h2>Google App Engine</h2><div class="paragraph"><p>Executer ses applications dans l&#8217;infrastructure Google.</p></div></section><section id="_avantages"><h2>Avantages</h2><div class="paragraph"><p>Auto scalable.</p></div>
+<div class="paragraph"><p>Pas de gestion d&#8217;infrastructure.</p></div></section></section>
+<section><section id="_offre_cloud_google"><h2>Offre Cloud Google</h2><div class="paragraph"><p>App Engine est arrivé en 2008 (sorti de beta en 2011).</p></div><div class="paragraph"><p>Aujourd&#8217;hui au sein d&#8217;une offre qui a beacoup grandi : Google Cloud Platform.</p></div><div class="ulist"><ul><li><p>Google App Engine (avec Datastore),</p></li><li><p>Big Query,</p></li><li><p>Cloud Storage,</p></li><li><p>Cloud SQL (bcp de demandes pour du relationnel),</p></li><li><p>Google Compute Engine (VM),</p></li><li><p>Container Engine,</p></li><li><p>Google App Engine flexible,</p></li><li><p>Firebase&#8230;&#8203;,</p></li><li><p>Networking (LB, VPN, CDN&#8230;&#8203;)</p></li><li><p>Cloud Machine Learning,</p></li><li><p>Cloud Spanner.</p></li></ul></div></section><section id="_deux_possibilités"><h2>Deux possibilités</h2><div class="ulist"><ul><li><p>environnement standard.</p></li><li><p>environnement flexible.</p></li></ul></div></section><section id="_environnement_standard"><h2>Environnement standard</h2><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/standard/" class="bare">https://cloud.google.com/appengine/docs/standard/</a></p></div>
+<div class="paragraph"><p>Instances de containers exécutés sur l&#8217;infrastructure de Google. Les runtimes dans ces containers sont préconfigurés avec un langage au choix (Pyhton, Java, Go, PHP) et les APIs App Engine standard permettant de s&#8217;intégrer aux services Google.</p></div>
+<div class="paragraph"><p>Passage à l&#8217;échelle est géré automatiquement par App Engine (nombre d&#8217;instances).</p></div>
+<div class="paragraph"><p>L&#8217;application est sandboxée et une grande partie des fonctions système n&#8217;est pas accessible à l&#8217;application (écriture sur disque, threads&#8230;&#8203;).</p></div>
+<div class="paragraph"><p>L&#8217;application accède aux services cloud grâce à l&#8217;API de l&#8217;environnement.</p></div>
+<div class="paragraph"><p>Tout ceci permet d&#8217;avoir des instances qui démarrent rapidement (qques secondes).</p></div>
+<div class="paragraph"><p>Développement en : Java, Go, Python ou PHP.</p></div></section><section id="_environnement_flexible"><h2>Environnement flexible</h2><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/flexible/" class="bare">https://cloud.google.com/appengine/docs/flexible/</a></p></div>
+<div class="paragraph"><p>Les instances de l&#8217;application sont exécutées dans des containers Docker au sein de machines virtuelles Google Compute Engine.</p></div>
+<div class="paragraph"><p>L&#8217;ensemble des fonctions système est accessible (mais les VMs sont réinitialisées tous les soirs).</p></div>
+<div class="paragraph"><p>Pour utiliser les services fournis dans la version standard, il faut passer par les apis officielles : <a href="https://cloud.google.com/appengine/docs/flexible/java/migrating" class="bare">https://cloud.google.com/appengine/docs/flexible/java/migrating</a>.</p></div>
+<div class="paragraph"><p>Le passage à l&#8217;échelle peut être soit automatique, soit manuel. En automatique les VMs sont créées et détruites en fonction de la charge CPU moyenne (paramétrable).</p></div></section><section id="_différences"><h2>Différences</h2><div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/flexible/java/migrating">Equivalences</a> entre services de l&#8217;environnement standard et ceux à utiliser dans l&#8217;environnement flexible.</p></div>
+<div class="paragraph"><p><a href="https://cloud.google.com/appengine/docs/flexible/java/flexible-for-standard-users">Différences entre les deux environnements</a></p></div></section></section>
+<section id="_suite"><h2>Suite</h2><div class="paragraph"><p><a href="standard.html">Cours sur l&#8217;environnement standard</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

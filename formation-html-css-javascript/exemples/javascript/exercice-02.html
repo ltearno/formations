@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head></head>
+
+<body>
+	<input id="champSaisie" type="text" />
+	<button id="monBouton">Cliquez moi</button>
+	<div id="log"></div>
+
+	<script>
+        function log(texte) {
+            let log = document.getElementById('log');
+            log.innerHTML += "<p>" + texte + "</p>";
+        }
+
+        function champSaisie() {
+            return document.getElementById('champSaisie');
+        }
+
+        function validerSaisie() {
+            // on récupère l'élément input
+            let champ = champSaisie();
+
+            // récupérer le texte saisi
+            let texteSaisi = champ.value;
+
+            // Récupérer la div dans laquelle on ajoute les messages
+            log(texteSaisi);
+            
+            // Vider le champ input
+            champ.value = "";
+
+            // Donner le focus au champ de saisie
+            champ.focus();
+        }
+
+        // Récupérer l'élément 'monBouton' à partir du DOM
+        let monBouton = document.getElementById('monBouton');
+
+        // On peut manipuler l'élément
+        monBouton.innerText = "Bonjour";
+
+        // Encore...
+        monBouton.innerHTML = "<img src='http://images.google.fr/imgres?imgurl=https%3A%2F%2Fpp.vk.me%2Fc10319%2Fu80781731%2Fa_82bc2992.jpg&imgrefurl=https%3A%2F%2Fvk.com%2Fid80781731&h=267&w=200&tbnid=iLyFIGdAo-LIPM%3A&docid=9Cny10jp-Fy3SM&ei=DrwZWLXpMcLvUNyWs6gD&tbm=isch&iact=rc&uact=3&dur=488&page=0&start=0&ndsp=66&ved=0ahUKEwi1qKTu6onQAhXCNxQKHVzLDDUQMwggKAMwAw&bih=1130&biw=2195'/>";
+
+        // On peut s'abonner aux clicks
+        // On rajoute un 'event listener' pour un certain type d'événement, sur un élément du DOM
+        monBouton.addEventListener('click', function() {
+            validerSaisie();
+        });
+
+        champSaisie().addEventListener('keyup', function(event) {
+            // liste des valeurs possibles pour event.key disponible ici:
+            // https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent/key/Key_Values
+            if( event.key == 'Enter' )
+                validerSaisie();
+        });
+    </script>
+</body>
+
+</html>

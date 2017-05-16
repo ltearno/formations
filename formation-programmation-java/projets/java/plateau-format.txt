@@ -1,0 +1,12 @@
+...
+O..
+.XX
+
+
+3f 3f 3f 3f (int) (marqueur)
+00 00 00 00 (int) (version)
+00 00 00 03 (int) (largeur)
+00 00 00 03 (int) (hauteur)
+00 00 00
+4F 00 00
+00 58 58 (char[]) (plateau)

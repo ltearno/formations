@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+
+<!--
+	EXERCICE
+
+	Reproduire ceci
+-->
+
+<head>
+	<script src="jquery-3.1.1.js" type="text/javascript"></script>
+	<script>
+		// obtient un object avec les trois composantes de couleur
+		// à partir des positions des sliders
+		let getColor = function() {
+			// on multiplie par 1 pour que la valeur soit bien un 'number',
+			// sinon c'est un string
+			let r = 1 * $('#rouge').val()
+			let v = 1 * $('#vert').val()
+			let b = 1 * $('#bleu').val()
+
+			return {
+				r: r,
+				v: v,
+				b: b
+			}
+		}
+
+		// transforme un objet couleur avec les trois composantes en formule cSS valide
+		let toCssColor = ( color ) => `rgb(${color.r},${color.v},${color.b})`
+
+		// met à jour le sampler avec la couleur représentée par les sliders
+		let updateColor = function(){
+			let color = getColor() // { r:100, v:230, b:12 }
+
+			let backgroundColor = toCssColor(color)
+			let textColor = (color.r+color.v+color.b)>(128*3) ? 'black' : 'white'
+
+			$('#sampler')
+				.css('background-color', backgroundColor)
+				.css('color', textColor)
+				.text(backgroundColor)
+		}
+
+		$(function() {
+			// abonnement aux changements dans les sliders
+			$('input').bind('input', updateColor)
+
+			// création d'un échantillon dans la palette
+			$('#sampler').click(function(){
+				let color = getColor()
+
+				$('#palette').append( $('<div>')
+					.css('background-color', toCssColor(color))
+					.attr( 'data-rouge', color.r )
+					.attr( 'data-vert', color.v )
+					.attr( 'data-bleu', color.b ) )
+			})
+
+			// abonnement par délégation au click sur les échantillons
+			$(document).on('click', '#palette>div', function() {
+				// mettre a jour les attributs des input
+				for( let couleur of ['rouge', 'vert', 'bleu'])
+					$('#'+couleur).val( $(this).attr('data-'+couleur) )
+
+				// comme ceci ne déclenche pas d'évènement 'input', on met
+				// a jour la couleur sélectionnée à la main
+				updateColor()
+			})
+
+			updateColor()
+		})
+	</script>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-flow: column nowrap;
+		}
+		
+		#picker {
+			flex: 0;
+		}
+		
+		#palette {
+			margin: 10px;
+			display: flex;
+			flex-flow: row wrap;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		#palette>div {
+			flex: 0 1 100px;
+			height: 100px;
+			margin: 0.3em;
+		}
+		
+		#sampler {
+			font-size: 5em;
+			transition-duration: 1s;
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="picker">
+		<label>Rouge: <input id="rouge" type="range" min="0" max="255" step="1"></label>
+		<label>Vert: <input id="vert" type="range" min="0" max="255" step="1"></label>
+		<label>Bleu: <input id="bleu" type="range" min="0" max="255" step="1"></label>
+	</div>
+
+	<div id="palette"></div>
+
+	<div id="sampler"></div>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Open Sans', arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .hero-list-component [component-id='heroesList'] {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+        
+        .hero-component {
+            margin: 1em;
+            padding: 1em;
+            box-shadow: 1px 8px 19px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-component .hero-name {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        button {
+            margin: 1em;
+        }
+        
+        [component-id="canvas"] {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <script type="text/javascript" src="dist/bundle.js"></script>
+</head>
+
+<body>
+    <ul>
+        <li>DialogBox de confirmation</li>
+        <li>Nouveau Héro => meilleur graphisme</li>
+        <li>Liste des films</li>
+    </ul>
+
+    <!--
+        Liste des films
+
+        Un CRUD pour la liste des films
+        Formulaire d'édition du film : nom année etc et aussi une liste de héros sélectionnable
+    -->
+
+</body>
+
+</html>

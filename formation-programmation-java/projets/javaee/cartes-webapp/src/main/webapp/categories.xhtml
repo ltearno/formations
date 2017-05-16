@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<h:title>Catégories</h:title>
+	<f:loadBundle basename="fr.lteconsulting.bundle.messages" var="msg"/>
+</h:head>
+
+<body>
+	<h3>Categories</h3>
+	
+	<h:messages globalOnly="true" infoClass="info" />
+	
+	<h:form rendered="#{not empty categoryCrudBean.categories}">
+		<h:dataTable value="#{categoryCrudBean.categories}" var="categorie">
+			<h:column>
+				<f:facet name="header">ID</f:facet>#{categorie.id}</h:column>
+			<h:column>
+				<f:facet name="header">Nom</f:facet>#{categorie.nom}</h:column>
+			<h:column>
+				<f:facet name="header">Force Min</f:facet>#{categorie.forceMin}</h:column>
+				<h:column>
+				<f:facet name="header">Force Max</f:facet>#{categorie.forceMax}</h:column>
+			<h:column>
+				<h:commandButton value="edit" action="#{categoryCrudBean.edit( categorie )}" />
+			</h:column>
+			<h:column>
+				<h:commandButton value="delete" action="#{categoryCrudBean.delete( categorie )}" />
+			</h:column>
+		</h:dataTable>
+	</h:form>
+
+	<h:panelGroup rendered="#{empty categoryCrudBean.categories}">
+		<p>Il n'y a aucune catégorie !</p>
+	</h:panelGroup>
+
+	<h:panelGroup>
+		<h3>#{categoryCrudBean.edition ? "Edition catégorie" : "Ajout catégorie"}</h3>
+
+		<h:form>
+			<fieldset>
+				<legend>#{categoryCrudBean.edition ? "Edition catégorie" : "Ajout catégorie"}</legend>
+				
+				<h:outputLabel for="nom">Nom<span class="requis">*</span></h:outputLabel>
+				<h:inputText id="nom" label="Nom" value="#{categoryCrudBean.item.nom}" required="true" requiredMessage="#{msg['categorie.nom']}" size="20" maxlength="60">
+					<f:ajax event="blur" render="nomMessage" />
+					<f:validator validatorId="categorieExistenceValidator" />
+				</h:inputText>
+				<h:message id="nomMessage" for="nom" errorClass="erreur" />
+				<br/>
+				
+				<h:outputLabel for="forceMin">Force Min<span class="requis">*</span></h:outputLabel>
+				<h:inputText id="forceMin" label="ForceMin" value="#{categoryCrudBean.item.forceMin}" binding="#{composantForceMin}" requiredMessage="#{msg['categorie.force']}" required="true" size="5" maxlength="6">
+					<f:ajax event="blur" execute="forceMin forceMax" render="forceMinMessage forceMaxMessage" />
+				</h:inputText>
+				<h:message id="forceMinMessage" for="forceMin" errorClass="erreur" />
+				<br/>
+				
+				<h:outputLabel for="forceMax">Force Max<span class="requis">*</span></h:outputLabel>
+				<h:inputText id="forceMax" label="ForceMax" value="#{categoryCrudBean.item.forceMax}" requiredMessage="#{msg['categorie.force']}" required="true" size="5" maxlength="6">
+					<f:ajax event="blur" execute="forceMin forceMax" render="forceMinMessage forceMaxMessage" />
+					<f:attribute name="composantForceMin" value="#{composantForceMin}" /> 
+					<f:validator validatorId="categorieForceValidator" />
+				</h:inputText>
+				<h:message id="forceMaxMessage" for="forceMax" errorClass="erreur" />
+				<br/>
+				
+				<h:panelGroup rendered="#{categoryCrudBean.creation}">
+					<p>
+						<h:commandButton value="Ajouter" action="#{categoryCrudBean.valider}"/>
+						<h:commandButton value="Annuler" action="#{categoryCrudBean.resetItem}" />
+					</p>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{categoryCrudBean.edition}">
+					<p>
+						<h:commandButton value="Enregistrer" action="#{categoryCrudBean.valider}"/>
+						<h:commandButton value="Annuler" action="#{categoryCrudBean.resetItem}" />
+					</p>
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+	</h:panelGroup>
+</body>
+</html>

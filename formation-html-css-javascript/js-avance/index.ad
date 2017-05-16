@@ -1,0 +1,271 @@
+= Javascript Avancé
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:backend: revealjs
+:imagesdir: images
+:revealjs_theme: white
+:revealjs_history: true
+:source-highlighter: highlightjs
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
+////
+:source-highlighter: coderay
+:revealjs_transition: zoom
+:source-highlighter: pygments
+////
+
+== NPM
+
+Au fur et à mesure que l'application grandit, on voit apparaître deux problématiques :
+
+- la gestion des dépendances (bibliothèques utilisées par le projet, montées de version...)
+- lancement d'outils de builds (SASS, Less, Minifier, ...)
+
+Plusieurs outils existent, notamment _NPM_ (Node Package Manager), initialement conçu pour écrire des programmes Javascript pour serveur.
+
+=== Installation
+
+NPM est inclu lorsqu'on installe https://nodejs.org/en/[NodeJS].
+
+=== Initialisation d'un projet
+
+Dans le répertoire du projet, exécuter
+
+[source]
+----
+npm init
+----
+
+Et répondre au questions.
+
+Ceci crée un fichier `package.json` qui décrit le projet et ses dépendances.
+
+[source]
+----
+{
+  "name": "avengers-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/avengers.js",
+  "scripts": {
+	"start": "webpack app/avengers.js dist/bundle.js"
+  },
+  "author": "Arnaud Tourniers",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "2.4"
+  },
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
+
+----
+
+=== Rapatriement d'une dépendance
+
+Comme _Maven_, _NPM_ s'appuie sur un dépôt public contenant des milliers de bibliothèques.
+
+Demandons par exemple à npm de nous télécharger jquery :
+
+[source]
+----
+npm install jquery --save
+----
+
+NPM va télécharger _jquery_ ainsi que _toutes_ ses dépendances.
+
+On retrouve ensuite JQuery dans le répertoire `node_modules/jquery`
+
+Pour importer JQuery à partir d'une page web, il suffit d'ajouter :
+
+[source]
+----
+<script src='node_modules/jquery/dist/jquery.min.js'></script>
+----
+
+== Les modules
+
+=== Modules
+
+Au bout d'un moment, travailler sur un seul fichier n'est plus possible !
+
+On pourrait donc _couper_ notre fichier en plusieurs parties...
+
+=== Gestion manuelle des dépendances
+
+Mais ceci nous oblige à gérer nous même l'inclusion (et l'ordre d'inclusion) des scripts.
+
+[source,language=html]
+----
+<script src="js/jquery.js"></script>
+<script src="js/data-service.js"></script>
+<script src="js/composant-graphique.js"></script>
+<script src="js/outils.js"></script>
+<script src="js/avengers.js"></script>
+----
+
+Ceci devient _très_ rapidement l'enfer !
+
+Note: surtout si on prend en compte que certains modules ne sont pas nécessaire au _démarrage_ de l'application.
+
+=== Solution : les modules
+
+Javascript ne possédant pas la notion de modules, les développeurs ont progressivement convergé vers un (euh plusieurs en fait) _standards_ pour la déclaration des modules :
+
+- https://en.wikipedia.org/wiki/Asynchronous_module_definition[AMD], asynchrone, cible les navigateurs,
+- CommonJS, synchrone, cible les serveurs,
+- et enfin ES6 Modules qui met tout le monde d'accord.
+
+Des bibliothèques de chargement modules sont apparues peu à peu (http://requirejs.org/[requirejs], browserify, ...).
+
+=== Principe
+
+Chaque fichier JS définit un _module_.
+
+Ce module peut avoir des dépendances vers d'autres modules, qu'il déclare.
+
+Le gestionnaire de modules effectue le chargement optimisé des différents modules.
+
+=== Bundling
+
+Mais cette approche peut poser de gros problèmes lorsque l'application utilise de nombreux (petits) modules : le coût réseau devient très grand, et le temps de chargement s'allonge.
+
+Des outils permettent de combiner l'ensemble des modules de l'application en un seul fichier à charger par le navigateur.
+
+Outils : `browserify`, `rollup`, `bundle-js`, ...
+
+=== Problèmes
+
+Comme JS ne spécifie rien au niveau de sa norme, différentes façon d'implémenter les modules ont vu le jour, ce qui n'est pas pour simplifier la tâche du développeur...
+
+=== ES Harmony
+
+Heureusement, tout ceci est (presque) de l'histoire ancienne : la version _ECMAScript 2015_ (ES6) de Javascript amène la normalisation des modules.
+
+Et ceci autant pour un runtime navigateur que serveur.
+
+La syntaxe est simple et claire.
+
+Seule la partie chargement des modules n'est pas spécifiée et là encore plusieurs outils sont disponibles.
+
+=== ES6 Modules
+
+Chaque fichier est un module. Voici la http://2ality.com/2014/09/es6-modules-final.html[syntaxe] à utiliser.
+
+Il peut _exporter_ un ou des symboles. Il peut également _importer_ des symboles depuis d'autres modules :
+
+[source,language=javascript]
+----
+//------ lib.js ------
+export const sqrt = Math.sqrt;
+
+export function square(x) {
+    return x * x;
+}
+
+export function diag(x, y) {
+    return sqrt(square(x) + square(y));
+}
+----
+
+[source,language=javascript]
+----
+//------ main.js ------
+import { square, diag } from 'lib';
+
+console.log(square(11)); // 121
+console.log(diag(4, 3)); // 5
+----
+
+==== Importation d'un module complet
+
+[source,language=javascript]
+----
+//------ main.js ------
+import * as lib from 'lib';
+
+console.log(lib.square(11)); // 121
+console.log(lib.diag(4, 3)); // 5
+----
+
+==== Exportation d'un seul symbole
+
+Lorsqu'un module n'exporte qu'un seul symbole, on peut utiliser l'export par défaut :
+
+[source,language=javascript]
+----
+//------ myFunc.js ------
+export default function () { ... };
+----
+
+[source,language=javascript]
+----
+//------ main1.js ------
+import myFunc from 'myFunc';
+myFunc();
+----
+
+== Bilan
+
+On peut découper notre application en plusieurs fichiers.
+
+Chaque fichier est appelé un _module_ et il peut dépendre (_importer_) d'autres modules.
+
+Une syntaxe permet d'importer et exporter les modules (`export` et `import`).
+
+Par contre rien ne définit la façon de charger ces modules ni comment les combiner !
+
+== Bundling
+
+Retour à la notion de bundling.
+
+Comme vu précédemment, de nombreux outils de bundling existent.
+
+Nous allons voir ceux qui se rapportent au modules ES6.
+
+Deux bundlers sont assez populaires : _SystemJS_ et _Webpack_.
+
+=== Webpack
+
+Nous allons utiliser `WebPack`, un bundler qui a le vent en poupe en ce moment...
+
+Installation (avec npm) :
+
+[source]
+----
+npm install webpack --save-dev
+----
+
+=== Lancer WebPack
+
+Pour combiner l'ensemble des fichiers modules de l'application en un seul 'bundle', on demande à webpack de travailler sur le fichier principal. Il va tout seul trouver les modules et les assembler ensemble.
+
+[source]
+----
+node_modules/.bin/webpack FICHIER_PRINCIPAL FICHIER_DE_SORTIE
+----
+
+C'est le fichier de sortie que l'on chargera dans le navigateur.
+
+Note: pour ne pas avoir à se souvenir de cette commande, il est possible de pré-enregistrer des scripts dans le fichier `package.json`.
+
+[source]
+----
+<script src='bundle.js'></script>
+----
+
+Note: de _très_ nombreuses options existent pour WebPack, il ne s'agit ici que d'une mini-initiation !
+
+=== Exemple
+
+Vous avez un exemple de projet à cette url :
+
+https://github.com/ltearno/formation-html-css-javascript/tree/master/exemples/avengers-demo
+
+Une fois rapatrié sur votre machine, pour initialiser npm sur ce projet, faire `npm install` dans le répertoire du projet.

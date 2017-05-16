@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="jquery-3.1.1.js" type="text/javascript"></script>
+
+    <script>
+        // objet contact en cours d'édition par l'utilisateur
+        var contactEnCoursEdition = null
+
+        var ancienneDivSelectionne = null
+
+        function requete(method, url, data, fonctionDeRappel) {
+            if (typeof data == "function") {
+                fonctionDeRappel = data
+                data = null
+            }
+
+            let request = new XMLHttpRequest()
+            request.open(method, url)
+            request.onload = function () {
+                let data = request.responseText ? JSON.parse(request.responseText) : null
+
+                fonctionDeRappel(data)
+            }
+
+            if (data != null) {
+                request.setRequestHeader("Content-Type", "application/json")
+                let json = JSON.stringify(data)
+                request.send(json)
+            }
+            else {
+                request.send()
+            }
+        }
+
+        /*
+            ACCES RESEAU
+        */
+
+        function chargerContacts() {
+            // envoie requete HTTP GET api/contacts
+            // on recoiit la représentation JSON de la liste des contacts
+            // on convertit celle-ci en objet JS (JSON.parse)
+            // on demande le rafraichiseement de l'UI (rafraichirContacts(...))
+
+            requete('GET', 'api/contacts', function (contacts) {
+                rafraichirContacts(contacts)
+            })
+        }
+
+        function envoyerContactPourModification(contact) {
+            if (!contact)
+                return
+
+            // envoyer requete http PUT api/contacts/  contact.id
+            // le corps de la requete contient une représentation JSON du contact
+            // à mettre à jour
+            // recharger les données -> chargerContacts()
+
+            requete('PUT', 'api/contacts/' + contact.id, contact, function () {
+                chargerContacts()
+            })
+        }
+
+        function envoyerDemandeSuppression(contact) {
+            if (!contact)
+                return
+
+            // envoyer req HTTP DELETE api/contacts/ contact.id
+            requete('DELETE', 'api/contacts/' + contact.id, chargerContacts)
+        }
+
+        function envoyerDemandeCreation(contact) {
+            if (!contact)
+                return
+
+            // envoyer http POST api/contacts
+            // le corps de la requete contient la représentation JSON de 
+            // l'objet à ajouter à la collection
+            // recharger les données -> chargerContacts()
+            requete('POST', 'api/contacts', contact, function () {
+                chargerContacts()
+            })
+        }
+
+        /*
+            INTERFACE GRAPHIQUE
+        */
+
+        function remplirContactAvecFormulaire(contact) {
+            contact.nom = $('#nom').val()
+            contact.prenom = $('#prenom').val()
+            contact.telephone = $('#telephone').val()
+        }
+
+        function rafraichirContacts(contacts) {
+            // vide la div 'listeContacts'
+            $('#listeContacts').html('')
+
+            // pour chaque contact de la liste contacts
+            for (let contact of contacts) {
+                // ajouter une div dans la listeContacts
+                let htmlDiv = '<div>' + contact.nom + ' ' + contact.prenom + '</div>'
+                let contactDiv = $(htmlDiv)
+                $('#listeContacts').append(contactDiv)
+
+                if(contactEnCoursEdition && contact.id==contactEnCoursEdition.id)
+                    contactDiv.addClass("selected")
+
+                // abonner cette div au click pour déclencher :
+                contactDiv.click(function () {
+                    // -> alimenter le formulaire avec les données du contact
+                    $('#nom').val(contact.nom)
+                    $('#prenom').val(contact.prenom)
+                    $('#telephone').val(contact.telephone)
+
+                    // -> se souvenir du contact que l'utilisateur est en train d'éditer
+                    $('#listeContacts>div').removeClass("selected")
+                    contactDiv.addClass("selected")
+
+                    contactEnCoursEdition = contact
+                })
+            }
+        }
+
+        $(function () {
+            $('#valider').click(function () {
+                if (!contactEnCoursEdition)
+                    return
+
+                remplirContactAvecFormulaire(contactEnCoursEdition)
+                envoyerContactPourModification(contactEnCoursEdition)
+            })
+
+            $('#supprimer').click(function () {
+                if (!contactEnCoursEdition)
+                    return
+
+                // demander la suppression du contact en cours d'édition
+                envoyerDemandeSuppression(contactEnCoursEdition)
+            })
+
+            $('#ajouterContact').click(function () {
+                // envoyer demande d'ajout
+                let contact = {}
+                remplirContactAvecFormulaire(contact)
+                envoyerDemandeCreation(contact)
+            })
+
+            chargerContacts()
+        })
+    </script>
+
+<style>
+    body {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    #listeContacts>div {
+        margin: 2px;
+        background-color: lightgrey;
+        height: 2em;
+        min-width: 4em;
+    }
+
+    #listeContacts>.selected{
+        background-color: lightpink;
+    }
+    </style>
+
+
+</head>
+
+<body>
+    <div>
+        <div id='listeContacts'></div>
+        <button id='ajouterContact'>Ajouter</button>
+    </div>
+    <div>
+        <label>nom: <input id='nom'/></label><br/>
+        <label>prénom: <input id='prenom'/></label><br/>
+        <label>téléphone: <input id='telephone'/></label><br/>
+        <button id='valider'>OK</button>
+        <button id='supprimer'>SUPPRIMER</button>
+    </div>
+</body>
+
+</html>

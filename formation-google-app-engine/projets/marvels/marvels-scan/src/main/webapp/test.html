@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="jquery-3.2.0.min.js"></script>
+    <script src="components.js"></script>
+    <title>Test</title>
+</head>
+<body>
+<div id="application"></div>
+<script>
+    let application = document.querySelector("#application");
+
+    let injector = createInjector();
+    injector.register('dataService', {
+        getCharacters: function (offset) {
+            return Promise.resolve({
+                total: 2, data: [
+                    {id: 234, name: "Batman"},
+                    {id: 456, name: "Superman"}
+                ]
+            });
+        },
+
+        getCharacterComments: function (id) {
+            return Promise.resolve([
+                {content: "un commentaire..."}
+            ]);
+        }
+    });
+
+    let comp = new ApplicationComponent(injector);
+    document.body.appendChild(comp.rootElement());
+
+    comp.start();
+</script>
+</body>
+</html>

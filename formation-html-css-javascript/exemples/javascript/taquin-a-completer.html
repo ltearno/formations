@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript">
+        function e(id) { return document.getElementById(id) }
+
+        window.addEventListener('load', function () {
+            var plateau = e('taquin')
+
+            // l'exercice consiste à utiliser ces deux constantes
+            // au lieu d'avoir un taquin de taille fixe 3x3
+            const LARGEUR = 4
+            const HAUTEUR = 7
+
+            // on considère que dans un jeu de taquin, il n'y a qu'une seule case libre.
+
+            // tableau représentant la grille du taquin.
+            // chaque élément est le nombre se trouvant sur la case,
+            // ou null s'il n'y a pas de nombre.
+            var modele = []
+
+            // fonction qui remplit la grille du taquin
+            function initialiserGrille(modele) {
+                // liste des nombres à placer dans la grille du taquin
+                var nombresAPlacer = [1, 2, 3, 4, 5, 6, 7, 8]
+
+                for (var j = 0; j < 3; j++) {
+                    // initialise une ligne
+                    var ligne = []
+
+                    for (var i = 0; i < 3; i++) {
+                        // on place dans la case i,j un des nombres restant, 
+                        // ou null si tous les nombres ont été placés
+                        if (nombresAPlacer.length > 0) {
+                            // choisir un des nombres au hasard et le retirer de 
+                            // la liste des nombres à placer dans la grille
+                            var index = Math.floor(Math.random() * nombresAPlacer.length)
+                            var nombreAPlacer = nombresAPlacer[index]
+                            nombresAPlacer.splice(index, 1)
+
+                            // on place le nombre sur la ligne
+                            ligne.push(nombreAPlacer)
+                        }
+                        else {
+                            // on renseigne que la case est vide
+                            ligne.push(null)
+                        }
+                    }
+
+                    // on ajoute la ligne tout juste construite à la grille
+                    modele.push(ligne)
+                }
+            }
+
+            // on définit la fonction de permutation comme attribut de la variable 'modele'
+            // cette fonction permute la valeur de la case demandée en paramètre
+            // avec la case vide, si celle-ci est adjacente à la case demandée
+            modele.permute = function (x, y) {
+                // on cherche si une des cases autour de la case demandée
+                // est vide.
+                // pour cela on itère sur les 4 cases autour de la case demandée.
+                // si on rencontre une case vide, on effectue la permutation
+                // NOTE : consultez la documentation de la boucle "for of" en javascript,
+                // de préférence sur le site MDN 
+                for (var pair of [[0, 1], [0, -1], [1, 0], [-1, 0]]) {
+                    var testX = x + pair[0]
+                    var testY = y + pair[1]
+
+                    // si la case à tester n'existe pas, on passe
+                    if (testX < 0 || testX >= 3 || testY < 0 || testY >= 3)
+                        continue
+
+                    // si la case à tester est vide, on effectue la permutation
+                    // et on sort de la boucle
+                    // NOTEZ bien que le mot clé 'this' fait ici référence à l'objet sur lequel a été
+                    // appelé la fonction, c'est à dire le 'modele' lui-même !
+                    // vous pouvez aller voir la documentation sur ce sujet, notamment ce paragraphe :
+                    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Op%C3%A9rateurs/L_op%C3%A9rateur_this#En_tant_que_méthode_d'un_objet
+                    if (this[testX][testY] === null) {
+                        this[testX][testY] = this[x][y]
+                        this[x][y] = null
+                        break
+                    }
+                }
+            }
+
+            // fonction de mise à jour du plateau.
+            // son rôle est de lire le contenu de la grille dans la variable 'modele'
+            // puis de reconstruire le plateau de taquin en fonction du contenu de la grille
+            function majPlateau() {
+                // vide le plateau de tous ces éléments
+                plateau.innerHTML = ""
+
+                // fonction de création d'une case
+                function creerCase(y, x) {
+                    let button = document.createElement('button')
+
+                    button.innerHTML = modele[x][y]
+
+                    let caseDiv = document.createElement('div')
+                    caseDiv.appendChild(button)
+
+                    button.addEventListener('click', function () {
+                        // lorsque l'utilsateur clique sur la case,
+                        // on cherche à permuter celle-ci avec la case vide,
+                        // si c'est possible
+                        modele.permute(x, y)
+
+                        // après la permutation, on reconstruit le plateau
+                        majPlateau()
+                    })
+
+                    return caseDiv
+                }
+
+                // fonction de création d'une ligne
+                function creerLigne(indexLigne) {
+                    var ligne = document.createElement('div')
+
+                    for (var indexColonne = 0; indexColonne < 3; indexColonne++)
+                        ligne.appendChild(creerCase(indexLigne, indexColonne))
+
+                    return ligne
+                }
+
+                // ajouter chaque ligne au plateau
+                for (var i = 0; i < 3; i++) {
+                    plateau.appendChild(creerLigne(i))
+                }
+            }
+
+            // au début : on initialise la grille et on met à jour le document avec la grille initiale
+            initialiserGrille(modele)
+            majPlateau()
+        })
+    </script>
+
+<style>
+        #taquin {
+            display:flex;
+            flex-flow: column nowrap;
+        }
+
+        #taquin>div {
+            display:flex;
+            flex-flow: row nowrap;
+        }
+
+        #taquin>div>div {
+            width: 2em;
+            height: 2em;
+
+            line-height: 2em;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #taquin>div>div>button {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="taquin"></div>
+</body>
+
+</html>

@@ -1,0 +1,551 @@
+HTML
+
+
+1. Quelle est l’erreur dans le code HTML suivant ?
+
+	<p class="laClasse">
+		<span class="laClasse">test</span>
+		<img alt="une image" title="une image" src="url/image.jpg" />
+	</p>
+-La balise `img` n’est pas fermée
+-En HTML il faut toujours utiliser des simple quotes pour les attributs
+-Une classe ne peut être assignée qu’à une seule balise
+O-Il n’y a pas d’erreur
+
+2. Le HTML est un language dit :
+- encodé
+- crypté
+O- balisé
+- livré
+
+3. Quel est le shéma HTML correct ?
+- `<html><body><head></head></body></html>`
+O- `<html><head></head><body></body></html>`
+- `<html><head></head><body></html></body>`
+
+4. Quel est le tag à utiliser pour placer une image ?
+- `<image src="" alt="">`
+- `<img source="" alt="">`
+O- `<img src="" alt="">`
+
+5. L'attribut du tag `a` définissant l'URL d'un lien hypertexte est :
+O- `href`
+- `url`
+- `location`
+
+7. A quoi sert l'attribut `class`?
+- A ordonner des éléments
+O- A spécifier la classe de style
+- A spécifier le type de HTML utilisé
+
+8. Quel est le rôle de l’attribut `colspan` ?
+O- faire fusionner 2 cellules horizontalement.
+- faire fusionner 2 cellules verticalement.
+- mettre en valeur une cellule.
+- supprimer une cellule.
+
+10. Quel doit être le type  d’un bouton d’envoi d’un formulaire HTML5 ?
+- send
+O- submit
+- post
+
+11. Quelles sont parmis ceux-ci les attributs possibles pour une balise `<form>`
+O- method
+- post
+O- action
+- form
+
+12. La règle de style `p.ville { .........}` s'applique :
+O- aux paragraphes `<p class="ville">...<p>`
+- aux paragraphes `<p id="ville">...<p>`
+- aux paragraphes `<p value="ville">...<p>`
+- aux paragraphes `<p> <span "ville">...</span><p>`
+
+13. Que signifie CSS ?
+- Common System Services
+O- Cascading Style Sheet
+- Common Style Services
+- Common Style System
+
+14. Quels choix sont des valeurs possibles de la propriété `display` ?
+- absolute
+O- flex
+- flexbox
+O- block
+
+15. Quels choix sont des valeurs possibles de la propriété `position` ?
+O- fixed
+- none
+O- float
+O- relative
+
+16. Qu'est-ce que le "padding" ?
+O- le rembourrage interne d'un élément
+- la marge externe d'un élément
+- l'espacement entre deux cellules
+- l'espacement entre deux colonnes
+
+17. Comment mettre un commentaire en HTML ?
+O- `<!-- -->`
+- `/* */`
+- `{ }`
+- `// //`
+
+18. A quoi sert la propriété de style "border-radius" ?
+- à appliquer une rotation à un encadré
+O- à arrondir les coins des encadrés
+- à définir des angles précis pour les encadré
+- à définir un effet de perspective selon un angle pour un encadré
+
+19. Comment afficher une barre de défilement uniquement si le contenu d'un bloc déborde ?
+- `p {overflow: scroll ; }`
+O- `p {overflow: auto ; }`
+- `p {overflow: visible ; }`
+- `p {overflow: autoscroll ; }`
+
+20. A quoi sert la balise `<ul>` ?
+- à définir une cellule de tableau
+O- à mettre en forme une liste
+- à souligner du texte
+- à barrer du texte
+
+
+
+
+
+
+
+
+
+
+JAVA
+
+
+
+
+1. Par qui java est-t-il été développé ?
+-Google
+O-Oracle
+-Microsoft
+
+2. Que peut-on mettre dans une interface ?
+-Des définitions de variables et des méthodes abstraites
+-Au moins une méthode abstraite
+O-Des méthodes abstraites et des constantes
+-Des méthodes abstraites
+
+3. Qu’affichera le code suivant ?
+
+	public class UneClasse {
+		private String attribut = "un mot";
+		
+		public UneClasse() {
+			this.attribut = "un autre mot";
+		}
+	}
+
+	public class AutreClasse extends UneClasse {
+		public String getAttribut() {
+			return this.attribut;
+		}
+	}
+
+	public static void main(String[] args) {
+		UneClasse instance = new AutreClasse();
+		System.out.println( instance.getAttribut() );
+	}
+
+-Un mot
+-Un autre mot
+O-Une erreur car `AutreClasse` n’a pas accès à attribut
+-Une erreur car `AutreClasse` n’est pas du type `UneClasse`
+
+4. Quelle phrase est vraie ?
+-Une classe peut étendre plusieurs classes mais ne peut implémenter qu’une interface
+O-Une classe ne peut étendre qu’une seule classe mais implémenter plusieurs interfaces
+-Une classe peut étendre plusieurs classes et implémenter plusieurs interfaces
+-Une classe ne peut étendre qu’une seule classe et n’implémenter qu’une seule interface
+
+5. Qu’est-ce que l’encapsulation ?
+-Le fait de mettre une visibilité publique seulement aux variables auxquelles on veut permettre l’accès
+-Le fait d’avoir une classe ou une liste de classes en attribut d’une autre classe
+O-Le fait de ne donner accès aux informations d’un objet qu’en passant par des méthodes dédiées
+-Le fait d’appeler des attributs d’une classe mère depuis l’une de ses classes filles
+
+6. Quelle phrase est vraie ?
+O-La classe abstraite peut implémenter des méthodes contrairement à l’interface
+-La classe abstraite ne peut pas définir de constante contrairement à l’interface
+-La classe abstraite peut être instanciée contrairement à l’interface
+-Il n’y a pas de différence entre ces deux classes
+
+9. Si `ClasseB` hérite de `ClasseA` qui implémente `InterfaceA`, lequel de ces codes est possible ?
+-`ClasseB classe = new ClasseA();`
+-`ClasseA classe = new InterfaceA();`
+-`ClasseB classe = new InterfaceA();`
+O-`InterfaceA classe = new ClasseB();`
+
+10. Quel code n’est pas correct pour instancier une classe ?
+-`ClasseA classe = new ClasseA();`
+-`ClasseA classe = Class.forName("fr.machin.ClasseA").getInstance();`
+-`ClasseA classe = instanciate(ClasseA);`
+O-`ClasseA classe = ClasseA.class.newInstance();`
+
+11. Quelle est l’erreur de cette boucle for ?
+
+	for( x = 10; x == 0; x­­ ) {
+		x­­;
+	}
+-On ne peut pas modifier `x` dans le corps de la boucle
+O-Il faut donner un type à `x`
+-Une boucle for doit aller en s’incrémentant uniquement
+-`x` ne sera jamais égal à 0
+
+13. Quelle est la bonne syntaxe pour effectuer une boucle 'for' sur une `List<Personne> laListe` en java ?
+-`foreach(Personne personne : laListe) { }`
+-`for(Personne personne in laListe) { }`
+O-`for(Personne personne : laListe) { }`
+-`foreach(Personne personne in laListe) { }`
+
+15. Pour `int variable = 9`, que vaut
+`(10 >= variable && variable != 9) || (variable > 9 || variable < 9)`
+-`true`
+O-`false`
+-9
+-Erreur, il manque le `if`
+
+18. Comment faire référence à une classe parente dans une classe enfant ?
+-`parent`
+-`herited`
+-`this`
+O-`super`
+
+19. Qu’est-ce que la refactorisation ?
+-Le fait de rendre le code automatique
+O-La revue du code pour simplifier sa maintenabilité et éviter les répétitions
+-La revue du code pour voir si toutes les exigences attendues sont présentes
+-L’ajout de fonctionnalités supplémentaires à un code
+
+20. Si une méthode qu’on utilise lève une exception, on pourra se passer du `try..catch` en choisissant de faire que notre méthode throw l’exception en question.
+-Vrai
+O-Faux
+
+1. Le rôle d’un diagramme de classes UML est :
+-Modéliser un workflow dans un use case ou entre plusieurs use cases
+-Décrire la logique d’une méthode dans une classe
+O-Identifier les éléments du domaine et définir les relations et les interactions entre ces éléments
+
+2. Un diagramme de séquence :
+-Permet de décrire les enchaînements possibles entre les scénarios préalablement identifiés
+O-Est une représentation séquentielle du déroulement des traitements et des interactions entre les éléments du système et/ou de ses acteurs
+-Est une représentation simplifiée d’un enchaînement de séquences  se concentrant sur les échanges de messages entre les objets
+
+9. Dans un diagramme de classes en langage UML, la généralisation :
+O-Est une relation transitive : si C dérive d’une classe B qui dérive elle-même d’une classe A, alors C dérive également de A
+-Est une relation réflexive : une classe peut dériver d’elle-même
+-Est une relation symétrique : si une classe B dérive d’une classe A, alors la classe A peut dériver de la classe B
+-Représente une association non symétrique dans laquelle une des extrémités joue un rôle prédominant par rapport à l’autre extrémité
+
+1. Que signifie UML ?
+-Unified Methods Logic
+-Unique Model Logic
+O-Unified Modeling Language
+-Unique Method Language
+
+8. Comment représente-t-on la visibilité protected dans un diagramme de classe en UML ?
+-`+`
+-`~`
+O-`#`
+
+14. Quel diagramme préfèrera-t-on pour représenter les communications entre classes pour un scénario ?
+O-Diagramme de classe
+-Diagramme d’activité
+-Diagramme d’objet
+-Diagramme de séquence
+
+73. Pour transformer un code lisible en code compréhensible par la machine, on utilise :
+O-Un compilateur
+-Un exécuteur
+-Un transformateur
+-Un traducteur
+
+74. Lequel n'a pas sa place parmi ces choix :
+O-instanceof
+-select
+-for
+
+75. Laquelle de ces lignes provoque une erreur ?
+-`x + 4`
+-`3 * (Y - 2) + 1 % 1`
+O-`(27 + 2 / 3) <= 3 - 1`
+-`(2 == x - 7 * 3) + 1`
+
+76. Toute instruction if peut s'écrire comme une instruction switch équivalente :
+O-Vrai
+-Faux
+
+77. Que va produire ce code :   `for( ; ; ) {}`
+O-Une erreur de compilation
+-Une erreur d'exécution
+-Une boucle infinie
+-Rien du tout, c'est comme-ci on n'avait rien mis
+
+78. Que ne fait pas cette instruction Java ? `Date today = new Date();`
+-Déclaration d'une nouvelle variable
+-Création d'un objet
+O-Invocation d'une méthode
+-Opération d'affectation
+
+79. Que va provoquer l'exécution de ce morceau de code ?
+
+	int longueur = "Mercedes ML".length();
+O-Une erreur de compilation
+-Une erreur d'exécution
+-Une affectation de la longueur de la chaine dans la variable longueur
+-Rien du tout
+
+80. Comment peut-on connaitre les paramètres à fournir pour créer un nouvel objet ? En consultant ...
+O-Les constructeurs
+-Les méthodes
+-Les packages
+-Les librairies
+
+81. Que va afficher cette instruction à la console ?
+
+	System.out.println (4 + 5 + " enfants");
+O-45 enfants
+-9 enfants
+-0
+-0 enfants
+
+82. Qu'est-ce-qu'une classe par rapport à un objet
+O-Un objet est une instance d'une classe
+-Une classe est une instance d'un objet
+-Il n'y a aucun lien entre classe et objet
+
+83. Les attributs d'une classe d'objet sont représentés par :
+-Des variables locales
+O-Des variables d'instance
+-Des méthodes
+-Une entité distincte appelée corps de classe
+
+84. Cette déclaration est faite dans une classe Person. Où cette variable ne sera-t'elle pas visible ?
+
+	private int age;
+-Dans les méthodes de la classe `Person`
+-Dans le corps de la classe `Person`
+O-Dans le code qui utilise un objet de la classe `Person`
+-Nulle part, elle sera visible partout
+
+85. Que manque-t'il pour que cette déclaration de méthode compile ?
+
+	public somme ( int a, int b )
+	{
+		return a + b;
+	}
+-Rien du tout, c'est correct
+O-Il manque le type de retour
+-On ne peut pas renvoyer directement a+b, il faut créer une variable locale, y placer le résultat de a+b puis la renvoyer
+-Il manque le modificateur private
+
+86. Lorsque plusieurs méthodes ont le même nom (surcharge), comment la machine virtuelle Java sait-elle laquelle on veut invoquer ?
+-Elle les essaie toute une à une et prend la première qui fonctionne
+-Elle ne devine pas, il faut lui spécifier lorsqu'on compile le code
+-On indique le numéro de la méthode que l'on veut invoquer
+O-Elle se base sur les types des paramètres
+
+87. Quelle instruction faut il utiliser pour créer un nouveau tableau d'entiers de type int de 5 cases ?
+-`Array t = new Array ("int", 5);`
+-`int t = new int[5];`
+O-`int[] t = new int[5];`
+-`int[] t = new int[4];`
+
+88. Soit la classe `ChessPiece` qui représente une pièce d'un jeu d'échec et la classe `Pawn` qui représente un pion. La classe `Pawn` hérite de la classe `ChessPiece`.
+
+Quel type d'objet ne pourrais-je pas mettre dans le tableau suivant ?
+
+	Object[] tt = new ChessPiece[2];
+O-un objet de type `Object`
+-un objet de type `ChessPiece`
+-un objet de type `Pawn`
+
+89. Comment fait-on pour créer une liste dynamique de type ArrayList de taille 3 ?
+-`ArrayList list = new ArrayList (3);`
+-`ArrayList[] list = new ArrayList[3];`
+-`ArrayList list = new ArrayList<3>();`
+O-On ne peut pas spécifier la taille de la liste lors de sa création
+
+90. Pour empêcher une classe d'être étendue, quel est le mot réservé que l'on utilise dans la déclaration de classe ?
+
+	public XXX class MaClasse
+	{
+	}
+-`transient`
+O-`final`
+-`abstract`
+-`native`
+
+91. Complétez la classe suivante qui définit une nouvelle exception avec le moins d'instructions possible
+
+	public class MyException extends Exception
+	{
+		// À compléter
+	}
+-`public MyException() { super(); }`
+-`public MyException() { super ("MyException"); }`
+-`public MyException (String msg) { super (msg); }`
+O-On peut ne rien mettre du tout
+
+92. Quelle phrase au sujet de Java est correcte ?
+-En Java, les types primitifs ne sont pas des objets
+-Java supporte l'héritage multiple entre les classes
+-En Java, on peut affecter soi-même l'adresse d'un pointeur
+O-Java supporte la surcharge des opérateurs
+
+93. Que signifie le mot clef "static" associé à un attribut ?
+O-Que la valeur de cet attribut est constante
+-Que cet attribut n'est visible que dans la classe où il est défini
+-Que cet attribut sera toujours passé par valeur
+-Que cet attribut a une valeur unique pour toutes les instances de la classe
+
+94. Au sujet du mot clef "abstract", quelle assertion est fausse ?
+-Une classe abstraite ne peut être instanciée
+-Une méthode abstraite n'a pas d'implémentation
+O-Une classe abstraite n'a pas forcément de classe fille
+-Une classe abstraite doit contenir au moins une méthode abstraite
+
+95. `Child` est une classe héritant de la classe `Parent`. `myChild` et `myParent` sont des instances respectivement de `Child` et `Parent`. 
+Quel code ne compile pas ?
+-`Parent p = new Child();`
+-`myParent = myChild;`
+O-`myChild = myParent;`
+-`myChild = (MyChild)myParent;`
+
+96. Une interface en Java peut contenir :
+O-Des déclarations de méthodes et des constantes
+-Des déclarations de méthodes et de méthodes statiques
+-Des décalarations de méthodes et de constructeurs
+
+97. Quelle différence existe t-il entre les interfaces `List` et `Set` ?
+-Une `List` peut contenir une référence null, pas un `Set`
+-Un `Set` peut contenir deux fois le même élément, pas une `List`
+O-Une `List` peut contenir deux fois le même élément, pas un `Set`
+
+98. Si la classe `B` hérite de `A` qui implémente l'interface `K`, je peux écrire :
+-`B i = (K) new A ( );`
+-`A i = new K( );`
+-`B i = new A ( );`
+O-`K i = new B ( );`
+
+99. Laquelle de ces affirmations sur les constructeurs est vraie ?
+-Les constructeurs ne doivent pas avoir des arguments si la classe mère n'a pas de constructeur avec des arguments
+O-Les constructeurs ne sont pas hérités
+-Les constructeurs ne peuvent pas être surchargés
+-La première déclaration de chaque constructeur est un appel égal à super() ou this()
+
+100. La déclaration suivante : 
+
+	public class MaClass<T>
+	{
+		// ...
+	}
+
+permet de définir...
+-Rien du tout en java
+O-Un type générique
+-Une classe abstraite dont la classe `T` hérite forcément
+-Un type comparable avec le type `T`
+
+101. Dans quelle situation utilise t-on la séquence : try-catch-finally ?
+O-Pour traiter les exceptions
+-Pour sortir du programme
+-Pour déboguer le code
+
+102. Peut-on utiliser plusieurs blocs `catch` après un bloc `try` ?
+O-oui
+-non
+
+
+
+
+
+
+
+
+
+
+JAVA EE - JSP
+
+
+10. Lorsque l'on veut passer des informations depuis une servlet à une JSP, on utiliser ?
+O-`request.setAttribute( "nom", valeur )`
+-`request.setParameter( "nom", valeur )`
+-`request.setData( "nom", valeur )`
+
+1. Que peut contenir une JSP ?
+O-Du code Java et du HTML
+-Du code Java et du XML
+-Du code Java et du Javascript
+
+2. La Jsp doit être compilée par le serveur.
+O-Vrai, ne sera ensuite affiché que du HTML
+-Faux, elle est compilée par le client
+-Faux, elle n’est pas compilée
+
+3. Dans une JSP, lequel de ces codes ne permet pas d’afficher une variable `laVar` ?
+-`<%= laVar %>`
+-`${ laVar }`
+O-`<% laVar %>`
+
+4. Comment appelle-t-on le `${ }` ?
+-`Expression Tag`
+O-`Expression Language`
+-`Markup Language`
+-`Interpreted Language`
+
+5. Qu’est-ce qu’un Taglib ?
+-Une librairie JSTL
+O-Des balises liées à des classes Java par un schéma XML
+-Des balises appelant des JSP
+-Des balises HTML spéciales pour Java
+
+7. De quelle classe doit hériter une servlet ?
+-`HttpRequest`
+-`Servlet`
+O-`HttpServlet`
+-`RequestServlet`
+
+9. Quelle méthode sera appelée sur la servlet lors de l’accès à son URL sur un navigateur (en utilisant la barre d'adresse pour lancer la requête) ?
+-`doPost()`
+-`forward()`
+O-`doGet()`
+-`processRequest()`
+
+10. Dans une servlet, quelle méthode permet de faire une redirection ?
+-`response.redirect("url/de/redirection");`
+-`request.getRequestDispatcher("url/de/redirection").forward(request, response);`
+O-`response.sendRedirect("url/de/redirection");`
+-`request.forward("url/de/redirection");`
+
+11. Que permet le design pattern MVC ?
+-L’interaction entre du code java et du code html
+O-La séparation des couches présentation, gestion des requêtes et modèle de données
+-L’appel de JSP au sein de Servlet
+
+12. Comment stocker une valeur qui pourra être accédée entre plusieurs JSP et Servlet après plusieurs requêtes ?
+-`request.setAttribute("clef", valeur);`
+-`request.getSession().setParameter("clef", valeur);`
+-`request.setParameter("clef", valeur);`
+O-`request.getSession().setAttribute("clef", valeur);`
+
+17. Quel port est utilisé par défaut par le protocole HTTP ?
+-88
+-6060
+-225
+O-80
+
+18. Quelle est la méthode la plus utilisée pour transmettre les données d’un formulaire HTML?
+- GO
+O- POST
+- SEND
+- GET
+

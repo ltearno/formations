@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+	<script src="jquery-3.1.1.js"></script>
+	<script>
+        $(function(){
+            // alimenter le background color
+            function majCouleur() {
+                // trouver la valeur de chaque input
+                let rouge = $("#rouge").val();
+                let vert = $("#vert").val();
+                let bleu = $("#bleu").val();
+
+                // former une chaine de caractere de couleur valide en css
+                // rgb( RR, VV, BB )
+                let color = 'rgb(' + rouge + "," + vert + "," + bleu + ')';
+
+                // affecter cette valeur a bkgdcolor
+                $('#sampler').css('background-color', color);
+            }
+
+            // abonnement aux input
+            $('input').bind('input', function() {
+                majCouleur();
+            })
+        });
+    </script>
+</head>
+
+<body>
+	<input id="rouge" type="range" min="0" max="255" step="1">
+	<input id="vert" type="range" min="0" max="255" step="1">
+	<input id="bleu" type="range" min="0" max="255" step="1">
+
+	<div id="sampler" style="position:relative; width:200px; height:200px;"></div>
+</body>
+
+</html>

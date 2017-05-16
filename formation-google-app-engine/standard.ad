@@ -1,0 +1,740 @@
+= Google App Engine (environnement standard)
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:backend: revealjs
+:imagesdir: images
+:revealjs_theme: white
+:revealjs_history: true
+:source-highlighter: highlightjs
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
+
+== Google App Engine (environnement standard)
+
+toc::[]
+
+== User API
+
+Authentification des utilisateurs.
+
+L'API gère les utilisateurs avec un compte Google, c'est la plus simple. D'autres existent pour gérer OAuth 2, Google Sign-in et OpenID.
+
+=== Description
+
+Quand l'utilisateur est connecté, on peut connaître :
+
+- son identifiant,
+- son adresse email,
+- s'il est administrateur de l'application.
+
+=== Utilisation
+
+[source,language=java]
+----
+UserService userService = UserServiceFactory.getUserService();
+
+User user = userService.getCurrentUser();
+if( user == null )
+    return;
+
+user.getUserId();
+user.getEmail();
+user.getNickname();
+
+userService.isUserAdmin();
+----
+
+=== Connecter un utilisateur
+
+Si l'utilisateur est déconnecté, il est possible de générer un lien web vers la page d'authentification de Google.
+
+Une fois authentifié, l'utilisateur est redirigé vers notre application, à l'url spécifiée en paramètre :
+
+[source,language=java]
+----
+String url = userService.createLoginUrl( "welcome-page.html" );
+
+// l'url est à injecter dans la page.
+----
+
+=== Déconnecter l'utilisateur
+
+Pour déconnecter l'utilisateur, il faut le rediriger vers le lien fourni par l'API Users.
+
+[source,language=java]
+----
+String url = userService.createLogoutUrl( "bye-bye-page.html" );
+----
+
+== Datastore
+
+https://cloud.google.com/appengine/docs/standard/java/datastore/api-overview[Documentation Datastore].
+
+Les données sont encapulées dans des _Entity_.
+
+Une _Entity_ peut contenir des _properties_, chacune ayant une ou plusieurs valeurs.
+
+Une _Entity_ peut avoir une _entity_ parente. Il y a donc des _root entities_ et des _child entities_ formant des _entity groups_. Les entités sont organisées de façon arborescente.
+
+=== Types stockables
+
+On peut stocker dans une _property_ des objets de type :
+
+- entiers, flottants,
+- chaînes de caractères,
+- dates,
+- données binaires,
+- clés...
+
+https://cloud.google.com/appengine/docs/standard/java/datastore/entities#Java_Properties_and_value_types[Liste complète].
+
+=== Key
+
+Chaque _Entity_ est identifiée par sa clé (_Key_). Celle-ci est composée de :
+
+- (l'espace de nom de l'entité),
+- sa _Kind_, une chaîne de caractère catégorisant l'entité,
+- un identifiant qui peut être un nom (chaîne de caractère) ou un ID (entier),
+- chemin vers l'entité parente.
+
+Une application peut charger une ou des entités par sa **_clé_**, ou bien en exécutant des **_requêtes_** basées sur les clés ou valeurs des propriétés.
+
+Le chemin complet d'une entité est la séquence de KIND+ID depuis l'entité racine.
+
+=== Gestion des identifiants
+
+A l'enregistrement d'une entité, une application peut décider si elle le souhaite de valoriser _elle-même_ la partie identifiant de la clé.
+
+Ou bien de laisser App Engine le faire (génèrera un entier).
+
+=== Création d'une entité
+
+[source,language=java]
+----
+DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+// création d'une entité avec kind=Employee et name=asalieri
+Entity employee = new Entity( "Employee", "asalieri" );
+
+// création d'une entité avec kind=Employee et id généré automatiquement
+Entity employee = new Entity( "Employee" );
+
+employee.setProperty("firstName", "Antonio");
+employee.setProperty("lastName", "Salieri");
+employee.setProperty("hireDate", new Date());
+employee.setProperty("attendedHrTraining", true);
+
+datastore.put(employee);
+----
+
+=== Création d'une entité fille
+
+[source,language=java]
+----
+Entity employee = new Entity("Employee");
+datastore.put(employee);
+
+// emplyee.getKey() renvoie la clé de l'entité
+Entity address = new Entity("Address", employee.getKey());
+datastore.put(address);
+
+// ou si l'entité fille doit aussi avoir un nom :
+Entity address = new Entity("Address", "addr1", employee.getKey());
+----
+
+=== Récupérer une entité
+
+Si on a sa clé, on peut demander le chargement d'une entité :
+
+[source,language=java]
+----
+// Key employeeKey = ...;
+Entity employee = datastore.get(employeeKey);
+----
+
+=== Construction des clés
+
+On utilise la classe `KeyFactory` pour générer des objets `Key` qui serve à représenter des clés d'entités.
+
+[source,language=java]
+----
+Key k1 = KeyFactory.createKey("Person", "GreatGrandpa");
+Key k2 = KeyFactory.createKey("Person", 74219);
+----
+
+Pour construire une clé à partir d'un chemin complet on préfère le `KeyFactory.Builder` :
+
+[source,language=java]
+----
+Key k = new KeyFactory.Builder("Person", "GreatGrandpa")
+        .addChild("Person", "Grandpa")
+        .addChild("Person", "Dad")
+        .addChild("Person", "Me")
+        .getKey();
+----
+
+=== Sérialisation des clés
+
+Il peut être utile d'avoir une représentation textuelle de la clé d'une entité...
+
+[source,language=java]
+----
+String personKeyStr = KeyFactory.keyToString(k);
+
+// la chaine générée est "web-safe"
+----
+
+et de pouvoir la retrouver sous forme d'_objet_ :
+
+[source,language=java]
+----
+Key personKey = KeyFactory.stringToKey(personKeyStr);
+Entity person = datastore.get(personKey);
+----
+
+=== Mise à jour d'une entité
+
+La mise-à-jour se fait en appelant la méthode `put`.
+
+Un écrasement se produit si l'entité existait déjà.
+
+Toute l'entité est envoyée au datastore (pas que le delta).
+
+=== Effacer une entité
+
+Simplement avec la méthode `delete` :
+
+[source,language=java]
+----
+// Key employeeKey = ...;
+datastore.delete(employeeKey);
+----
+
+=== Entités embarquées
+
+Il est possible de structurer les données au sein d'une entité grâce aux _embedded entities_ :
+
+[source,language=java]
+----
+// Entity employee = ...;
+EmbeddedEntity embeddedContactInfo = new EmbeddedEntity();
+embeddedContactInfo.setProperty("homeAddress", "123 Fake St, Made, UP 45678");
+embeddedContactInfo.setProperty("phoneNumber", "555-555-5555");
+embeddedContactInfo.setProperty("emailAddress", "test@example.com");
+
+employee.setProperty("contactInfo", embeddedContactInfo);
+----
+
+=== Transactions
+
+Les opérations d'écriture sont réalisées de façon transactionnelle (tout fonctionne ou tout échoue).
+
+Au sein d'une transaction, les lectures à cohérence forte (requêtes ancêtre ou `get`) lisent un instantané cohérent des données.
+
+Les _Entity groups_ créent des contraintes sur les transactions :
+
+- une transaction ne peut toucher que 25 groupes au max,
+- les requêtes effectuées dans la transaction doivent être des requêtes _ancêtre_,
+- limite de **une transaction par seconde** par groupe d'entité.
+
+Une transaction ne peut durer plus de 60 secondes.
+
+Par défaut une tx est limitée à un seul Entity Group car ceux-ci sont stockés sur le même noeud Datastore.
+
+=== Exemple
+
+[source,language=java]
+----
+DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+Transaction txn = datastore.beginTransaction();
+
+try {
+    Transaction txn = datastore.beginTransaction();
+
+    Entity messageBoard;
+    Key boardKey;
+    try {
+        boardKey = KeyFactory.createKey("MessageBoard", boardName);
+        messageBoard = datastore.get(boardKey);
+    } catch (EntityNotFoundException e) {
+        messageBoard = new Entity("MessageBoard", boardName);
+        messageBoard.setProperty("count", 0L);
+        boardKey = datastore.put(txn, messageBoard);
+    }
+
+    txn.commit();
+} finally {
+  if (txn.isActive()) {
+    txn.rollback();
+  }
+}
+----
+
+=== Transactions inter-groupe
+
+[source,language=java]
+----
+DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+TransactionOptions options = TransactionOptions.Builder.withXG(true);
+Transaction txn = datastore.beginTransaction(options);
+
+Entity a = new Entity("A");
+a.setProperty("a", 22);
+datastore.put(txn, a);
+
+Entity b = new Entity("B");
+b.setProperty("b", 11);
+datastore.put(txn, b);
+
+txn.commit();
+----
+
+=== Notes
+
+Les transactions utilisent un contrôle de concurrence _optimiste_.
+
+Aucun verrou n'est acquis au début de la transaction.
+
+Celle-ci peut donc échouer _au moment du commit_.
+
+Au sein d'une transaction, le modèle d'isolation est `serializable isolation`.
+
+En dehors des transactions, le modèle est proche de `read committed`.
+
+Les index d'un groupe d'entités sont m-à-j complètement avant la première lecture dans une transaction.
+
+ATTENTION : dans une transaction, on reçoit l'état des entités au début de la transaction et non l'état modifié si la transaction fait des écritures.
+
+Il est possible d'intégrer l'ajout d'une tâche _TaskQueue_ dans une transaction (pas plus de 5 par tx).
+
+=== Propriétés et valeurs
+
+Une propriété peut contenir une ou _plusieurs_ valeurs.
+
+Chaque valeur peut être de type différent.
+
+Les propriétés peuvent indexées ou non (nécessaire pour effectuer des requêtes sur les valeurs).
+
+Une entité peut avoir au _maximum_ 20000 propriétés indexées.
+
+=== Stoker une propriété à valeurs multiples
+
+[source,language=java]
+----
+Entity employee = new Entity("Employee");
+
+List<String> favoriteFruit = new ArrayList<String>();
+favoriteFruit.add("Pear");
+favoriteFruit.add("Apple");
+
+employee.setProperty("favoriteFruit", favoriteFruit);
+
+datastore.put(employee);
+----
+
+[source,language=java]
+----
+Entity employee = datastore.get(employee.getKey());
+List<String> retrievedFruits = (List<String>) employee.getProperty("favoriteFruit");
+----
+
+_Attention : les listes vides sont considérées comme des valeurs `null`_.
+
+=== Opérations par lot
+
+Les méthodes `put`, `get` et `delete` ont une version acceptant un `Iterable` pour effectuer les traitements en parallèle.
+
+Il est fortement conseillé de les utiliser pour accélérer les traitement (parallélisme et coût unique d'appel au service).
+
+=== Coût des écritures
+
+Pour une explication détaillée des opérations d'écritures impliquées par l'enregistrement d'une entité dans le Datastore, allez voir https://cloud.google.com/appengine/docs/standard/java/datastore/entities#Java_Understanding_write_costs[ici].
+
+=== Requêtes
+
+Il est possible de demander les entités satisfaisant un ensemble de conditions grâce aux requêtes.
+
+Une requête inclue :
+
+- une _entity Kind_ sur laquelle elle s'applique,
+- des filtres optionnels (valeurs, clés et ancêtre),
+- un ordre de tri (optionnel) pour séquencer les résultats.
+
+=== Filtres sur propriété
+
+On précise :
+
+- un _nom_ de propriété,
+- un _opérateur de comparaison_,
+- une _valeur_.
+
+Par exemple :
+
+[source,language=java]
+----
+Filter propertyFilter =
+    new FilterPredicate("height", FilterOperator.GREATER_THAN_OR_EQUAL, minHeight);
+
+Query q = new Query("Person").setFilter(propertyFilter);
+----
+
+=== Filtres sur clés
+
+On peut aussi filtrer sur les clés des entités.
+
+[source,language=java]
+----
+Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, lastSeenKey);
+
+Query q = new Query("Person").setFilter(keyFilter);
+----
+
+=== Filtres sur ancêtre
+
+Il est possible de restreindre une requête aux entités _descendantes_ d'une autre :
+
+[source,language=java]
+----
+Query q = new Query("Person").setAncestor(ancestorKey);
+----
+
+**NOTE** : les requête ancêtre sont à cohérence forte, ce qui n'est pas le cas des autres requêtes (cohérence _à la fin_).
+
+=== Requêtes sans KIND
+
+Une requête sans _Kind_ ni ancêtre cherche dans _toutes_ les entités de l'application ainsi que celles utilisées par App Engine pour gérer l'application.
+
+Il n'est alors pas possible d'utiliser de filtre, ni de tri.
+
+On peut cependant filtrer sur les clés...
+
+[source,language=java]
+----
+Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, lastSeenKey);
+
+Query q = new Query().setFilter(keyFilter);
+----
+
+=== Requêtes sans KIND
+
+Si elle contient un ancêtre, une requête sans _Kind_ lit _toutes_ les entités descendantes.
+
+On ne peut filtrer ni demander de tri.
+
+Mais on peut filtrer sur les clés.
+
+[source,language=java]
+----
+Filter keyFilter =
+    new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.GREATER_THAN, tomKey);
+
+Query mediaQuery = new Query().setAncestor(tomKey).setFilter(keyFilter);
+----
+
+=== Chargement limité aux clés
+
+Il est possible de demander que seules les clés soient chargées et non les entités.
+
+[source,language=java]
+----
+Query q = new Query("Person").setKeysOnly();
+----
+
+=== Projections
+
+Il est possible (mais compliqué) d'effectuer des projections.
+
+Aller voir la https://cloud.google.com/appengine/docs/standard/java/datastore/projectionqueries[documentation].
+
+=== Tri
+
+[source,language=java]
+----
+// Order alphabetically by last name:
+Query q1 = new Query("Person").addSort("lastName", SortDirection.ASCENDING);
+
+// Order by height, tallest to shortest:
+Query q2 = new Query("Person").addSort("height", SortDirection.DESCENDING);
+
+Query q =
+    new Query("Person")
+        .addSort("lastName", SortDirection.ASCENDING)
+        .addSort("height", SortDirection.DESCENDING);
+----
+
+=== Charger les résultats
+
+Pour une entité :
+
+[source,language=java]
+----
+Query q = ...;
+
+PreparedQuery pq = datastore.prepare(q);
+Entity result = pq.asSingleEntity();
+----
+
+Attention : lève `TooManyResultsException` si plusieurs résultats.
+
+=== Charger les résultats
+
+[source,language=java]
+----
+Query q = ...;
+
+// Use PreparedQuery interface to retrieve results
+PreparedQuery pq = datastore.prepare(q);
+
+for (Entity result : pq.asIterable()) {
+    // ...
+}
+----
+
+=== Exemple
+
+Voici un exemple de requête :
+
+[source,language=java]
+----
+DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+Filter heightMinFilter = new FilterPredicate("height", FilterOperator.GREATER_THAN_OR_EQUAL, minHeight);
+
+Filter heightMaxFilter = new FilterPredicate("height", FilterOperator.LESS_THAN_OR_EQUAL, maxHeight);
+
+// Use CompositeFilter to combine multiple filters
+CompositeFilter heightRangeFilter = CompositeFilterOperator.and(heightMinFilter, heightMaxFilter);
+
+// Use class Query to assemble a query
+Query q = new Query("Person").setFilter(heightRangeFilter);
+
+// Use PreparedQuery interface to retrieve results
+PreparedQuery pq = datastore.prepare(q);
+
+for (Entity result : pq.asIterable()) {
+  String firstName = (String) result.getProperty("firstName");
+  String lastName = (String) result.getProperty("lastName");
+  Long height = (Long) result.getProperty("height");
+
+  out.println(firstName + " " + lastName + ", " + height + " inches tall");
+}
+----
+
+=== Limitations
+
+- Filtrer sur des propriétés non indexées ne produit pas de résultat,
+- Les filtres d'inégalité sont limités à une seule propriété,
+- Le tri est ignoré sur les propriétés avec filtre d'égalité,
+- Les propriétés avec filtre d'inégalité doivent être triées en premier,
+- Drôles de phénomènes avec les propriétés à valeurs multiples,
+- Au sein d'une transaction, les requêtes doivent être à ancêtre.
+
+=== CAP theorem
+
+Le théorème CAP a prouvé entre ces trois éléments une relation forte et l'impossibilité de fournir les trois en même temps :
+
+- Cohérence,
+- Disponibilité,
+- Tolérance aux pannes (réseau et machine).
+
+_Mais permet l'implémentation de la cohérence à terme_.
+
+=== Index
+
+Les résultats des requêtes sont obtenus grâce aux index.
+
+Ceux-ci contiennent une séquence de clés (d'entités avec ou sans ses ancêtres) dans un ordre spécifié par les propriétés de l'index.
+
+Les index sont mis-à-jour de façon asynchrone, ce qui explique la cohérence _à la fin_.
+
+Les index sont décrits dans le fichier `datastore-indexes.xml`. Celui-ci est rempli automatiquement par le serveur de développement quand il exécute les requêtes de l'application.
+
+Il est bien sûr possible de rajouter des index à la main.
+
+https://cloud.google.com/appengine/docs/standard/java/datastore/indexes[Plus loin].
+
+=== Les curseurs
+
+Fonctionnalité puissante pour traiter les résultats d'une requête par petits bouts.
+
+A l'exécution d'une requête, on peut demander un curseur. Celui-ci peut ensuite être stocké sous forme de chaîne de caractère pour reprendre les résultats plus tard.
+
+Il faut alors utiliser `QueryResultList`.
+
+[source,language=java]
+----
+FetchOptions fetchOptions = FetchOptions.Builder.withLimit(PAGE_SIZE);
+
+// startCursor peut venir du navigateur
+fetchOptions.startCursor(Cursor.fromWebSafeString(startCursor));
+
+Query q = new Query("Person").addSort("name", SortDirection.ASCENDING);
+PreparedQuery pq = datastore.prepare(q);
+
+QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+
+String cursorString = results.getCursor().toWebSafeString();
+
+// stocker cursorString pour reprendre plus tard...
+----
+
+=== Limitations
+
+- Pour réutiliser un curseur, il faut faire _identiquement_ la même requête que celle qui l'a initié.
+- Non supportés sur les filtres `NOT_EQUAL` et `IN`.
+- Peut avoir des problèmes avec les filtres d'inégalité ou des tris sur des propriétés à valeur multiples.
+- Les mises à jour d'App Engine peuvent empêcher les curseurs créés auparavant de fonctionner.
+
+Les curseurs ne sont pas des _offsets_, si les résultats de la requête changent après création du curseur, celui peut les voir apparître (ou pas).
+
+=== Metadonnées
+
+Il est possible d'obtenir des méta données. Notamment la _version_ d'un groupe d'entité.
+
+https://cloud.google.com/appengine/docs/standard/java/datastore/metadataqueries[...]
+
+On peut également obtenir des statistiques sur les données (https://cloud.google.com/appengine/docs/standard/java/datastore/stats[...]).
+
+=== API asynchrone
+
+Il existe une version asynchrone de l'API du Datastore, lorsqu'on souhaite optimiser encore plus ses traitements.
+
+=== Callbacks
+
+Il est possible d'enregistrer des méthodes de callback qui seront rappelées :
+
+- avant enregistrement d'une entité,
+- après enregistrement,
+- avant effacement,
+- après effacement,
+- avant `get`,
+- avant requête,
+- après chargement,
+
+Voir https://cloud.google.com/appengine/docs/standard/java/datastore/callbacks[ici].
+
+=== Outils
+
+App Engine permet d'utiliser l'API JPA pour manipuler le datastore (avec quelques limitations conceptuelles bien sûr).
+
+Il existe aussi `Objectify` un ORM dédié au datastore, calqué sur l'ORM fourni avec le runtime Python.
+
+== Memcache
+
+Cache _clé-valeur_ distribué.
+
+On peut préciser la durée de vie des données.
+
+Mais il faut s'attendre à leur disparition !
+
+On peut choisir l'option par défaut, ou un cache dédié (payant mais + cher, + de garanties).
+
+=== Utilisation
+
+On utilise la classe `MemcacheService`.
+
+Remarque : les clés peuvent faire au max 250 octets. Si l'objet est plus gros, il sera hashé.
+
+[source,language=java]
+----
+MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
+
+Entity e = (Entity) cache.get( "lastSeenEntity" );
+if( e == null )
+{
+    e = store.get( KeyFactory.createKey( "Persons", userId ) );
+    cache.put( "lastSeenEntity", e );
+}
+----
+
+=== Concurrence
+
+Les méthodes `putIfUntouched` et `getIdentifiable` permettent de gérer les accès concurrents au cache distribué.
+
+https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/memcache/MemcacheService#getIdentifiable(java.lang.Object)[documentation].
+
+=== Cas d'utilisation
+
+Très pratique en coopération avec les _callbacks_ du datastore (mise en cache post persist).
+
+- Mise en cache de certaines entités du Datastore pour éviter les I/O coûteuses.
+- Mise en cache de certaines entités pour fournir de la cohérence à l'utilisateur.
+- Stockage des données peu importantes ou temporaires.
+
+https://cloud.google.com/appengine/articles/best-practices-for-app-engine-memcache[Meilleures pratiques].
+
+== TaskQueue
+
+Possibilité de faire des traitements en dehors des requêtes HTTP normales, en tâche de fond.
+
+On empile des tâches aux files _Task Queue_.
+
+https://cloud.google.com/appengine/docs/standard/java/taskqueue/[Introduction].
+
+https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/package-summary#package.description[Javadoc].
+
+=== Deux fonctionnements
+
+Il existe deux façons de traiter les tâches :
+
+- _Push queues_ : dans ce mode, le moteur de tâche dispatche régulièrement les tâches à l'application. La fréquence de dispatch est ajustable. Le programme dispose de 10 minutes pour effectuer son traitement.
+- _Pull queues_ : aucun dispatch n'est effectué par AppEngine. C'est l'application (ou un tiers externe) qui doivent venir _emprunter_ les tâches en attente.
+
+=== Utilisation
+
+Par exemple, à partir d'une action utilisateur, effectuer une grande série de tâches. Un utilisateur poste un message, qui doit être retransmis à tous ses followers :
+
+- une tache va faire la requête des followers,
+- et empiler une tâche pour chaque envoi...
+
+=== Création d'une tâche
+
+Les tâches sont empilés dans une file. L'application peut configurer différentes files, mais une file par défaut existe.
+
+[source,language=java]
+----
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
+// Add the task to the default queue.
+Queue queue = QueueFactory.getDefaultQueue();
+
+queue.add(TaskOptions.Builder
+    .withUrl(“/url/path“) <1>
+    .param(“some-user-data”, 17)); <2>
+----
+<1> Il ne reste plus qu'à lier une servlet à cette url
+<2> Les paramètres sont passés dans la requête HTTP qui déclenche le worker.
+
+Voir https://cloud.google.com/appengine/docs/standard/java/taskqueue/push/creating-tasks[détails].
+
+=== Tâche dans une transaction
+
+Dans une transaction Datastore, il est possible d'ajouter une tâche, et les garanties transactionnelles s'appliquent :
+
+[source]
+----
+DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+Queue queue = QueueFactory.getDefaultQueue();
+try {
+    Transaction txn = ds.beginTransaction();
+
+    // ...
+
+    queue.add(TaskOptions.Builder.withUrl("/path/to/my/worker"));
+
+    // ...
+    txn.commit();
+} catch (DatastoreFailureException e) {
+}
+----
+

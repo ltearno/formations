@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin:0;
+    padding:0;
+
+    font-family: roboto;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    border-bottom: 1px solid #eee;
+
+    display: flex;
+    align-items: center;
+
+    background-color: white;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+#bandeauFond {
+    position: absolute;
+    background-color: #c3bec2;
+    height: 15em;
+    top: 3em;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background: url("building.jpg");
+    background-size: cover;
+background-position: 50% 25%;
+}
+
+#headquarters {
+    background-color: #393C44;
+    padding: 1em;
+    color:#fafafb;
+    margin-bottom: 4em;
+    width: 16em;
+}
+
+#header>div:first-child {
+    flex: 1 0;
+}
+
+button {
+    background-color: #E0494F;
+    color: white;
+    border: none;
+    padding: 0.5em;
+    border-radius: 0.2em;
+}
+
+#header a {
+    padding-left: 1em;
+    padding-right: 1em;
+    text-decoration: none;
+    transition-duration: .25s;
+    transition-timing-function: ease-in-out;
+}
+
+#header a:hover {
+    transition-duration: .5s;
+    transition-timing-function: ease-in-out;
+    background-color: #999;
+}
+
+.right {
+    float: right;
+}
+
+#principal {
+    margin: auto;
+    margin-top: 4em;
+    max-width: 600px;
+    margin-bottom: 2em;
+}
+
+#formAndMap {
+    display: flex;
+    justify-content: space-between;
+}
+
+#formAndMap>form {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#formAndMap>form>button {
+    align-self: flex-start;
+}
+
+#formAndMap>form>*:not(button) {
+    background: #eee;
+    border: 1px solid #ddd;
+    padding: 0.5em;
+    border-radius: 0.2em;
+}
+
+#mapLink {
+    display: none;
+}
+
+@media(max-width: 640px) {
+    #header {
+        position: absolute;
+    }
+    
+    #principal {
+        margin-top: 3em;
+        padding: 1em;
+    }
+
+    #bandeauFond {
+        display: none;
+    }
+
+    #headquarters {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    #formAndMap {
+        flex-direction: column;
+        
+    }
+
+    #form {
+        order: 1;
+    }
+
+    #map {
+        display: none;
+    }
+
+    #mapLink {
+        display: inline;
+        padding-bottom: 1em;
+    }
+}

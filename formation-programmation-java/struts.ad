@@ -1,0 +1,582 @@
+= Struts 2
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:backend: revealjs
+:imagesdir: images-struts
+:revealjs_theme: white
+:revealjs_history: true
+:source-highlighter: highlightjs
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
+
+== Arnaud Tournier
+
+Email: ltearno@gmail.com
+
+Twitter: https://twitter.com/ltearno[@ltearno]
+
+Web: http://www.lteconsulting.fr[www.lteconsulting.fr]
+
+**LTE Consulting** société de Développement, Conseil et Formation.
+
+Speaker à Java One (San Francisco), Devoxx (France), GDG, JUG, GWTCon (Allemagne, Italie)...
+
+== Struts 2
+
+Framework complétant _Java EE_ au niveau de la couche Web.
+
+Apporte une implémentation _MVC_ de la couche _Servlet_.
+
+- Version 1 : 2000,
+- Version 2 : 2015, mélange de Struts 1 et WebWork.
+
+http://struts.apache.org/[Site officiel], https://struts.apache.org/docs/home.html[Documentation].
+
+=== Philosophie
+
+Le framework force l'utilisation du pattern MVC afin de faciliter le développement au sein d'équipes de développeurs conséquentes.
+
+Une servet unique de gestion est fournie par Struts : le contrôleur.
+
+Ce controleur prend en charge toutes les requêtes HTTP entrantes et décide quelle action à exécuter.
+
+L'action, écrite par le développeur, produit son effet et redirige le framework vers une vue à montrer à l'utilisateur (souvent écrite en JSP).
+
+=== Philosophie
+
+La vie d'un serveur Struts est donc perpétuel cycle de :
+
+- entrée requête HTTP,
+- exécution d'une action,
+- redirection vers une vue.
+
+=== Traitement d'une requête
+
+Toutes les requêtes sont traités par le dispatcher Struts (`org.apache.struts2.dispatcher.FilterDispatcher`).
+
+- _namespace_ et nom d'action dans `struts.xml` sont comparés à l'url.
+- la classe de l'action correspondante est instanciée.
+- les paramètres de la requête sont affectés par les setters `setNomParametre(valeur)`.
+- la méthode `execute()` est appelée.
+- cette méthode doit renvoyer une _clé de navigation_.
+- la JSP correspondant à la clé de navigation est exécutée.
+
+La méthode `execute()` peut effectuer des traitements métier, consulter la base de données, modifier les données des portées _application_ et _session_.
+
+La JSP à accès au contexte de l'instance de l'action, de la session et de la portée applicative.
+
+=== Configuration
+
+La configuration de Struts se fait dans le fichier `struts.xml`. Il est aussi possible d'établir la configuration grace à des annotations dans le code.
+
+Exemple :
+
+[source,language=xml]
+----
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true"/>
+
+    <include file="example.xml"/>
+
+    <package name="default" namespace="/" extends="struts-default">
+        <default-action-ref name="index"/>
+
+        <action name="index"> <1>
+            <result>/index.jsp</result>
+        </action>
+    </package>
+</struts>
+----
+<1> L'action est appelée grâce à l'URL _NAMESPACE / NAME.action_, donc pour ici `/index.action`.
+
+=== Configuration du dispatcher
+
+Les URL Struts sont de la forme _http://.../rep1/rep2/.../Action.action_.
+
+La partie `rep1/rep2/.../Action.action` doit être définie dans le fichier struts.xml ainsi :
+
+[source]
+----
+<package name="actions" namespace="/actions" extends="struts-default">
+  <action name="HelloWorld" class="fr.lteconsulting.training.struts.example.HelloWorld">
+      <result>/example/HelloWorld.jsp</result>
+  </action>
+
+  <action name="Action1" class="actions.Action1">
+    <result name="page1">/vues/Page1.jsp</result>
+    <result name="page2">/vues/Page2.jsp</result>
+  </action>
+
+  <action name="Login_*" method="{1}" class="fr.lteconsulting.training.struts.example.Login">
+      <result name="input">/example/Login.jsp</result>
+      <result type="redirectAction">Menu</result>
+  </action>
+
+  <action name="index">
+      <result type="redirectAction">
+          <param name="actionName">HelloWorld</param>
+          <param name="namespace">/example</param>
+      </result>
+  </action>
+</package>
+----
+
+=== L'interface `Action`
+
+Struts définit l'interface `Action` pour aider le développement :
+
+[source]
+----
+package com.opensymphony.xwork2;
+
+public interface Action {
+    String SUCCESS = "success";
+    String NONE = "none";
+    String ERROR = "error";
+    String INPUT = "input";
+    String LOGIN = "login";
+
+    String execute() throws Exception;
+}
+----
+
+=== La classe `ActionSupport`
+
+C'est la classe de base à hériter pour implémenter des actions dans Struts.
+
+Voci un exemple :
+
+[source]
+----
+package fr.lteconsulting.training.struts.example;
+
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class AvengersAction extends ActionSupport
+{
+  // appelé par Struts
+  public String execute() {
+    // production de la clé de navigation
+    // Action.SUCCESS est une constante de l'interface `Action`
+    return Action.SUCCESS;
+  }
+}
+----
+
+=== Récupération des paramètres de requête
+
+Les paramètres de requête sont passés sous forme de String avant l'appel à `execute(...)`.
+
+Voici un exemple de traitement du paramètre `nom` :
+
+[source]
+----
+public class Avengers extends ActionSupport implements SessionAware
+{
+  private String nom;
+
+  public void setNom( String nom ) {
+    this.nom = nom;
+  }
+
+  public void execute() { ... }
+}
+----
+
+=== Utilisation de la session
+
+La session utilisateur (au sens Java eE) est accessible par injection.
+
+La classe action doit implémenter `SessionAware` qui contient la méthode `setSession(...)`.
+
+L'appel à la méthode `setSession(...)` est fait par Struts, avant de déclencher `execute()`.
+
+[source]
+----
+public class AvengersAction extends ActionSupport implements SessionAware
+{
+  // appelé par Struts
+  @Override
+  public void setSession( Map<String, Object> map ) {
+    ...
+  }
+
+  public String execute() {
+    ...
+  }
+}
+----
+
+=== Les résultats d'action
+
+Dans le fichier de configuration `struts.xml`, les noeuds `result` peuvent indiquer plusieurs comportements :
+
+- le dispatch de la requête vers une JSP :
+
+[source]
+----
+<action name="Action1" class="actions.Action1">
+  <result name="page1">/vues/Page1.jsp</result>
+  <result name="page2">/vues/Page2.jsp</result>
+</action>
+----
+
+- un redirection vers une autre action :
+
+[source]
+----
+<action name="index">
+    <result name="menu" type="redirectAction">Menu</result>
+    <result type="redirectAction">
+        <param name="actionName">HelloWorld</param>
+        <param name="namespace">/example</param>
+    </result>
+</action>
+----
+
+== TP !
+
+== Result type
+
+Il est possible de définir ses propres types de résultats, qui seront gérés chacuns par leur propre classe.
+
+En fait Struts fait ceci dans son fichier de configuration par défaut :
+
+[source]
+----
+<result-types>
+    <result-type name="chain" class="com.opensymphony.xwork2.ActionChainResult"/>
+
+    <!-- Constatez que c'est le type de résultat par DEFAUT ! -->
+    <result-type name="dispatcher" class="org.apache.struts2.result.ServletDispatcherResult" default="true"/>
+
+    <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult"/>
+    <result-type name="httpheader" class="org.apache.struts2.result.HttpHeaderResult"/>
+    <result-type name="redirect" class="org.apache.struts2.result.ServletRedirectResult"/>
+    <result-type name="redirectAction" class="org.apache.struts2.result.ServletActionRedirectResult"/>
+    <result-type name="stream" class="org.apache.struts2.result.StreamResult"/>
+    <result-type name="velocity" class="org.apache.struts2.result.VelocityResult"/>
+    <result-type name="xslt" class="org.apache.struts2.views.xslt.XSLTResult"/>
+    <result-type name="plainText" class="org.apache.struts2.result.PlainTextResult" />
+    <result-type name="postback" class="org.apache.struts2.result.PostbackResult" />
+</result-types>
+----
+
+La documentation des `result-types` est disponible https://struts.apache.org/docs/result-types.html[ici].
+
+=== Passage de paramètres
+
+Il est possible de passer des informations à l'instance de la classe `Result` qui est invoquée.
+
+Exemple :
+
+[source]
+----
+<package name="passingRequestParameters" extends="struts-default" namespace="/passingRequestParameters">
+  <!-- Pass parameters (reportType, width and height) -->
+  <!--
+  The redirectAction url generated will be :
+  /genReport/generateReport.action?reportType=pie&amp;width=100&amp;height=100#summary
+  -->
+  <action name="gatherReportInfo" class="...">
+    <result name="showReportResult" type="redirectAction">
+      <param name="actionName">generateReport</param>
+      <param name="namespace">/genReport</param>
+      <param name="reportType">pie</param>
+      <param name="width">100</param>
+      <param name="height">100</param>
+      <param name="empty"></param>
+      <param name="suppressEmptyParameters">true</param>
+      <param name="anchor">summary</param>
+    </result>
+  </action>
+</package>
+----
+
+=== Passage de paramètres
+
+Il est même possible de passer des paramètres à un `result` avec des valeurs fournies par l'action (grâce au getter approprié).
+
+[source]
+----
+<action name="creation" class="fr.lteconsulting.training.struts.actions.Creation">
+    <result type="redirectAction">
+        <param name="actionName">edition</param>
+        <param name="id">${createdMarvelId}</param> <1>
+    </result>
+</action>
+----
+<1> Le paramètre `id` du résultat est valorisé avec la valeur retournée par la méthode `getCreatedMarvelId()` dans la classe d'action.
+
+Dans la classe d'action, on a :
+
+[source]
+----
+public String getCreatedMarvelId()
+{
+  return createdMarvelId;
+}
+----
+
+=== Résultats globaux
+
+Il est possible de définir des traitement de résultat (avec leur clé de navigation associée) au niveau de la configration d'un package.
+
+[source]
+----
+<package>
+  <global-results>
+    <result name="login" type="redirect">/login.action</result>
+  </global-results>
+</package>
+----
+
+== ServletActionContext
+
+[source,language=java]
+----
+ServletActionContext context = ServletActionContext.getContext();
+
+context.getActionInvocation();
+
+// contexte applicatif
+Map<String, Object> appContext = context.getApplication();
+
+// contexte de session
+Map<String, Object> session = context.getSession();
+
+// parametres de la requête
+Map<String, Object> parameters = context.getParameters();
+
+// stack EL (OGNL)
+ValueStack elStack = context.getValueStack();
+
+// HttpServletRequest et HttpServletResponse
+context.getRequest();
+context.getResponse();
+
+// contexte Servlet
+ServletContext sc = context.getServletContext();
+
+// container ioc
+Container container = context.getContainer();
+
+// nom de l'action courante
+String actionName = context.getName();
+----
+
+== Intercepteurs
+
+Parfois on veut appliquer un traitement identique avant ou après le traitement des actions.
+
+Les _Intercepteurs_ sont destinés à cette utilisation.
+
+La chaine de traitement d'une requête est donc en fait une pile d'intercepteurs et d'une action.
+
+=== Vue d'ensemble
+
+image::overview.png[]
+
+=== Configuration
+
+[source]
+----
+<package name="default" extends="struts-default">
+   <interceptors>
+        <interceptor name="timer" class="..."/>
+        <interceptor name="logger" class="..."/>
+        <interceptor-stack name="myStack">
+           <interceptor-ref name="timer"/>
+           <interceptor-ref name="logger"/>
+        </interceptor-stack>
+    </interceptors>
+ 
+   <action name="login" class="tutuorial.Login">
+         <interceptor-ref name="myStack"/>
+         <result name="input">login.jsp</result>
+         <result name="success" type="redirectAction">/secure/home</result>
+   </action>
+</package>
+----
+
+Les intercepteurs sont exécutés dans l'ordre de leur déclaration dans le fichier `struts.xml`.
+
+Ici : `timer` -> `logger` -> `action` -> `logger` -> `timer`.
+
+=== Configuration par défaut
+
+Struts inclu par défaut de nombreux intercepteurs.
+
+On trouve le contenu du fichier `struts-default.xml` https://struts.apache.org/docs/interceptors.html#Interceptors-TheDefaultConfiguration[ici].
+
+=== Exemple : Logger
+
+Cet intercepteur, fourni par Struts (et déclaré dans le fichier de configuration racine de Struts), émet un message dans la console à chaque requête.
+
+[source,language=xml]
+----
+<action name="someAction" class="com.examples.SomeAction">
+    <interceptor-ref name="completeStack"/>
+    <interceptor-ref name="logger"/>
+    <result name="success">good_result.ftl</result>
+</action>
+----
+
+=== Cas typique : ajouter un intercepteur à la pile par défaut
+
+[source]
+----
+<package name="user" namespace="/" extends="struts-default">
+  <interceptors>
+    <interceptor name="authentication" class="fr.lteconsulting.interceptors.AuthenticationInterceptor"></interceptor>
+    <interceptor-stack name="authStack">
+      <interceptor-ref name="authentication"></interceptor-ref>
+      <interceptor-ref name="defaultStack"></interceptor-ref>
+    </interceptor-stack>
+  </interceptors>
+
+  <default-interceptor-ref name="authStack"></default-interceptor-ref>
+</package>
+----
+
+=== Ecrire son intercepteur
+
+Il est bien évidemment possible de fournir ses propres intercepteurs.
+
+**Attention** il faut être _thread-safe_ car un intercepteur est partagé par les différentes actions.
+
+[source]
+----
+public interface Interceptor extends Serializable {
+  void init();
+  String intercept(ActionInvocation invocation) throws Exception;
+  void destroy();
+}
+----
+
+=== ActionInvocation
+
+Lorsqu'une action est interceptée, la méthode `intercept(...)` est appelée.
+
+L'objet `invocation` passé en paramètre encapsule l'action et la pile d'intercepteurs restante.
+
+Ceci est un exemple du pattern _chaîne de responsabilité_.
+
+L'intercepteur peut alors :
+
+- retourner une chaine de caractère correspondant à un `global result`. A ce moment là la suite du traitement normal de l'action n'est pas effectué. Et la vue associée au résultat retournée est produite.
+- déclencher le traitement suivant dans la pile d'invocation en appelant la méthode `invocation.invoke()`. Le traitement suivant peut être un autre intercepteur ou bien l'action en elle-même.
+
+=== Exemple
+
+Voici un exemple d'intercepteur qui rejete les requêtes au hasard :
+
+[source,language=java]
+----
+public class RandomErrorInterceptor extends AbstractInterceptor
+{
+	private static final Logger LOG = LoggerFactory.getLogger( RandomErrorInterceptor.class );
+
+	public String intercept( ActionInvocation invocation ) throws Exception
+	{
+		if( Math.random() >= 0.5 )
+		{
+			LOG.error( "L'intercepteur a mis la requête en erreur !" );
+			return Action.ERROR;
+		}
+
+		// invocation.getInvocationContext().getSession().put( "clé", value );
+
+		// L'appel à invoke peut ou pas déclencher la génération du flux HTML
+		return invocation.invoke();
+	}
+}
+----
+
+=== Configuration
+
+Et voici la configuration correpondante dans `struts.xml` :
+
+[source]
+----
+<package name="default" namespace="/" extends="struts-default">
+    <interceptors>
+        <interceptor name="random" class="fr.lteconsulting.interceptors.RandomErrorInterceptor"></interceptor> <1>
+        <interceptor-stack name="myStack"> <2>
+            <interceptor-ref name="random"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </interceptor-stack>
+    </interceptors>
+
+    <default-interceptor-ref name="myStack"></default-interceptor-ref> <3>
+
+    <global-results>
+        <result name="error">/WEB-INF/Error.jsp</result> <4>
+    </global-results>
+
+    <action name="consultation" class="fr.lteconsulting.training.struts.actions.Consultation"> <5>
+        <result name="success">/WEB-INF/Consultation.jsp</result>
+    </action>
+</package>
+----
+<1> Enregistrement de l'intercepteur.
+<2> Déclaration d'une pile d'intercepteurs.
+<3> Utilisation de la pile d'intercepteurs définie comme pile par défaut.
+<4> Définition générale du résultat "erreur".
+<5> Si l'action renvoie la clée "erreur", le résultat global sera utilisé.
+
+////
+
+== REST avec Struts
+
+
+Configuration par annotations.
+
+Thèmes
+
+Langage OGNL : http://struts.apache.org/docs/ognl.html
+Ressemble à EL.
+
+
+La taglig struts (demain) : <%@ taglib prefix="s" uri="/struts-tags" %>
+
+http://struts.apache.org/docs/tag-reference.html
+
+Récupérer le contexte servlet
+
+Récupérer un EJB
+=> https://docs.jboss.org/author/display/AS71/EJB+invocations+from+a+remote+client+using+JNDI?_sscc=t
+
+Récupérer le contexte Servlet
+- `ServletActionContext.getServletContext()`
+- en utilisant l'interface `ServletContextAware`
+
+Intercepteurs.
+
+
+Faire du REST avec Struts
+
+http://struts.apache.org/docs/rest-plugin.html
+
+
+
+
+
+
+Plusieurs possibilités existent pour les noeuds `result`.
+
+=== URLs et Actions
+
+DefaultActionMapper
+////

@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<body>
+	<h1>Hello !</h1>
+
+	<div id="customers"></div>
+
+	<script>
+		function dump(text) {
+			var element = document.getElementById("customers");
+
+			element.innerText += text;
+		}
+
+		var req = new XMLHttpRequest();
+		req.open('GET', 'customers', true);
+		req.onreadystatechange = function(aEvt) {
+			if (req.readyState == 4) {
+				if (req.status == 200)
+					dump(req.responseText);
+				else
+					dump("Erreur pendant le chargement de la page.\n");
+			}
+		};
+		
+		req.send(null);
+	</script>
+</body>
+</html>

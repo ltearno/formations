@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bordure arrondies</title>
+    <style>
+    .border {
+      margin: 20px;
+      padding: 15px;
+    }
+
+    .ex1 {
+      border: solid 10px;
+
+      /* la bordure se courbe pour former un « D » */
+      border-radius: 0 50px 50px 0;
+    }
+
+    .ex2 {
+      border: groove 1em red;
+      border-radius: 2em;
+    }
+
+    .ex3 {
+      background: gold;
+      border: ridge gold;
+      border-radius: 13em/3em;
+    }
+
+    .ex4 {
+      background: gold;
+      border-radius: 40px 10px;
+    }
+
+    .ex5 {
+      background: black;
+      color: gray;
+      border-radius: 50%;
+      padding: 30px;
+    }
+    </style>
+  </head>
+  <body>
+
+    <div class="border ex1">
+<pre>border: solid 10px;
+/* la bordure se courbe pour former un « D » */
+border-radius: 0 50px 50px 0;</pre>
+    </div>
+
+    <div class="border ex2">
+<pre>border: groove 1em red;
+border-radius: 2em;</pre>
+    </div>
+
+    <div class="border ex3">
+<pre>background: gold;
+border: ridge gold;
+border-radius: 13em/3em;</pre>
+    </div>
+
+    <div class="border ex4">
+<pre>background: gold;
+border-radius: 40px 10px;</pre>
+    </div>
+
+    <div class="border ex5">
+<pre>background: black;
+color: gray;
+border-radius: 50%;</pre>
+    </div>
+
+  </body>
+</html>

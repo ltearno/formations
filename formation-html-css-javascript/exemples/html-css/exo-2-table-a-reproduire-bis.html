@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        table.stats {
+            border: 1px solid green;
+            border-collapse: collapse;
+            background-color: #eee;
+            caption-side: bottom;
+        }
+
+        table.stats>caption {
+            margin-top: 10px;
+            font-style: italic;
+            border-top: 5px solid green;
+            text-align: right;
+        }
+        
+        table.stats>thead>tr>td,
+        table.stats>tbody>tr>td,
+        table.stats>tfoot>tr>td {
+            padding: 5px;
+            border-bottom: 1px solid #888;
+        }
+
+        table.stats>tfoot>tr:last-child>td {
+            border-bottom: 1px solid green;
+        }
+
+        table.stats td:first-child,
+        table.stats td:nth-child(2) {
+            border-right: 1px solid #888;
+        }
+
+        table.stats>tbody>tr>td:nth-child(2),
+        table.stats>tbody>tr>td:nth-child(3) {
+            background-color: lightblue;
+            text-align: right;
+            border-bottom: 1px solid green;
+        }
+
+        table.stats>tfoot>tr>td:nth-child(2),
+        table.stats>tfoot>tr>td:nth-child(3) {
+            background-color: lightblue;
+            text-align: right;
+        }
+
+        table.stats>tbody>tr>td:nth-child(2) {
+            border-right: 1px solid green;
+        }
+
+        table.stats>tfoot>tr:first-child>td:nth-child(2),
+        table.stats>tfoot>tr:first-child>td:nth-child(3) {
+            border-top: 5px solid green;
+            text-align: right;
+        }
+
+        .titre {
+            color: blue;
+        }
+
+        .soustitre {
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table class="stats">
+        <caption>Océans</caption>
+
+        <thead>
+            <tr>
+                <td></td>
+                <td class="titre">Aire</td>
+                <td class="titre">Profondeur moyenne</td>
+            </tr>
+            <tr class="soustitre">
+                <td></td>
+                <td>million de km²</td>
+                <td>m</td>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <td class="titre">Total:</td>
+                <td>361,000</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="titre">Moyenne:</td>
+                <td>72,000</td>
+                <td>3,800</td>
+            </tr>
+        </tfoot>
+
+        <tbody>
+            <tr>
+                <td>Arctique</td>
+                <td>20,000</td>
+                <td>4,500</td>
+            </tr>
+            <tr>
+                <td>Atlantique</td>
+                <td>20,000</td>
+                <td>4,500</td>
+            </tr>
+            <tr>
+                <td>Pacifique</td>
+                <td>20,000</td>
+                <td>4,500</td>
+            </tr>
+            <tr>
+                <td>Indien</td>
+                <td>20,000</td>
+                <td>4,500</td>
+            </tr>
+            <tr>
+                <td>Antartique</td>
+                <td>20,000</td>
+                <td>4,500</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

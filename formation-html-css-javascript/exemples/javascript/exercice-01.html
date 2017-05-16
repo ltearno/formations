@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<!--
+    EXERCICE :
+
+    - ajouter la validation aussi quand on frappe la touche ENTREE dans la zone de saisie
+-->
+
+<head></head>
+
+<body>
+	<input id="champSaisie" type="text" />
+	<button id="monBouton">Cliquez moi</button>
+	<div id="log"></div>
+
+	<script>
+        // Récupérer l'élément 'monBouton' à partir du DOM
+        let monBouton = document.getElementById('monBouton');
+
+        // On peut manipuler l'élément
+        monBouton.innerText = "Bonjour";
+
+        // Encore...
+        monBouton.innerHTML = "<h2>Valider</h2>";
+
+        // On peut s'abonner aux clicks
+        // On rajoute un 'event listener' pour un certain type d'événement, sur un élément du DOM
+        monBouton.addEventListener('click', function() {
+            // Le bouton a été cliqué
+
+            // récupérer le texte saisi
+            // on récupère l'élément input
+            let champSaisie = document.getElementById('champSaisie');
+            let texteSaisi = champSaisie.value;
+
+            // Récupérer la div dans laquelle on ajoute les messages
+            let log = document.getElementById('log');
+            log.innerHTML += "<p>" + texteSaisi + "</p>";
+
+            // Vider le champ input
+            champSaisie.value = "";
+
+            // Donner le focus au champ de saisie
+            champSaisie.focus();
+        });
+    </script>
+</body>
+
+</html>

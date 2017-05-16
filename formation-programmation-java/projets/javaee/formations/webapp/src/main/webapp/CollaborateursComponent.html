@@ -1,0 +1,24 @@
+<div class="container">
+	<div class="row">
+		<div class="col s4" style="display: flex; flex-flow: column nowrap;">
+			<div *ngIf='!collaborateurs'>Pas de collaborateur !</div>
+			<div *ngIf='collaborateurs'
+				style='display: flex; flex-flow: column nowrap; align-items: stretch; max-height: 300px;'>
+				<div>
+					Filter: <input [(ngModel)]='filterText' />
+				</div>
+				<div style='flex-shrink: 1; overflow: auto;'>
+					<div *ngFor='let c of collaborateurs'
+						(click)='selectCollaborateur(c)'>
+						<span [class.selected]='c==selectedCollaborateur'>{{c.nom}}
+							{{c.prenom}} {{c.codeAgence}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col s8">
+			<my-collaborateur *ngIf='selectedCollaborateur'
+				[collaborateur]='selectedCollaborateur'></my-collaborateur>
+		</div>
+	</div>
+</div>

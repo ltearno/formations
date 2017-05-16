@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Utilisation de JQuery</title>
+
+    <style>
+        .toto {
+            background-color: aquamarine;
+            width: 100px;
+            height: 50px;
+            transition: 2s background-color, 2s width, 2s height;
+        }
+        
+        .toto:hover {
+            background-color: red;
+            width: 100px;
+            height: 300px;
+        }
+        
+        .boutons {
+            display: flex;
+            justify-content: flex-start;
+        }
+    </style>
+
+    <script type="application/javascript" src="jquery-2.1.4.js"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $(".boutons>button").each(function (poutre) {
+                // this représente l'element courant
+                $(this).text("bouton " + poutre);
+            });
+            $(".boutons>button").click(function () {
+                $(".boutons>button").addClass("toto");
+            });
+
+            $.ajax({url: "varietes.json"})
+                .done(function (data) {
+                var s = "";
+                for( var i in data){
+                    var variete = data[i];
+                    s += "<button>nom: " + variete.nom + "</button><br/>";
+                }
+                $('body').append(s);
+            })
+            .fail(function(e){
+                alert("fail" + e);});
+            
+            
+            $.ajax({url: "varietes.xml"})
+                .done(function (data) {
+                var s = "";
+                for( var i in data){
+                    var variete = data[i];
+                    s += "<button>nom: " + variete.nom + "</button><br/>";
+                }
+                $('body').append(s);
+            })
+            .fail(function(e){
+                alert("fail" + e);});
+        });
+    </script>
+</head>
+
+<body>
+    <div class="boutons">
+        <button>Bouton 1</button>
+        <button>Bouton 2</button>
+        <button>Bouton 3</button>
+        <button>Bouton 4</button>
+        <button>Bouton 5</button>
+        <button>Bouton 6</button>
+    </div>
+
+    <button>Bouton 1</button>
+    <button>Bouton 2</button>
+    <button>Bouton 3</button>
+    <button>Bouton 4</button>
+    <button>Bouton 5</button>
+    <button>Bouton 6</button>
+</body>
+
+</html>

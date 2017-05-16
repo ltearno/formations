@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+span {
+    border: 1px solid black;
+    background-color: lightslategrey;
+    position: relative;
+}
+
+span:hover {
+    left: 10px;
+    top: 10px;
+}
+
+#div1 {
+    border: 3px dashed green;
+    background-color: lightgreen;
+}
+
+ul.menu {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.menu>li {
+    border: 2px solid #2f2f2f;
+    background-color: black;
+    color: rgb(200, 200, 200);
+    width: 10em;
+    padding: 3px;
+}
+
+ul.menu>li:hover {
+    background-color: rgb(80, 80, 80);
+    cursor: pointer;
+}
+
+#div2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: pink;
+}
+
+#encart,
+#encartGauche {
+    word-break: break-all;
+    height: 100%;
+}
+
+#encarts {
+    position: absolute;
+    left: 2em;
+    right: 2em;
+    bottom: 2em;
+    height: 30%;
+}
+
+#encart {
+    float:right;
+    width: 7em;
+    background-color: black;
+    color: yellow;
+}
+
+#encartGauche {
+    float:left;
+    right: 7em;
+    background-color: lightblue;
+    color: black;
+}

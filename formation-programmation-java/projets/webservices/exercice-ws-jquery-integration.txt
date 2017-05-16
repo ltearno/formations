@@ -1,0 +1,10 @@
+- Reprendre dans Eclipse le projet de service web des FunkoPop (il s'appelle RestWS dans le github).
+- Dans le répertoire WebContent, copier le script JQuery
+- Dans le répertoire WebContent, créer un fichier index.html avec un contenu vide standard (doctype, html, body, head)
+- Déployer le projet dans WildFly et se rendre à l'url localhost:8080/index.html, vérifier que la page se charge
+- Dans le répertoire WebContent, créer un fichier application.js, l'inclure dans index.html
+- Dans le fichier application.js, écrire un programme javascript (en s'aidant de JQuery si nécessaire) qui effectue une requête AJAX vers le service web pour obtenir les FunkoPop puis qui les affiche dans une table.
+- Compléter la classe Java FunkoPopWS en implémentant l'ensemble des méthodes CRUD restantes (create(), update() et delete())
+- Ajouter un bouton dans la page, le clic sur ce bouton déclenchera un appel WS demandant la création d'un nouveau FunkoPop et ajoutera celui-ci à la table affichée dans la page
+- Ajouter dans la page un formulaire permettant d'éditer un FunkoPop, implémenter le tout jusqu'au serveur.
+- Ajouter dans la table un bouton par FunkoPop permettant de le supprimer.

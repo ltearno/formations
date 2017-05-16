@@ -1,0 +1,22 @@
+<br />
+<b>{{collaborateur.nom | uppercase}} {{collaborateur.prenom |
+	uppercase}}</b>
+({{collaborateur.id}})
+<br /><br />
+Working at agency {{collaborateur.codeAgence}}
+<br /><br />
+<div *ngIf='demandesFormation'>
+	Demandes de formation:<br />
+	<div *ngFor='let d of demandesFormation' style='padding-left:1em;'>{{d.formation.intitule}} {{d.formation.lieu}}
+		{{d.formation.debutAttendu | date:dateFormat}} {{d.formation.debutReel
+		| date:dateFormat}} - <a href='#' (click)='removeDemandeFormation(d, $event)'>(remove)</a></div>
+</div>
+<a *ngIf='!addingDemande' (click)='addingDemande=true' class="waves-effect waves-light btn"><i class="material-icons left">add</i>Faire une demande de formation</a>
+<div *ngIf='addingDemande'>
+	<label>Recherche formation <input #searchBox (keyup)='searchFormations(searchBox.value)'/></label>
+	<ul *ngIf='formations'>
+		<li *ngFor='let f of formations | async'>{{f.intitule}} à {{f.lieu}}, {{f.nbJours}} jours, prévue le {{f.debutAttendu | date:dateFormat}}
+		 - <a href='#' (click)='participateFormation(f, $event)'>(choose)</a>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+    .container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+    
+    .container-table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      background-color: pink;
+      //display: table-cell;
+    }
+    
+    .container-cell {
+      height: 100%;
+      padding: 0;
+      vertical-align: middle;
+    }
+    
+    .contenu {
+      width: 200px;
+      height: 150px;
+      margin: auto;
+      overflow: auto;
+      background-color: #436;
+      border: 5px solid #463;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <table class="container-table">
+      <tr>
+        <td class="container-cell">
+          <div class="contenu">
+            <span class="s">Je suis le contenu</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+
+</html>

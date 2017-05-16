@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <style>
+        .data-table {
+            display: table;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        .data-table > div {
+            display: table-row;
+        }
+        
+        .data-table > div > div {
+            display: table-cell;
+            border: 1px solid black;
+        }
+        
+        .data-table > div > div:nth-child(1) {
+            background-color: antiquewhite;
+        }
+        
+        .data-table > div > div:nth-child(2) {
+            background-color: rgb(255, 248, 240);
+        }
+        
+        .data-table > div > div > span {
+            padding: 3em;
+        }
+        
+        @media (min-width:800px) {
+            .data-table > div:first-child > div {
+                background-color: #eda340;
+            }
+        }
+        
+        @media (max-width:800px) {
+            .data-table {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                border: 1px solid blue;
+            }
+            .data-table > div:first-child {
+                display: none;
+            }
+            .data-table > div {
+                flex: 0 1 auto;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            .data-table > div > div {
+                border: 1px solid pink;
+            }
+            .data-table > div > div > span {
+                padding: 3em;
+            }
+        }
+        
+        @media (max-width:600px) {
+            .data-table {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                border: 1px solid blue;
+            }
+            .data-table > div:first-child {
+                display: none;
+            }
+            .data-table > div {
+                flex: 0 1 auto;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+            }
+            .data-table > div > div {
+                border: 1px solid pink;
+            }
+            .data-table > div > div > span {
+                padding: 3em;
+            }
+            .data-table > div > div:nth-child(1)::before {
+                content: "Nom ";
+                font-style: italic;
+            }
+            .data-table > div > div:nth-child(2)::before {
+                content: "Surface ";
+                font-style: italic;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="data-table">
+        <div>
+            <div><span>Nom</span></div>
+            <div><span>Surface</span></div>
+        </div>
+        <div>
+            <div><span>Dlkjh</span></div>
+            <div><span>0.33<br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam magni, blanditiis assumenda, fuga repellat, molestias nobis, maxime omnis itaque necessitatibus fugiat magnam nisi dignissimos! Culpa quidem distinctio architecto quos quibusdam!</span></div>
+        </div>
+        <div>
+            <div><span>Ghjlh<br/>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste odit labore incidunt cupiditate laboriosam libero modi magnam recusandae vel deleniti cumque nihil non saepe, quis fuga sit aperiam possimus sequi.</span></div>
+            <div><span>0.44</span></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!--
+        LE BUT DE CET EXERCICE EST POUR VOUS DE CHANGE LE CSS DE LA DIV CONTENANT LE TEXTE
+        "JE SUIS APRES LES FLOAT !!!"
+        AFIN QUE CE TEXTE APPARAISSE *TOUJOURS* APRES LES ELEMENTS FLOAT
+    -->
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        .container {
+            background-color: pink;
+            padding: 20px;
+        }
+        
+        .column {
+            float: left;
+            width: 25%;
+            min-width: 200px;
+            background-color: lightgrey;
+            padding: 10px;
+            border: 1px dashed black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="column">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit sem et nunc dignissim rhoncus nec non ante.
+            Ut ultrices iaculis mattis. Sed ex tortor, bibendum at eleifend quis, cursus nec mauris. Pellentesque consequat
+            dictum enim, eu faucibus justo fringilla a. Pellentesque aliquet sapien sed ultricies cursus. Nullam libero odio,
+            vehicula eu sem a, consequat pharetra mauris.
+        </div>
+        <div class="column">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit sem et nunc dignissim rhoncus nec non ante.
+            Ut ultrices iaculis mattis. Sed ex tortor, bibendum at eleifend quis, cursus nec mauris. Pellentesque consequat
+            dictum enim, eu faucibus justo fringilla a. Pellentesque aliquet sapien sed ultricies cursus. Nullam libero odio,
+            vehicula eu sem a, consequat pharetra mauris. Phasellus varius ipsum eu posuere mollis. Ut suscipit turpis vel
+            consectetur accumsan. Nullam pulvinar ultricies lectus quis imperdiet. Etiam cursus finibus convallis. Nam purus
+            tortor, molestie vitae urna sed, ultricies eleifend enim. Fusce cursus a odio sollicitudin pulvinar. Etiam molestie
+            quis augue in tempor. Nulla sit amet placerat felis. Morbi vestibulum velit et enim volutpat volutpat.
+        </div>
+        <div class="column">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit sem et nunc dignissim rhoncus nec non ante.
+            Ut ultrices iaculis mattis. Sed ex tortor, bibendum at eleifend quis, cursus nec mauris. Pellentesque consequat
+            dictum enim, eu faucibus justo fringilla a. Pellentesque aliquet sapien sed ultricies cursus. Nullam libero odio,
+            vehicula eu sem a, consequat pharetra mauris. Phasellus varius ipsum eu posuere mollis. Ut suscipit turpis vel
+            consectetur accumsan. Nullam pulvinar ultricies lectus quis imperdiet. Etiam cursus finibus convallis.
+        </div>
+        <div class="column">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit sem et nunc dignissim rhoncus nec non ante.
+            Ut ultrices iaculis mattis. Sed ex tortor, bibendum at eleifend quis, cursus nec mauris. Pellentesque consequat
+            dictum enim, eu faucibus justo fringilla a. Pellentesque aliquet sapien sed ultricies cursus. Nullam libero odio,
+            vehicula eu sem a, consequat pharetra mauris. Phasellus varius ipsum eu posuere mollis. Ut suscipit turpis vel
+            consectetur accumsan. Nullam pulvinar ultricies lectus quis imperdiet. Etiam cursus finibus convallis. Nam purus
+            tortor, molestie vitae urna sed, ultricies eleifend enim. Fusce cursus a odio sollicitudin pulvinar. Etiam molestie
+            quis augue in tempor. Nulla sit amet placerat felis. Morbi vestibulum velit et enim volutpat volutpat.
+        </div>
+        <div style="clear:both;">JE SUIS APRES LES FLOAT !!!</div>
+    </div>
+</body>
+
+</html>

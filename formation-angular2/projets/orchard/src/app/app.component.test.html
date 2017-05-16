@@ -1,0 +1,22 @@
+<h1>Mon premier verger</h1>
+
+<h2>Test du dé</h2>
+
+<die [nbFaces]='30' (diceRolled)='dieValue=$event'></die>
+{{dieValue}}
+
+<h2>Test du Crow</h2>
+
+<crow [position]=4></crow>
+
+<h2>Test du Tree</h2>
+
+<tree [nbFruits]=235></tree>
+
+<tree [nbFruits]=22 [chooseTree]='true'></tree>
+
+<h2>Test du Trees</h2>
+
+<trees [fruits]='[1,2,3,4,5]'></trees>
+
+<trees [fruits]='[1,2,3,4,5]' [chooseTree]='true'></trees>

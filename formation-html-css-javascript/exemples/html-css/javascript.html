@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <title>Utilisation de Javascript</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .toto {
+            background-color: aquamarine;
+        }
+    </style>
+    <script type="application/javascript">
+        var chevre, prairie;
+
+        function f(e) {
+            prairie.innerHTML += "<h1>bonjour x=" + e.clientX 
+                + " y=" + e.clientY 
+                + "</h1><span class='toto'>le texte de la chèvre est : " + chevre.value 
+                + " this = " + this + "</span>";
+        }
+
+        window.addEventListener("load", function () {
+            var mouton = document.getElementById("monMouton");
+            mouton.addEventListener("click", f);
+
+            chevre = document.getElementById("chevre");
+
+            prairie = document.getElementById("prairie");
+        });
+    </script>
+</head>
+
+<body>
+    <input id="chevre" type="text" />
+    <button id="monMouton">Coucou !</button>
+    <div id="prairie"></div>
+</body>
+
+</html>

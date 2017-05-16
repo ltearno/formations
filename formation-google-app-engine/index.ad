@@ -1,0 +1,87 @@
+= Google App Engine
+:author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
+:email: ltearno@gmail.com
+:backend: revealjs
+:imagesdir: images
+:revealjs_theme: white
+:revealjs_history: true
+:source-highlighter: highlightjs
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
+
+== Google App Engine
+
+Executer ses applications dans l'infrastructure Google.
+
+=== Avantages
+
+Auto scalable.
+
+Pas de gestion d'infrastructure.
+
+== Offre Cloud Google
+
+App Engine est arrivé en 2008 (sorti de beta en 2011).
+
+Aujourd'hui au sein d'une offre qui a beacoup grandi : Google Cloud Platform.
+
+- Google App Engine (avec Datastore),
+- Big Query,
+- Cloud Storage,
+- Cloud SQL (bcp de demandes pour du relationnel),
+- Google Compute Engine (VM),
+- Container Engine,
+- Google App Engine flexible,
+- Firebase...,
+- Networking (LB, VPN, CDN...)
+- Cloud Machine Learning,
+- Cloud Spanner.
+
+=== Deux possibilités
+
+- environnement standard.
+
+- environnement flexible.
+
+=== Environnement standard
+
+https://cloud.google.com/appengine/docs/standard/
+
+Instances de containers exécutés sur l'infrastructure de Google. Les runtimes dans ces containers sont préconfigurés avec un langage au choix (Pyhton, Java, Go, PHP) et les APIs App Engine standard permettant de s'intégrer aux services Google.
+
+Passage à l'échelle est géré automatiquement par App Engine (nombre d'instances).
+
+L'application est sandboxée et une grande partie des fonctions système n'est pas accessible à l'application (écriture sur disque, threads...).
+
+L'application accède aux services cloud grâce à l'API de l'environnement.
+
+Tout ceci permet d'avoir des instances qui démarrent rapidement (qques secondes).
+
+Développement en : Java, Go, Python ou PHP.
+
+=== Environnement flexible
+
+https://cloud.google.com/appengine/docs/flexible/
+
+Les instances de l'application sont exécutées dans des containers Docker au sein de machines virtuelles Google Compute Engine.
+
+L'ensemble des fonctions système est accessible (mais les VMs sont réinitialisées tous les soirs).
+
+Pour utiliser les services fournis dans la version standard, il faut passer par les apis officielles : https://cloud.google.com/appengine/docs/flexible/java/migrating.
+
+Le passage à l'échelle peut être soit automatique, soit manuel. En automatique les VMs sont créées et détruites en fonction de la charge CPU moyenne (paramétrable).
+
+=== Différences
+
+https://cloud.google.com/appengine/docs/flexible/java/migrating[Equivalences] entre services de l'environnement standard et ceux à utiliser dans l'environnement flexible.
+
+https://cloud.google.com/appengine/docs/flexible/java/flexible-for-standard-users[Différences entre les deux environnements]
+
+== Suite
+
+link:standard.html[Cours sur l'environnement standard]

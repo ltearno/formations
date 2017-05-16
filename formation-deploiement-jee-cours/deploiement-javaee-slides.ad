@@ -1,0 +1,314 @@
+= Déploiement Java EE
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: moon
+:revealjs_history: true
+:imagesdir: images
+////
+:revealjs_transition: zoom
+Déploiement Java EE
+UTI Blagnac - 2016 - LTE Consulting
+:source-highlighter: pygments
+////
+
+== Arnaud Tournier
+
+Développeur, formateur et architecte à **LTE Consulting**.
+
+Speaker **Devoxx**, **GWT.create**, **Paris**/**Toulouse JUG**, etc...
+
+Email : ltearno@gmail.com
+
+Twitter : @ltearno
+
+Web : www.lteconsulting.fr
+
+Full stack (x86_64 to JavaScript)
+
+=== URLs
+
+http://lteconsulting.fr/javaee-deploiement/[lteconsulting.fr/javaee-deploiement/]
+
+https://github.com/ltearno/formation-deploiement-jee-cours[github.com/ltearno/formation-deploiement-jee-cours]
+
+https://github.com/ltearno/formation-deploiement-jee-sample[github.com/ltearno/formation-deploiement-jee-sample]
+
+== Qu'est-ce que le déploiement ?
+
+=== Passer de çà
+
+image::developpeur.jpg[]
+
+[NOTE.speaker]
+--
+Environnement de développement
+Plein de choses instables
+Pas forcément la même version que le serveur de prod (grace à la norme JEE)
+--
+
+=== A çà
+
+image::dataCenter.jpg[height=400]
+
+=== Définition
+
+- **Passer du dev à la prod**.
+- Installer ou mettre à jour une application dans un serveur d'application.
+- Gestion de l'exploitation du code depuis sa production par le développeur jusqu'à sa mise en production pour le(s) client(s).
+
+== Processus impliqués
+
+- gestion de version,
+- compilation,
+- packaging,
+- vérifications,
+- tests,
+- **déploiement** et mises à jour,
+- surveillance, interventions d'urgence...*.
+
+=== Qualité et vitesse
+
+Il faut aller vite et bien.
+
+Le code en attente dans le repo, c'est du **stock** !
+
+=== Dev Ops
+
+Historiquement les métiers de développeur et d'exploitant étaient cloisonnés.
+
+Mouvement DevOps pour favoriser une intéraction fluide nécessaire pour les déploiements modernes.
+
+=== Réalité
+
+Développement et Exploitation sont complémentaires :
+
+*Le code impacte les choix d'infrastructure, et l'infrastructure impose des contraintes sur le code*.
+
+[NOTE.speaker]
+--
+En fait (*on le constatera dans les exercices*), ces deux domaines ne sont pas imperméables bien au contraire : le code a un impact sur l'infrastructure possible pour le déploiement, et l'infrastructure donne des contraintes sur le code.
+
+Si les deux parties ne s'entendent ni ne se comprennent, on n'aura jamais quelque chose qui fonctionne correctement.
+
+Idéalement on prend même en compte les besoins du client, leur formulation et les retours d'utilisation.
+--
+
+=== Métier du déploiement
+
+Afin de réduire le laps de temps entre l'écriture du code et sa mise à disposition pour l'utilisateur, on cherche à améliorer les processus impliqués par :
+
+- Collaboration des métiers dev et ops,
+- **Automatisation**,
+- Utilisation des retours d'expérience.
+
+== Les enjeux ?
+
+- Haute disponibilité,
+- Bande passante,
+- Performances,
+- Mise à l'échelle...
+
+Impacts commerciaux évidemment...
+
+== Déploiement dans Java EE
+
+Java EE spécifie la façon de packager une application.
+
+Mais pas la façon de déployer un cluster ! Néanmois adapté...
+
+=== Le WAR
+
+Un Web Application aRchive contient :
+
+- `WEB-INF/web.xml` avec le descripteur de déploiement,
+- `WEB-INF/classes` avec des classes Java,
+- `WEB-INF/lib` avec des *jar*,
+- des *jsp*,
+- fichiers statiques.
+
+=== L'EAR
+
+Un Enterprise Application aRchive contient :
+
+- `META-INF/application.xml` pour décrire les modules et `context-root`,
+- des *war*,
+- des *ejb*,
+- des *jar*.
+
+=== Implémentations Java EE
+
+La norme Java EE est implémentée par des fournisseurs apportant leurs spécificités à :
+
+- Commandes de contrôle (start, stop, ...),
+- Outillage de développement,
+- Répertoires de déploiment,
+- Configuration avancée,
+- Gestion d'un cluster.
+
+=== Exercice
+
+Exercice 1 dans le TP : déployer une application `war` dans Tomcat.
+
+=== Répondre à la charge...
+
+Il n'est pas possible d'augmenter indéfiniment les performances d'un seul serveur.
+
+**Scalabitilité verticale**.
+
+=== Surcharge !
+
+image::monoServeur.png[]
+
+=== Multiplier les serveurs
+
+En adaptant le logiciel, on peut répliquer l'application sur plusieurs serveurs (cluster).
+
+**Scalabilité horizontale**.
+
+=== Web 2.0
+
+Le serveur n'a plus à conserver l'état conversationnel (GUI) de ses clients (Ajax et SPA).
+
+Ceci encourage à créer des *architectures orientées service* et a se concentrer sur le *traitement des données*, de façon *distribuée*.
+
+=== Le cloud
+
+Les architectures modernes sont composées de multiples serveurs exécutant de multiples applications collaborant entre elles (*par internet*).
+
+Elles fournissent des services universellement accessibles.
+
+== Déploiement distribué
+
+Le déploiement distribué pose de nombreux problèmes passionnants :
+
+- état de l'application,
+- stockage, mise à disposition et réplication des données,
+- cohérence des données,
+- haute disponibilité,
+- mise à l'échelle automatique,
+- gestion des resources,
+- tolérance aux pannes...
+
+=== Le modèle mémoire de Java EE
+
+Trois niveau de mémoire :
+
+- les objets du serveur,
+- les sessions http (en standard en mémoire avec flush disque),
+- les bases de donnée (distribuées ou pas elle sont vues comme un service).
+
+Les deux premiers posent des problèmes de répartition.
+
+=== Cluster classique
+
+On utilise la solution propriétaire du fournisseur de serveur d'application (JBoss, WebLogic, Tomcat, ...).
+
+Inconvénients :
+
+- pas standard,
+- pas extensible au monde non java,
+- limites imposées par le fournisseur...
+
+[NOTE.speaker]
+--
+limites : load balancing round robin, ...
+--
+
+=== Déploiement moderne
+
+- Architecture "stateless",
+- Les objets ne sont pas partagés entre serveurs (EJB, ...),
+- On déporte le stockage des sessions http en dehors des serveurs,
+- Utilisation de caches et de bases de données distribués,
+- Traffic réparti sur les noeuds par load balancing,
+- On évite les **Single Point Of Failure** !
+
+=== Déploiement moderne
+
+image::deploiementModerne.png[height=400]
+
+[NOTE.speaker]
+--
+parler du load balancer
+
+stateless application servers
+
+utilisent d'autres services déployés de la même façon
+--
+
+=== Exercice
+
+Exercice 2 dans le TP : déployer l'application sur deux Tomcat avec load balancing.
+
+=== Exemples de schémas de déploiement
+
+- déploiement sur un serveur
+- déploiement sur plusieurs serveurs avec load balancer
+- gestion des sessions
+- sticky sessions
+- sessions stockées en base de données
+- sessions avec JWT
+- architectures en micro-services (attention la complexité intrinsèque ne change pas !).
+
+=== Montées de version et gestion du parc
+
+La taille de notre cluster est seulement de deux serveurs, allons plus loin !
+
+Il est possible de continuer de la même façon et de créer un 3ème, 4ème déploiement etc.
+
+Mais les tâches de montée de version sont compliquées si *n* est trop grand.
+
+On va donc chercher à automatiser et rationaliser la gestion des serveurs.
+
+== Containerisation
+
+Docker ou Rocket permettent la spécification complète de l'environnement de l'application.
+
+Puis d'exécuter celle-ci depuis n'importe quel système compatible.
+
+=== Exercice
+
+Exercice 3 dans le TP : déploiement de l'application avec Docker.
+
+== Orchestrateur
+
+Organisation (automatique) de la gestion d'un cluster :
+
+- mise à l'échelle,
+- montée de version,
+- création des LB frontaux,
+- allocation des interfaces de service, dns...
+
+=== Kubernetes
+
+Kubernetes est un très bon candidat.
+
+Docker Swarm, Apache Mesos, ...
+
+=== Exercice
+
+Exercice 4 dans le TP : Gérer notre application avec Kubernetes
+
+== Conclusion
+
+*Automatisation* !
+
+Le monde bouge sans cesse.
+
+Amusez-vous bien !
+
+== Mots clés
+
+Lean software dev, continuous delivery, A/B testing, Blue Green Deployment, Canary Testing, Architectures Stateless/Stateful, HA, Load Balancing, Failover.
+
+=== Contacts
+
+Twitter : `@ltearno`
+
+email : `ltearno@gmail.com`
+
+LTE Consulting : http://www.lteconsulting.fr[lteconsulting.fr]
+
+LinkedIn : https://fr.linkedin.com/in/lteconsulting[fr.linkedin.com/in/lteconsulting]

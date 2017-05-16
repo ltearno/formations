@@ -1,0 +1,63 @@
+body {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+#upper-part {
+	flex-grow: 1;
+	display: flex;
+}
+
+nav li {
+	float: left;
+	margin-bottom: 0;
+	margin-left: 2.5rem;
+	position: relative;
+	list-style: none;
+}
+
+nav li a {
+	display: inline;
+	font-size: 1.6rem;
+	line-height: 5.2rem;
+	padding: 0;
+	text-decoration: none;
+}
+
+#board {
+	width: 20em;
+	height: 20em;
+	margin: auto;
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+#board>div {
+	flex: 1 1;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+#board>div>div {
+	flex: 1 1;
+	background-color: #abeed7;
+	border: 2px solid #98dcc5;
+}
+
+#board>div>div>button {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	border-width: 0;
+	padding: 0;
+}
+
+#message {
+	font-weight: bold;
+}

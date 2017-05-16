@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marvels</title>
+
+    <script src="jquery-3.2.0.min.js" type="text/javascript"></script>
+
+    <script>
+        $(function () {
+            let dataService = new DataService();
+
+            let component = new MarvelListComponent(dataService);
+            document.body.appendChild(component.rootElement());
+            component.load();
+        })
+
+        /**
+         * DataService
+         */
+        function DataService() {
+            let baseUrl = "http://localhost:8080/marvels-store/rs/marvels";
+
+            this.fetchAll = function () {
+                return new Promise((resolve, reject) => {
+                    $.ajax(baseUrl, {dataType: "json"}).then(data => {
+                        console.log(JSON.stringify(data));
+                        resolve(data);
+                    });
+                });
+            }
+        }
+
+        function chainPrototypes(childConstructor, baseConstructor) {
+            childConstructor.prototype = Object.create(baseConstructor.prototype);
+            childConstructor.prototype.constructor = childConstructor;
+        }
+
+        function GraphicComponent(template) {
+            // création du noeud DOM en fonction de la template
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = template.trim();
+            if (wrapper.childElementCount != 1)
+                console.error("error in template : " + template);
+            this.el = wrapper.firstChild;
+
+            // extraction automatique des noeuds identifiés dans la template
+            this.elements = {};
+            wrapper.querySelectorAll('[component-id]').forEach((element) => {
+                this.elements[element.getAttribute('component-id')] = element;
+            });
+        }
+
+        GraphicComponent.prototype.rootElement = function () {
+            return this.el;
+        }
+
+        /**
+         * MarvelListComponent
+         */
+
+        function MarvelListComponent(dataService) {
+            GraphicComponent.call(this, `
+                <div class='marvel-list-component'>
+                    <h1>Liste des Marvels</h1>
+                    <div component-id='marvelsList'></div>
+                    <button component-id='newMarvelButton'>New marvel</button>
+                    <div component-id='marvelForm'></div>
+                </div>`);
+
+            this.dataService = dataService;
+
+            this.marvelForm = new MarvelFormComponent();
+            this.elements.marvelForm.appendChild(this.marvelForm.rootElement());
+
+            this.displayedMarvels = {};
+
+            this.elements.newMarvelButton.addEventListener('click', () => this.creationMode());
+
+            this.resetCreationForm();
+
+            this.marvelForm.onValidate = (data) => this.validateForm(data);
+            this.marvelForm.onCancel = () => this.resetCreationForm();
+
+            /*this.elements.search.addEventListener('input', (event) => {
+             let search = this.elements.search.value;
+
+             if (search != '') {
+             search = search.toLowerCase();
+
+             for (let id in this.displayedMarvels) {
+             if (this.displayedMarvels[id].marvel.name.toLowerCase().indexOf(search) >= 0)
+             this.displayedMarvels[id].rootElement().style.display = null;
+             else
+             this.displayedMarvels[id].rootElement().style.display = "none";
+             }
+             }
+             else {
+             for (let id in this.displayedMarvels)
+             this.displayedMarvels[id].rootElement().style.display = null;
+             }
+             });*/
+        }
+
+        chainPrototypes(MarvelListComponent, GraphicComponent);
+
+        MarvelListComponent.prototype.resetCreationForm = function () {
+            this.elements.marvelForm.style.display = 'none';
+            this.elements.newMarvelButton.style.display = null;
+        }
+
+        MarvelListComponent.prototype.creationMode = function () {
+            this.elements.marvelForm.style.display = null;
+            this.elements.newMarvelButton.style.display = 'none';
+
+            this.marvelForm.setMarvel(null);
+            this.marvelForm.focus();
+        }
+
+        MarvelListComponent.prototype.validateForm = function (data) {
+            this.dataService.postMarvel(data).then((marvel) => {
+                this.addMarvelToDisplay(marvel);
+                this.resetCreationForm();
+            });
+        }
+
+        MarvelListComponent.prototype.load = function () {
+            this.dataService.fetchAll().then(marvels => {
+                this.elements.marvelsList.innerHTML = '';
+                this.displayedMarvels = {};
+
+                for (let marvel of marvels)
+                    this.addMarvelToDisplay(marvel);
+            });
+        }
+
+        MarvelListComponent.prototype.addMarvelToDisplay = function (marvel) {
+            let marvelComponent = this.displayedMarvels[marvel.id];
+
+            if (!marvelComponent) {
+                marvelComponent = new MarvelComponent();
+                marvelComponent.onDelete = () => this.deleteMarvel(marvel);
+                marvelComponent.onSave = (data) => this.updateMarvel(marvel, data);
+
+                this.displayedMarvels[marvel.id] = marvelComponent;
+                this.elements.marvelsList.appendChild(marvelComponent.rootElement());
+            }
+
+            marvelComponent.setMarvel(marvel);
+            marvelComponent.updateDisplay();
+        }
+
+        MarvelListComponent.prototype.updateMarvel = function (marvel, data) {
+            let combined = Object.assign({}, marvel);
+            Object.assign(combined, data);
+
+            this.dataService.putMarvel(combined)
+                .then((marvel) => {
+                    this.addMarvelToDisplay(marvel);
+                });
+        }
+
+        MarvelListComponent.prototype.deleteMarvel = function (marvel) {
+            this.dataService.deleteMarvel(marvel.id)
+                .then((result) => {
+                    if (result) {
+                        this.displayedMarvels[marvel.id].rootElement().remove();
+                        delete this.displayedMarvels[marvel.id];
+                    }
+                })
+        }
+
+        /**
+         * MarvelFormComponent
+         */
+
+        function MarvelFormComponent() {
+            GraphicComponent.call(this, `
+                <form component-id='form'>
+                    <label>Name : <input component-id='name'/></label><br/>
+                    <button component-id='validate'>Validate</button>
+                    <button type='button' component-id='cancel'>Cancel</button>
+                </form>`);
+
+            this.elements.form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.onValidate && this.onValidate({
+                    name: this.elements.name.value
+                });
+            });
+
+            this.elements.cancel.addEventListener('click', () => {
+                this.onCancel && this.onCancel()
+            });
+        }
+
+        chainPrototypes(MarvelFormComponent, GraphicComponent);
+
+        MarvelFormComponent.prototype.setMarvel = function (marvel) {
+            this.elements.name.value = marvel ? marvel.name : '(no name)';
+        }
+
+        MarvelFormComponent.prototype.focus = function () {
+            this.elements.name.focus();
+        }
+
+        /**
+         * MarvelComponent
+         */
+
+        function MarvelComponent() {
+            GraphicComponent.call(this, `
+                <div class='marvel-component'>
+                    <div component-id='display'>
+                        <span class='marvel-name' component-id='name'></span><br/>
+                        <button component-id='delete'>Delete</button>
+                        <button component-id='select'>Edit</button>
+                    </div>
+                    <div component-id='form'>
+                    </div>
+                </div>`);
+
+            this.marvel = null;
+
+            this.form = new MarvelFormComponent();
+            this.elements.form.appendChild(this.form.rootElement());
+
+            this.elements.delete.addEventListener('click', () => this.onDelete && this.onDelete());
+            this.elements.select.addEventListener('click', () => {
+                this.form.setMarvel(this.marvel);
+                this.elements.display.style.display = 'none';
+                this.elements.form.style.display = null;
+
+                this.form.focus();
+            });
+
+            this.form.onCancel = () => {
+                this.elements.display.style.display = null;
+                this.elements.form.style.display = 'none';
+            };
+
+            this.form.onValidate = (data) => {
+                this.onSave && this.onSave(data);
+
+                this.elements.display.style.display = null;
+                this.elements.form.style.display = 'none';
+            };
+
+            this.elements.display.style.display = null;
+            this.elements.form.style.display = 'none';
+        }
+
+        chainPrototypes(MarvelComponent, GraphicComponent);
+
+        MarvelComponent.prototype.setMarvel = function (marvel) {
+            this.marvel = marvel;
+        }
+
+        MarvelComponent.prototype.updateDisplay = function () {
+            this.elements['name'].innerText = this.marvel['name'];
+        }
+    </script>
+</head>
+<body>
+Bonjour !
+</body>
+</html>
