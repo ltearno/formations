@@ -451,13 +451,17 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_conclusions">Conclusions</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_2_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 2 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
+<li><a href="#_exercice_2_ajouter_un_état">Exercice 2 : ajouter un état</a>
+<ul class="sectlevel2">
+<li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
+</ul>
+</li>
+<li><a href="#_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
 <ul class="sectlevel2">
 <li><a href="#_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</a></li>
 <li><a href="#_installer_la_seconde_instance_de_tomcat">Installer la seconde instance de Tomcat</a></li>
 <li><a href="#_installer_et_configurer_nginx_en_load_balancer">Installer et configurer NGINX en Load Balancer</a></li>
 <li><a href="#_au_passage_quels_ont_été_les_freins_à_l_automatisation">Au passage, quels ont été les freins à l&#8217;automatisation ?</a></li>
-<li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
 <li><a href="#_déployer_sur_les_deux_tomcats">Déployer sur les deux Tomcats</a></li>
 <li><a href="#_problème_des_sessions">Problème des sessions</a></li>
 <li><a href="#_trois_solutions">Trois solutions</a></li>
@@ -586,7 +590,72 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_2_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 2 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
+<h2 id="_exercice_2_ajouter_un_état">Exercice 2 : ajouter un état</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_une_application_à_état_simple">Une application à état (simple)</h3>
+<div class="paragraph">
+<p>Une application a très souvent besoin de stocker l&#8217;état conversationnel http entre les clients et le serveur : c&#8217;est la <strong>session</strong>. Il s&#8217;agit souvent de l&#8217;utilisateur connecté ou encore du panier associé pour un site de commerce.</p>
+</div>
+<div class="paragraph">
+<p>Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
+</div>
+<div class="paragraph">
+<p>Nous allons donc introduire un état dans l&#8217;application : la session utilisateur et un cookie.</p>
+</div>
+<div class="paragraph">
+<p>Changez le contenu de la JSP pour :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-jsp" data-lang="jsp">Server Id : &lt;%= ManagementFactory.getRuntimeMXBean().getName() %&gt;&lt;br/&gt;
+&lt;br /&gt; Le répertoire de déploiement est :
+&lt;%=System.getProperty("catalina.base")%&gt;&lt;br /&gt;
+
+Identifiant de session : &lt;%=session.getId()%&gt;&lt;br /&gt;
+&lt;!-- Session Java EE --&gt;
+&lt;%
+	String valeur = (String) session.getAttribute("VALEUR");
+%&gt;
+
+La clé 'VALEUR' de la session est : &lt;%=valeur%&gt;&lt;br /&gt;
+&lt;%
+	if (valeur == null) {
+		valeur = "VALEUR_" + UUID.randomUUID().toString();
+		session.setAttribute("VALEUR", valeur);
+		%&gt;
+		Création de la VALEUR de session : &lt;%=valeur %&gt;&lt;br /&gt;
+		&lt;%
+	}
+%&gt;
+
+&lt;!-- Utilisation d'un cookie --&gt;
+&lt;%
+	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
+%&gt;
+La valeur du cookie MONCOOKIE est : &lt;%=valeurCookie%&gt;&lt;br /&gt;
+&lt;%
+	if (valeurCookie == null) {
+		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
+		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
+		%&gt;
+		Création du cookie MONCOOKIE : &lt;%=valeurCookie %&gt;&lt;br /&gt;
+		&lt;%
+	}
+%&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
+</div>
+<div class="paragraph">
+<p>Déployer et vérifier que l&#8217;application fonctionne.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</h3>
@@ -655,6 +724,9 @@ Ceci se fait avec la commande <code>ln</code> :</p>
 </div>
 <div class="sect2">
 <h3 id="_installer_et_configurer_nginx_en_load_balancer">Installer et configurer NGINX en Load Balancer</h3>
+<div class="paragraph">
+<p>Passons à l&#8217;installation du répartiteur de charge <code>nginx</code>.</p>
+</div>
 <div class="sect3">
 <h4 id="_sous_linux">Sous Linux</h4>
 <div class="paragraph">
@@ -719,6 +791,20 @@ events {
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Sous Windows, utilisez l&#8217;utilitaire approprié pour repérer et tuer le processus, par exemple <code>Process Explorer</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Vérifier que l&#8217;application fonctionne toujours quand on y accède par nginx.</p>
 </div>
@@ -747,75 +833,12 @@ events {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_une_application_à_état_simple">Une application à état (simple)</h3>
-<div class="paragraph">
-<p>Une application a très souvent besoin de stocker l&#8217;état conversationnel http entre les clients et le serveur : c&#8217;est la <strong>session</strong>. Il s&#8217;agit souvent de l&#8217;utilisateur connecté ou encore du panier associé pour un site de commerce.</p>
-</div>
-<div class="paragraph">
-<p>Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
-</div>
-<div class="paragraph">
-<p>Nous allons donc introduire un état dans l&#8217;application : la session utilisateur et un cookie.</p>
-</div>
-<div class="paragraph">
-<p>Changez le contenu de la JSP pour :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-jsp" data-lang="jsp">Server Id : &lt;%= ManagementFactory.getRuntimeMXBean().getName() %&gt;&lt;br/&gt;
-&lt;br /&gt; Le répertoire de déploiement est :
-&lt;%=System.getProperty("catalina.base")%&gt;&lt;br /&gt;
-
-Identifiant de session : &lt;%=session.getId()%&gt;&lt;br /&gt;
-&lt;!-- Session Java EE --&gt;
-&lt;%
-	String valeur = (String) session.getAttribute("VALEUR");
-%&gt;
-
-La clé 'VALEUR' de la session est : &lt;%=valeur%&gt;&lt;br /&gt;
-&lt;%
-	if (valeur == null) {
-		valeur = "VALEUR_" + UUID.randomUUID().toString();
-		session.setAttribute("VALEUR", valeur);
-		%&gt;
-		Création de la VALEUR de session : &lt;%=valeur %&gt;&lt;br /&gt;
-		&lt;%
-	}
-%&gt;
-
-&lt;!-- Utilisation d'un cookie --&gt;
-&lt;%
-	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
-%&gt;
-La valeur du cookie MONCOOKIE est : &lt;%=valeurCookie%&gt;&lt;br /&gt;
-&lt;%
-	if (valeurCookie == null) {
-		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
-		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
-		%&gt;
-		Création du cookie MONCOOKIE : &lt;%=valeurCookie %&gt;&lt;br /&gt;
-		&lt;%
-	}
-%&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
-</div>
-<div class="paragraph">
-<p>Compilez et déployez la nouvelle version sur un des deux serveurs Tomcat. Le LB envoie maintenant alternativement sur les deux versions. La gestion de montée des versions est un des autres domaines passionnants du déploiement !</p>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_déployer_sur_les_deux_tomcats">Déployer sur les deux Tomcats</h3>
 <div class="paragraph">
-<p>Mettez l&#8217;autre Tomcat à jour et vérifiez que le LB renvoie maintenant toujours vers la même version.</p>
+<p>Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par le fait que l&#8217;on ai distribué et réparti l&#8217;application sur deux serveurs. La session est stockée localement par serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit en fait de celle de l&#8217;autre Tomcat !!!</p>
 </div>
 <div class="paragraph">
-<p>Nouveau problème : la session est stockée localement par serveur Tomcat donc on a une fois sur deux la mauvaise session. Une fois sur deux Tomcat ne trouve pas la session puisqu&#8217;il s&#8217;agit de celle de l&#8217;autre Tomcat !!!</p>
-</div>
-<div class="paragraph">
-<p>En fait Java EE se base sur le cookie <code>JSESSIONID</code> pour retrouver la session.</p>
+<p>En réalité, Java EE se base sur le cookie <code>JSESSIONID</code> pour retrouver la session.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1445,13 +1468,26 @@ kubectl delete pod application</pre>
 <div class="paragraph">
 <p>Ceci termine l&#8217;exercice d&#8217;introduction à Kubernetes.</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Données statiques dans l&#8217;appli &#8658; on ne peut rien faire ca marche pas en LB</p>
+</li>
+<li>
+<p>Appli de création de charge</p>
+</li>
+<li>
+<p>Appli pour tuer un tomcat au hasard de temps en temps</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-16 10:36:03 Paris, Madrid (heure dÆÚtÚ)
+Last updated 2017-05-17 15:39:32 Paris, Madrid (heure dÆÚtÚ)
 </div>
 </div>
 </body>

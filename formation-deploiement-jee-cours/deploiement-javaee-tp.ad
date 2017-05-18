@@ -72,103 +72,7 @@ Mais quels sont les problèmes ?
 - Montée de version = arrêt du service
 - Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
 
-== Exercice 2 : déployer l'application sur deux Tomcat avec load balancing
-
-=== Comment faire face au problème de crash serveur ?
-
-Un crash serveur, c'est un service inaccessible pour le client, et c'est donc en général une perte d'argent pour l'entreprise.
-Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques de catastrophes naturelles).
-Un serveur frontal va router les requêtes http vers nos différents serveurs d'application. C'est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d'application.
-
-Nous allons installer un deuxième serveur Tomcat et NGINX configuré en Load balancer.
-
-=== Installer la seconde instance de Tomcat
-
-Dupliquez l'installation de Tomcat dans un autre répertoire de votre choix.
-
-Editez le ficher `server.xml` de la deuxième installation et changez les ports de cette façon :
-
-- HTTP : 8081
-- Redirection : 8444
-- AJP : 8010
-- Shutdown port : 8006
-
-Déployer l'application précédente sur les **deux** serveurs Tomcat.
-
-[NOTE]
-====
-On peut faire un lien symbolique du war crée avec maven vers les répertoire de déploiement des Tomcat, ceci vous évitera des opérations répétitives !
-Ceci se fait avec la commande `ln` :
-
-[source,bash]
-----
-ln -s cible nom_du_lien
-----
-====
-
-Dans deux terminaux différents, lancez chacun des Tomcat.
-
-Vérifiez dans un navigateur que les deux Tomcat sont lancés sur les ports 8080 et 8081 et que l'application est bien déployée sur les deux serveurs.
-
-=== Installer et configurer NGINX en Load Balancer
-
-==== Sous Linux
-
-Tapez la commande suivante pour installer `nginx` :
-
-----
-apt install nginx-full
-----
-
-==== Sous Windows
-
-Téléchargez l'archive de NGINX http://nginx.org/download/nginx-1.10.1.zip[ici].
-
-Il faut ensuite l'extraire, de préférence à la racine d'un disque.
-
-Configurez NGINX en Load Balancer avec la configuration suivante dans `/etc/nginx/nginx.conf` (sous Windows : `conf\nginx.conf`) :
-
-----
-http {
-	upstream application {
-		server 127.0.0.1:8080;
-		server 127.0.0.1:8081;
-	}
-
-	server {
-		listen 80;
-
-		location / {
-			proxy_pass http://application;
-			proxy_connect_timeout 1;
-		}
-	}
-}
-
-events {
-	worker_connections 768;
-}
-----
-
-Lancez nginx (`sudo service nginx start`, ou `nginx.exe` sous Windows) et vérifiez que celui ce fonctionne et redirige les requêtes vers les tomcats. 
-
-Le serveur nginx répond sur le port 80, il faut donc adapter l'url dans le navigateur. Rechargez plusieurs fois la page pour vérifier que le load balancing se fait bien alternativement entre les deux serveurs (le répertoire de déploiement affiché doit changer une fois sur deux).
-
-Tuez un des deux serveurs :
-
-- on recherche le bon processus Tomcat avec `ps -Af | grep java`,
-- puis on le tue avec `kill ID_PROCESSUS`.
-
-Vérifier que l'application fonctionne toujours quand on y accède par nginx.
-
-*Nginx détecte l'erreur sur le serveur arrêté et poursuit sur le serveur qui fonctionne.*
-
-=== Au passage, quels ont été les freins à l'automatisation ?
-
-- La dépendance à Eclipse ne permet pas de construire les projets en ligne de commande, il faut utiliser un gestionnaire de build (maven, gradle, ant etc).
-- Copie du fichier `.war` à la main, difficilement automatisable.
-- Lancement et arrêt des serveurs manuel.
-- Et en plus, les sources ne sont pas versionnées !
+== Exercice 2 : ajouter un état
 
 === Une application à état (simple)
 
@@ -221,15 +125,118 @@ La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
 
 Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
 
-Compilez et déployez la nouvelle version sur un des deux serveurs Tomcat. Le LB envoie maintenant alternativement sur les deux versions. La gestion de montée des versions est un des autres domaines passionnants du déploiement !
+Déployer et vérifier que l'application fonctionne.
+
+== Exercice 3 : déployer l'application sur deux Tomcat avec load balancing
+
+=== Comment faire face au problème de crash serveur ?
+
+Un crash serveur, c'est un service inaccessible pour le client, et c'est donc en général une perte d'argent pour l'entreprise.
+Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques de catastrophes naturelles).
+Un serveur frontal va router les requêtes http vers nos différents serveurs d'application. C'est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d'application.
+
+Nous allons installer un deuxième serveur Tomcat et NGINX configuré en Load balancer.
+
+=== Installer la seconde instance de Tomcat
+
+Dupliquez l'installation de Tomcat dans un autre répertoire de votre choix.
+
+Editez le ficher `server.xml` de la deuxième installation et changez les ports de cette façon :
+
+- HTTP : 8081
+- Redirection : 8444
+- AJP : 8010
+- Shutdown port : 8006
+
+Déployer l'application précédente sur les **deux** serveurs Tomcat.
+
+[NOTE]
+====
+On peut faire un lien symbolique du war crée avec maven vers les répertoire de déploiement des Tomcat, ceci vous évitera des opérations répétitives !
+Ceci se fait avec la commande `ln` :
+
+[source,bash]
+----
+ln -s cible nom_du_lien
+----
+====
+
+Dans deux terminaux différents, lancez chacun des Tomcat.
+
+Vérifiez dans un navigateur que les deux Tomcat sont lancés sur les ports 8080 et 8081 et que l'application est bien déployée sur les deux serveurs.
+
+=== Installer et configurer NGINX en Load Balancer
+
+Passons à l'installation du répartiteur de charge `nginx`.
+
+==== Sous Linux
+
+Tapez la commande suivante pour installer `nginx` :
+
+----
+apt install nginx-full
+----
+
+==== Sous Windows
+
+Téléchargez l'archive de NGINX http://nginx.org/download/nginx-1.10.1.zip[ici].
+
+Il faut ensuite l'extraire, de préférence à la racine d'un disque.
+
+Configurez NGINX en Load Balancer avec la configuration suivante dans `/etc/nginx/nginx.conf` (sous Windows : `conf\nginx.conf`) :
+
+----
+http {
+	upstream application {
+		server 127.0.0.1:8080;
+		server 127.0.0.1:8081;
+	}
+
+	server {
+		listen 80;
+
+		location / {
+			proxy_pass http://application;
+			proxy_connect_timeout 1;
+		}
+	}
+}
+
+events {
+	worker_connections 768;
+}
+----
+
+Lancez nginx (`sudo service nginx start`, ou `nginx.exe` sous Windows) et vérifiez que celui ce fonctionne et redirige les requêtes vers les tomcats. 
+
+Le serveur nginx répond sur le port 80, il faut donc adapter l'url dans le navigateur. Rechargez plusieurs fois la page pour vérifier que le load balancing se fait bien alternativement entre les deux serveurs (le répertoire de déploiement affiché doit changer une fois sur deux).
+
+Tuez un des deux serveurs :
+
+- on recherche le bon processus Tomcat avec `ps -Af | grep java`,
+- puis on le tue avec `kill ID_PROCESSUS`.
+
+[NOTE]
+====
+Sous Windows, utilisez l'utilitaire approprié pour repérer et tuer le processus, par exemple `Process Explorer`.
+====
+
+Vérifier que l'application fonctionne toujours quand on y accède par nginx.
+
+*Nginx détecte l'erreur sur le serveur arrêté et poursuit sur le serveur qui fonctionne.*
+
+=== Au passage, quels ont été les freins à l'automatisation ?
+
+- La dépendance à Eclipse ne permet pas de construire les projets en ligne de commande, il faut utiliser un gestionnaire de build (maven, gradle, ant etc).
+- Copie du fichier `.war` à la main, difficilement automatisable.
+- Lancement et arrêt des serveurs manuel.
+- Et en plus, les sources ne sont pas versionnées !
 
 === Déployer sur les deux Tomcats
 
-Mettez l'autre Tomcat à jour et vérifiez que le LB renvoie maintenant toujours vers la même version.
+Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par le fait que l'on ai distribué et réparti l'application sur deux serveurs. La session est stockée localement par serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat qui exécute la requête ne trouve pas la session puisqu'il s'agit en fait de celle de l'autre Tomcat !!!
 
-Nouveau problème : la session est stockée localement par serveur Tomcat donc on a une fois sur deux la mauvaise session. Une fois sur deux Tomcat ne trouve pas la session puisqu'il s'agit de celle de l'autre Tomcat !!!
-
-En fait Java EE se base sur le cookie `JSESSIONID` pour retrouver la session.
+En réalité, Java EE se base sur le cookie `JSESSIONID` pour retrouver la session.
 
 === Problème des sessions
 
@@ -647,3 +654,12 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
+
+
+
+
+
+
+- Données statiques dans l'appli => on ne peut rien faire ca marche pas en LB
+- Appli de création de charge
+- Appli pour tuer un tomcat au hasard de temps en temps
