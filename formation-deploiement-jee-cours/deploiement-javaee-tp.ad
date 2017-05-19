@@ -328,7 +328,7 @@ create table tomcat_sessions (
 );
 ----
 
-Utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Prendre la dernière `5.1.x`.
+Utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql:mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Prendre la dernière `5.1.x`.
 
 Copier le connecteur MySql dans le répertoire lib des deux tomcats :
 
