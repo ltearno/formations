@@ -479,6 +479,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_exécution_de_l_application">Exécution de l&#8217;application</a></li>
 </ul>
 </li>
+<li><a href="#_bilan">Bilan</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -487,16 +488,10 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <div class="ulist">
 <ul>
 <li>
-<p>cours sur github : <a href="https://github.com/ltearno/formation-deploiement-jee-cours" class="bare">https://github.com/ltearno/formation-deploiement-jee-cours</a></p>
-</li>
-<li>
 <p>cours en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html" class="bare">http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html</a></p>
 </li>
 <li>
 <p>exercices en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html" class="bare">http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html</a></p>
-</li>
-<li>
-<p>tp corrigé : <a href="https://github.com/ltearno/formation-deploiement-jee-sample" class="bare">https://github.com/ltearno/formation-deploiement-jee-sample</a></p>
 </li>
 </ul>
 </div>
@@ -1145,6 +1140,12 @@ Key createKey() {
 </div>
 </div>
 <div class="paragraph">
+<p>Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le <em>pseudo</em> de l&#8217;utilisateur.</p>
+</div>
+<div class="paragraph">
+<p>A cette fin, vous aurez à écrire un formulaire web permettant à l&#8217;utilisateur de saisir son pseudo. La page d&#8217;accueil devra ensuite afficher ce pseudo, contenu dans le jeton JWT.</p>
+</div>
+<div class="paragraph">
 <p>AVANTAGES:</p>
 </div>
 <div class="ulist">
@@ -1468,26 +1469,87 @@ kubectl delete pod application</pre>
 <div class="paragraph">
 <p>Ceci termine l&#8217;exercice d&#8217;introduction à Kubernetes.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Données statiques dans l&#8217;appli &#8658; on ne peut rien faire ca marche pas en LB</p>
-</li>
-<li>
-<p>Appli de création de charge</p>
-</li>
-<li>
-<p>Appli pour tuer un tomcat au hasard de temps en temps</p>
-</li>
-</ul>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_bilan">Bilan</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Voici les étapes successives réalisées pendant ces travaux pratiques.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 100%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Etape</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Création du projet Java EE dans Eclipse</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Affichage du répertoire de déploiement dans <code>index.jsp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Création du fichier <code>.war</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Déploiement du fichier <code>.war</code> dans le répertoire de déploiement de Tomcat</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Démarrage de Tomcat en ligne de commande</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arrêt de Tomcat en ligne de commande</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mise en place de la donnée en session (code en plus dans l&#8217;application)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Installation et configuration d&#8217;un deuxième Tomcat</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Installation de NGINX</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Déploiement en mode un LB et deux AP (Application Serveur, les deux Tomcat)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pourquoi les sessions ne sont-elles pas stables ?</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration en <em>stocky session</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Installation de MySQL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration des Tomcat pour déporter les sessions en base de données</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mise en place de JWT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stockage du pseudo de l&#8217;utilisateur dans un token JWT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Déploiement de l&#8217;application avec Docker (une dizaine d&#8217;instance + NGINX)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Utilisation de <code>Kubernetes</code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-17 15:39:32 Paris, Madrid (heure dÆÚtÚ)
+Last updated 2017-05-19 09:56:30 Paris, Madrid (heure dÆÚtÚ)
 </div>
 </div>
 </body>

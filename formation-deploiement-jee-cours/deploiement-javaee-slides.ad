@@ -6,6 +6,13 @@
 :revealjs_theme: moon
 :revealjs_history: true
 :imagesdir: images
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
 ////
 :revealjs_transition: zoom
 Déploiement Java EE
@@ -30,10 +37,6 @@ Full stack (x86_64 to JavaScript)
 === URLs
 
 http://lteconsulting.fr/javaee-deploiement/[lteconsulting.fr/javaee-deploiement/]
-
-https://github.com/ltearno/formation-deploiement-jee-cours[github.com/ltearno/formation-deploiement-jee-cours]
-
-https://github.com/ltearno/formation-deploiement-jee-sample[github.com/ltearno/formation-deploiement-jee-sample]
 
 == Qu'est-ce que le déploiement ?
 
@@ -241,6 +244,51 @@ utilisent d'autres services déployés de la même façon
 === Exercice
 
 Exercice 2 dans le TP : déployer l'application sur deux Tomcat avec load balancing.
+
+=== En résumé
+
+Une application n'existe finalement que pour être **exploitée**.
+
+Une application n'est pas seulement le **code**. C'est aussi un **déploiement**.
+
+Les aspects architecture logicielle et infrastructure sont interdépendants.
+
+Quand on cherche à augmenter les performances d'un systèmes, la mise à l'échelle verticale a ses limites.
+
+- Inconvénient : très cher. Limité.
+
+On va donc augmenter le nombre de machines.
+
+- Avantages : pas cher (machines grand public).
+- Inconvénients : il faut faire attention à la cohérence de l'application.
+
+=== Pour être capable de déployer en cluster
+
+Une instance de l'application peut travailler avec des données :
+
+- contextuelles (cookies, paramètres d'une requête http, d'appel de méthode distant...).
+- interne à l'instance de l'application (variables statiques, fichiers...)
+- externe à l'instance (service de gestion de base de données).
+
+On peut s'appliquer quelques règles :
+
+- Les données de l'application ne sont jamais stockées sur la machine (pas de variables statiques, pas de stockage en fichier locaux).
+- Dès que l'on veut stocker des données on utilise un service lui-même clusterisable.
+- On limite au **maximum** la gestion _ad-hoc_ des problèmes de gestion distribuées des données (trop compliqué).
+- On peut aussi utiliser des outils fait pour la répartition : Hadoop, Hazelcast, ...
+
+=== Attention
+
+Avec un système ainsi distribué il faut faire attentions :
+
+- au _Single point of Failure_.
+- aux goulets d'étranglement.
+
+=== JWT
+
+Déporter des données vers le contexte d'appel en utilisant les cookie.
+
+Ce qu'il faut poour sécuriser les données.
 
 === Exemples de schémas de déploiement
 

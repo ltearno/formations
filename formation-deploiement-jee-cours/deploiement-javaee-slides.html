@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier"><title>Déploiement Java EE</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Déploiement Java EE</h1><p><small>Arnaud Tournier</small></p></section><section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Développeur, formateur et architecte à <strong>LTE Consulting</strong>.</p></div><div class="paragraph"><p>Speaker <strong>Devoxx</strong>, <strong>GWT.create</strong>, <strong>Paris</strong>/<strong>Toulouse JUG</strong>, etc&#8230;&#8203;</p></div><div class="paragraph"><p>Email : <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div><div class="paragraph"><p>Twitter : @ltearno</p></div><div class="paragraph"><p>Web : www.lteconsulting.fr</p></div><div class="paragraph"><p>Full stack (x86_64 to JavaScript)</p></div></section><section id="_urls"><h2>URLs</h2><div class="paragraph"><p><a href="http://lteconsulting.fr/javaee-deploiement/">lteconsulting.fr/javaee-deploiement/</a></p></div>
-<div class="paragraph"><p><a href="https://github.com/ltearno/formation-deploiement-jee-cours">github.com/ltearno/formation-deploiement-jee-cours</a></p></div>
-<div class="paragraph"><p><a href="https://github.com/ltearno/formation-deploiement-jee-sample">github.com/ltearno/formation-deploiement-jee-sample</a></p></div></section></section>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier"><title>Déploiement Java EE</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Déploiement Java EE</h1><p><small>Arnaud Tournier</small></p></section><section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Développeur, formateur et architecte à <strong>LTE Consulting</strong>.</p></div><div class="paragraph"><p>Speaker <strong>Devoxx</strong>, <strong>GWT.create</strong>, <strong>Paris</strong>/<strong>Toulouse JUG</strong>, etc&#8230;&#8203;</p></div><div class="paragraph"><p>Email : <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div><div class="paragraph"><p>Twitter : @ltearno</p></div><div class="paragraph"><p>Web : www.lteconsulting.fr</p></div><div class="paragraph"><p>Full stack (x86_64 to JavaScript)</p></div></section><section id="_urls"><h2>URLs</h2><div class="paragraph"><p><a href="http://lteconsulting.fr/javaee-deploiement/">lteconsulting.fr/javaee-deploiement/</a></p></div></section></section>
 <section><section id="_qu_est_ce_que_le_déploiement"><h2>Qu&#8217;est-ce que le déploiement ?</h2></section><section id="_passer_de_çà"><h2>Passer de çà</h2><div class="imageblock" style=""><div class="content"><img src="images/developpeur.jpg" alt="developpeur"></div></div>
 <aside class="notes"><div class="paragraph"><p>Environnement de développement
 Plein de choses instables
@@ -31,7 +29,18 @@ Pas forcément la même version que le serveur de prod (grace à la norme JEE)</
 <aside class="notes"><div class="paragraph"><p>limites : load balancing round robin, &#8230;&#8203;</p></div></aside></section><section id="_déploiement_moderne"><h2>Déploiement moderne</h2><div class="ulist"><ul><li><p>Architecture "stateless",</p></li><li><p>Les objets ne sont pas partagés entre serveurs (EJB, &#8230;&#8203;),</p></li><li><p>On déporte le stockage des sessions http en dehors des serveurs,</p></li><li><p>Utilisation de caches et de bases de données distribués,</p></li><li><p>Traffic réparti sur les noeuds par load balancing,</p></li><li><p>On évite les <strong>Single Point Of Failure</strong> !</p></li></ul></div></section><section id="_déploiement_moderne_2"><h2>Déploiement moderne</h2><div class="imageblock" style=""><div class="content"><img src="images/deploiementModerne.png" alt="deploiementModerne" height="400"></div></div>
 <aside class="notes"><div class="paragraph"><p>parler du load balancer</p></div>
 <div class="paragraph"><p>stateless application servers</p></div>
-<div class="paragraph"><p>utilisent d&#8217;autres services déployés de la même façon</p></div></aside></section><section id="_exercice_2"><h2>Exercice</h2><div class="paragraph"><p>Exercice 2 dans le TP : déployer l&#8217;application sur deux Tomcat avec load balancing.</p></div></section><section id="_exemples_de_schémas_de_déploiement"><h2>Exemples de schémas de déploiement</h2><div class="ulist"><ul><li><p>déploiement sur un serveur</p></li><li><p>déploiement sur plusieurs serveurs avec load balancer</p></li><li><p>gestion des sessions</p></li><li><p>sticky sessions</p></li><li><p>sessions stockées en base de données</p></li><li><p>sessions avec JWT</p></li><li><p>architectures en micro-services (attention la complexité intrinsèque ne change pas !).</p></li></ul></div></section><section id="_montées_de_version_et_gestion_du_parc"><h2>Montées de version et gestion du parc</h2><div class="paragraph"><p>La taille de notre cluster est seulement de deux serveurs, allons plus loin !</p></div>
+<div class="paragraph"><p>utilisent d&#8217;autres services déployés de la même façon</p></div></aside></section><section id="_exercice_2"><h2>Exercice</h2><div class="paragraph"><p>Exercice 2 dans le TP : déployer l&#8217;application sur deux Tomcat avec load balancing.</p></div></section><section id="_en_résumé"><h2>En résumé</h2><div class="paragraph"><p>Une application n&#8217;existe finalement que pour être <strong>exploitée</strong>.</p></div>
+<div class="paragraph"><p>Une application n&#8217;est pas seulement le <strong>code</strong>. C&#8217;est aussi un <strong>déploiement</strong>.</p></div>
+<div class="paragraph"><p>Les aspects architecture logicielle et infrastructure sont interdépendants.</p></div>
+<div class="paragraph"><p>Quand on cherche à augmenter les performances d&#8217;un systèmes, la mise à l&#8217;échelle verticale a ses limites.</p></div>
+<div class="ulist"><ul><li><p>Inconvénient : très cher. Limité.</p></li></ul></div>
+<div class="paragraph"><p>On va donc augmenter le nombre de machines.</p></div>
+<div class="ulist"><ul><li><p>Avantages : pas cher (machines grand public).</p></li><li><p>Inconvénients : il faut faire attention à la cohérence de l&#8217;application.</p></li></ul></div></section><section id="_pour_être_capable_de_déployer_en_cluster"><h2>Pour être capable de déployer en cluster</h2><div class="paragraph"><p>Une instance de l&#8217;application peut travailler avec des données :</p></div>
+<div class="ulist"><ul><li><p>contextuelles (cookies, paramètres d&#8217;une requête http, d&#8217;appel de méthode distant&#8230;&#8203;).</p></li><li><p>interne à l&#8217;instance de l&#8217;application (variables statiques, fichiers&#8230;&#8203;)</p></li><li><p>externe à l&#8217;instance (service de gestion de base de données).</p></li></ul></div>
+<div class="paragraph"><p>On peut s&#8217;appliquer quelques règles :</p></div>
+<div class="ulist"><ul><li><p>Les données de l&#8217;application ne sont jamais stockées sur la machine (pas de variables statiques, pas de stockage en fichier locaux).</p></li><li><p>Dès que l&#8217;on veut stocker des données on utilise un service lui-même clusterisable.</p></li><li><p>On limite au <strong>maximum</strong> la gestion <em>ad-hoc</em> des problèmes de gestion distribuées des données (trop compliqué).</p></li><li><p>On peut aussi utiliser des outils fait pour la répartition : Hadoop, Hazelcast, &#8230;&#8203;</p></li></ul></div></section><section id="_attention"><h2>Attention</h2><div class="paragraph"><p>Avec un système ainsi distribué il faut faire attentions :</p></div>
+<div class="ulist"><ul><li><p>au <em>Single point of Failure</em>.</p></li><li><p>aux goulets d&#8217;étranglement.</p></li></ul></div></section><section id="_jwt"><h2>JWT</h2><div class="paragraph"><p>Déporter des données vers le contexte d&#8217;appel en utilisant les cookie.</p></div>
+<div class="paragraph"><p>Ce qu&#8217;il faut poour sécuriser les données.</p></div></section><section id="_exemples_de_schémas_de_déploiement"><h2>Exemples de schémas de déploiement</h2><div class="ulist"><ul><li><p>déploiement sur un serveur</p></li><li><p>déploiement sur plusieurs serveurs avec load balancer</p></li><li><p>gestion des sessions</p></li><li><p>sticky sessions</p></li><li><p>sessions stockées en base de données</p></li><li><p>sessions avec JWT</p></li><li><p>architectures en micro-services (attention la complexité intrinsèque ne change pas !).</p></li></ul></div></section><section id="_montées_de_version_et_gestion_du_parc"><h2>Montées de version et gestion du parc</h2><div class="paragraph"><p>La taille de notre cluster est seulement de deux serveurs, allons plus loin !</p></div>
 <div class="paragraph"><p>Il est possible de continuer de la même façon et de créer un 3ème, 4ème déploiement etc.</p></div>
 <div class="paragraph"><p>Mais les tâches de montée de version sont compliquées si <strong>n</strong> est trop grand.</p></div>
 <div class="paragraph"><p>On va donc chercher à automatiser et rationaliser la gestion des serveurs.</p></div></section></section>
@@ -51,7 +60,7 @@ Reveal.initialize({
   // Display a presentation progress bar
   progress: true,
   // Display the page number of the current slide
-  slideNumber: false,
+  slideNumber: true,
   // Push each slide change to the browser history
   history: true,
   // Enable keyboard shortcuts for navigation
@@ -78,7 +87,7 @@ Reveal.initialize({
   // Stop auto-sliding after user input
   autoSlideStoppable: true,
   // Enable slide navigation via mouse wheel
-  mouseWheel: false,
+  mouseWheel: true,
   // Hides the address bar on mobile devices
   hideAddressBar: true,
   // Opens links in an iframe preview overlay
@@ -89,7 +98,7 @@ Reveal.initialize({
   // Transition style (e.g., none, fade, slide, convex, concave, zoom)
   transition: Reveal.getQueryHash().transition || 'slide',
   // Transition speed (e.g., default, fast, slow)
-  transitionSpeed: 'default',
+  transitionSpeed: 'fast',
   // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
   backgroundTransition: 'fade',
   // Number of slides away from the current that are visible
@@ -102,8 +111,8 @@ Reveal.initialize({
   // The "normal" size of the presentation, aspect ratio will be preserved
   // when the presentation is scaled to fit different resolutions. Can be
   // specified using percentage units.
-  width: 960,
-  height: 700,
+  width: 1600,
+  height: 1200,
 
   // Factor of the display size that should remain empty around the content
   margin: 0.1,

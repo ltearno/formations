@@ -13,10 +13,8 @@ toc::[]
 
 Ce cours est open source et est disponible en ligne :
 
-- cours sur github : https://github.com/ltearno/formation-deploiement-jee-cours
 - cours en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html
 - exercices en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html
-- tp corrigé : https://github.com/ltearno/formation-deploiement-jee-sample
 
 == Exercice 1 : déployer une application dans Tomcat
 
@@ -432,6 +430,10 @@ Key createKey() {
 }
 ----
 
+Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
+
+A cette fin, vous aurez à écrire un formulaire web permettant à l'utilisateur de saisir son pseudo. La page d'accueil devra ensuite afficher ce pseudo, contenu dans le jeton JWT.
+
 AVANTAGES:
 
 - l'état est conservé côté client, ce qui allège considérablement la charge serveur.
@@ -654,12 +656,29 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
+== Bilan
 
+Voici les étapes successives réalisées pendant ces travaux pratiques.
 
-
-
-
-
-- Données statiques dans l'appli => on ne peut rien faire ca marche pas en LB
-- Appli de création de charge
-- Appli pour tuer un tomcat au hasard de temps en temps
+[options="header"]
+|==================
+|Etape
+|Création du projet Java EE dans Eclipse
+|Affichage du répertoire de déploiement dans `index.jsp`
+|Création du fichier `.war`
+|Déploiement du fichier `.war` dans le répertoire de déploiement de Tomcat
+|Démarrage de Tomcat en ligne de commande
+|Arrêt de Tomcat en ligne de commande
+|Mise en place de la donnée en session (code en plus dans l'application)
+|Installation et configuration d'un deuxième Tomcat
+|Installation de NGINX
+|Déploiement en mode un LB et deux AP (Application Serveur, les deux Tomcat)
+|Pourquoi les sessions ne sont-elles pas stables ?
+|Configuration en _stocky session_
+|Installation de MySQL
+|Configuration des Tomcat pour déporter les sessions en base de données
+|Mise en place de JWT
+|Stockage du pseudo de l'utilisateur dans un token JWT
+|Déploiement de l'application avec Docker (une dizaine d'instance + NGINX)
+|Utilisation de `Kubernetes`
+|==================
