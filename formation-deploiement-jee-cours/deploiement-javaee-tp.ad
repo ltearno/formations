@@ -308,9 +308,13 @@ Ensuite on crée la base de donnée et la table qui va stocker les données de s
 Sous Windows, on peut utiliser PhpMyAdmin pour exécuter des instructions SQL. PhpMyAdmin est installé par défaut avec WAMP.
 ====
 
-----
-mysql -u root
+===== Création de l'utilisateur `tomcat`
 
+Créez un utilisateur `tomcat` dans le serveur MySQL. Cet utilisateur sera utilisé pour connecter le serveur Tomcat à la base de données.
+
+===== Création de la base de données des sessions
+
+----
 create database tomcat_sessions;
 
 use tomcat_sessions;
@@ -325,6 +329,10 @@ create table tomcat_sessions (
   KEY kapp_name(app_name)
 );
 ----
+
+Donnez à l'utilisateur `tomcat` tous les droits d'accès en lecture et d'écriture à la base `tomcat_sessions`.
+
+===== Paramétrage de Tomcat
 
 Utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql:mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Prendre la dernière `5.1.x`.
 
