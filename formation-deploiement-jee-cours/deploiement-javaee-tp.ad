@@ -273,7 +273,7 @@ INCONVENIENTS :
 - mauvaise répartition de la charge.
 - Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
 
-==== Déport de la session dans une base externe
+==== Exercice 4 : Déport de la session dans une base externe
 
 Le phénomène de perte de session précédent est l'effet du standard Java EE.
 
@@ -438,6 +438,8 @@ Key createKey() {
 }
 ----
 
+==== Exercice 5 : stockage d'une information de session dans un jeton JWT
+
 Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
 
 A cette fin, vous aurez à écrire un formulaire web permettant à l'utilisateur de saisir son pseudo. La page d'accueil devra ensuite afficher ce pseudo, contenu dans le jeton JWT.
@@ -470,7 +472,7 @@ Toujours une histoire de compromis, il faut choisir le meilleur entre :
 - complexité de la solution,
 - productivité.
 
-== Exercice 3 : Déploiement de l'application avec Docker.
+== Exercice 6 : Déploiement de l'application avec Docker.
 
 === Installation de Docker
 
@@ -580,7 +582,7 @@ Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement u
 
 Tuer quelques containers pour constater que l'application n'est nullement dérangée.
 
-== Exercice 4 : Gérer notre application avec Kubernetes
+== Exercice 7 : Gérer notre application avec Kubernetes
 
 Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
 
@@ -663,6 +665,27 @@ kubectl delete pod application
 ----
 
 Ceci termine l'exercice d'introduction à Kubernetes.
+
+=== Exercice 8 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
+
+Groupez vous par groupe de 8 personnes.
+
+Utilisez :
+
+- une machine avec le load balancer,
+- une machine avec la base de données des sessions,
+- une machine avec `JMeter`,
+- le reste des machines avec les serveurs d'application.
+
+Lancez un benchmark JMeter pour chacune des stratégies :
+
+- déploiement sur une seule machine,
+- déploiement sur 2, 3 etc... machines.
+
+Analysez le niveau de sollicitation de chaque composant de l'application distribuée.
+
+Analysez ensuite la résistance des différents déploiements 
+aux erreurs matérielles comme par exemple extinction brutale d'un des serveurs d'application.
 
 == Bilan
 

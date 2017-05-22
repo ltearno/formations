@@ -467,15 +467,16 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_3_déploiement_de_l_application_avec_docker">Exercice 3 : Déploiement de l&#8217;application avec Docker.</a>
+<li><a href="#_exercice_6_déploiement_de_l_application_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_de_docker">Installation de Docker</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_4_gérer_notre_application_avec_kubernetes">Exercice 4 : Gérer notre application avec Kubernetes</a>
+<li><a href="#_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_et_création_d_un_cluster_de_développement">Installation et création d&#8217;un cluster de développement</a></li>
 <li><a href="#_exécution_de_l_application">Exécution de l&#8217;application</a></li>
+<li><a href="#_exercice_8_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 </ul>
 </li>
 <li><a href="#_bilan">Bilan</a></li>
@@ -904,7 +905,7 @@ events {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_déport_de_la_session_dans_une_base_externe">Déport de la session dans une base externe</h4>
+<h4 id="_exercice_4_déport_de_la_session_dans_une_base_externe">Exercice 4 : Déport de la session dans une base externe</h4>
 <div class="paragraph">
 <p>Le phénomène de perte de session précédent est l&#8217;effet du standard Java EE.</p>
 </div>
@@ -1151,6 +1152,9 @@ Key createKey() {
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_exercice_5_stockage_d_une_information_de_session_dans_un_jeton_jwt">Exercice 5 : stockage d&#8217;une information de session dans un jeton JWT</h4>
 <div class="paragraph">
 <p>Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le <em>pseudo</em> de l&#8217;utilisateur.</p>
 </div>
@@ -1225,7 +1229,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_3_déploiement_de_l_application_avec_docker">Exercice 3 : Déploiement de l&#8217;application avec Docker.</h2>
+<h2 id="_exercice_6_déploiement_de_l_application_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_installation_de_docker">Installation de Docker</h3>
@@ -1387,7 +1391,7 @@ docker rm $(docker ps -a -q)</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_4_gérer_notre_application_avec_kubernetes">Exercice 4 : Gérer notre application avec Kubernetes</h2>
+<h2 id="_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Voir la <a href="http://kubernetes.io/docs/getting-started-guides/docker/">doc</a> pour commencer.</p>
@@ -1482,6 +1486,51 @@ kubectl delete pod application</pre>
 <p>Ceci termine l&#8217;exercice d&#8217;introduction à Kubernetes.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_exercice_8_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h3>
+<div class="paragraph">
+<p>Groupez vous par groupe de 8 personnes.</p>
+</div>
+<div class="paragraph">
+<p>Utilisez :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>une machine avec le load balancer,</p>
+</li>
+<li>
+<p>une machine avec la base de données des sessions,</p>
+</li>
+<li>
+<p>une machine avec <code>JMeter</code>,</p>
+</li>
+<li>
+<p>le reste des machines avec les serveurs d&#8217;application.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Lancez un benchmark JMeter pour chacune des stratégies :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>déploiement sur une seule machine,</p>
+</li>
+<li>
+<p>déploiement sur 2, 3 etc&#8230;&#8203; machines.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Analysez le niveau de sollicitation de chaque composant de l&#8217;application distribuée.</p>
+</div>
+<div class="paragraph">
+<p>Analysez ensuite la résistance des différents déploiements
+aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des serveurs d&#8217;application.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1561,7 +1610,7 @@ kubectl delete pod application</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-22 06:56:07 CEST
+Last updated 2017-05-22 07:15:41 CEST
 </div>
 </div>
 </body>
