@@ -751,4 +751,6 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 |Stockage du pseudo de l'utilisateur dans un token JWT
 |Déploiement de l'application avec Docker (une dizaine d'instance + NGINX)
 |Utilisation de `Kubernetes`
+|Déploiement sur un vrai cluster
+|JMeter
 |==================
