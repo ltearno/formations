@@ -13,10 +13,10 @@ toc::[]
 
 Ce cours est open source et est disponible en ligne :
 
-- cours en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html
-- exercices en ligne : http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html
+- cours en ligne : http://lteconsulting.fr/javaee-deploiement/
+- exercices en ligne : http://lteconsulting.fr/javaee-deploiement/tp.html
 
-== Exercice 1 : déployer une application dans Tomcat
+== Exercice : création d'une application Java EE très simple
 
 === Télécharger Tomcat
 
@@ -48,17 +48,28 @@ Pour créer le fichier `.war`, utiliser le menu `Fichier`/`Exporter...` d'Eclips
 
 _Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._
 
+== Exercice : déployer l'application dans Tomcat
+
+Le déploiement de l'application peut se faire depuis Eclipse ou en général n'importe quel IDE. Néanmoins, il est interressant 
+de savoir déployer une application à la main.
+
+Dans un environnement d'usine logicielle, il serait de toute façon inenvisageable d'utiliser Eclipse ou 
+un IDE pour produire et déployer l'application!
+
 === Déploiement de l'application dans le serveur Tomcat
 
-Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `.war` dans le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle également le répertoire de déploiement.
+Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `.war` dans 
+le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle également le répertoire de déploiement.
 
-A chaque fois que vous copierez une nouvelle version du `war` dans le répertoire de déploiement de Tomcat, celui-ci relance l'application (c'est le comportement par défaut, il est configurable).
+A chaque fois que vous copierez une nouvelle version du `war` dans le répertoire de 
+déploiement de Tomcat, celui-ci relance l'application (c'est le comportement par défaut, il est configurable).
 
 === Lancement de Tomcat
 
-Lancer Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la version Windows Batch (`.bat`)).
+Lancer Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
+version Windows Batch (`.bat`)).
 
-Vous devez pouvoir accéder à l'adresse `http://localhost:8080/${NOM DE VOTRE APPLICATION}` dans un navigateur.
+Vous devez pouvoir accéder à l'adresse `http://localhost:8080/NOM_DE_VOTRE_APPLICATION}` dans un navigateur.
 
 === Conclusions
 
@@ -70,17 +81,18 @@ Mais quels sont les problèmes ?
 - Montée de version = arrêt du service
 - Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
 
-== Exercice 2 : ajouter un état
+== Exercice : ajouter un état à l'application
 
 === Une application à état (simple)
 
-Une application a très souvent besoin de stocker l'état conversationnel http entre les clients et le serveur : c'est la **session**. Il s'agit souvent de l'utilisateur connecté ou encore du panier associé pour un site de commerce.
+Une application a très souvent besoin de stocker l'état conversationnel http entre les clients et le 
+serveur : c'est la **session**. Il s'agit souvent de l'utilisateur connecté ou encore du panier 
+associé pour un site de commerce, bref d'une information contextuelle liée à l'utilisateur et 
+stockée par le serveur.
 
 Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.
 
-Nous allons donc introduire un état dans l'application : la session utilisateur et un cookie.
-
-Changez le contenu de la JSP pour :
+Nous allons introduire un état dans l'application en utilisant la session utilisateur et un cookie. Changez le contenu de la JSP pour :
 
 [source,jsp]
 ----
@@ -121,17 +133,26 @@ La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
 %>
 ----
 
-Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
+Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur 
+contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
 
 Déployer et vérifier que l'application fonctionne.
 
-== Exercice 3 : déployer l'application sur deux Tomcat avec load balancing
+A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est 
+valorisée et stable au fur et à mesure des rafraichissements. C'est le comportement attendu d'une
+telle application.
+
+== Exercice : déployer l'application sur deux Tomcat avec load balancing
+
+Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
+impactent son fonctionnement.
 
 === Comment faire face au problème de crash serveur ?
 
 Un crash serveur, c'est un service inaccessible pour le client, et c'est donc en général une perte d'argent pour l'entreprise.
-Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques de catastrophes naturelles).
-Un serveur frontal va router les requêtes http vers nos différents serveurs d'application. C'est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d'application.
+Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques 
+de catastrophes naturelles). Un serveur frontal va router les requêtes http vers nos différents serveurs d'application. 
+C'est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d'application.
 
 Nous allons installer un deuxième serveur Tomcat et NGINX configuré en Load balancer.
 
@@ -230,11 +251,16 @@ Vérifier que l'application fonctionne toujours quand on y accède par nginx.
 - Lancement et arrêt des serveurs manuel.
 - Et en plus, les sources ne sont pas versionnées !
 
+Pour gagner du temps les prochaines fois, créez vous les scripts nécessaires au déploiement de l'application (copie du `.war`) et 
+aux démarrage et arrêt des serveurs.
+
 === Déployer sur les deux Tomcats
 
-Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par le fait que l'on ai distribué et réparti l'application sur deux serveurs. La session est stockée localement par serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat qui exécute la requête ne trouve pas la session puisqu'il s'agit en fait de celle de l'autre Tomcat !!!
-
-En réalité, Java EE se base sur le cookie `JSESSIONID` pour retrouver la session.
+Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par 
+le fait que l'on ai distribué et réparti l'application sur deux serveurs. La session est stockée localement par 
+serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat 
+qui exécute la requête ne trouve pas la session puisqu'il s'agit en fait de l'identificateur produit par l'autre Tomcat 
+(Java EE se base sur le cookie `JSESSIONID` pour retrouver la session)...
 
 === Problème des sessions
 
@@ -273,7 +299,7 @@ INCONVENIENTS :
 - mauvaise répartition de la charge.
 - Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
 
-==== Exercice 4 : Déport de la session dans une base externe
+==== Exercice : Déport de la session dans une base externe
 
 Le phénomène de perte de session précédent est l'effet du standard Java EE.
 
@@ -418,6 +444,8 @@ Pour un projet n'utilisant pas Maven, vous pouvez télécharger le fichier jar e
 
 Ce fichier est à copier dans le répertoire `WEB-INF/lib` de votre application (à créer si nécessaire).
 
+Si votre projet n'est pas géré avec Maven, vous pouvez télécharger directement toutes les dépendances de JJWT avec le http://lteconsulting.fr/javaee-deploiement/jjwt-dependencies.zip[lien].
+
 [source,java]
 ----
 // chiffrer l'information 'Subject'
@@ -438,7 +466,7 @@ Key createKey() {
 }
 ----
 
-==== Exercice 5 : stockage d'une information de session dans un jeton JWT
+==== Exercice : stockage d'une information de session dans un jeton JWT
 
 Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
 
@@ -472,7 +500,7 @@ Toujours une histoire de compromis, il faut choisir le meilleur entre :
 - complexité de la solution,
 - productivité.
 
-== Exercice 6 : Déploiement de l'application avec Docker.
+== Exercice : Déploiement de l'application avec Docker.
 
 === Installation de Docker
 
@@ -582,7 +610,7 @@ Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement u
 
 Tuer quelques containers pour constater que l'application n'est nullement dérangée.
 
-== Exercice 7 : Gérer notre application avec Kubernetes
+== Exercice : Gérer notre application avec Kubernetes
 
 Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
 
@@ -666,7 +694,7 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
-=== Exercice 8 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
+== Exercice : Utilisation de `JMeter` pour analyser les stratégies de déploiement
 
 Groupez vous par groupe de 8 personnes.
 
@@ -683,6 +711,17 @@ Lancez un benchmark JMeter pour chacune des stratégies :
 - déploiement sur 2, 3 etc... machines.
 
 Analysez le niveau de sollicitation de chaque composant de l'application distribuée.
+
+Pour simuler une application un peu gourmande en CPU, vous pouvez utiliser la méthode suivante :
+
+[source,language=java]
+----
+public static void spinCPU(long durationInMillisecond){
+	long start = System.currentTimeMillis();
+	while(System.currentTimeMillis()-start < durationInMillisecond)
+		;
+}
+----
 
 Analysez ensuite la résistance des différents déploiements 
 aux erreurs matérielles comme par exemple extinction brutale d'un des serveurs d'application.

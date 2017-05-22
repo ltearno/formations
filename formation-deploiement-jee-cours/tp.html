@@ -439,23 +439,27 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <div id="toc" class="toc">
 <div id="toctitle" class="title">Plan des exercices</div>
 <ul class="sectlevel1">
-<li><a href="#_exercice_1_déployer_une_application_dans_tomcat">Exercice 1 : déployer une application dans Tomcat</a>
+<li><a href="#_exercice_création_d_une_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</a>
 <ul class="sectlevel2">
 <li><a href="#_télécharger_tomcat">Télécharger Tomcat</a></li>
 <li><a href="#_installer_eclipse">Installer Eclipse</a></li>
 <li><a href="#_création_d_une_application_vraiment_très_simple">Création d&#8217;une application vraiment très simple</a></li>
 <li><a href="#_création_du_fichier_code_war_code">Création du fichier <code>.war</code></a></li>
+</ul>
+</li>
+<li><a href="#_exercice_déployer_l_application_dans_tomcat">Exercice : déployer l&#8217;application dans Tomcat</a>
+<ul class="sectlevel2">
 <li><a href="#_déploiement_de_l_application_dans_le_serveur_tomcat">Déploiement de l&#8217;application dans le serveur Tomcat</a></li>
 <li><a href="#_lancement_de_tomcat">Lancement de Tomcat</a></li>
 <li><a href="#_conclusions">Conclusions</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_2_ajouter_un_état">Exercice 2 : ajouter un état</a>
+<li><a href="#_exercice_ajouter_un_état_à_l_application">Exercice : ajouter un état à l&#8217;application</a>
 <ul class="sectlevel2">
 <li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
+<li><a href="#_exercice_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
 <ul class="sectlevel2">
 <li><a href="#_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</a></li>
 <li><a href="#_installer_la_seconde_instance_de_tomcat">Installer la seconde instance de Tomcat</a></li>
@@ -467,18 +471,18 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_6_déploiement_de_l_application_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</a>
+<li><a href="#_exercice_déploiement_de_l_application_avec_docker">Exercice : Déploiement de l&#8217;application avec Docker.</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_de_docker">Installation de Docker</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</a>
+<li><a href="#_exercice_gérer_notre_application_avec_kubernetes">Exercice : Gérer notre application avec Kubernetes</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_et_création_d_un_cluster_de_développement">Installation et création d&#8217;un cluster de développement</a></li>
 <li><a href="#_exécution_de_l_application">Exécution de l&#8217;application</a></li>
-<li><a href="#_exercice_8_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 </ul>
 </li>
+<li><a href="#_exercice_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 <li><a href="#_bilan">Bilan</a></li>
 </ul>
 </div>
@@ -488,17 +492,17 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <div class="ulist">
 <ul>
 <li>
-<p>cours en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html" class="bare">http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-slides.html</a></p>
+<p>cours en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/" class="bare">http://lteconsulting.fr/javaee-deploiement/</a></p>
 </li>
 <li>
-<p>exercices en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html" class="bare">http://lteconsulting.fr/javaee-deploiement/deploiement-javaee-tp.html</a></p>
+<p>exercices en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/tp.html" class="bare">http://lteconsulting.fr/javaee-deploiement/tp.html</a></p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_1_déployer_une_application_dans_tomcat">Exercice 1 : déployer une application dans Tomcat</h2>
+<h2 id="_exercice_création_d_une_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_télécharger_tomcat">Télécharger Tomcat</h3>
@@ -542,22 +546,38 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <p><em>Normalement on fait cela avec un outil de build comme <code>Maven</code>, <code>Gradle</code>, <code>Ant</code> ou autre&#8230;&#8203;</em></p>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercice_déployer_l_application_dans_tomcat">Exercice : déployer l&#8217;application dans Tomcat</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le déploiement de l&#8217;application peut se faire depuis Eclipse ou en général n&#8217;importe quel IDE. Néanmoins, il est interressant
+de savoir déployer une application à la main.</p>
+</div>
+<div class="paragraph">
+<p>Dans un environnement d&#8217;usine logicielle, il serait de toute façon inenvisageable d&#8217;utiliser Eclipse ou
+un IDE pour produire et déployer l&#8217;application!</p>
+</div>
 <div class="sect2">
 <h3 id="_déploiement_de_l_application_dans_le_serveur_tomcat">Déploiement de l&#8217;application dans le serveur Tomcat</h3>
 <div class="paragraph">
-<p>Pour déployer l&#8217;application dans le serveur Tomcat, vous copiez le fichier <code>.war</code> dans le sous-répertoire <code>webapps</code> de l&#8217;installation de Tomcat, que l&#8217;on appelle également le répertoire de déploiement.</p>
+<p>Pour déployer l&#8217;application dans le serveur Tomcat, vous copiez le fichier <code>.war</code> dans
+le sous-répertoire <code>webapps</code> de l&#8217;installation de Tomcat, que l&#8217;on appelle également le répertoire de déploiement.</p>
 </div>
 <div class="paragraph">
-<p>A chaque fois que vous copierez une nouvelle version du <code>war</code> dans le répertoire de déploiement de Tomcat, celui-ci relance l&#8217;application (c&#8217;est le comportement par défaut, il est configurable).</p>
+<p>A chaque fois que vous copierez une nouvelle version du <code>war</code> dans le répertoire de
+déploiement de Tomcat, celui-ci relance l&#8217;application (c&#8217;est le comportement par défaut, il est configurable).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_lancement_de_tomcat">Lancement de Tomcat</h3>
 <div class="paragraph">
-<p>Lancer Tomcat avec le script <code>bin/startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la version Windows Batch (<code>.bat</code>)).</p>
+<p>Lancer Tomcat avec le script <code>bin/startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la
+version Windows Batch (<code>.bat</code>)).</p>
 </div>
 <div class="paragraph">
-<p>Vous devez pouvoir accéder à l&#8217;adresse <code><a href="http://localhost:8080/${NOM" class="bare">http://localhost:8080/${NOM</a> DE VOTRE APPLICATION}</code> dans un navigateur.</p>
+<p>Vous devez pouvoir accéder à l&#8217;adresse <code><a href="http://localhost:8080/NOM_DE_VOTRE_APPLICATION}" class="bare">http://localhost:8080/NOM_DE_VOTRE_APPLICATION}</a></code> dans un navigateur.</p>
 </div>
 </div>
 <div class="sect2">
@@ -585,21 +605,21 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_2_ajouter_un_état">Exercice 2 : ajouter un état</h2>
+<h2 id="_exercice_ajouter_un_état_à_l_application">Exercice : ajouter un état à l&#8217;application</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_une_application_à_état_simple">Une application à état (simple)</h3>
 <div class="paragraph">
-<p>Une application a très souvent besoin de stocker l&#8217;état conversationnel http entre les clients et le serveur : c&#8217;est la <strong>session</strong>. Il s&#8217;agit souvent de l&#8217;utilisateur connecté ou encore du panier associé pour un site de commerce.</p>
+<p>Une application a très souvent besoin de stocker l&#8217;état conversationnel http entre les clients et le
+serveur : c&#8217;est la <strong>session</strong>. Il s&#8217;agit souvent de l&#8217;utilisateur connecté ou encore du panier
+associé pour un site de commerce, bref d&#8217;une information contextuelle liée à l&#8217;utilisateur et
+stockée par le serveur.</p>
 </div>
 <div class="paragraph">
 <p>Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
 </div>
 <div class="paragraph">
-<p>Nous allons donc introduire un état dans l&#8217;application : la session utilisateur et un cookie.</p>
-</div>
-<div class="paragraph">
-<p>Changez le contenu de la JSP pour :</p>
+<p>Nous allons introduire un état dans l&#8217;application en utilisant la session utilisateur et un cookie. Changez le contenu de la JSP pour :</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -641,23 +661,34 @@ La valeur du cookie MONCOOKIE est : &lt;%=valeurCookie%&gt;&lt;br /&gt;
 </div>
 </div>
 <div class="paragraph">
-<p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
+<p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur
+contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
 </div>
 <div class="paragraph">
 <p>Déployer et vérifier que l&#8217;application fonctionne.</p>
+</div>
+<div class="paragraph">
+<p>A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est
+valorisée et stable au fur et à mesure des rafraichissements. C&#8217;est le comportement attendu d&#8217;une
+telle application.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
+<h2 id="_exercice_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
+impactent son fonctionnement.</p>
+</div>
 <div class="sect2">
 <h3 id="_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</h3>
 <div class="paragraph">
 <p>Un crash serveur, c&#8217;est un service inaccessible pour le client, et c&#8217;est donc en général une perte d&#8217;argent pour l&#8217;entreprise.
-Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques de catastrophes naturelles).
-Un serveur frontal va router les requêtes http vers nos différents serveurs d&#8217;application. C&#8217;est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d&#8217;application.</p>
+Nous allons maintenant utiliser plusieurs serveurs (de préférences à différents points géographiques pour mitiger les risques
+de catastrophes naturelles). Un serveur frontal va router les requêtes http vers nos différents serveurs d&#8217;application.
+C&#8217;est le Load Balancer, il répartit les requêtes entrantes sur les serveurs d&#8217;application.</p>
 </div>
 <div class="paragraph">
 <p>Nous allons installer un deuxième serveur Tomcat et NGINX configuré en Load balancer.</p>
@@ -826,14 +857,19 @@ events {
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Pour gagner du temps les prochaines fois, créez vous les scripts nécessaires au déploiement de l&#8217;application (copie du <code>.war</code>) et
+aux démarrage et arrêt des serveurs.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_déployer_sur_les_deux_tomcats">Déployer sur les deux Tomcats</h3>
 <div class="paragraph">
-<p>Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par le fait que l&#8217;on ai distribué et réparti l&#8217;application sur deux serveurs. La session est stockée localement par serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit en fait de celle de l&#8217;autre Tomcat !!!</p>
-</div>
-<div class="paragraph">
-<p>En réalité, Java EE se base sur le cookie <code>JSESSIONID</code> pour retrouver la session.</p>
+<p>Vous constatez certainement un problème. En effet la gestion des sessions faite par Tomcat est perturbée par
+le fait que l&#8217;on ai distribué et réparti l&#8217;application sur deux serveurs. La session est stockée localement par
+serveur Tomcat donc on a en fait deux sessions stockées sur deux serveurs différents. A chaque fois le Tomcat
+qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit en fait de l&#8217;identificateur produit par l&#8217;autre Tomcat
+(Java EE se base sur le cookie <code>JSESSIONID</code> pour retrouver la session)&#8230;&#8203;</p>
 </div>
 </div>
 <div class="sect2">
@@ -905,7 +941,7 @@ events {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_exercice_4_déport_de_la_session_dans_une_base_externe">Exercice 4 : Déport de la session dans une base externe</h4>
+<h4 id="_exercice_déport_de_la_session_dans_une_base_externe">Exercice : Déport de la session dans une base externe</h4>
 <div class="paragraph">
 <p>Le phénomène de perte de session précédent est l&#8217;effet du standard Java EE.</p>
 </div>
@@ -1132,6 +1168,9 @@ cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
 <div class="paragraph">
 <p>Ce fichier est à copier dans le répertoire <code>WEB-INF/lib</code> de votre application (à créer si nécessaire).</p>
 </div>
+<div class="paragraph">
+<p>Si votre projet n&#8217;est pas géré avec Maven, vous pouvez télécharger directement toutes les dépendances de JJWT avec le <a href="http://lteconsulting.fr/javaee-deploiement/jjwt-dependencies.zip">lien</a>.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">// chiffrer l'information 'Subject'
@@ -1154,7 +1193,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_exercice_5_stockage_d_une_information_de_session_dans_un_jeton_jwt">Exercice 5 : stockage d&#8217;une information de session dans un jeton JWT</h4>
+<h4 id="_exercice_stockage_d_une_information_de_session_dans_un_jeton_jwt">Exercice : stockage d&#8217;une information de session dans un jeton JWT</h4>
 <div class="paragraph">
 <p>Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le <em>pseudo</em> de l&#8217;utilisateur.</p>
 </div>
@@ -1229,7 +1268,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_6_déploiement_de_l_application_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</h2>
+<h2 id="_exercice_déploiement_de_l_application_avec_docker">Exercice : Déploiement de l&#8217;application avec Docker.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_installation_de_docker">Installation de Docker</h3>
@@ -1391,7 +1430,7 @@ docker rm $(docker ps -a -q)</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</h2>
+<h2 id="_exercice_gérer_notre_application_avec_kubernetes">Exercice : Gérer notre application avec Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Voir la <a href="http://kubernetes.io/docs/getting-started-guides/docker/">doc</a> pour commencer.</p>
@@ -1486,8 +1525,11 @@ kubectl delete pod application</pre>
 <p>Ceci termine l&#8217;exercice d&#8217;introduction à Kubernetes.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_exercice_8_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercice_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Groupez vous par groupe de 8 personnes.</p>
 </div>
@@ -1527,9 +1569,20 @@ kubectl delete pod application</pre>
 <p>Analysez le niveau de sollicitation de chaque composant de l&#8217;application distribuée.</p>
 </div>
 <div class="paragraph">
+<p>Pour simuler une application un peu gourmande en CPU, vous pouvez utiliser la méthode suivante :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static void spinCPU(long durationInMillisecond){
+	long start = System.currentTimeMillis();
+	while(System.currentTimeMillis()-start &lt; durationInMillisecond)
+		;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Analysez ensuite la résistance des différents déploiements
 aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des serveurs d&#8217;application.</p>
-</div>
 </div>
 </div>
 </div>
@@ -1610,7 +1663,7 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-22 07:15:41 CEST
+Last updated 2017-05-22 11:45:28 CEST
 </div>
 </div>
 </body>
