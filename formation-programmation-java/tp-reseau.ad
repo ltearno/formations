@@ -22,11 +22,11 @@ Les sockets servent à faire communiquer deux hôtes appelés **Client** et **Se
 
 Ces sockets permettront de gérer des flux entrant et sortant afin d'assurer une communication entre les deux (le client et le serveur).
 
-Nous écrirons notre programme en Java, mais il faut savoir que le mécanisme des sockets est fourni par le système d'exploitation, et que donc tout programme (indépendamment du langage utilisé pour l'écrire) peut utiliser les sockets au même titre que le notre.
+Nous écrirons notre programme en Java, mais il faut savoir que le mécanisme des sockets est fourni par le système d'exploitation, et que donc tout programme (indépendamment du langage utilisé pour l'écrire) peut utiliser les sockets au même titre que le nôtre.
 
 De façon concrète, la communication entre deux hôtes nécessite plusieurs étapes préliminaires que l'on appelle **établissement de la connexion** :
 
-- le programme appelé "serveur" ouvre un port donné
+- le programme appelé "serveur" ouvre et commence à écouter les demandes de connexion sur un port donné
 - le programme appelé "client" demande à établir une connexion vers le port du serveur. A cette fin il doit préciser l'adresse de la machine sur laquelle est exécutée l'application "serveur" ainsi que le numéro de port que celle-ci a ouvert.
 - le système d'exploitation s'occupe d'établir la connexion, et si celle-ci est réussie, la communication entre les deux programmes peut commencer.
 
@@ -169,7 +169,7 @@ Implémentez le code nécessaire dans les classes Serveur et Client.
 Le protocole est le suivant :
 
 - le serveur ouvre le port
-- le client se connecter
+- le client se connecte
 - le serveur accepte la connexion
 - le client envoie deux entiers dont il veut connaitre la somme (ne pas oublier le flush!)
 - le serveur reçoit les deux entiers
