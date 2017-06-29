@@ -40,7 +40,7 @@ Le serveur doit donc commencer par ouvrir un port sur la machine locale.
 
 Pour demander l'ouverture d'une socket côté serveur, on utilise la classe `SocketServer`:
 
-[code,language='java']
+[source,language='java']
 ----
 // ici on demande l'ouverture du port 9090 mais on peut choisir n'importe lequel
 ServerSocket socketserver = new ServerSocket(9090);
@@ -50,7 +50,7 @@ Après l'ouverture du port demandé, le serveur doit maintenant attendre que des
 
 La méthode `accept()` de la classe `ServerSocket` permet ceci. L'appel à cette méthode bloque jusqu'à ce qu'un client demande la connexion. A ce moment, la méthode retourne une instance de la classe `Socket` qui représente la connexion avec le client (et non plus le port ouvert, réprésenté par `socketServer`).
 
-[code,language='java']
+[source,language='java']
 ----
 Socket communicationAvecClient = socketServer.accept();
 ----
@@ -76,7 +76,7 @@ Le client doit demander l'établissement d'une connexion vers l'application serv
 
 Pour cela on utilise la classe `Socket` qui correspond à une socket client :
 
-[code,language='java']
+[source,language='java']
 ----
 Socket socket = new Socket( "adresse ip ou nom hote distant", numeroDuPort );
 ----
@@ -135,7 +135,7 @@ L'échange entre le client et le serveur ne se fait qu'une seule fois, c'est à 
 
 Pour envoyer des données au programme distant, il faut d'abord récupérer l'objet représentant le flux de sortie de la socket :
 
-[code,language='java']
+[source,language='java']
 ----
 OutputStream os = socket.getOutputStream();
 ----
@@ -144,7 +144,7 @@ Ce flux de sortie fonctionne exactement de la même façon qu'un `FileOutputStre
 
 Il sera pour notre exercice bien plus aisé de "brancher" une `ObjectOutputStream` sur le flux de sortie de la socket. Ainsi nous aurons accès aux méthodes `writeInt(...)`, `writeString(...)` etc.
 
-[code,language='java']
+[source,language='java']
 ----
 ObjectOutputStream oos = new ObjectOutputStream( os );
 

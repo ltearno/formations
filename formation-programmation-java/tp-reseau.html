@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Ces sockets permettront de gérer des flux entrant et sortant afin d&#8217;assurer une communication entre les deux (le client et le serveur).</p>
 </div>
 <div class="paragraph">
-<p>Nous écrirons notre programme en Java, mais il faut savoir que le mécanisme des sockets est fourni par le système d&#8217;exploitation, et que donc tout programme (indépendamment du langage utilisé pour l&#8217;écrire) peut utiliser les sockets au même titre que le notre.</p>
+<p>Nous écrirons notre programme en Java, mais il faut savoir que le mécanisme des sockets est fourni par le système d&#8217;exploitation, et que donc tout programme (indépendamment du langage utilisé pour l&#8217;écrire) peut utiliser les sockets au même titre que le nôtre.</p>
 </div>
 <div class="paragraph">
 <p>De façon concrète, la communication entre deux hôtes nécessite plusieurs étapes préliminaires que l&#8217;on appelle <strong>établissement de la connexion</strong> :</p>
@@ -487,7 +487,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>le programme appelé "serveur" ouvre un port donné</p>
+<p>le programme appelé "serveur" ouvre et commence à écouter les demandes de connexion sur un port donné</p>
 </li>
 <li>
 <p>le programme appelé "client" demande à établir une connexion vers le port du serveur. A cette fin il doit préciser l&#8217;adresse de la machine sur laquelle est exécutée l&#8217;application "serveur" ainsi que le numéro de port que celle-ci a ouvert.</p>
@@ -514,8 +514,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>// ici on demande l'ouverture du port 9090 mais on peut choisir n'importe lequel
-ServerSocket socketserver = new ServerSocket(9090);</pre>
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">// ici on demande l'ouverture du port 9090 mais on peut choisir n'importe lequel
+ServerSocket socketserver = new ServerSocket(9090);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -526,7 +526,7 @@ ServerSocket socketserver = new ServerSocket(9090);</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Socket communicationAvecClient = socketServer.accept();</pre>
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">Socket communicationAvecClient = socketServer.accept();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -560,7 +560,7 @@ ServerSocket socketserver = new ServerSocket(9090);</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Socket socket = new Socket( "adresse ip ou nom hote distant", numeroDuPort );</pre>
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">Socket socket = new Socket( "adresse ip ou nom hote distant", numeroDuPort );</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -657,7 +657,7 @@ ServerSocket socketserver = new ServerSocket(9090);</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>OutputStream os = socket.getOutputStream();</pre>
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">OutputStream os = socket.getOutputStream();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -668,10 +668,10 @@ ServerSocket socketserver = new ServerSocket(9090);</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>ObjectOutputStream oos = new ObjectOutputStream( os );
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">ObjectOutputStream oos = new ObjectOutputStream( os );
 
 // envoi de l'entier 34 dans le flux de sortie de la socket
-oos.writeInt( 34 );</pre>
+oos.writeInt( 34 );</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -705,7 +705,7 @@ oos.writeInt( 34 );</pre>
 <p>le serveur ouvre le port</p>
 </li>
 <li>
-<p>le client se connecter</p>
+<p>le client se connecte</p>
 </li>
 <li>
 <p>le serveur accepte la connexion</p>
@@ -804,7 +804,7 @@ oos.writeInt( 34 );</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-06 16:41:20 Paris, Madrid
+Last updated 2017-06-29 09:53:07 Paris, Madrid (heure dÆÚtÚ)
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

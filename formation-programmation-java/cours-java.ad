@@ -339,7 +339,7 @@ Pour créer une classe, on utilise le code suivant :
 
 [source,language="java"]
 ----
-public <1> class NomDeLaClasse <2>
+public class NomDeLaClasse <1> <2>
 {
 	// Corps de la classe (attributs et méthodes)
 }
