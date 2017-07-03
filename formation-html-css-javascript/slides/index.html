@@ -182,9 +182,7 @@ Et la ligne suivante ferme le paragraphe
 <pre><code>    &lt;meta name=&quot;author&quot; content=&quot;Arnaud TOURNIER&quot;&gt;</code></pre>
 <p>Ainsi que d'autres : <em>description</em>, <em>keywords</em>, <em>subject</em>, <em>language</em>.</p>
 </section></section>
-<section><section id="html---corps-du-document" class="titleslide slide level2"><h2>HTML - Corps du document</h2></section><section id="section" class="slide level3">
-<h3></h3>
-</section><section id="corps-du-document" class="slide level3">
+<section><section id="html---corps-du-document" class="titleslide slide level2"><h2>HTML - Corps du document</h2></section><section id="corps-du-document" class="slide level3">
 <h3>Corps du document</h3>
 <p>C'est dans la balise <code>&lt;body&gt;</code> que nous allons mettre tout le texte et toutes les images qui apparaîtront lorsqu'un visiteur viendra sur notre page.</p>
 </section><section id="les-niveaux-de-titres" class="slide level3">
@@ -893,30 +891,38 @@ Passez la souris...
     }</code></pre>
 </section><section id="sélecteurs-de-relation" class="slide level3">
 <h3>Sélecteurs de relation</h3>
-<p>Il est possible de spécifier un rendu en fonction de la relation qu'entretiennent plusieurs noeuds :</p>
+<p>Il est possible de combiner les sélecteurs (ici A et E sont des sélecteur que l'on combine) :</p>
 <table>
 <thead>
 <tr class="header">
 <th>Sélecteur</th>
-<th>Sélectionne</th>
+<th>Sélectionne les élements satisfaisant...</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td>A, E</td>
+<td>A <strong>ou</strong> E</td>
+</tr>
+<tr class="even">
+<td>AE</td>
+<td>A <strong>et</strong> E</td>
+</tr>
+<tr class="odd">
 <td>A E</td>
-<td>Tout élement E descendant de A</td>
+<td>E et descendant d'un élément satisfaisant A</td>
 </tr>
 <tr class="even">
 <td>A &gt; E</td>
-<td>Tout élement E fils <strong>direct</strong> de A</td>
+<td>E et fils <strong>direct</strong> d'un élément satisfaisant A</td>
 </tr>
 <tr class="odd">
 <td>E:first-child</td>
-<td>Tout élement E étant le premier enfant de son parent</td>
+<td>E et qui sont dans l'état décrit par le pseudo-sélecteur</td>
 </tr>
 <tr class="even">
 <td>B + E</td>
-<td>Tout élément E qui suit un élément B étant un frère</td>
+<td>E et qui suivent un élément satisfaisant B (avec le même parent)</td>
 </tr>
 </tbody>
 </table>
@@ -2052,12 +2058,12 @@ ctx.fillRect (30, 30, 55, 50);
 <p>Le projet <strong>NodeJS</strong> permet d'exécuter du javascript sur le serveur (en utilisant seulement V8 + les bindings système).</p>
 <p>Les projets <strong>Atom-shell</strong>, <strong>NodeWebkit</strong> permettent de développer des clients lourds et de sortir de la &quot;sandbox&quot; navigateur pour avoir accès à l'OS. C'est le retour du client lourd !</p>
 </section></section>
-<section><section id="ecosystème" class="titleslide slide level2"><h2>Ecosystème</h2></section><section id="section-1" class="slide level3">
+<section><section id="ecosystème" class="titleslide slide level2"><h2>Ecosystème</h2></section><section id="section" class="slide level3">
 <h3></h3>
 <p>Sass, Less</p>
 <p>Frameworks CSS : bootstrap, foundation, basscss, skeleton</p>
 </section></section>
-<section><section id="liens" class="titleslide slide level2"><h2>Liens</h2></section><section id="section-2" class="slide level3">
+<section><section id="liens" class="titleslide slide level2"><h2>Liens</h2></section><section id="section-1" class="slide level3">
 <h3></h3>
 <p>MDN, HTML5Rocks, W3C,</p>
 </section></section>

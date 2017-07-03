@@ -214,8 +214,6 @@ Ainsi que d'autres : *description*, *keywords*, *subject*, *language*.
 
 ## HTML - Corps du document
 
-###
-
 ### Corps du document
 
 C'est dans la balise `<body>` que nous allons mettre tout le texte et toutes les images qui apparaîtront lorsqu'un visiteur viendra sur notre page.
@@ -1161,14 +1159,16 @@ Sélectionne tous les éléments.
 
 ### Sélecteurs de relation
 
-Il est possible de spécifier un rendu en fonction de la relation qu'entretiennent plusieurs noeuds :
+Il est possible de combiner les sélecteurs (ici A et E sont des sélecteur que l'on combine) :
 
-Sélecteur    |   Sélectionne
+Sélecteur    |   Sélectionne les élements satisfaisant...
 ----------------|-----------------
-A E           | Tout élement E descendant de A
-A > E         | Tout élement E fils **direct** de A
-E:first-child  |  Tout élement E étant le premier enfant de son parent
-B + E        |  Tout élément E qui suit un élément B étant un frère
+A, E         | A **ou** E
+AE           | A **et** E
+A E           | E et descendant d'un élément satisfaisant A
+A > E         | E et fils **direct** d'un élément satisfaisant A
+E:first-child  |  E et qui sont dans l'état décrit par le pseudo-sélecteur
+B + E        |  E et qui suivent un élément satisfaisant B (avec le même parent)
 
 ### Relation, exemple
 
