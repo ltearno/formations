@@ -564,7 +564,7 @@ https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/prem
 
 https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/la-gestion-d-un-formulaire-avec-jsf
 
-== JPA
+== SGBD-R
 
 === Systèmes de gestion de base de données relationnelles
 
@@ -758,6 +758,8 @@ De nombreuses implémentations existent, avec parfois quelques variantes dans le
 - On référence un enregistrement à partir d'un autre avec une _clé étrangère_.
 - SQL garantit la cohérence des données avec les _transactions_.
 
+== JDBC
+
 === Accès depuis un programme Java
 
 L'accès le plus bas niveau avec Java se fait à travers le _driver JDBC_ adapté au serveur auquel on se connecte.
@@ -811,7 +813,49 @@ while( rs.next() )
 	System.out.printf( "%s %s %s\n", id, nom, couleur );
 }
 ----
-<1> Il existe aussi `execute()` et `executeUpdate()`
+<1> Il existe aussi `executeUpdate()` pour les statements SQL modifiant les données en base, et `execute()` pour le reste (voir la Javadoc)
+
+=== Requête d'insertion
+
+[source,language=java]
+----
+String sqlQuery = "INSERT INTO produits (`designation`) "
+		+ "VALUES ('" + produit.getDesignation() + "')";
+
+PreparedStatement statement = databaseConnection.prepareStatement( sqlQuery );
+int nbEnregistrementInseres = statement.executeUpdate(); <1>
+if( nbEnregistrementInseres == 0 )
+	throw new RuntimeException( "Aucun enregistrement inséré" );
+
+// Les clés de(s) enregistrement(s) insérés sont obtenus sous la forme d'un `ResultSet` :
+ResultSet createdIds = statement.getGeneratedKeys();
+if( createdIds.next() )
+	produit.setReference( createdIds.getInt( 1 ) );
+else
+	throw new RuntimeException( "Aucun produit ajouté" );
+----
+<1> Ici on utilise `executeUpdate()`
+
+=== Utilisation des paramètres
+
+[source,language=java]
+----
+PreparedStatement updateSales = null;
+
+String updateString =
+        "update COFFEES set SALES = ? where COF_NAME = ?";
+
+updateSales = con.prepareStatement(updateString);
+
+updateSales.setInt(1, 42);
+updateSales.setString(2, "Toto");
+
+updateTotal.executeUpdate();
+
+updateTotal.close();
+----
+
+Voir http://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
 
 === Les transactions
 
@@ -835,7 +879,7 @@ conn.commit();
 
 Pour aller plus loin avec JDBC, consulez la https://docs.oracle.com/javase/tutorial/jdbc/basics/[documentation officielle].
 
-=== ORM
+== ORM
 
 L'écriture du code SQL et DDL est fastidieuse et répétitive. Les _ORM_s sont une sur-couche qui permettent un accès au SGBD plus conforme à la vision objet.
 
@@ -1237,3 +1281,84 @@ C'est une architecture classque pour les applications d'entreprise.
 Les données sont gérées de manière transactionnelle.
 
 Cet aspect transactionnel est pris en charge par les EJB.
+
+
+
+
+
+== CDI
+
+Contextual Dependency Injection
+
+Pour fonctionner un composant a besoin d'autres composants, ceux sont ses _dépendances_.
+
+Les composants ne sont plus responsables de récupérer ces dépendances (eg. instances, services statiques, etc...) car c'est l'outil de _gestion des dépendances_ qui s'en charge pour eux.
+
+`Weld` est l'implémentation de référence de la norme CDI, réalisé par _RedHat_.
+
+Java EE 6, CDI 1.0, Weld 1.1
+Java EE 7, CDI 1.2, Weld 2.4
+JAVA EE 8, CDI 2.0, Weld 3.0
+
+Pour JBoss, la dépendance Maven est la suivante :
+
+[source,language=java]
+----
+<groupId>javax.enterprise</groupId>
+	<artifactId>cdi-api</artifactId>
+	<!-- Use version 2.0 for Weld 3 -->
+	<version>1.2</version>
+	<scope>provided</scope>
+</dependency>
+----
+
+Doc : https://docs.jboss.org/weld/reference/1.0.0/en-US/html/beanscdi.html
+
+===
+
+Beans sans constructeur par défaut sont toujours des bean si le constructeur est annoté avec `@Inject`
+
+Annotation `@Inject` : applicable à un constructeur, méthode ou attribut pour déclencher l'injection 
+de dépendance et indiquer à CDI d'utiliser ce constructeur pour créer les instances de ce bean.
+
+Le conteneur CDI choisit l'objet à injecter en fonction du type du point d'injection et ne prend pas 
+en compte le nom du champ, de la méthode ou du paramètre.
+
+
+=== Définition du bean
+
+- classe qui contient de la logique applicative,
+- appelé directement depuis du code Java, ou bien depuis des expressions EL,
+- a accès aux ressources transactionnelles,
+- les dépendances entre beans sont gérées par le conteneur d'application,
+- la plupart des beans sont _stateful_ et _contextuels_,
+- son cycle de vie est géré par le conteneur.
+
+Important : *contextuel* et *cycle de vie géré par l'AS*.
+
+=== Définition
+
+Plus formellement :
+
+A bean comprises the following attributes:
+
+- A (nonempty) set of bean types
+- A (nonempty) set of qualifiers
+- A scope
+- Optionally, a bean EL name
+- A set of interceptor bindings
+- A bean implementation
+
+=== Types du bean
+
+[source,language=java]
+----
+public class BookShop 
+      extends Business
+      implements Shop<Book>
+{
+   ...
+}
+----
+
+Cette classe a quatre types au sens CDI : `BookShop`, `Business`, `Shop<Book>` et `Object`.

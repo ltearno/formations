@@ -468,6 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_exercice_2_code_set_t_code">Exercice 2 : <code>Set&lt;T&gt;</code></a></li>
 <li><a href="#_exercice_3_code_map_k_v_code">Exercice 3 : <code>Map&lt;K, V&gt;</code></a></li>
 <li><a href="#_exercice_4_les_collections">Exercice 4 : Les collections</a></li>
+<li><a href="#_exercice_6">Exercice 6</a></li>
 </ul>
 </li>
 <li><a href="#_exercice_avec_mysql">Exercice avec MySQL</a></li>
@@ -1048,6 +1049,80 @@ AFFICHER Math nul ou le gagnant</pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_exercice_6">Exercice 6</h3>
+<div class="paragraph">
+<p><em>TP au GRETA</em></p>
+</div>
+<div class="paragraph">
+<p>Continuer à partir du projet contenant la classe <code>Produit</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_transformation_de_code_produit_code_en_em_dto_em">Transformation de <code>Produit</code> en <em>DTO</em></h4>
+<div class="paragraph">
+<p>Afin de pouvoir réutiliser la classe <code>Produit</code> dans d&#8217;autres circonstances, nous allons la transformer en DTO et
+sortir de celle-ci tout ce qui n&#8217;est pas :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>un constructeur,</p>
+</li>
+<li>
+<p>un accesseur.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>En effet cela nous permettra par exemple de créer des objets <code>Produit</code> à partir de données d&#8217;une base de données et
+non pas toujours en demandant à l&#8217;utilisateur de saisir.</p>
+</div>
+<div class="paragraph">
+<p>Dans un premier temps, assurez-vous que la classe <code>Produit</code> contient bien tous les ingrédients d&#8217;un DTO.</p>
+</div>
+<div class="paragraph">
+<p>Dans cette classe, ce qui nous gène, c&#8217;est toute la partie <em>saisie</em> (en lien avec l&#8217;appel au <code>Scanner</code>). On souhaite
+déplacer ce code dans une autre classe.</p>
+</div>
+<div class="paragraph">
+<p>Créer une nouvelle classe <code>SaisieProduit</code>.</p>
+</div>
+<div class="paragraph">
+<p>Créez une méthode <code>Produit saisieProduit() { &#8230;&#8203; }</code> et implémentez la (en recopiant plus ou moins le code lié
+à la saisie dans la classe <code>Produit</code>).</p>
+</div>
+<div class="paragraph">
+<p>Maintenant vous pouvez retirer tout le code de saisie de la classe <code>Produit</code> et utiliser la classe <code>SaisieProduit</code>
+dans le programme principal.</p>
+</div>
+<div class="paragraph">
+<p>Le programme doit fonctionner exactement comme avant. Nous venons de faire un <em>refactoring</em>, c&#8217;est-à-dire réorganiser
+le code pour clarifier sa structure et en vue d&#8217;une utilisation plus élargie.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_création_de_la_classe_code_entrepot_code">Création de la classe <code>Entrepot</code></h4>
+<div class="paragraph">
+<p>Cette classe a pour mission de gérer une liste de produits.</p>
+</div>
+<div class="paragraph">
+<p>Méthodes :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>void ajouterProduit(Produit produit)</code></p>
+</li>
+<li>
+<p><code>Produit rechercherProduit(String identifiant)</code></p>
+</li>
+<li>
+<p><code>void afficherStockEntrepot()</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1108,7 +1183,7 @@ AFFICHER Math nul ou le gagnant</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-11-09 18:01:20 Paris, Madrid
+Last updated 2017-07-18 13:43:51 Paris, Madrid (heure dÆÚtÚ)
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

@@ -9,6 +9,8 @@ asciidoctor tp-reseau.ad
 asciidoctor index.ad
 asciidoctor tp-morpion.ad
 
+asciidoctor -T asciidoctor-reveal.js/templates/slim swing.ad
+asciidoctor -T asciidoctor-reveal.js/templates/slim java.ad
 asciidoctor -T asciidoctor-reveal.js/templates/slim struts.ad
 asciidoctor -T asciidoctor-reveal.js/templates/slim cours-javaee.ad
 asciidoctor -T asciidoctor-reveal.js/templates/slim maven.ad

@@ -5,47 +5,6 @@
 :toc-title: Exercices de programmation orientée objet avec Java
 :source-highlighter: highlightjs
 :imagesdir: images-java
-//// 
-Mercredi 22 juin : implanter l'algorithme de tri naïf et l'algorithme de tri fusion sur un tableau d'entiers.
-Jeudi 23 juin :
-
-- calculer une factorielle
-- palindromes
-- jeu de Chifoumi
-
-Vendredi 24 juin :
-
-- Classe abstraite pour un animal
-- Chaînage des constructeurs
-- Polymorphisme
-
-Mercredi 29 juin : les classes internes, anonymes...
-Jeudi 30 juin : les exceptions
-Vendredi 1er juillet : correction exceptions. les Collections
-lundi 4 juillet
-- pattern Commande (dur dur)
-- Lecture/Ecriture fichier
-mardi 5 juillet :
-	détails sur pattern Commande (surement trop tot et trop compliqué pour en parler à ce stade)
-	détails sur File et FileInputStream (juste lire et écrire des octets, pas des caractères)
-mercredi 6 juillet : InputStreamReader avec encoding, html
-jeudi 7 juillet : html / css (balises, flux, position static relative fixed)
-vendredi 8 juillet : css (position absolute, overflow, clear, clear fix, flexbox, media queries, responsive design)
-lundi 11 juillet : jar, classpath, HTTP, servlet, install tomcat dans eclipse, request, response, cookies, session
-mardi 12 a mercredi 13 : connexion utilisateur (en session), CRUD sur une collection de cartes
-lundi 18 et mardi 19 juillet : stockage d'un panier en session
-mercredi 20 juillet : Filter, Listener, pattern Singleton.
-jeudi : relache, chacun peaufine son projet
-vendredi 22 juillet : matin maven, aprem jsf
-lundi 26 juillet : matin rappel JSF, aprem CRUD Utilisateur en JSF dans appli Cartes
-
- 3 semaines de pause
-
-lundi 22 aout : git
-mardi 23 aout : git (une demie journée) + GWT (après midi : projet coquille + Button+Label+TextBox)
-mercredi 24 : GWT (les Widgets + RootLayoutPanel, DockLayoutPanel..., CellList)
-jeudi 25 : matin:GWT on continue l'exercice + Composite (refacto du formulaire), après midi: services REST
-////
 
 LTE Consulting (C) - 2016
 
@@ -384,6 +343,48 @@ Puis proposez une interface en ligne de commande qui permette à l'utilisateur :
 
 Continuer l'exercice précedent en chargeant la liste des disques et chansons à partir d'un fichier.
 
+=== Exercice 6
+
+_TP au GRETA_
+
+Continuer à partir du projet contenant la classe `Produit`.
+
+==== Transformation de `Produit` en _DTO_
+
+Afin de pouvoir réutiliser la classe `Produit` dans d'autres circonstances, nous allons la transformer en DTO et 
+sortir de celle-ci tout ce qui n'est pas :
+
+- un constructeur,
+- un accesseur.
+
+En effet cela nous permettra par exemple de créer des objets `Produit` à partir de données d'une base de données et
+non pas toujours en demandant à l'utilisateur de saisir.
+
+Dans un premier temps, assurez-vous que la classe `Produit` contient bien tous les ingrédients d'un DTO.
+
+Dans cette classe, ce qui nous gène, c'est toute la partie _saisie_ (en lien avec l'appel au `Scanner`). On souhaite 
+déplacer ce code dans une autre classe.
+
+Créer une nouvelle classe `SaisieProduit`.
+
+Créez une méthode `Produit saisieProduit() { ... }` et implémentez la (en recopiant plus ou moins le code lié
+à la saisie dans la classe `Produit`).
+
+Maintenant vous pouvez retirer tout le code de saisie de la classe `Produit` et utiliser la classe `SaisieProduit`
+dans le programme principal.
+
+Le programme doit fonctionner exactement comme avant. Nous venons de faire un _refactoring_, c'est-à-dire réorganiser
+le code pour clarifier sa structure et en vue d'une utilisation plus élargie.
+
+==== Création de la classe `Entrepot`
+
+Cette classe a pour mission de gérer une liste de produits.
+
+Méthodes : 
+
+- `void ajouterProduit(Produit produit)`
+- `Produit rechercherProduit(String identifiant)`
+- `void afficherStockEntrepot()`
 
 == Exercice avec MySQL
 
@@ -405,3 +406,76 @@ Dans la classe `App`, implémentez ceci :
 - Reprenez la méthode qui fait le `SELECT`, et faites en sorte que celle-ci retourne maintenant une `List<Carte>` (vous créerez la classe `Carte` pour l'occasion,
 - Une méthode qui met à jour une carte : `static void updateCarte( int id, String nom, String couleur, Connection conn ) throws SQLException`,
 - Une méthode méthode qui prend un objet `Carte` en paramètre et qui met à jour l'enregistrement en base de données à partir des valeurs des attributs de l'objet (on utilise l'attribut `id` pour savoir quel enregistrement mettre à jour...).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////
+Mercredi 22 juin : implanter l'algorithme de tri naïf et l'algorithme de tri fusion sur un tableau d'entiers.
+Jeudi 23 juin :
+
+- calculer une factorielle
+- palindromes
+- jeu de Chifoumi
+
+Vendredi 24 juin :
+
+- Classe abstraite pour un animal
+- Chaînage des constructeurs
+- Polymorphisme
+
+Mercredi 29 juin : les classes internes, anonymes...
+Jeudi 30 juin : les exceptions
+Vendredi 1er juillet : correction exceptions. les Collections
+lundi 4 juillet
+- pattern Commande (dur dur)
+- Lecture/Ecriture fichier
+mardi 5 juillet :
+	détails sur pattern Commande (surement trop tot et trop compliqué pour en parler à ce stade)
+	détails sur File et FileInputStream (juste lire et écrire des octets, pas des caractères)
+mercredi 6 juillet : InputStreamReader avec encoding, html
+jeudi 7 juillet : html / css (balises, flux, position static relative fixed)
+vendredi 8 juillet : css (position absolute, overflow, clear, clear fix, flexbox, media queries, responsive design)
+lundi 11 juillet : jar, classpath, HTTP, servlet, install tomcat dans eclipse, request, response, cookies, session
+mardi 12 a mercredi 13 : connexion utilisateur (en session), CRUD sur une collection de cartes
+lundi 18 et mardi 19 juillet : stockage d'un panier en session
+mercredi 20 juillet : Filter, Listener, pattern Singleton.
+jeudi : relache, chacun peaufine son projet
+vendredi 22 juillet : matin maven, aprem jsf
+lundi 26 juillet : matin rappel JSF, aprem CRUD Utilisateur en JSF dans appli Cartes
+
+ 3 semaines de pause
+
+lundi 22 aout : git
+mardi 23 aout : git (une demie journée) + GWT (après midi : projet coquille + Button+Label+TextBox)
+mercredi 24 : GWT (les Widgets + RootLayoutPanel, DockLayoutPanel..., CellList)
+jeudi 25 : matin:GWT on continue l'exercice + Composite (refacto du formulaire), après midi: services REST
+////

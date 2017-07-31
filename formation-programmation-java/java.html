@@ -1,0 +1,418 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Programmation Java</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Programmation Java</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Email: <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div>
+<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div>
+<div class="paragraph"><p>Web: <a href="http://www.lteconsulting.fr">www.lteconsulting.fr</a></p></div>
+<div class="paragraph"><p><strong>LTE Consulting</strong> société de Développement, Conseil et Formation.</p></div>
+<div class="paragraph"><p>Speaker à Java One, Devoxx, GDG, JUG, GWTCon&#8230;&#8203;</p></div></section>
+<section id="_l_écosystème_java"><h2>L&#8217;écosystème Java</h2><div class="paragraph"><p>Langage de programmation orientée objet.</p></div>
+<div class="paragraph"><p>Famille C.</p></div>
+<div class="paragraph"><p>Vestiges du monde non-objet (méthodes statiques, etc.).</p></div>
+<div class="paragraph"><p>Histoire, origines.</p></div></section>
+<section id="_jvm"><h2>JVM</h2><div class="paragraph"><p>Un programme Java est une suite d&#8217;opérations spécifiées sous forme de <strong>byte-code</strong>.</p></div>
+<div class="paragraph"><p>Exécution <strong>multiplateforme</strong> du byte-code par la JVM.</p></div>
+<div class="paragraph"><p>JRE : environnement d&#8217;exécution minimal des programmes Java (les bases, collections etc&#8230;&#8203;)</p></div></section>
+<section id="_jdk"><h2>JDK</h2><div class="paragraph"><p>Compilateur <code>javac</code> (<code>.java</code> vers <code>.class</code>).</p></div>
+<div class="paragraph"><p>Open JDK.</p></div></section>
+<section id="_ide"><h2>IDE</h2><div class="paragraph"><p>Connaître toutes les étapes depuis le source Java jusqu&#8217;à l&#8217;exécution du programme.</p></div>
+<div class="paragraph"><p>Mais pour le développement de tous les jours, on utilise un IDE (environnement de développement intégré).</p></div>
+<div class="paragraph"><p>Eclipse, IntellilJ, NetBeans, &#8230;&#8203;</p></div>
+<div class="paragraph"><p>L&#8217;IDE propose souvent la notion de <em>projet</em> et de <em>déploiement</em>.</p></div></section>
+<section id="_le_langage_java"><h2>Le langage Java</h2><div class="paragraph"><p>Premier langage à fonctionner sur la JVM.</p></div>
+<div class="paragraph"><p>POO.</p></div>
+<div class="paragraph"><p>Les concepts forts de la POO dans Java :</p></div>
+<div class="ulist"><ul><li><p>encapsulation,</p></li><li><p>héritage,</p></li><li><p>polymorphisme.</p></li></ul></div></section>
+<section><section id="_bases"><h2>Bases</h2></section><section id="_attention_requise"><h2>Attention requise !</h2><div class="paragraph"><p><em>Dans les exemples qui vont suivre, vous ne serez peut être pas à même de toujours comprendre tout le code.
+Ce n&#8217;est pas grave, le tout prendra sa cohérence au fur et à mesure</em>.</p></div></section><section id="_typage"><h2>Typage</h2><div class="paragraph"><p>Toute donnée dans un programme java est vue par son <strong>type</strong>.</p></div>
+<div class="paragraph"><p>Le <strong>type</strong> permet de connaître l&#8217;ensemble complet :</p></div>
+<div class="ulist"><ul><li><p>des valeurs possibles,</p></li><li><p>des opérations possibles sur les instances ou valeurs de ce type.</p></li></ul></div>
+<div class="paragraph"><p>Il existe deux sortes de types en Java :</p></div>
+<div class="ulist"><ul><li><p>les types <strong>valeur</strong> (par exemple <code>int</code>),</p></li><li><p>les types <strong>objet</strong> (par exemple <code>List&lt;T&gt;</code>).</p></li></ul></div>
+<div class="paragraph"><p>Chaque type possède un <strong>nom unique</strong> qui permet de l&#8217;identifier sans ambiguité.</p></div>
+<div class="paragraph"><p>Les types sont rangés dans une arborescence de <strong>packages</strong> (<code>java.lang.String</code>, <code>fr.lteconsulting.Formation</code>,&#8230;&#8203;).</p></div>
+<div class="paragraph"><p>On se réfère souvent au <em>nom simple</em> d&#8217;un type pour le désigner. Son
+nom complet s&#8217;appelle le <strong>fully qualified name</strong> (FQN). Il est composé du
+nom du package et du nom dy type. Il est important car il élimine toute possibilité d&#8217;ambiguité.</p></div>
+<div class="paragraph"><p>Par exemple le <em>fqn</em> du type <code>Utilisateur</code> dans le package <code>fr.lteconsulting.formations</code> est <code>fr.lteconsulting.formations.Utilisateur</code>.</p></div></section><section id="_les_types_primitifs"><h2>Les types primitifs</h2><div class="paragraph"><p>Ce sont les types dont les valeurs sont stockées dans la machine sous forme de <em>nombres</em>.</p></div>
+<div class="paragraph"><p>L&#8217;ensemble des types primitifs est <strong>prédéfini</strong> et ne peut pas être modifié par un programme.</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Nom</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code> ou <code>false</code>, <code>false</code> par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>char</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">caractère encodé en UTF-16, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>byte</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">entier signé entre sur 8 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>short</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">entier signé sur 16 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">entier signé sur 32 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>long</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">entier signé sur 64 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">flottant sur 32 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">flottant sur 64 bits, 0 par défaut</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>void</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">aucune valeur !</p></td></tr></tbody></table>
+<div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content">Attention, les types primitifs <code>float</code> et <code>double</code> sont codés en virgule flottante ! Il ne faut <strong>surtout pas les utiliser</strong> pour effectuer des traitements monétaires. Voici <a href="http://www.enseignement.polytechnique.fr/informatique/profs/Jean-Jacques.Levy/poly/main1/node7.html">quelques</a> <a href="http://pdp.microjoe.org/tutoriels/85/les-nombres-a-virgule-flottante/">liens</a> <a href="http://www.math.univ-paris13.fr/~delourme/Feuilles_TD_Projets_2013-2014/Chapitre1Japhet.pdf">explicatifs</a> et <a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">passionnants</a>.</td></tr></table></div></section><section id="_les_types_objet"><h2>Les types objet</h2><div class="paragraph"><p>Types dont l&#8217;ensemble des valeurs sont des objets, dont la structure est définie par les programmes (classes, interfaces, énumérations, &#8230;&#8203;).</p></div>
+<div class="paragraph"><p>Un programme est généralement composé de multiples descriptions de nouveaux types objet (classes etc) qui viennent s&#8217;intégrer au système
+de typage de Java.</p></div>
+<div class="paragraph"><p>Java fournit une version 'objet' pour chaque type primitif. On les appelle les types <em>boxés</em>. Par défaut, leur valeur est <code>null</code>.</p></div>
+<div class="paragraph"><p><code>Boolean</code>, <code>Character</code>, <code>Byte</code>, <code>Short</code>, <code>Int</code>, <code>Long</code>, <code>Float</code>, <code>Double</code>, <code>Void</code>.</p></div>
+<div class="paragraph"><p>Le type`Void` ne possède que la valeur <code>null</code>.</p></div>
+<div class="paragraph"><p>Voici quelques types objet :</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Nom</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>java.lang.String</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">stocke une chaine de caractère</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>java.lang.Object</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">la classe mère de toutes les autres classes</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>java.util.List</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">stocke un liste à taille variable</p></td></tr></tbody></table></section><section id="_types_objet"><h2>Types objet</h2><div class="ulist"><ul><li><p>Classes</p></li><li><p>Interface</p></li><li><p>Enumérations</p></li><li><p>Tableaux</p></li></ul></div></section><section id="_variable"><h2>Variable</h2><div class="paragraph"><p>Une variable est un emplacement mémoire avec <strong>nom</strong> et un <strong>type</strong>.</p></div>
+<div class="paragraph"><p>On peut lui associer une <strong>valeur</strong> ou une <strong>référence</strong> (selon le type de la variable).</p></div>
+<div class="paragraph"><p>Quand une variable est de type objet et qu&#8217;elle ne référence aucun objet, elle a la valeur spéciale <code>null</code>.</p></div>
+<div class="paragraph"><p>Pour être utilisable, une variable doit d&#8217;abord être <strong>déclarée</strong>.</p></div>
+<div class="paragraph"><p>Ensuite, elle peut être <strong>lue</strong> en mentionnant son nom ou <strong>écrite</strong> en utilisant l&#8217;opération <code>=</code> (<strong>affectation</strong>).</p></div>
+<div class="paragraph"><p>Attention, une variable n&#8217;est utilisable qu&#8217;après sa déclaration, et seulement au sein de sa portée (<em>scope</em>),
+c&#8217;est à dire dans le bloc englobant (que l&#8217;on identifie avec les accolades <code>{</code> et <code>}</code>).</p></div>
+<div class="paragraph"><p>Pour être lue, une variable doit d&#8217;abord avoir été <strong>initialisée</strong>, c&#8217;est-à-dire affectée au moins une fois.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int a; <b>(1)</b>
+a = 4; <b>(2)</b>
+
+char c = 'T'; <b>(3)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>déclaration</p></li><li><p>affectation</p></li><li><p>les deux d&#8217;un coup !</p></li></ol></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java"></code></pre></div></div></section><section id="_expression"><h2>Expression</h2><div class="paragraph"><p>Une expression est une composition de mot-clés, variables etc qui représente une valeur, qu&#8217;elle soit calculée ou pas.</p></div>
+<div class="paragraph"><p>Cette expression possède forcément un <strong>type</strong>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// expression qui représente la valeur de la variable maVariable
+maVariable
+
+// expression qui représente la valeur de la variable maVariable
+// à laquelle on ajoute 2
+maVariable + 2
+
+// autres expressions
+(3 * x + 2 * y * y ) / z
+x &gt; 4
+monCompte.getSolde() * banque.getTauxInteret() * utilisateur.getBonus()</code></pre></div></div></section><section id="_instruction"><h2>Instruction</h2><div class="paragraph"><p>Une instruction spécifie une action à exécuter.</p></div>
+<div class="paragraph"><p>Il peut s&#8217;agir d&#8217;un appel de méthode, du <code>return</code>, <code>throw</code>, d&#8217;une instruction de contrôle (<code>if</code>, <code>switch</code>)&#8230;&#8203;</p></div></section><section id="_classes"><h2>Classes</h2><div class="paragraph"><p>Une classe décrit la structure et les opérations associées à toutes les instances de cette classe.</p></div>
+<div class="paragraph"><p>En Java, un objet est <strong>toujours</strong> associé à une classe qui le décrit.</p></div>
+<div class="paragraph"><p>Pour créer des nouveaux objets (afin de stocker ou traiter de l&#8217;information), on <strong>instancie</strong> la classe
+avec l&#8217;opérateur <code>new</code>.</p></div>
+<div class="paragraph"><p>Une classe java s&#8217;écrit dans un fichier nommé par le même nom (et même casse) auquel on donne l&#8217;extension <code>.java</code>.</p></div>
+<div class="paragraph"><p>Ce fichier .java sera (<em>le plus souvent</em>) situé dans un sous-répertoire du répertoire <code>src/</code> du projet, et qui correspondra au chemin jusqu&#8217;au <em>package</em> de la classe.</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content">Il est néanmoins possible de déclarer plusieurs classes dans un même fichier <strong>.java</strong>. Nous reviendrons sur ces cas plus tard dans le cours (voir les classes imbriquées).</td></tr></table></div>
+<div class="paragraph"><p>Définition d&#8217;une classe :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Produit { <b>(1)</b>
+    private String nom; <b>(2)</b>
+
+    public String getNom() { <b>(3)</b>
+        return nom;
+    }
+
+    public void setNom(String nom) { <b>(4)</b>
+        this.nom = nom;
+    }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Nom de la classe</p></li><li><p>Un attribut</p></li><li><p>Une méthode</p></li><li><p>Une autre méthode</p></li></ol></div>
+<div class="paragraph"><p>Instantiation :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Produit produit = new Produit();</code></pre></div></div></section><section id="_attributs"><h2>Attributs</h2><div class="paragraph"><p>Un attribut est un emplacement mémoire réservé pour chaque objet (ou une fois pour toute la classe s&#8217;il est <code>static</code>).</p></div>
+<div class="paragraph"><p>De même qu&#8217;une variable, il possède un nom et un type. Par contre sa valeur est propre à chaque objet de la classe.</p></div>
+<div class="paragraph"><p>C&#8217;est ce qui permet à un objet d&#8217;avoir un <strong>état</strong>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Personne {
+    private String nom; <b>(1)</b>
+    private String prenom;
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le modificateur <code>private</code> permet l&#8217;encapsulation en limitant l&#8217;accès à cet attribut au seul code de la classe <code>Personne</code></p></li></ol></div></section><section id="_méthodes"><h2>Méthodes</h2><div class="paragraph"><p>Une méthode est une séquence d&#8217;instructions produisant une valeur, et possédant en entrée des <strong>paramètres</strong>.</p></div>
+<div class="paragraph"><p>Elle est déclarée par sa <strong>signature</strong> qui précise :</p></div>
+<div class="ulist"><ul><li><p>son nom,</p></li><li><p>son type de retour,</p></li><li><p>ses paramètres formels.</p></li></ul></div>
+<div class="paragraph"><p>La déclaration d&#8217;une méthode peut être préfixée par des 'modificateurs' (<code>public</code>, <code>private</code>, <code>static</code>, <code>final</code>) dont le sens est lié au concept des classes, étudié plus loin.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int somme( int a, int b ) // signature de la méthode
+{
+	return a + b;
+}</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int nombreAleatoire()
+{
+	// ...
+}</code></pre></div></div>
+<div class="paragraph"><p>Une méthode peut ne pas retourner de valeur, on utilise alors le mot clé 'void'</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">void affiche( String texte )
+{
+	// ...
+	// on peut utiliser le mot-clé 'return' pour arrêter l'exécution de la méthode.
+}</code></pre></div></div></section><section id="_appel_d_une_méthode"><h2>Appel d&#8217;une méthode</h2><div class="paragraph"><p>Pour donner le flux de contrôle à une méthode et récupérer la valeur produite, on utilise l&#8217;appel de méthode.</p></div>
+<div class="paragraph"><p>On écrit simplement le nom de la méthode suivi de parenthèses contenant la valeur des paramètres.
+L&#8217;expression ainsi écrite est évaluée à la valeur de retour de la méthode.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// on appelle la méthode somme avec les paramètres 3 et 6
+// a va valoir la valeur de retour de la méthode (9)
+int a = somme( 3, 6 );</code></pre></div></div>
+<div class="paragraph"><p>Lorsqu&#8217;on appelle une méthode, on donne une valeur à chacun des paramètres.
+L&#8217;exécution de la méthode se fait jusqu&#8217;à rencontrer l&#8217;instruction <code>return</code>.
+On obtient ainsi du côté du code <em>appelant</em> la valeur de retour de l&#8217;appel de méthode.</p></div></section><section id="_structures_de_controle"><h2>Structures de controle</h2><div class="dlist"><dl><dt class="hdlist1">Instructions de branchement</dt><dd><p><code>if</code>, <code>switch</code>.</p></dd><dt class="hdlist1">Instructions de bouclage</dt><dd><p><code>for</code>, <code>while</code>, <code>do &#8230;&#8203; while</code>.</p></dd></dl></div></section><section id="_structure_générale_d_un_traitement"><h2>Structure générale d&#8217;un traitement</h2><div class="paragraph"><p>On désire traiter des données en entrée, afin de produire des données en sortie.</p></div>
+<div class="paragraph"><p>Pour cela, on invente un algorithme qui répond au problème.</p></div>
+<div class="paragraph"><p>On découpe ce problème en petites parties réutilisables.</p></div>
+<div class="paragraph"><p>Chaque partie est codée sous forme de classe. Les parties sont reliées entre elles par des interfaces.</p></div>
+<div class="paragraph"><p>L&#8217;architecture est la vision de ce qui est important dans le programme.</p></div>
+<div class="paragraph"><p>Maintenir le programme est ce qu&#8217;il y a de plus difficile et c&#8217;est ce qui représente le plus grand temps consacré.</p></div></section><section id="_tableaux"><h2>Tableaux</h2><div class="paragraph"><p>Une ou plusieurs dimension.</p></div>
+<div class="paragraph"><p>Indices démarrent de zéro.</p></div>
+<div class="paragraph"><p>Un tableau stocke la classe des éléments qu&#8217;il stocke. Il provoque une exception <code>java.lang.ArrayStoreException</code> si un objet du mauvais type est inséré dans le tableau.</p></div>
+<div class="paragraph"><p>Si on essaie d&#8217;accéder à une cellule du tableau qui n&#8217;existe pas (index négatif ou index trop grand), l&#8217;exception <code>IndexOutOfBoundsExeption</code> est levée.</p></div>
+<h3>Déclaration</h3><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">int[] tableauEntiers; <b>(1)</b>
+String[] tableauString; <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Les tableaux sont ici seulement déclarés, il ne sont pas encore <em>instanciés</em> en mémoire. La variable <code>tableauEntiers</code> vaut <code>null</code> (de même pour <code>tableauString</code>).</p></li></ol></div>
+<h3>Instantiation</h3><div class="paragraph"><p>On crée véritablement le tableau en mémoire avec l&#8217;instantiation qui s&#8217;écrit ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">tableauEntiers = new int[50]; <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Nous demandons la réservation en mémoire d&#8217;un espace pouvant stocker 50 valeurs <code>int</code>.</p></li></ol></div>
+<h3>Utilisation</h3><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// lecture de la sixième cellule
+int valeurCellule = tableauEntiers[5];
+
+// écriture dans la première cellule
+tableauEntiers[0] = -2;</code></pre></div></div></section><section id="_la_classe_code_string_code"><h2>La classe <code>String</code></h2><div class="paragraph"><p>La classe <code>String</code> sert à représenter des chaînes de caractères (qui ont le plus souvent comme objectif d&#8217;être présentées à l&#8217;utilisateur, à un moment où un autre).</p></div>
+<div class="paragraph"><p>La <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html">Javadoc</a> de la class String est complète pour connaître les méthodes statiques et non statiques de cette classe. Voici néanmoins quelques méthodes de la classe <code>String</code> que vous utiliserez souvent :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">String nom = "Toto";
+String prenom = "Titi";
+
+String nomComplet = nom + " " + prenom;
+String enMajuscule = nomComplet.toUpperCase();</code></pre></div></div></section><section id="_classes_de_données"><h2>Classes de données</h2><div class="paragraph"><p>Une des utilisations les plus courantes des objets et de stocker une information simple et de donner accès à cette information.</p></div>
+<div class="paragraph"><p>On appelle ce rôle dans un programme les <em>classes de données</em> ou <strong>DTO</strong> (<em>Data Transfer Object</em>) Aucun traitement n&#8217;est effectué dans ce genre d&#8217;objet.</p></div>
+<div class="paragraph"><p>Exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class Utilisateur {
+    private String nom;
+    private String prenom;
+
+    public Utilisateur(String nom, String prenom) {
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
+
+    public String getPrenom() { return prenom; }
+    public void setPrenom(String prenom) { this.prenom = prenom; }
+}</code></pre></div></div></section><section id="_lien_entre_classes"><h2>Lien entre classes</h2><div class="paragraph"><p>On peut relier les classes et objets entre eux :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class CompteEnBanque {
+    private String identifiant;
+
+    private Utilisateur proprietaire;
+
+    public Utilisateur getProprietaire() {
+        return proprietaire;
+    }
+
+    public Utilisateur setProprietaire(Utilisateur proprietaire) {
+        this.proprietaire = proprietaire;
+    }
+}</code></pre></div></div></section><section id="_les_génériques"><h2>Les génériques</h2><div class="paragraph"><p>La type générique (classe/interface/méthode) est un type dont l&#8217;implémentation est écrite sans connaitre
+à l&#8217;avance l&#8217;intégralité des types sur lesquels elle s&#8217;appuie.</p></div>
+<div class="paragraph"><p>Qu&#8217;est-ce qui peut être <em>générique</em> en java ?</p></div>
+<div class="ulist"><ul><li><p>les classes,</p></li><li><p>les interfaces,</p></li><li><p>les méthodes.</p><div class="dlist"><dl><dt class="hdlist1">Paramètre de type</dt><dd><p>Le nom que l&#8217;on donne au type(s) inconnu(s) au sein de l&#8217;implémentation d&#8217;un type générique.</p></dd><dt class="hdlist1">Type argument</dt><dd><p>Le type (réel) qui remplace le paramètre de type au moment de l&#8217;utilisation d&#8217;une classe/interface/méthode générique.</p></dd><dt class="hdlist1">Contrainte</dt><dd><p>Condition(s) que l&#8217;on impose au type argument d&#8217;un type générique.</p></dd></dl></div></li></ul></div></section><section id="_classes_génériques"><h2>Classes génériques</h2><div class="paragraph"><p>Voici un exemple de définition d&#8217;une classe générique <code>Tableau</code> travaillant sur un paramètre de type <code>T</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">class Tableau&lt;T&gt; { <b>(1)</b>
+	private T tableau; <b>(2)</b>
+
+	Tableau( int taille ) {
+		tableau = (T[]) new Object[taille]; <b>(3)</b>
+	}
+
+	T get( int index ) { <b>(4)</b>
+		return tableau[index];
+	}
+
+	void set( int index, T valeur ) {
+		tableau[index] = valeur;
+	}
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Définition du paramètre de type <code>T</code>.</p></li><li><p>L&#8217;attribut <code>tableau</code> est un tableau de <code>T</code>.</p></li><li><p>Ce transtypage est obligatoire. On verra plus tard comment faire mieux.</p></li><li><p>On retourne un élément de type <code>T</code>.</p></li></ol></div>
+<div class="paragraph"><p>Voici un exemple de code utilisant la classe générique <code>Tableau</code> définie juste au dessus :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Tableau&lt;String&gt; tableau;
+
+// Syntaxe jusqu'à Java 6
+tableau = new Tableau&lt;String&gt;();
+
+// Syntaxe à partir de Java 7
+tableau = new Tableau&lt;&gt;();
+
+tableau.set( 4, "Une chaine de caractère" );</code></pre></div></div></section><section id="_les_collections"><h2>Les collections</h2><div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content">Le lecteur avide de précisions supplémentaires pourra lire ce <a href="http://www.jmdoudoux.fr/java/dej/chap-collections.htm">document</a> très complet de JM Doudoux.</td></tr></table></div>
+<div class="paragraph"><p>Les classes de collection représentent des objets capables de gérer un ensemble d&#8217;objets.</p></div>
+<div class="paragraph"><p>Plusieurs familles de collections existent, avec une interface pour représenter chacune de ces familles. Chaque interface possède plusieurs implémentations répondant à des contraintes techniques variées. Toutes ces interface se retrouvent soit filles de l&#8217;interface <code>Collection</code> soit de <code>Map</code>.</p></div>
+<div class="paragraph"><p>En général une classe de collection permet au moins de stocker un ensemble d&#8217;objets, avec des méthodes pour ajouter d&#8217;autres objets, en retirer et parcourir les objets présents dans la collection.</p></div>
+<div class="paragraph"><p>Deux interfaces sont utilisées pour parcourir les collections : <code>Iterator</code> et <code>ListIterator</code>.</p></div>
+<div class="paragraph"><p>Une interface et une classe pour permettre le tri de certaines collections : <code>Comparable</code> et <code>Comparator</code>.</p></div>
+<div class="paragraph"><p>Deux classes comportant de nombreuses méthodes d'<em>outillage</em> : <code>Arrays</code> et <code>Collections</code>.</p></div>
+<div class="paragraph"><p>Certaines de ces collections proposent des fonctionnalités comme la suppression des doublons ou encore la recherche d&#8217;éléments. Ces opérations s&#8217;appuient en général sur le concept d&#8217;égalité entre objets définie par les méthodes <code>equals(&#8230;&#8203;)</code> et <code>hashCode()</code>. Il est donc d&#8217;autant plus important d&#8217;implémenter ces méthodes correctement lorqu&#8217;on les surcharge.</p></div></section><section id="_l_interface_code_collection_e_code"><h2>L&#8217;interface <code>Collection&lt;E&gt;</code></h2><div class="paragraph"><p>Cette interface est l&#8217;interface de base pour <code>List&lt;E&gt;</code> et <code>Set&lt;E&gt;</code>. Voici quelques méthodes importantes :</p></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>boolean add( E element )</code></dt><dd><p>Ajoute un élément à la collection</p></dd><dt class="hdlist1"><code>boolean addAll( Collection&lt;? extends E&gt; collection )</code></dt><dd><p>Ajoute les éléments d&#8217;une collection dans une autre.</p></dd><dt class="hdlist1"><code>void clear()</code></dt><dd><p>Vide la collection de tous ses éléments.</p></dd><dt class="hdlist1"><code>boolean contains( Object o )</code></dt><dd><p>Teste la présence d&#8217;un élément particulier dans la collection. Les méthodes <code>equals</code> et <code>hashCode</code> sont utilisées pour rechercher l&#8217;élément dans la collection. On parle donc de la présence d&#8217;un objet <em>identique</em> au sens <em>applicatif</em>.</p></dd><dt class="hdlist1"><code>equals( Object other )</code> et <code>hashCode()</code></dt><dd><p>Ces méthodes sont redéfinies dans les collections pour refléter l&#8217;égalité de l&#8217;ensemble des éléments d&#8217;une collection.</p></dd><dt class="hdlist1"><code>int size()</code></dt><dd><p>Retourne le nombre d&#8217;éléments dans la collection.</p></dd><dt class="hdlist1"><code>boolean isEmpty()</code></dt><dd><p>Permet de savoir si une collection est vide. A utiliser de préférence au lieu de tester <code>if( collection.size() == 0 )</code>&#8230;&#8203;</p></dd><dt class="hdlist1"><code>Iterator&lt;E&gt; iterator()</code></dt><dd><p>Renvoie un <code>Iterator</code> permettant de parcourir la collection. Cette méthode est issue de l&#8217;interface <code>Iterable</code> qui est utilisée par la boucle <code>for( Element e : iterableObject )</code>.</p></dd></dl></div></section><section id="__code_list_v_code_code_arraylist_v_code_code_linkedlist_v_code"><h2><code>List&lt;V&gt;</code>, <code>ArrayList&lt;V&gt;</code>, <code>LinkedList&lt;V&gt;</code></h2><div class="paragraph"><p>Un classe qui implémente l&#8217;interface <code>List&lt;V&gt;</code> représente un ensemble ordonné d&#8217;objets de type <em>V</em>. Le contrat de <code>List&lt;V&gt;</code> n&#8217;interdit pas les doublons.</p></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>ArrayList&lt;V&gt;</code></dt><dd><p>Implémentation de l&#8217;interface <code>List&lt;V&gt;</code> grâce à un tableau redimensionnable. Non thread-safe. Autorise l&#8217;ajout d&#8217;élément <code>null</code>. La Javadoc est disponible <a href="https://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html">ici</a>.</p></dd><dt class="hdlist1"><code>LinkedList&lt;V&gt;</code></dt><dd><p>Implémentation de l&#8217;interface <code>List&lt;V&gt;</code> utilisant une liste (doublement) chaînée.</p></dd></dl></div>
+<div class="paragraph"><p>Voici quelques méthodes très utilisées de <code>List&lt;V&gt;</code> : <code>add( T element )</code>, <code>T get( int index )</code>, <code>ListIterator&lt;T&gt; listIterator()</code>, <code>T remove( int index )</code>, <code>T set( int index, T element )</code>, <code>List&lt;T&gt; subList( int indexFrom, int indexTo )</code> (attention ce n&#8217;est pas une copie !).</p></div></section><section id="__code_set_v_code_code_hashset_v_code_code_treeset_v_code_code_linkedhashset_v_code"><h2><code>Set&lt;V&gt;</code>, <code>HashSet&lt;V&gt;</code>, <code>TreeSet&lt;V&gt;</code>, <code>LinkedHashSet&lt;V&gt;</code></h2><div class="paragraph"><p>Ensemble d&#8217;objet sans doublons. Ne permet pas l&#8217;accès direct à un élément de la collection (les éléments ne sont par ordonnés). Il existe une interface <code>SortedSet&lt;V&gt;</code> qui interdit les doublons et pour autant ordonne quand même les éléments.</p></div></section><section id="__code_map_k_v_code_code_hashmap_k_v_code_code_treemap_v_code_code_linkedtreemap_v_code"><h2><code>Map&lt;K, V&gt;</code>, <code>HashMap&lt;K, V&gt;</code>, <code>TreeMap&lt;V&gt;</code>, <code>LinkedTreeMap&lt;V&gt;</code></h2><div class="paragraph"><p>Collection de couples d&#8217;objets <em>clé</em>, <em>valeur</em>. Une <code>Map&lt;K, V&gt;</code> permet d&#8217;associer des <code>V</code> à des <code>K</code>. Une fois l&#8217;association stockée dans l&#8217;objet <em>Map</em>, consulter l&#8217;objet de type <code>V</code> associé à une objet <code>K</code> est une opération qui sera réalisée avec une complexité algorithmique en <em>O(1)</em>.</p></div>
+<div class="paragraph"><p>Un objet de type <code>Map&lt;K, V&gt;</code> permet de lier un objet <code>V</code> avec une clé de type <code>K</code>. Il est ainsi possible d&#8217;obtenir un objet à partir de sa clé.</p></div>
+<div class="paragraph"><p>Quelques méthodes :</p></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>V put( K key, V value )</code></dt><dd><p>Associe un objet à une clé.</p></dd><dt class="hdlist1"><code>V get( Object key )</code></dt><dd><p>Retourne la valeur qui a été associée à la clé passée en paramètre, ou null s&#8217;il n&#8217;y en a pas.</p></dd><dt class="hdlist1"><code>boolean containsKey( Object key )</code></dt><dd><p>Indique si un objet est associé à la clé <code>key</code> dans la table associative.</p></dd><dt class="hdlist1"><code>boolean containsValue( Object value )</code></dt><dd><p>Indique si un objet <code>value</code> est stocké dans la table associative.</p></dd></dl></div>
+<div class="paragraph"><p>`V remove( Object key ), qui supprime la clé de cette table, et la valeur qui lui est associée.</p></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>Set&lt;Entry&lt;K, V&gt;&gt; entrySet()</code></dt><dd><p>Retourne l&#8217;ensemble des couples clé-valeur (<code>Entry&lt;K, V&gt;</code>) contenues dans la table associative.</p></dd><dt class="hdlist1"><code>Set&lt;K&gt; keySet()</code></dt><dd><p>Retourne l&#8217;ensemble des clés contenues dans la table associative.</p></dd><dt class="hdlist1"><code>Collection&lt;V&gt; values()</code></dt><dd><p>Retourne l&#8217;ensemble des valeurs contenues dans la table associative.</p></dd></dl></div></section><section id="_map_attention"><h2>Map, attention</h2><div class="paragraph"><p><strong>Attention !</strong> les <code>Map</code> n&#8217;ordonnent pas les couples clé-valeur. Lors du parcours de ces entrées, l&#8217;ordre du parcours n&#8217;est pas garanti ni censé être le même à chaque fois ! Ceci est illustré par ce petit bout de code :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">import java.util.HashMap;
+
+public class TestHashMapIterator {
+	public static void main( String[] args ) {
+		HashMap&lt;String, String&gt; map = new HashMap&lt;String, String&gt;( 34 );
+
+		map.put( "1", "un" );
+		map.put( "2", "deux" );
+		map.put( "3", "trois" );
+		map.put( "4", "quatre" );
+		map.put( "5", "cinq" );
+
+		for( String s : map.keySet() ) {
+			System.out.print( s + " " );
+		}
+	}
+}</code></pre></div></div>
+<div class="paragraph"><p>Les performances des opérations <code>get()</code> et <code>put()</code> sont constantes sous réserve que la répartition des éléments dans les différents buckets grâce à leur valeur de hachage soit équitable (implémentation de la méthode <code>hashCode()</code> des éléments de la table associative).</p></div></section><section id="__code_queue_v_code_code_linkedlist_v_code_code_arraydequeue_v_code_code_priorityqueue_v_code"><h2><code>Queue&lt;V&gt;</code>, <code>LinkedList&lt;V&gt;</code>, <code>ArrayDequeue&lt;V&gt;</code>, <code>PriorityQueue&lt;V&gt;</code></h2></section><section id="_la_classe_code_collections_code"><h2>La classe <code>Collections</code></h2><div class="paragraph"><p>Cette classe contient de nombreuses méthodes utilitaires statiques qui facilitent le travail avec les collections.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Map&lt;String, Piece&gt; m = Collections.synchronizedMap( new HashMap&lt;String, Piece&gt;() );</code></pre></div></div></section><section id="__code_iterator_t_code"><h2><code>Iterator&lt;T&gt;</code></h2><div class="paragraph"><p>L&#8217;interface <code>Iterator</code> permet un parcours très simple d&#8217;une collection. Trois méthodes sont fournies.</p></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>boolean hasNext()</code></dt><dd><p>Renvoie <code>true</code> si au moins un élément de la collection n&#8217;a pas encore été parcouru.</p></dd><dt class="hdlist1"><code>T next()</code></dt><dd><p>Retour l&#8217;élément suivant dans le parcours.</p></dd><dt class="hdlist1"><code>void remove()</code></dt><dd><p>Retire l&#8217;élément tout juste parcouru de la collection.</p></dd></dl></div>
+<div class="paragraph"><p>Exemple d&#8217;utilisation:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">Iterator iterator = collection.iterator();
+while( iterator.hasNext() ) {
+	System.out.println( "objet = " + iterator.next() );
+}</code></pre></div></div></section><section id="__code_listiterator_t_code_code_comparable_t_code_code_comparator_t_code"><h2><code>ListIterator&lt;T&gt;</code>, <code>Comparable&lt;T&gt;</code>, <code>Comparator&lt;T&gt;</code></h2></section><section id="_communication_entre_objets"><h2>Communication entre objets</h2><div class="paragraph"><p><strong>Un à un unidirectionnel</strong></p></div>
+<div class="paragraph"><p>C&#8217;est le cas le plus simple. Un objet doit avoir accès à un autre objet. Dans ce cas, il suffit de créer un attribut de type <code>B</code> dans la classe <code>A</code>. On décide ensuite s&#8217;il faut mettre un setter du côté <code>A</code> ou bien si l&#8217;objet <code>B</code> est reçu ou construit dans le constructeur de <code>A</code>.</p></div>
+<div class="paragraph"><p><strong>Un à un bidirectionnel</strong></p></div>
+<div class="paragraph"><p>Dans ce cas, chaque partie de la relation possède une référence vers l&#8217;autre partie. <code>A</code> a donc un attribut de type <code>B</code> et <code>B</code> a un attribut de type <code>A</code>. Reste à décider comment et dans quel ordre s&#8217;effectue l&#8217;initialisation.</p></div>
+<div class="paragraph"><p><strong>Un à plusieurs unidirectionnel</strong></p></div>
+<div class="paragraph"><p>Dans ce cas, un objet de type <code>A</code> possède une relation vers plusieurs objets du type <code>B</code>. Il suffit alors d&#8217;avoir une <em>collection</em> de <code>B</code> du côté de <code>A</code>.</p></div>
+<div class="paragraph"><p>La collection peut être initialisée vide à la construction de <code>A</code> puis enrichie ensuite (lors de l&#8217;appel de méthodes destinées à cet effet).</p></div>
+<div class="paragraph"><p><strong>Un à plusieurs bidirectionnel</strong></p></div>
+<div class="paragraph"><p><code>A</code> possède encore une collection de <code>B</code>. Par contre chaque objet <code>B</code> de la relation doit avoir une référence vers le <code>A</code> qui le contient.</p></div>
+<div class="admonitionblock note"><table><tr><td class="icon"><div class="title">Note</div></td><td class="content">Il faut prendre garde au moment de l&#8217;ajout, retrait ou modification que les attributs sont bien à jour après opération.</td></tr></table></div>
+<div class="paragraph"><p><strong>Plusieurs à plusieurs</strong></p></div>
+<div class="paragraph"><p>Cas le plus complexe. Exemple de <code>Article</code> et <code>Categorie</code>. Un article peut appartenir à plusieurs catégories et une catégorie peut être liée à plusieurs articles.</p></div></section></section>
+<section><section id="_les_exceptions"><h2>Les exceptions</h2><div class="paragraph"><p>Mécanisme de gestion des erreurs en Java.</p></div><div class="paragraph"><p>Le mécanisme des exceptions permet en cas d&#8217;erreur de dérouter le flot d&#8217;exécution normal d&#8217;un programme.</p></div><div class="paragraph"><p>Le flot normal d&#8217;exécution consiste pour une méthode à exécuter les instructions les unes à la suite des autres jusqu&#8217;à rencontrer <code>return</code>. A ce moment l&#8217;éxécution de la méthode s&#8217;arrête et le flot d&#8217;exécution est redonné à l'<strong>appelant</strong>.</p></div><div class="paragraph"><p>Une <strong>exception</strong> est une instance de la classe (ou sous-classe) <code>Exception</code>. Elle représente une <strong>erreur</strong> survenue pendant le déroulement du programme.</p></div><div class="paragraph"><p>Trois mot-clés permettent de détecter et traiter ces erreurs : <code>try</code>, <code>catch</code> et <code>finally</code>.</p></div><div class="paragraph"><p>Lorsqu&#8217;une erreur est provoquée, une exception est levée grâce au mot-clé <code>throw</code>.</p></div><div class="paragraph"><p>Il est possible d&#8217;indiquer qu&#8217;une méthode peut potentiellement lever un type d&#8217;exception avec le mot-clé <code>throws</code>.</p></div></section><section id="_la_hiérarchie_des_classes_d_exception"><h2>La hiérarchie des classes d&#8217;Exception</h2><div class="paragraph"><p>La classe mère de toutes les exceptions est la classe <code>Throwable</code>.</p></div>
+<div class="imageblock" style=""><div class="content"><img src="images-java/exceptions.png" alt="exceptions"></div></div>
+<div class="dlist"><dl><dt class="hdlist1"><code>java.lang.Error</code></dt><dd><p>C&#8217;est sous cette classe que sont regroupées toutes les exceptions associées à des erreurs irrécupérables (par exemple: <code>OutOfMemoryError</code>, <code>StackOverflowError</code>, &#8230;&#8203;). Cette classe est réservée à Java, elle est d&#8217;ailleurs déclarée <code>final</code>, ce qui empêche d&#8217;en hériter.</p></dd><dt class="hdlist1"><code>java.lang.Exception</code></dt><dd><p>Cette classe est la classe mère de toutes les exceptions <em>gérées</em> (par exemple <code>FileNotFoundException</code>). C&#8217;est à dire que ces exceptions doivent être déclarées au niveau des signatures des méthodes pouvant les lever (avec le mot-clé <code>throws</code>, voir plus loin dans le cours).</p></dd><dt class="hdlist1"><code>java.lang.RuntimeException</code></dt><dd><p>Cette classe est la classe mère des exceptions <em>non gérées</em> (par exemple <code>NullPointerException</code>), c&#8217;est à dire qui peuvent être levées sans être déclarées au préalable dans la signature de la méthode (voir plus loin dans le cours).</p></dd></dl></div></section><section id="_la_classe_code_throwable_code"><h2>La classe <code>Throwable</code></h2><div class="paragraph"><p>La classe <code>Throwable</code> possède les caractéristiques suivantes :</p></div>
+<div class="ulist"><ul><li><p>un constructeur par défaut <code>Throwable()</code>,</p></li><li><p>un constructeur <code>Throwable( String message )</code> qui mémorise un message d&#8217;erreur,</p></li><li><p>une méthode <code>String getMessage()</code> qui permet de retrouver le message passé par le constructeur (<code>null</code> sinon),</p></li><li><p>une méthode <code>void printStackTrace()</code> qui écrit dans la sortie standard la pile d&#8217;exécution au moment de la levée de l&#8217;exception,</p></li><li><p>une méthode <code>void printStackTrace( PrintStream stream )</code> qui fait la même chose mais dans le flux indiqué en paramètre.</p></li></ul></div>
+<div class="paragraph"><p>La classe <code>Throwable</code> étant la classe mère de <strong>toutes</strong> les exceptions, toutes les exceptions bénéficient de ces fonctionnalités&#8230;&#8203;</p></div></section><section id="_détecter_et_traiter_une_exception_1_2"><h2>Détecter et traiter une exception (1/2)</h2><div class="paragraph"><p>Si vous exécutez ce code :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class TestException {
+	public static void main( String[] args ) {
+		int i = 3;
+		int j = 0;
+
+		System.out.println("résultat = " + (i / j));
+	}
+}</code></pre></div></div>
+<div class="paragraph"><p>Vous provoquerez la levée de l&#8217;exception <code>ArithmeticException</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>Exception in thread "main" java.lang.ArithmeticException: by zero
+	at tests.TestException.main(TestException.java:6)</code></pre></div></div>
+<div class="paragraph"><p>Ce message signifie que l&#8217;exception <code>ArithmeticException</code> a été levée mais qu&#8217;elle n&#8217;a été <em>gérée</em> par aucun code de votre programme. L&#8217;effet de ceci est donc l&#8217;arrêt complet du programme.</p></div>
+<div class="paragraph"><p>Il est possible de gérer les exceptions levées, de reprendre la main sur l&#8217;exécution du programme et ainsi de poursuivre les opérations, même après la levée d&#8217;une exception. Ceci se fait avec les mot-clés <code>try</code>, <code>catch</code> et <code>finally</code>.</p></div></section><section id="_détecter_et_traiter_une_exception_2_2"><h2>Détecter et traiter une exception (2/2)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">try {
+	// operation risquées;
+} catch (ExceptionInteressante e) {
+	// traitement de l'exception ExceptionInteressante
+} catch (Exception e) {
+	// traitement du cas d'exception général
+} finally {
+	// traitement exécuté dans tous les cas (exception levée ou pas)
+}</code></pre></div></div>
+<div class="paragraph"><p>Les instructions situées dans le bloc <code>try</code> sont <em>surveillées</em> :</p></div>
+<div class="ulist"><ul><li><p>Si aucune exception n&#8217;est levée pendant l&#8217;exécution du bloc <code>try</code>, l&#8217;exécution se poursuit avec le contenu du bloc <code>finally</code>.</p></li><li><p>Si une exception est levée pendant l&#8217;exécution du bloc <code>try</code>, l&#8217;exécution de celui-ci s&#8217;arrête immédiatement et l&#8217;exécution se poursuit avec l&#8217;exécution du bloc <code>catch</code> correspondant le mieux au type de l&#8217;exception levée.</p></li></ul></div>
+<div class="paragraph"><p>Dans tous les cas (exception levée ou pas), le bloc <code>finally</code> est exécuté après les autres (même si on fait <code>return</code> dans le bloc <code>try</code>).</p></div></section><section id="_déclarer_la_potentielle_levée_d_une_exception_1_2"><h2>Déclarer la potentielle levée d&#8217;une exception (1/2)</h2><div class="paragraph"><p>Lorsqu&#8217;une méthode peut lever une exception <strong>gérée</strong>, celle-ci doit être déclarée au niveau de la signature de la méthode. L&#8217;objectif est multiple : avoir une valeur documentaire, préciser au compilateur que cette méthode pourra lever cette exception et obliger à ce que toute méthode qui l&#8217;appelle devra prendre en compte cette exception (traitement ou propagation).</p></div>
+<div class="paragraph"><p>Par exemple, cette méthode doit déclarer <code>throws IOException</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public static String saisir( String message ) throws IOException <b>(2)</b>
+{
+	System.out.println( message );
+	System.out.print( "&gt; " );
+
+	BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
+	return reader.readLine(); <b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>La méthode <code>readLine()</code> peut provoquer l&#8217;exception <code>IOException</code> qui est une sous-classe de <code>Exception</code> (et non de <code>RuntimeException</code>).</p></li><li><p>Ceci oblige à préciser dans le prototype de <code>saisir(&#8230;&#8203;)</code> que cette méthode peut lever <code>IOException</code>.</p></li></ol></div></section><section id="_déclarer_la_potentielle_levée_d_une_exception_2_2"><h2>Déclarer la potentielle levée d&#8217;une exception (2/2)</h2><div class="paragraph"><p>Si l&#8217;exception potentiellement levée est gérée par la méthode, alors il n&#8217;est plus nécessaire de la déclarer avec <code>throws</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public static String saisie( String message )
+{
+	System.out.println( message );
+	System.out.print( "&gt; " );
+
+	BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
+	try <b>(1)</b>
+	{
+		return reader.readLine();
+	}
+	catch( IOException e ) <b>(2)</b>
+	{
+		e.printStackTrace(); <b>(3)</b>
+		return null; <b>(4)</b>
+	}
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>On surveille l&#8217;exécution de la méthode <code>readLine()</code>&#8230;&#8203;</p></li><li><p>On définit le comportement à adopter si l&#8217;exception <code>IOException</code> est levée.</p></li><li><p>On affiche la pile d&#8217;appel ayant provoqué l&#8217;exception.</p></li><li><p>Mais on décide de retourner <code>null</code>&#8230;&#8203;</p></li></ol></div></section><section id="_les_exceptions_personnalisées"><h2>Les exceptions personnalisées</h2><div class="paragraph"><p>Il est évidemment possible de définir des classes d&#8217;exception spécifiques à votre application. Celles-ci doivent être des sous-classes de <code>RuntimeException</code> (pour les exceptions non gérées) ou de <code>Exception</code>.</p></div>
+<div class="paragraph"><p>Exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">public class SaisieErroneeException extends Exception { <b>(1)</b>
+	public SaisieErroneeException() {
+	}
+
+	public SaisieErroneeException( String s ) {
+		super( s );
+	}
+}
+
+public class TestSaisieErroneeException {
+	public static void controle( String chaine ) throws SaisieErroneeException {
+		if( "".equals( chaine ) == true )
+			throw new SaisieErroneeException("Saisie erronee : chaine vide"); <b>(2)</b>
+	}
+
+	public static void main( String[] args ) {
+		String chaine1 = "";
+
+		try {
+			controle( chaine1 );
+		} catch ( SaisieErroneeException e ) { <b>(3)</b>
+			System.out.println( "Saisie erronee: " + e.getMessage() );
+		}
+	}
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>Nous sommes en train de définir une exception <em>gérée</em>.</p></li><li><p>Le mot clé <code>throws</code> sert à lever une exception.</p></li><li><p>Le <code>catch</code> ici permet le traitement spécifique de l&#8217;exception <code>SaisieErroneeException</code>. Toute autre classe d&#8217;exception ne sera pas <em>attrapée</em>.</p></li></ol></div></section><section id="_exercices"><h2>Exercices</h2><div class="paragraph"><p>Vous pouvez utiliser cet <a href="http://perso.telecom-paristech.fr/~charon/coursJava/exercices/fact+Exc.html">exercice</a> pour vous familiariser avec la syntaxe des exceptions.</p></div></section><section id="_enumération"><h2>Enumération</h2></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'zoom',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
