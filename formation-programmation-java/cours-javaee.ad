@@ -1285,6 +1285,189 @@ Cet aspect transactionnel est pris en charge par les EJB.
 
 
 
+== Tester son code
+
+=== Définition
+
+Code qui exécute un autre code pour valider son comportement et/ou son état.
+
+Utilité : validation automatique, détection des régressions, documentation, indication de performance.
+
+http://www.vogella.com/tutorials/JUnit/article.html[Introduction aux tests].
+
+=== Différentes catégories de test
+
+- Tests unitaires : valide une partie très spécifique de l'application, en général une classe ou une méthode. On simule parfois l'environnement du code à tester (_mock_).
+- Tests d'intégration : on valide le comportement de l'application dans son ensemble. On _déploie_ l'application dans un environnement conforme à la production et on teste par les _bouts_.
+- Tests de performance : s'assurer des bonnes performances de l'application (_throughput_, _req/s_, ...).
+
+On distingue deux autres catégories : tests d'_état_ et tests _comportementaux_.
+
+=== Outils pour les tests
+
+JUnit
+
+TestNG
+
+=== JUnit
+
+junit.org
+
+Dépôt https://github.com/junit-team/junit[Git Hub].
+
+=== Exemple
+
+[source,language=java]
+----
+public class MyTests {
+    @Test
+    public void multiplicationOfZeroIntegersShouldReturnZero() {
+        MyClass tester = new MyClass(); // MyClass is tested
+
+        // assert statements
+        assertEquals("10 x 0 must be 0", 0, tester.multiply(10, 0));
+        assertEquals("0 x 10 must be 0", 0, tester.multiply(0, 10));
+        assertEquals("0 x 0 must be 0", 0, tester.multiply(0, 0));
+    }
+}
+----
+
+=== Conventions
+
+Les classes de test pour un projet _maven_ se trouvent dans `src/test/java`. 
+Les resources de test dans `src/test/resources`.
+
+Il est courant d'ajouter le suffixe `Test` aux noms des classes de tests. 
+Maven utilise cette convention pour exécuter automatiquement les tests se trouvant dans le bon répertoire.
+
+Pour un projet maven, c'est le plugin `surefire` qui est en charge des tests (dans la phase _test_).
+
+=== JUnit 4
+
+Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une classe de test :
+
+[cols="2*"]
+|===
+|Annotation
+|Description
+
+|`@Test`
+|Identifie une méthode de test
+
+|`@Before`, `@After`
+|Méthode exécutée avant et après chaque test
+
+|`@BeforeClass`, `@AfterClass`
+|Méthode exécutée avant et après l'initialisation de la classe de tests. Doivent être _statique_.
+
+|`@Ignore`
+|Ignore un test
+
+|`@Test(expected=SQLException.class)`
+|Le test échoue si l'exception n'est pas levée
+
+|`@Test(timeouot=100)`
+|Le test échoue s'il ne termine pas en moins de 100ms.
+|===
+
+=== Assertions
+
+Pour valider un test, on utilise les assertions de JUnit. Une assertion non validée dans un test positionne le test en échec.
+
+Les assertions de JUnit sont des méthodes statiques de la classe `org.junit.Assert`.
+
+[cols="2*"]
+|===
+|Méthode
+|Description
+
+|`fail(message)`
+|Fait échouer le test
+
+|`assertTrue(message, condition)`
+|Vérifie que `condition` est vrai
+
+|`assertFalse(...)`
+|Vérifie que la condition est fausse
+
+|`assertEquals(message, expected, actual)`
+|Vérifie que `actual` est égal à `expected`
+|===
+
+`assertSame()`, `assertNotSame()`, `assertNull()`, `assertNotNull()`...
+
+=== Utilisation avec Maven
+
+Le framework JUnit est disponible sur Maven Central : 
+
+[source]
+----
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+</dependency>
+----
+
+=== Exemple
+
+Voici un http://www.vogella.com/tutorials/JUnit/article.html#exercise-using-junit[exemple] de mise en place de test unitaire.
+
+=== Mocking
+
+Parfois, il n'est pas possible d'isoler complètement une classe du reste de l'application (tout est lié).
+
+On a alors recours à des outils de _mock_ qui permettent de remplacer les dépendances du code à tester
+par des _bouchons_ simulant l'environnement du test (voir le framework http://site.mockito.org/[Mockito]).
+
+=== Tests d'intégration
+
+Ceux-ci sont les plus difficiles à mettre en place car il faut _déployer_ 
+l'application dans un environnement _équivalent_ à celui de production (base de donnée, configuration, clustering, ...).
+
+=== Arquillian
+
+_Arquillian_ (http://arquillian.org/invasion/[site]) est un outil qui facilite la mise en place des tests d'intégration :
+
+- Gère le lancement et l'arrêt d'un AS complet.
+- Produit une archive contenant le code à tester à la volée.
+- Déploie l'archive dans le conteneur de test.
+- Exécute les tests d'intégration.
+- Produit un rapport d'exécution.
+
+S'intègre à `JUnit` et `TestNG`.
+
+Avantanges : on n'a plus besoin de mocker les dépendances, tout est en place !
+
+Inconvénients : lent puisque qu'on bootstrappe tout l'environnement de l'application.
+
+=== Exemple
+
+Voici un http://arquillian.org/guides/testing_java_persistence/[guide] de mise en place de test d'intégration avec 
+Arquillian. On lance un Wildfly embarqué pour être 'iso-prod'.
+
+Voir ce https://github.com/ltearno/BibliothequeAudio[projet] pour un exemple concret de mise en place.
+
+
+=== Tests de performance
+
+S'assurer des bonnes performances de l'application :
+
+- nombre de requêtes par seconde,
+- latence,
+- capacité de traitement,...
+
+Exemple d'outil : gatling.io[Gatling].
+
+
+=== Couverture de code
+
+En général on veut s'assurer que l'ensemble des tests (unitaires et intégration) couvrent l'ensemble du code applicatif.
+
+Exemple : mettre en place http://site.mockito.org/[Mockito].
+
+
+
 
 == CDI
 
