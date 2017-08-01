@@ -1342,7 +1342,7 @@ Maven utilise cette convention pour exécuter automatiquement les tests se trouv
 
 Pour un projet maven, c'est le plugin `surefire` qui est en charge des tests (dans la phase _test_).
 
-=== JUnit 4
+=== JUnit 4 - Annotations
 
 Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une classe de test :
 
@@ -1356,7 +1356,12 @@ Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une
 
 |`@Before`, `@After`
 |Méthode exécutée avant et après chaque test
+|===
 
+=== Annotations
+
+[cols="2*"]
+|===
 |`@BeforeClass`, `@AfterClass`
 |Méthode exécutée avant et après l'initialisation de la classe de tests. Doivent être _statique_.
 
@@ -1366,7 +1371,7 @@ Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une
 |`@Test(expected=SQLException.class)`
 |Le test échoue si l'exception n'est pas levée
 
-|`@Test(timeouot=100)`
+|`@Test(timeout=100)`
 |Le test échoue s'il ne termine pas en moins de 100ms.
 |===
 
@@ -1386,6 +1391,14 @@ Les assertions de JUnit sont des méthodes statiques de la classe `org.junit.Ass
 
 |`assertTrue(message, condition)`
 |Vérifie que `condition` est vrai
+|===
+
+=== Assertions
+
+[cols="2*"]
+|===
+|Méthode
+|Description
 
 |`assertFalse(...)`
 |Vérifie que la condition est fausse
@@ -1406,6 +1419,7 @@ Le framework JUnit est disponible sur Maven Central :
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
     <version>4.12</version>
+	<scope>test</scope>
 </dependency>
 ----
 
