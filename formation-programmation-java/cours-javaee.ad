@@ -366,7 +366,7 @@ Ceci est particulièrement adapté aux problématiques transverses comme la séc
 
 === Exemple
 
-[code,language=java]
+[source,language=java]
 ----
 @WebFilter( "/*" )
 public class SecurityFilter implements Filter
@@ -878,6 +878,55 @@ conn.commit();
 === Plus de JDBC
 
 Pour aller plus loin avec JDBC, consulez la https://docs.oracle.com/javase/tutorial/jdbc/basics/[documentation officielle].
+
+== JDBC dans JavaEE
+
+Lorsque l'on travaille sur une application Java EE, ce n'est plus la responsabilité de notre application d'initialiser le driver MySql.
+
+C'est le serveur d'application qui gère le cycle de vie des composants.
+
+=== Data Source
+
+Ce sera le serveur d'application qui fournira les connexions aux bases de données (`DataSource`).
+
+Votre application demandera au serveur d'application une référence à une (des) connexion(s) BDD configurées sur celui-ci.
+
+La configuration des DataSource se fait au niveau de la configuration du serveur d'application, et n'est pas restreint par la norme Java EE (chaque serveur le fait comme il l'entend).
+
+Voici http://www.albeesonline.com/blog/2008/08/06/creating-and-configuring-a-mysql-datasource-in-glassfish-application-server/[un lien] pour configurer GlassFish.
+
+=== Accès à la DataSource
+
+Dans l'application, pour utiliser la base de données, il faut demander une connexion au serveur d'application :
+
+[source,language=java]
+----
+// contexte JNDI
+Context ctx = new InitialContext();
+
+// obtention de la data source
+// le nom JNDI dépend de la configuration et du serveur
+DataSource ds = (DataSource) ctx.lookup("jdbc/mysqltest");
+
+// a partir de la data source, on obtient une connexion
+Connection con = ds.getConnection();
+----
+
+=== Injection d'une connexion
+
+On peut demander au serveur d'application, par l'intermédiaire d'une annotation, d'injecter directement dans nos objets une référence à la DataSource :
+
+[source,language=java]
+----
+public class SomeClass {
+    @Resource(name="todoListDB")
+    private javax.sql.DataSource myDB;
+
+	...
+}
+----
+
+Ensuite, on utilise 
 
 == ORM
 
