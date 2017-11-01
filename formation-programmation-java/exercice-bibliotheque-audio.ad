@@ -1,0 +1,348 @@
+= Bibliotheque Audio
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Exercices de programmation orientée objet avec Java
+:source-highlighter: highlightjs
+:imagesdir: images-java
+
+LTE Consulting (C) - 2017
+
+toc::[]
+
+_Utilisation des collections pour résoudre un problème concret_
+
+On souhaite gérer une bibliothèque de disques audio.
+
+== Implémentation du modèle de données
+
+Voici le diagramme des classes _à minima_, vous aurez bien sûr à ajouter des attributs et des méthodes selon la conception que vous aurez choisie !
+
+Classe `Chanson` :
+
+- attribut *privé* `nom` de type `String`,
+- attribut *privé* `duree` de type `int` (durée de la chanson en secondes),
+- constructeur et accesseurs (_getters_ et _setters_),
+- méthode `afficher()` qui affiche le nombre de disques ainsi que le détail de chaque disque.
+
+Classe `Disque` :
+
+- attribut *privé* `nom` de type `String`,
+- attribut *privé* `codeBarre` de type `String`,
+- attribut *privé* `chansons` de type `List<Chanson>`,
+- constructeur et accesseurs (_getters_ et _setters_),
+- `getDuree()` retourne la durée totale du disque,
+- méthode `afficher()` qui affiche le nom, le code barre et la durée du disque ainsi que le détail de chacune de ses chansons.
+
+Classe `Bibliotheque` :
+
+- attribut *privé* `disques` de type `List<Disque>`,
+- constructeur et accesseurs (_getters_ et _setters_),
+- méthode `afficher()` qui affiche le détail de la chanson.
+
+Commencez par implémenter les classes ci-dessus.
+
+== Implémentation de la classe principale de l'application
+
+Pour vérifier que les implémentations sont correctes, écrivez la classe principale suivante :
+
+[source,language=java]
+----
+public class Application {
+	public static void main() {
+		Chanson chanson = new Chanson();
+		chanson.setTitre("Balade au clair de lune");
+		chanson.setDuree(367);
+
+		List<Chanson> chansons = new ArrayList<>();
+		chansons.add(chanson);
+
+		Disque disque = new Disque();
+		disque.setTitre("Le titre");
+		disque.setCodeBarre("ldkshflksjhfdlskdjfhlksdjdfh");
+		disque.setChansons(chansons);
+
+		List<Disque> disques = new ArrayList<>();
+		disques.add(disque);
+
+		Bibliotheque bibliotheque = new Bibliotheque();
+		bibliotheque.setDisques(disques);
+
+		// affiche l'ensemble de tous les disques et chansons de la bibliothèque.
+		bibliotheque.afficher();
+	}
+}
+----
+
+== Implémentation d'une interface utilisateur
+
+Nous allons implémenter une interface utilisateur en mode texte.
+
+A cette fin, vous devez d'abord télécharger une bibliothèque Java contenant une classe qui va vous aider à intéragir avec l'utilisateur.
+
+Téléchargez le fichier http://lteconsulting.fr/formations/java/OutilsFormation.jar
+
+Ajoutez cette bibliothèque à votre projet par le biais de votre IDE (Eclipse ou IntelliJ).
+
+[NOTE]
+====
+Sous **Eclipse** : Bouton droit sur le projet / Build Path / Configure Build Path... / onglet "Libraries" / Add external jar... => Choisir le ficher jar téléchargé.
+
+Sous **IntelliJ** : Menu File / Project Structure... / Libraries / ajouter le fichier jar téléchargé.
+
+Vous devez grâce à cela avoir accès à la classe `fr.lteconsulting.formations.outils.Saisie`.
+====
+
+Créez une classe `InterfaceUtilisateur` avec les éléments suivants :
+
+- attribut *privé* `bibliotheque` de type `Bibliotheque`,
+- une méthode *publique* `executer()` qui effectue en boucle le travail de l'interface utilisateur.
+
+La classe principale ne change pratiquement pas :
+
+[source,language=java]
+----
+public class Application {
+	public static void main() {
+		// Préparation de données 'en dur'
+		Chanson chanson = new Chanson();
+		chanson.setTitre("Balade au clair de lune");
+		chanson.setDuree(367);
+
+		List<Chanson> chansons = new ArrayList<>();
+		chansons.add(chanson);
+
+		Disque disque = new Disque();
+		disque.setTitre("Le titre");
+		disque.setCodeBarre("ldkshflksjhfdlskdjfhlksdjdfh");
+		disque.setChansons(chansons);
+
+		List<Disque> disques = new ArrayList<>();
+		disques.add(disque);
+
+		Bibliotheque bibliotheque = new Bibliotheque();
+		bibliotheque.setDisques(disques);
+
+		// Création de l'interface utilisateur
+		InterfaceUtilisateur ui = new InterfaceUtilisateur();
+		ui.setBibliotheque(bibliotheque);
+
+		// Exécution de l'interface utilisateur
+		ui.executer();
+	}
+}
+----
+
+Il ne reste plus qu'à implémenter le corps de la méthode `executer()` de la classe `InterfaceUtilisateur`.
+
+Voici l'algorithme implémenté par cette méthode :
+
+- Afficher le menu des actions possibles (avec une numérotation pour permettre à l'utilisateur de choisir dans l'étape suivante).
+- Demander à l'utilisateur de saisir son choix (avec la classe `Saisie` fournie dans le fichier jar de tout-à-l'heure).
+- Déclenchement de l'action demandée par l'utilisateur.
+- On recommence !
+
+Voici dans l'ordre de difficulté la liste des actions que vous pouvez proposer à l'utilisateur :
+
+- Afficher la bibliotheque (simple appel à la méthode `afficher()` que vous avez implémentée tout-à-l'heure).
+- Rechercher les disques contenant le texte saisi dans leur titre (et les afficher).
+- Rechercher les disques contenant le texte saisi dans leur code barre (et les afficher).
+- Recherches les disques contenant des chansons contenant le texte saisi dans leur titre (et les afficher).
+- Ajouter un disque par la saisie (l'utilisateur saisit toutes les informations du disque).
+- Générer des disques au hasard.
+- Supprimer un disque.
+- Modifier un disque.
+- Sauvegarder la bibliothèque dans un fichier.
+- Charger la bibliothèque depuis un fichier.
+- Quitter (utiliser `System.exit(0)`).
+
+=== Affichage du menu
+
+Vous avez simplement à établir une façon de numéroter (plus précisément identifier) les différents choix possibles dans le menu et à les afficher ligne par ligne avec la méthode `System.out.println("X. Faire qquechose")`.
+
+Cela doit afficher par exemple :
+
+		1. Afficher la bibliotheque
+		2. Quitter
+
+=== Analyse de la réponse de l'utilisateur
+
+Une fois affiché, utilisez la classe `Saisie` pour demander à l'utilisateur de faire son choix.
+
+Vous récupérez donc un entier correspondant au choix de l'utilisateur (1 pour le choix '1' par exemple).
+
+Utilisez ensuite l'instruction `switch` pour déclencher l'action correspondant au choix de l'utilisateur.
+
+Au début, l'implémentation de l'action choisie sera écrite dans la partie `case` du `switch`. Mais très vite, vous pourrez déporter ces traitements dans des méthodes spécifiques (toujours dans la classe `InterfaceUtilisateur`).
+
+=== Exemples d'intérations
+
+Voici un exemple d'intéraction entre l'utilisateur et l'application, pour ajouter un disque dans la bibliothèque (les saisies utilisateur sont entourées de `**`) :
+
+----
+MENU
+- 1. Ajouter un disque
+- 2. Rechercher par nom
+- 3. Rechercher par code barre
+- 4. Générer des disques au hasard
+- 5. Afficher les disques par nom
+- 6. Affichage des disques par code barre
+Faites votre choix
+> **1**
+Nom du disque
+> **Toto**
+Code barre (laisser vide pour génération aléatoire)
+> **[ENTREE]**
+Nom de la chanson (laisser vide pour terminer)
+> **Une chanson**
+Durée de la chanson
+> **33**
+Nom de la chanson (laisser vide pour terminer)
+> **[ENTREE]**
+
+MENU
+- 1. Ajouter un disque
+- 2. Rechercher par nom
+- 3. Rechercher par code barre
+- 4. Générer des disques au hasard
+- 5. Afficher les disques par nom
+- 6. Affichage des disques par code barre
+Faites votre choix
+> 
+----
+
+== Génération aléatoire de disques
+
+Explications...
+
+Faire une classe `Mots`.
+
+Y mettre une liste prédéfinie de substantifs (que vous prenez sur google par exemple, à partir d'un terme pour rester dans un même champ lexical).
+
+On remarque qu'un titre est souvent composé de différents _mots_ avec des _prépositions_ entre eux. Ecrivez donc une méthode `String phraseAuHasard()` qui pioche au hasard des mots et des prépopsitions pour construire une phrase synthétique.
+
+Utilisez cette classe pour générer des disques et des chansons au hasard.
+
+[NOTE]
+====
+La classe `java.util.Random` permet la génération aléatoire de nombres.
+
+Par exemple, pour générer un nombre aléatoire compris entre 0 et 3 (non-inclus), on utilisera : `new Random().nextInt( 3 )`.
+
+La classe `java.util.UUID` permet la génération aléatoire d'identifiants universellement uniques.
+
+Une façon simple de produire une chaine de caractère est : `String codeBarre = UUID.randomUUID().toString()`.
+====
+
+
+== Codes barres uniques
+
+Avant d'ajouter un disque dans la bibliothèque, on souhaite vérifier l'unicité de son code barre.
+
+Pour cela, vous allez ajouter une méthode `boolean ajouterDisque(Disque disque)` à la classe `Bibliotheque`. Cette méthode effectue cette vérification et retourne `true` si le disque a bien été ajouté, ou `false` sinon (pourquoi un disque ne pourrait pas être ajouté ? Car un disque existe déjà avec le même code barre dans la bibliothèque).
+
+D'autre part, on souhaite s'empêcher de pouvoir modifier la liste des disques d'une bibliotheque directement (par exe : `bibliotheque.getDisques().add(disque)`). La méthode `getDisques()` ne peut donc plus renvoyer de `List<Disque>`. Pour autant, on souhaite pouvoir continuer à interroger et parcourir la liste de disques contenus dans la bibliothèque (mais sans permettre l'ajout sans contrôle du code barre). Au lieu de renvoyer `List<Disque>`, renvoyez une `Collection<Disque>`. Puisque l'interface `List` hérite de `Collection`, seule la signature de la méthode change, et non son implémentation.
+
+Implémentez dans la méthode `ajouterDisque` un algorithme simple pour empêcher l'insertion d'un disque avec un code barre déjà présent. Quelle est la complexité de cet algorithme (en fonction du nombre N de disques déjà présents dans la bibliothèque) ?
+
+=== Utilisation d'une Map
+
+Remplacer dans la classe `Bibliotheque` le type de l'attribut `disques` par `Map<String, Disque>` (au lieu de `List<Disque>`). Faire les modifications adéquates dans le reste de la classe pour que ceci fonctionne.
+
+Comment la structure de données "table de hachage" (`HashMap`) peut-elle nous aider à avoir un algorithme en `O(1)` pour la méthode `ajouterDisque`?
+
+[NOTE]
+====
+`Collection<T>` est une interface fournie par Java. L'interface `List<T>` en est un sous-type. Cette interface permet entre autres de parcourir une collection sans pouvoir la modifier, ce qui est exactement ce que l'on cherche à faire ici.
+====
+
+== Sauvegarde et chargement depuis un fichier
+
+On souhaite maintenant pouvoir sauvegarder notre bibliothèque dans un fichier texte, et la restaurer en lisant une sauvegarde.
+
+Nous aurons donc deux commandes à implémenter : `SauvegarderCommande` et `ChargerCommande`.
+
+Format du fichier :
+
+[source]
+----
+ * Pour la bibliotheque
+ * MAGIC_SIGNATURE
+ * NOMBRE DE DISQUE
+ * [DISQUES]
+ * 
+ * Pour chaque disque :
+ * TITRE
+ * CODE BARRE
+ * NOMBRE DE CHANSONS DANS LE DISQUE
+ * [CHANSONS]
+ * 
+ * Pour chaque chanson :
+ * TITRE
+ * DUREE
+----
+
+Voici deux sources qui vous permettront de mettre en place cette fonctionalité :
+
+[source,language=java]
+----
+// ouvrir le fichier
+writer = new PrintWriter( NOM_FICHIER, "UTF8" );
+
+// ecrire dans le fichier
+writer.println( "Chaine de caractere à écrire dans le fichier" );
+
+// fermer le fichier (TRES IMPORTANT)
+writer.close();
+----
+
+[source,language=java]
+----
+// ouvrir le fichier
+File file = new File( NOM_FICHIER );
+FileInputStream fileInputStream = new FileInputStream( file );
+InputStreamReader inputStreamReader = new InputStreamReader( fileInputStream, "UTF8" );
+BufferedReader reader = new BufferedReader( inputStreamReader );
+
+// lire une ligne
+String line = reader.readLine();
+
+// fermer le fichier (TRES IMPORTANT)
+reader.close();
+----
+
+=== Utilisation de la compression Zip
+
+Utiliser les tutoriaux suivants :
+
+https://www.mkyong.com/java/how-to-compress-files-in-zip-format/ pour écrire un zip.
+
+http://www.mkyong.com/java/how-to-decompress-files-from-a-zip-file/ pour lire le zip.
+
+== Sauvegarde et chargement depuis une base de données
+
+Utilisez JDBC pour implémenter cette fonctionalité.
+
+Adresse du connecteur JDBC pour MySQL : http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.41/mysql-connector-java-5.1.41.jar
+
+== Proposer une sauvegarde avant de quitter
+
+Plus : proposer une sauvegarde si une commande a été effectuée depuis le dernier chargement...
+
+== Utilisation d'une exception
+
+Création de `DisqueDejaPresentException`...
+
+- `void ajouterDisque( Disque disque ) throws DisqueDejaPresentException`. Cette méthode provoque une exception `DisqueDejaPresentException` (que vous définirez) lorsqu'on ajoute un disque dont le code barre est déjà enregistré dans la bibliothèque.
+
+== Menu plus joli
+
+Soyez _ASCIJI ART_ !
+
+== Ajout des _Artistes_
+
+Bon, maintenant c'est l'heure d'enrichir le modèle pour ajouter les Auteurs.
+
+== Solution
+
+Un corrigé se trouve ici : https://github.com/ltearno/bibliotheque-audio

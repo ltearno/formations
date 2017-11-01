@@ -1,0 +1,41 @@
+= Déploiement Java EE - Interrogation
+
+IUT Blagnac LP APSIO - 2017 - LTE Consulting
+
+Exercice lié au déploiement d'application Java EE en cluster.
+
+toc::[]
+
+== Questions
+
+1. Comment déploie-t-on une application Java EE sur son serveur d'application ? Quels fichiers sont en jeu ?
+
+2. Quels sont, avec Java EE, les technologies permettant de répondre dynamiquement à une requête HTTP émise par un navigateur ?
+
+3. Citez quelques implémentations de serveurs Java EE.
+
+4. Dans un serveur Java EE, par défaut, où sont stockées les informations de session utilisateur ?
+
+5. Que se passe-t-il donc si le serveur s'arrête et redémarre inopinément ?
+
+6. Quel mécanisme au niveau HTTP permet à un serveur Java EE de reconnaître l'utilisateur faisant une requête et de maintenir la session utilisateur ?
+
+7. En quoi consiste le déploiement d'une application ?
+
+8. Imaginons que l'on souhaite distribuer une application sur deux machines au lieu d'une, comment s'appelle le composant informatique que l'on peut placer devant les deux serveurs pour répartir la charge équitablement entre les deux ?
+
+9. Toujours avec le souhait de répartir la charge sur deux serveurs, à quoi va-t-il falloir faire attention et qui peut rendre l'application incohérente aux yeux de l'utilisateur si non pris en compte ?
+
+10. Quels sont les trois approches vues en TP qui permettent de répartir la charge sur plusieurs serveurs tout en garantissant la cohérence de l'application du point de vue de l'utilisateur ? Expliquez chacune des techniques utilisées.
+
+11. Qu'appelle-t-on sur un load balancer le comportement en "sticky session" ? Expliquez.
+
+12. Expliquez le principe de JWT (Json Web Token) en quelques lignes.
+
+13. Il est possible de configurer le serveur Java EE pour stocker les sessions utilisateurs en base de données. Si on répartit la charge des utilisateurs sur plusieurs serveurs tout en déportant le stockage des sessions sur un SGBD, quel composant informatique va subir une charge importante ?
+
+14. Donnez quelques arguments en faveur de solutions de containerisation comme Docker, notamment au niveau du déploiement ?
+
+15. Comment s'appelle le composant logicielle qui permet de gérer de façon automatique le déploiement, l'exécution et la surveillance de container en grand nombre ?
+
+16. Citez quelques solutions industrielles de ce type.

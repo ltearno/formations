@@ -1,0 +1,37 @@
+[NOTE]
+====
+Pour obtenir la documentation sur un type de noeud DOM (`div`, `input`, ...), le mieux est d'aller sur 'Mozilla Developper Network'. Avec google : "html input mdn" (souvent le premier résultat est bon).
+
+Ne pas aller sur **W3Schools**.
+====
+
+Créer un fichier `inscription.html`
+
+Dedans, un titre (`h1`) : "Inscription"
+
+Un formulaire avec ces champs (utiliser `label`) :
+
+- "Nom", champ texte
+- "Prénom", champ texte
+- "Date de naissance", champ date (`<input type="date"/>`)
+- "Sexe", deux radios boutons
+- "Login", champ texte mais de type 'email'
+- "Mot de passe", champ password
+- "Intéressé par la newsletter", case à cocher
+- "Valider", bouton de validation du formulaire
+
+En dessous du formulaire un lien "déjà inscrit ? connectez-vous", qui pointe vers la page 'login.html'
+
+
+Créer un autre fichier `login.html` avec un formulaire de login (champs "login" et "mot de passe")
+
+
+
+
+
+
+
+
+
+
+

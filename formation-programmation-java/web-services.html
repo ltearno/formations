@@ -54,17 +54,17 @@ public class ContactsWebService {
 	@Produces( MediaType.APPLICATION_JSON )
 	public Contact getOne( @PathParam( "id" ) int id ) { return ...; }
 
-	@PUT
+	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
 	@Produces( MediaType.APPLICATION_JSON )
-	public Contact create( FunkoPop pop ) { return ...; }
+	public Contact create( Contact modele ) { return ...; }
 
 	@Path( "search" )
 	@GET
 	@Produces( MediaType.APPLICATION_JSON )
 	public List&lt;Contact&gt; search( @QueryParam( "name" ) String name ) { return ...; }
 }</code></pre></div></div></section><section id="_exemple_3"><h2>Exemple</h2><div class="paragraph"><p>Avec la classe précédente, le client pourra accéder aux urls :</p></div>
-<div class="ulist"><ul><li><p><code>&#8230;&#8203;/api/pop</code> en GET pour obtenir tous les Contacts,</p></li><li><p><code>&#8230;&#8203;/api/pop/34</code> en GET pour obtenir le Contact id:34,</p></li><li><p><code>&#8230;&#8203;/api/pop</code> en PUT avec un Contact sérialisé en JSON pour créer un Contact,</p></li><li><p><code>&#8230;&#8203;/api/pop/search?name=Toto</code> en GET pour obtenir les Contacts avec un nom donné.</p></li></ul></div>
+<div class="ulist"><ul><li><p><code>&#8230;&#8203;/api/pop</code> en GET pour obtenir tous les Contacts,</p></li><li><p><code>&#8230;&#8203;/api/pop/34</code> en GET pour obtenir le Contact id:34,</p></li><li><p><code>&#8230;&#8203;/api/pop</code> en POST avec un Contact sérialisé en JSON pour créer un Contact,</p></li><li><p><code>&#8230;&#8203;/api/pop/search?name=Toto</code> en GET pour obtenir les Contacts avec un nom donné.</p></li></ul></div>
 <div class="paragraph"><p><em>Remarque: on peut injecter des EJB dans les WebServices</em>.</p></div></section><section id="_consommer_un_service_web_rest_depuis_une_application_java_ee"><h2>Consommer un service web REST depuis une application Java EE</h2><div class="ulist"><ul><li><p>Décrire le service que l&#8217;on veut appeler dans une interface Java.</p></li><li><p>Demander à <code>JAX-RS</code> de créer un <em>proxy</em> d&#8217;appel vers le Web Service en précisant :&#8201;&#8212;&#8201;l&#8217;URL de base,&#8201;&#8212;&#8201;l&#8217;interface qui représente ce service.</p></li></ul></div>
 <div class="paragraph"><p>Documentation <a href="https://docs.jboss.org/resteasy/docs/3.0-beta-3/userguide/html/RESTEasy_Client_Framework.html">ici</a></p></div></section><section id="_dépendances_maven"><h2>Dépendances Maven</h2><div class="paragraph"><p>Pour un serveur Wildfly 10, on ajoute :</p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;dependency&gt;

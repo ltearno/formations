@@ -213,10 +213,10 @@ public class ContactsWebService {
 	@Produces( MediaType.APPLICATION_JSON )
 	public Contact getOne( @PathParam( "id" ) int id ) { return ...; }
 
-	@PUT
+	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
 	@Produces( MediaType.APPLICATION_JSON )
-	public Contact create( FunkoPop pop ) { return ...; }
+	public Contact create( Contact modele ) { return ...; }
 
 	@Path( "search" )
 	@GET
@@ -231,7 +231,7 @@ Avec la classe précédente, le client pourra accéder aux urls :
 
 - `.../api/pop` en GET pour obtenir tous les Contacts,
 - `.../api/pop/34` en GET pour obtenir le Contact id:34,
-- `.../api/pop` en PUT avec un Contact sérialisé en JSON pour créer un Contact,
+- `.../api/pop` en POST avec un Contact sérialisé en JSON pour créer un Contact,
 - `.../api/pop/search?name=Toto` en GET pour obtenir les Contacts avec un nom donné.
 
 _Remarque: on peut injecter des EJB dans les WebServices_.

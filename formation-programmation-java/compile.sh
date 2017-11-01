@@ -8,6 +8,9 @@ asciidoctor exercices-java.ad
 asciidoctor tp-reseau.ad
 asciidoctor index.ad
 asciidoctor tp-morpion.ad
+asciidoctor exercice-bibliotheque-audio.ad
+asciidoctor exo-javaee-bibliotheque-audio.ad
+asciidoctor tp-web-services-discogs.ad
 
 asciidoctor -T asciidoctor-reveal.js/templates/slim swing.ad
 asciidoctor -T asciidoctor-reveal.js/templates/slim java.ad
