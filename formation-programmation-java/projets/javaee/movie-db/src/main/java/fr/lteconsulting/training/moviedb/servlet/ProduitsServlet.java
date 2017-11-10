@@ -20,7 +20,13 @@ public class ProduitsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Produit> produits = gestionProduits.findAll();
+        List<Produit> produits;
+
+        String search = req.getParameter("search");
+        if (search != null && !search.isEmpty())
+            produits = gestionProduits.findByName(search);
+        else
+            produits = gestionProduits.findAll();
 
         Vues.afficherProduits(req, resp, produits);
     }

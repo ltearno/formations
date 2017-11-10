@@ -14,6 +14,12 @@
     List<Produit> produits = (List<Produit>) request.getAttribute("produits");
 %>
 
+<h1>Recherche</h1>
+<form>
+    <label>Recherche dans les produits : <input type="text" name="search"></label>
+    <button>Cherche</button>
+</form>
+
 <h1>Produits</h1>
 <table>
     <tr>
