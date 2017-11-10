@@ -21,6 +21,8 @@ scp formation-google-app-engine/index.html \
 
 scp formation-html-css-javascript/slides/index.html \
     arnaud@lteconsulting.fr:$BASE/html-css-javascript/
+scp formation-html-css-javascript/javascript-jquery.html \
+    arnaud@lteconsulting.fr:$BASE/html-css-javascript/
 
 scp formation-programmation-java/cours/*.html \
     arnaud@lteconsulting.fr:$BASE/java/
