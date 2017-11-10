@@ -10,7 +10,7 @@ do
     fi
 done
 
-for i in "angular2" "deploiement-jee" "git" "google-app-engine" "html-css-javascript" "programmation-java"
+for i in "angular" "deploiement-jee" "git" "google-app-engine" "html-css-javascript" "programmation-java"
 do
     echo "doing $i"
     cd "formation-$i"
