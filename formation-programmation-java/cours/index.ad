@@ -1,0 +1,127 @@
+= Cours de programmation orientée objet avec Java et Java EE
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Cours de programmation orientée objet avec Java et Java EE
+:imagesdir: images-java
+:source-highlighter: highlightjs
+
+LTE Consulting (C) - 2017
+
+toc::[]
+
+Ce cours est Open Source. Les sources et ce document sont disponibles en ligne à ces adresse :
+
+- Ce document : http://lteconsulting.fr/formations/java/[lteconsulting.fr/formations/java/]
+- Les sources de ce document ainsi que des projets d'exemple : https://github.com/ltearno/formations[github.com/ltearno/formations]
+
+== Liste des cours disponibles
+
+- link:slides-uml-profils.html[Profils UML]
+- link:slides-java.html[Java]
+- link:resume-java.html[Résumé Java (les points essentiels)]
+- link:slides-fichiers.html[Les fichiers]
+- link:slides-swing.html[Swing]
+- link:slides-pattern-commande.html[Le design pattern `Commande`]
+- link:slides-reseau.html[Réseau]
+- link:slides-javaee.html[Java EE]
+- link:slides-maven.html[Maven]
+- link:slides-web-services.html[Web services]
+- link:slides-struts.html[Struts]
+- link:slides-threads.html[Introduction aux threads]
+
+Le document de presse-papier est disponible https://docs.google.com/document/d/1iXVL4H-U0mt2uveCjEOKcOw_pSRevqRiLq15Eo2z9y8/edit?usp=sharing[ici]
+
+== Exercices
+
+Voici la liste des énoncés d'exercices disponibles.
+
+D'autres exercices sous forme de projets sont présents sur le GitHub, allez fouiller !
+
+=== Java
+
+- link:exercices/exercices-java.html[Un paquet d'exercices en Java, niveau introduction]
+- link:exercices/exercice-reseau.html[Communication réseau en socket TCP]
+- link:exercices/exercice-bibliotheque-audio.html[Bibliothèque Audio]
+
+=== Java EE
+
+- link:exercices/exercices-javaee.html[Un paquet d'exercices en Java EE, niveau introduction]
+- link:exercices/exercice-morpion.html[Morpion]
+- link:exercices/exercice-javaee-bibliotheque-audio.html[Bibliothèque Audio en Java EE]
+- link:exercices/exercice-struts.html[Struts]
+- link:exercices/exercice-soap.html[Soap]
+
+=== Web services
+
+- link:exercices/exercice-integration-webservices.html[Google Maps]
+- link:exercices/exercice-web-services-discogs.html[Discogs]
+- link:exercices/exercice-web-services-marvels.html[Marvels]
+- link:exercices/exercices-webservices.html[FunkoPop et Weather service]
+
+== Programme de la formation
+
+Programme standard sur 57 jours (_à titre indicatif_)
+
+Travaux pratiques sur Eclipse avec Java 8, pour Java EE : Tomcat et Wildfly
+
+DUREE : 1 JOUR
+Définition et enjeux des SI
+Fonctionnement d'une machine
+Le système d'exploitation
+Langage et compilation
+
+DUREE : 4 JOURS
+Langage C (variables, structures de controle, fonctions, méthodes, tableaux)
+Algorithmique (notions de complexité temporelle et spatiale)
+Structures de données
+
+DUREE : 3 JOURS
+UML
+Méthodologie
+
+DUREE : 10 JOURS
+Introduction à l'écosystème Java
+La JVM
+Java SE
+Tests unitaires
+
+DUREE : 3 JOURS
+SQL
+JDBC
+
+DUREE : 1 JOUR
+Maven
+GIT
+
+DUREE : 3 JOURS
+Présentation du navigateur
+HTML5/CSS3
+Responsive design
+
+DUREE : 1 JOUR
+Réseaux, IP, TCP, HTTP
+
+DUREE : 13 JOURS
+Java EE
+	Introduction et vue d'ensemble
+	Servlet
+	JSP
+	EJB
+	JPA
+	CDI
+	JAX-WS
+
+DUREE : 6 JOURS
+Javascript, AJAX, JQuery
+Angular 2
+
+DUREE : 3 JOURS
+GWT
+
+DUREE : 4 JOURS
+Spring
+Docker
+
+DUREE : 5 JOURS
+TP Final

@@ -1,0 +1,105 @@
+= Le pattern Command
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: beige
+:revealjs_history: true
+:imagesdir: images-java
+:source-highlighter: highlightjs
+
+== Le pattern Command
+
+== On résout souvent le même problème
+
+Ou du moins les mêmes _catégories_ de problèmes.
+
+== Les patterns de conception
+
+"Design Patterns, elements of reusable software", 1994, Gamma, Helm, Johnson et Vlissides.
+
+Rassemble les meilleures solutions aux problèmes les plus courants.
+
+== Ce qu'on cherche à améliorer
+
+- qualité du code,
+- clarté de l'architecture,
+- réutilisabilité,
+- maintenabilité,
+- séparation des concepts (travail à plusieurs)
+
+== Dans notre exemple, on cherche à améliorer la gestion des menus et actions associées.
+
+- si je rajoute des actions,
+- si je change l'ordre des actions,
+- si les actions ont des restrictions (par exemple)
+- (si les commandes doivent être déclenchées par plusieurs actions différentes.)
+
+== Allons voir dans le catalogue de patterns !
+
+https://fr.wikipedia.org/wiki/Commande_(patron_de_conception)[ici !]
+
+== Comment appliquer ce pattern à notre problème
+
+Il ne faut pas chercher à copier-coller mais à comprendre l'essence de ce qui est proposé pour pouvoir l'adapter.
+
+== Une commande
+
+Si chaque commande était un objet,
+
+Du point de vue de l'algorithme de gestion du menu, le contrat avec une commande doit permettre :
+
+- d'obtenir le nom de la commande,
+- de l'exécuter
+
+Du point de vue de la commande, elle n'a pas besoin de savoir qu'elle est utilisée par un menu.
+
+== Le menu
+
+Si le menu était un objet, son role serait de présenter les commandes, et de retourner la commande choisie par l'utilisateur.
+
+[%notitle]
+== .
+
+[source,language="java"]
+----
+interface Commande {
+	String getNom();
+	void execute();
+}
+----
+
+[%notitle]	
+== .
+
+[source,language="java"]
+----
+class CommandeConcrete implements Commande {
+	@Override
+	public String getNom() {
+		return "Affichage par nom";
+	}
+	
+	@Override
+	public void execute() {
+		// code de la commande
+	}
+}
+----
+
+[%notitle]
+== .
+
+[source,language="java"]
+----
+class Menu {
+	private List<Commande> commandes = ...
+	
+	public void addCommande( Commande c ) { ... }
+	
+	public Commande demanderCommande() {
+		// présente un menu à l'utilisateur
+		// et retourne la commande choisie par celui-ci
+	}
+}
+----

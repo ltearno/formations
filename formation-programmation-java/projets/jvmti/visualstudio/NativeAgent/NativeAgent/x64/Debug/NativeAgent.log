@@ -1,0 +1,33 @@
+﻿  NativeAgent.cpp
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 1 est de type 'jobject'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4313: 'printf' : conflit entre '%x' dans la chaîne de format et l'argument 1 de type 'jobject'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 2 est de type 'jclass'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4313: 'printf' : conflit entre '%x' dans la chaîne de format et l'argument 2 de type 'jclass'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 3 est de type 'jlong'
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): note: utilisez '%lld' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): note: utilisez '%Id' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): note: utilisez '%I64d' dans la chaîne de format
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 4 est de type 'jthread'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(46): warning C4313: 'printf' : conflit entre '%x' dans la chaîne de format et l'argument 4 de type 'jthread'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 1 est de type 'jlong'
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%llx' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%Ix' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%I64x' dans la chaîne de format
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 2 est de type 'jlong'
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%lld' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%Id' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): note: utilisez '%I64d' dans la chaîne de format
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 3 est de type 'jlong *'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(84): warning C4313: 'printf' : conflit entre '%x' dans la chaîne de format et l'argument 3 de type 'jlong *'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 1 est de type 'jlong'
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%llx' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%Ix' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%I64x' dans la chaîne de format
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 2 est de type 'jlong'
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%lld' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%Id' dans la chaîne de format
+  c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): note: utilisez '%I64d' dans la chaîne de format
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): warning C4477: 'printf' : la chaîne de format '%08x' nécessite un argument de type 'unsigned int', mais l'argument variadique 3 est de type 'jlong *'
+c:\tmp\jvmti\visualstudio\nativeagent\nativeagent\nativeagent.cpp(94): warning C4313: 'printf' : conflit entre '%x' dans la chaîne de format et l'argument 3 de type 'jlong *'
+  NativeAgent.vcxproj -> C:\Tmp\jvmti\visualstudio\NativeAgent\x64\Debug\NativeAgent.dll
+  NativeAgent.vcxproj -> C:\Tmp\jvmti\visualstudio\NativeAgent\x64\Debug\NativeAgent.pdb (Partial PDB)

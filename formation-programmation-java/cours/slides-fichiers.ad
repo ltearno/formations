@@ -1,0 +1,157 @@
+= Gestion des fichiers
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: beige
+:revealjs_history: true
+:imagesdir: images-java
+:source-highlighter: highlightjs
+
+== Gestion des fichiers
+
+
+== Fichier
+
+Un fichier permet de **stocker** des données de façon **permanente** dans l'ordinateur (contrairement à la mémoire vive).
+
+Attention! Ces données sont stockées sur le **disque dur**, ce qui implique un temps d'accès en lecture et écriture **très** long par rapport à la mémoire vive.
+
+== Définition
+
+Un fichier est désigné par son **chemin** lui même composé:
+
+- d'un **répertoire** (C:\Documents\Code),
+- d'un **nom** de fichier (nom + extension => MaClasse.java)
+
+Possède des **attributs** (droits d'accès, date dernière écriture, ...)
+
+== Un fichier en Java
+
+La classe représentant un fichier est la classe `File`.
+
+[source,language="java"]
+----
+File file = new File( "fichier.txt" );
+		
+file.exists();
+
+file.isDirectory();
+file.isFile();
+file.delete();
+file.canWrite();
+file.length();
+
+file.getAbsolutePath();
+----
+
+== Répertoire
+
+Les instances de la classe `File` repérentent aussi bien des fichiers que des répertoires.
+
+Exemple, création de répertoires
+
+[source,language="java"]
+----
+File directory = new File( "images\\jardin" );
+		
+if( ! directory.exists() )
+	directory.mkdirs();
+----
+
+== Lister un répertoire
+
+[source,language="java"]
+----
+File directory = new File( ... );
+List<File> files = directory.listFiles();
+
+for( File file : files ) {
+	file.isFile();
+	file.getName(); // ".", "..", "toto.txt", ...
+	file.getAbsolutePath();
+}
+----
+
+== Accès aléatoire
+
+Pour faire des accès aléatoires sur les fichiers, on peut utiliser l'interface `SeekableByteChannel`,
+
+Exemple https://docs.oracle.com/javase/tutorial/essential/io/rafs.html[ici].
+
+Mais ce n'est la plupart du temps pas le cas le plus optimisé !
+
+== Accès séquentiel
+
+On utilise le concept de `Stream`, un flux de données monodirectionnel (soit lecture, soit écriture) à consommer dans l'ordre des données dans le fichier (sans possibilité de _"sauter"_ à des positions arbitraires).
+
+== Exemple de lecture
+
+[source,language="java"]
+----
+FileInputStream fis = new FileInputStream( new File( "test.txt" ) );
+
+// tampon (buffer) de lecture
+byte[] buf = new byte[8];
+
+while( true ) {
+	int nbRead = fis.read( buf );
+	if( nbRead <= 0 )
+		break;
+	for( byte b : buf ) {
+		System.out.print( "\t" + b + "(" + (char) bit + ")" );
+	}
+}
+
+// ATTENTION, à faire dans un bloc **finally** !
+fis.close();
+----
+
+
+[%notitle]
+== .
+
+**Exercice** : écrire un programme qui affiche le contenu d'un fichier en hexadecimal
+
+(afficher par octet, en ligne de 16 octets)
+
+
+== Ecriture stream
+
+[source,language="java"]
+----
+FileOutputStream fos = new FileOutputStream( new File( "test2.txt" ) );
+
+byte[] buffer = "Bonjour !!!".getBytes();
+
+fos.write( buffer );
+
+fox.close();
+----
+
+== Copie de fichiers
+
+Le principe :
+
+- ouvrir les deux fichiers source et destination
+- en boucle, tant qu'il reste à lire dans la source
+- lire la source dans un tampon
+- écrire dans la destination
+
+[%notitle]
+== .
+
+**Exercice** : Ecrire un programme qui copie un fichier vers un autre.
+
+== Stocker des données
+
+Format de fichier
+
+Principe du marqueur : identité et version
+
+Structure de données pour l'écriture et la lecture
+
+[%notitle]
+== .
+
+**Exercice** : implémenter les commandes Sauvegarder et Lire dans le projet BibliothèqueAudio

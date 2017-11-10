@@ -1,0 +1,68 @@
+10. Lorsque l'on veut passer des informations depuis une servlet à une JSP, on utiliser ?
+-`request.setAttribute( "nom", valeur )`
+-`request.setParameter( "nom", valeur )`
+-`request.setData( "nom", valeur )`
+
+2. La Jsp doit être compilée par le serveur.
+-Vrai, ne sera ensuite transmis au navigateur que du HTML
+-Faux, elle est compilée par le client
+-Faux, elle n’est pas compilée
+
+3. Dans une JSP, lequel de ces codes ne permet pas d’afficher une variable `laVar` ?
+-`<%= laVar %>`
+-`${ laVar }`
+-`<% laVar %>`
+
+4. Comment appelle-t-on le `${ }` ?
+-`Expression Tag`
+-`Expression Language`
+-`Markup Language`
+-`Interpreted Language`
+
+5. Qu’est-ce qu’un Taglib ?
+-Une librairie JSTL
+-Des balises liées à des classes Java par un schéma XML
+-Des balises appelant des JSP
+-Des balises HTML spéciales pour Java
+
+7. De quelle classe doit hériter une servlet ?
+-`HttpRequest`
+-`Servlet`
+-`HttpServlet`
+-`RequestServlet`
+
+9. Quelle méthode sera appelée sur la servlet lors de l’accès à son URL sur un navigateur (en utilisant la barre d'adresse pour lancer la requête) ?
+-`doPost()`
+-`forward()`
+-`doGet()`
+-`processRequest()`
+
+10. Dans une servlet, quelle méthode permet de faire une redirection ?
+-`response.redirect("url/de/redirection");`
+-`request.getRequestDispatcher("url/de/redirection").forward(request, response);`
+-`response.sendRedirect("url/de/redirection");`
+-`request.forward("url/de/redirection");`
+
+11. Que permet le design pattern MVC ?
+-L’interaction entre du code java et du code html
+-La séparation des couches présentation, gestion des requêtes et modèle de données
+-L’appel de JSP au sein de Servlet
+
+12. Comment stocker une valeur qui pourra être accédée entre plusieurs JSP et Servlet après plusieurs requêtes ?
+-`request.setAttribute("clef", valeur);`
+-`request.getSession().setParameter("clef", valeur);`
+-`request.setParameter("clef", valeur);`
+-`request.getSession().setAttribute("clef", valeur);`
+
+17. Quel port est utilisé par défaut par le protocole HTTP ?
+-88
+-6060
+-225
+-80
+
+18. Quelle est la méthode la plus utilisée pour transmettre les données d’un formulaire HTML?
+- GO
+- POST
+- SEND
+- GET
+

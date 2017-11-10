@@ -1,0 +1,1532 @@
+= Cours de programmation orientée objet avec Java
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Cours de programmation orientée objet avec Java
+:imagesdir: images-java
+:source-highlighter: highlightjs
+
+LTE Consulting (C) - 2016
+
+toc::[]
+
+Ce cours est Open Source. Les sources et ce document sont disponibles en ligne à ces adresse :
+
+- Ce document : http://lteconsulting.fr/java/[lteconsulting.fr/java/]
+- Les sources de ce document ainsi que des projets d'exemple : https://github.com/ltearno/formation-programmation-java[github.com/ltearno/formation-programmation-java]
+
+Vous pouvez donc proposer des modifications (les corrections sont bienvenues) en créant des https://help.github.com/articles/using-pull-requests/[pull requests].
+
+== Avant-propos
+
+Ce document n'a pas vocation a être ni trop détaillé ni exhaustif. On renverra le lecteur vers des documents plus riches lorsque cela est nécessaire.
+
+Voici une liste de liens que vous pouvez utiliser pour vous auto-documenter, ou bien simplement pour approfondir les connaissances acquises dans ce cours.
+
+=== Quelques liens utiles
+
+Afin de connaître le Java de façon approfondie, il est nécessaire de se documenter et d'expérimenter. Voilà quelques liens qui vous permettront d'avancer de façon autonome.
+
+Les cours :
+
+- http://docs.oracle.com/javase/tutorial/[Tutoriel officiel Java (en Anglais)]
+- http://www.oracle.com/technetwork/java/javase/java-tutorial-downloads-2005894.html[Page de téléchargement des tutoriaux officiels Java (en Anglais)]
+- Le fameux http://www.jmdoudoux.fr/accueil_java.htm#dej[cours] de https://www.linkedin.com/in/jmdoudoux[Jean-Michel Doudoux], un des nombreux https://java-champions.java.net/[Java champions].
+- Des https://openclassrooms.com/courses/apprenez-a-programmer-en-java[cours] sur open class rooms. C'est un site d'auto-formation, il y a souvent de bons documents.
+
+Les exercices :
+
+- Les http://perso.telecom-paristech.fr/~charon/coursJava/exercices/index.html[cours] d'Irène Charon.
+- D'autres exercices sur http://www.cours-gratuit.com/java/[cours-gratuit.com/java/].
+
+Les personnes influentes :
+
+- Rémi Forax,
+- Antonio Goncalves (livre Java EE),
+- José Paumard avec son blog http://blog.paumard.org/[Java le soir],
+- Jean-Michel Doudoux,
+- Antoine Sabot-Durand,
+- ...
+
+== Enjeux et Etat de l'art
+
+Le système d'information est crucial pour n'importe quelle entreprise. Toutes les informations y sont stockées (clients, factures, ...).
+
+Créer des SI est un métier. Le marché est pour le plus gros organisé avec des _prestataires de service_ (SSII), qui créent et gèrent le SI pour leurs clients. Le point est que concevoir, déployer et gérer un SI est un métier qui exige des compétences fortes.
+
+De nombreuses pratiques et théories existent pour construire et gérer les SI.
+
+Nous allons découvrir la _programmation objet avec Java_ - une de ces méthodes - qui permet la conception et le développement d'applications d'entreprise de grande taille tout en _maîtrisant_ la complexité des problèmes soumis au développeur.
+
+== UML - conception objet
+
+=== Modélisation objet
+
+=== Diagramme de cas d'utilisation
+
+=== Diagramme de classe
+
+=== Diagramme de séquence
+
+== Java - Les fondamentaux
+
+=== Présentation de Java et JVM
+
+=== Principes
+
+=== Programme `HelloWorld`
+
+Créez un projet vide et un fichier `HelloWorld.java` dedans avec le contenu suivant :
+
+[source,language="java"]
+----
+public class HelloWorld
+{
+	public static void main( String[] args ) <1>
+	{
+		System.out.println( "Bonjour tout le monde !" ); <2>
+	}
+}
+----
+<1> Méthode principale du programme.
+<2> Appel qui permet d'afficher "Bonjour tout le monde !" à l'écran.
+
+Compiler ce code avec la commande
+
+`javac HelloWorld.java`
+
+Ceci produit un fichier `HelloWorld.class` contenant le byte-code issue de la compilation du code source.
+
+Exécutez ce programme avec la commande :
+
+`java HelloWorld`
+
+Le programme écrit "Bonjour tout le monde !" sur la console.
+
+=== Variables
+
+Variable:: un emplacement en mémoire avec un _nom_ et un _type_.
+
+==== Déclaration
+
+Ceci déclare une variable nommée `i` de type `int`.
+
+[source,language="java"]
+----
+int i;
+----
+
+==== Affectation
+
+Ici nous affectons la valeur `42` à la variable `i`.
+
+[source,language="java"]
+----
+int i; <1>
+i = 42; <2>
+----
+<1> Déclaration
+<2> Affectation
+
+==== Utilisation
+
+Pour utiliser la valeur contenue dans la variable, il suffit de mentionner son nom :
+
+[source,language="java"]
+----
+int v = i; <1>
+
+System.out.println( "La valeur de v est : " + v ); <2>
+----
+<1> Lecture de `i` pour affecter la variable ``v`
+<2> Lecture de `v` pour construire la chaine qui va s'afficher dans la console.
+
+=== Les types primitifs
+
+Il existe en Java deux familles de type : les types primitifs et les types objet.
+
+Les types primitifs portent des valeurs, en voici la liste : 
+
+- valeur booléenne : `boolean`,
+- valeurs entières : `byte`, `short`, `int`, `long`,
+- valeurs flottantes : `float` et `short`,
+- valeur caractère (unicode, 16 bits) : `char`.
+
+NOTE: Attention, les types primitifs `float` et `double` sont codés en virgule flottante ! Il ne faut **surtout pas les utiliser** pour effectuer des traitements monétaires. Voici http://www.enseignement.polytechnique.fr/informatique/profs/Jean-Jacques.Levy/poly/main1/node7.html[quelques] http://pdp.microjoe.org/tutoriels/85/les-nombres-a-virgule-flottante/[liens] http://www.math.univ-paris13.fr/~delourme/Feuilles_TD_Projets_2013-2014/Chapitre1Japhet.pdf[explicatifs] et http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html[passionnants].
+
+=== Les tableaux
+
+Une ou plusieurs dimension.
+
+Indices démarrent de zéro.
+
+Un tableau stocke la classe des éléments qu'il stocke. Il provoque une exception `java.lang.ArrayStoreException` si un objet du mauvais type est inséré dans le tableau.
+
+Si on essaie d'accéder à une cellule du tableau qui n'existe pas (index négatif ou index trop grand), l'exception `IndexOutOfBoundsExeption` est levée.
+
+==== Déclaration
+
+[source,language="java"]
+----
+int[] tableauEntiers; <1>
+String[] tableauString; <1>
+----
+<1> Les tableaux sont ici seulement déclarés, il ne sont pas encore _instanciés_ en mémoire. La variable `tableauEntiers` vaut `null` (de même pour `tableauString`).
+
+==== Instantiation
+
+On crée véritablement le tableau en mémoire avec l'instantiation qui s'écrit ainsi :
+
+[source,language="java"]
+----
+tableauEntiers = new int[50]; <1>
+----
+<1> Nous demandons la réservation en mémoire d'un espace pouvant stocker 50 valeurs `int`.
+
+==== Utilisation
+
+[source,language="java"]
+----
+// lecture de la sixième cellule
+int valeurCellule = tableauEntiers[5];
+
+// écriture dans la première cellule
+tableauEntiers[0] = -2;
+----
+
+=== Les méthodes
+
+Une méthode est un bloc de code avec un nom, éventuellement des paramètres d'entrée et éventuellement un type de retour.
+
+La déclaration d'une méthode peut être préfixée par des 'modificateurs' (`public`, `private`, `static`, `final`) dont le sens est lié au concept des classes, étudié plus loin.
+
+==== Exemples
+
+[source,language="java"]
+----
+int somme( int a, int b ) // signature de la méthode
+{
+	return a + b;
+}
+----
+
+[source,language="java"]
+----
+int nombreAleatoire()
+{
+	// ...
+}
+----
+
+Une méthode peut ne pas retourner de valeur, on utilise alors le mot clé 'void'
+
+[source,language="java"]
+----
+void affiche( String texte )
+{
+	// ...
+	// on peut utiliser le mot-clé 'return' pour arrêter l'exécution de la méthode.
+}
+----
+
+==== Appel d'une méthode
+
+On écrit simplement le nom de la méthode suivi de parenthèses contenant la valeur des paramètres. L'expression ainsi écrite est évaluée à la valeur de retour de la méthode.
+
+[source,language="java"]
+----
+// on appelle la méthode somme avec les paramètres 3 et 6
+// a va valoir la valeur de retour de la méthode (9)
+int a = somme( 3, 6 );
+----
+
+Lorsqu'on appelle une méthode, on donne une valeur à chacun des paramètres. L'exécution de la méthode se fait jusqu'à rencontrer l'instruction `return`. On obtient ainsi du côté du code _appelant_ la valeur de retour de l'appel de méthode.
+
+=== La classe `String`
+
+La classe `String` sert à représenter des chaînes de caractères (qui ont le plus souvent comme objectif d'être présentées à l'utilisateur, à un moment où un autre).
+
+La https://docs.oracle.com/javase/7/docs/api/java/lang/String.html[Javadoc] de la class String est complète pour connaître les méthodes statiques et non statiques de cette classe. Voici néanmoins quelques méthodes de la classe `String` que vous utiliserez souvent :
+
+==== `boolean startsWith( String other )`, `boolean endsWith( String other )`
+
+Permet de savoir si une chaîne commence par une autre (ou termine pour la méthode `endsWith()`).
+
+==== `String[] split( String separateur )`
+
+Permet de découper une chaîne de caractère en morceaux séparés par la chaine contenue dans le paramètre `separateur`.
+
+Exemple :
+
+[source,language="java"]
+----
+String s = "5;6";
+
+// partage la chaine "5;6" en utilisant ';' comme séparateur
+String[] parts = s.split( ";" );
+
+// affiche "2"
+System.out.println( parts.length );
+
+// affiche "5"
+System.out.println( parts[0] );
+
+// affiche "6"
+System.out.println( parts[1] );
+
+NOTE: Attention, le paramètre `separateur` est en fait interprété comme une expression régulière.
+----
+
+==== `String trim()`
+
+Renvoie la chaine sans les espaces de début et de fin.
+
+Par exemple appeller cette méthode sur la chaine "  Bonjour Madame  " retournera la chaine "Bonjour Madame".
+
+==== `String toLowerCase()`
+
+Retourne une chaine dans laquelle les majuscules ont été transformées en minuscules.
+
+==== `String toUpperCase()`
+
+Retourne une chaine dans laquelle les minuscules ont été transformées en majuscules.
+
+==== `boolean isEmpty()`
+
+Retourne `true` si la chaine de caractères est vide, `false` sinon.
+
+==== `int length()`
+
+Retourne la longueur de la chaîne de caractères.
+
+==== `boolean equals( Object other )`, `boolean equalsIgnoreCase( String other )`
+
+Retourne `true` si la chaine passée en paramètre est identique à celle sur laquelle on appelle la méthode. La méthode `equalsIgnoreCase` ignore la casse lors de la comparaison.
+
+==== `int indexOf( String part )`
+
+Cherche dans la chaine si elle contient `part`, auquel cas cette méthode retourne l'index où de trouve `part` dans la chaîne sur laquelle on appelle cette méthode. Elle retourne *-1* si `part` n'est pas trouvée.
+
+==== `substring( int start, int end )`
+
+Retourne une sous chaine de la chaine sur laquelle est appellée la méthode, en commençant à l'index `start` et en terminant à l'index `end` _exclu_.
+
+==== `replace( String motif, String par )`, `replaceAll( String motif, String par )`
+
+Retourne une chaine dans laquelle l'occurence de `motif` a été remplacée par `par`. La méthode `replaceAll` remplace *toutes* les occurences.
+
+NOTE: Attention, le paramètre `motif` est en fait interprété comme une expression régulière.
+
+=== Structures de controle
+
+Instructions de branchement:: `if`, `switch`.
+
+Instructions de bouclage:: `for`, `while`, `do ... while`.
+
+=== Ecrire une classe
+
+==== Un fichier, une classe
+
+Une classe java s'écrit dans un fichier nommé par le même nom (et même casse) auquel on donne l'extension `.java`.
+
+Ce fichier .java sera (_le plus souvent_) situé dans un sous-répertoire du répertoire `src/` du projet, et qui correspondra au chemin jusqu'au _package_ de la classe.
+
+NOTE: Il est néanmoins possible de déclarer plusieurs classes dans un même fichier *.java*. Nous reviendrons sur ces cas plus tard dans le cours (voir les classes imbriquées).
+
+==== Déclaration d'une classe
+
+Pour créer une classe, on utilise le code suivant :
+
+[source,language="java"]
+----
+public class NomDeLaClasse <1> <2>
+{
+	// Corps de la classe (attributs et méthodes)
+}
+----
+<1> Modificateur de visibilité : `public` ou `protected`.
+<2> Nom de la classe en cours de définition.
+
+NOTE: Par convention les noms de classes commencent par une majuscule comme par exemple `NomDeLaClasse`.
+
+==== Fully Qualified Name
+
+Le véritable nom complet d'une classe s'appelle le _Fully Qualified Name_ (FQN). Il est composé du _nom de package_ dans lequel se trouve la classe ainsi que du _nom de la classe_ lui-même.
+
+Ainsi pour une classe déclarée ainsi :
+
+[source,language="java"]
+----
+package fr.lteconsulting;
+
+class MaClasse
+{
+	// ...
+}
+----
+
+Le _FQN_ de cette classe est `fr.lteconsulting.MaClasse`.
+
+NOTE: Par convention les noms de package sont tout en minuscule, comme par exemple : `fr.lteconsulting`.
+
+==== Importation avec `import`
+
+Lorsque l'on souhaite utiliser une classe qui n'est pas située dans le même package que celle qui l'utilise, on peut l'importer, de façon à ne pas avoir à rappeler le _FQN_ complet à chaque utilisation.
+
+Ainsi au lieu d'écrire ceci :
+
+[source,language="java"]
+----
+package fr.lteconsulting;
+
+class MaClasse
+{
+	MaClasse()
+	{
+		fr.lteconsulting.outils.MonOutil outil;
+		outil = new fr.lteconsulting.outils.MonOutil();
+	}
+}
+----
+
+On pourra _importer_ la classe `fr.lteconsulting.MaClasse` :
+
+[source,language="java"]
+----
+package fr.lteconsulting;
+
+import fr.lteconsulting.outils.MonOutil;
+
+class MaClasse
+{
+	MaClasse()
+	{
+		MonOutil outil;
+		outil = new MonOutil();
+	}
+}
+----
+
+- écrire attribut
+- écrire méthode
+- constructeur
+-- délégation
+-- this et super
+
+=== Classes abstraites
+
+Classe dont on ne peut créer d'instance. Il est possible de déclarer des _méthodes abstraites_ dont le corps (l'implémentation) n'est pas fourni. Ces méthodes seront implémentées plus tard dans la hierarchie des sous classes de la classe abstraite.
+
+=== Classes finales
+
+Avec le mot-clé `final` on peut interdier aux autres classes d'hériter d'un classe.
+
+=== Champs et méthodes statiques
+
+Attribut statique:: un attribut partagé par toutes les instances d'une classe.
+
+Attribut d'instance:: chaque objet a SA propre valeur pour cet attribut
+
+=== Héritage
+
+Mot-clé `extends`.
+
+==== Conversion de type (`instanceof` et transtypage)
+
+Le système de typage de Java n'est pas unifié. Il y a les _types objet_ et les _types primitifs_.
+
+=== La classe `Object`
+
+Toutes les classes ont la classe `Object` comme super-classe si elles n'en n'ont pas déjà une autre.
+
+Les méthodes de la classe `Object` sont donc accessibles sur _tous_ les objets que l'on peut rencontrer.
+
+==== `boolean equals( Object other )` et `int hashCode()`
+
+Ces deux méthodes fonctionnent main dans la main et répondent à ces questions :
+
+- `equals` doit retourner `true` si l'objet passé en paramètre peut être considéré comme identique (au sens de l'application) à l'objet sur lequel cette méthode est appelée.
+- `hashCode` doit retourner le même résultat pour deux objets considérés identiques (donc retournant `true` si appelés sur `equals`).
+
+IMPORTANT: Il est important que ces deux méthodes soient implémentées de façon à garder leur résultat cohérents. De nombreuses structures de données dépendent de cette cohérence...
+
+==== `String toString()`
+
+Renvoie une représentation textuelle de l'objet sur lequel on appelle cette méthode.
+
+Il est en général utile de réimplémenter cette méthode de façon à obtenir un résultat _humain_ lorsque l'on combine une chaine de caractère avec un objet.
+
+L'implémentation de cette méthode dans la classe `Object` consiste à indiquer un code correspondant au type de l'objet suivi de l'adresse mémoire à laquelle cet objet est stocké.
+
+==== `Class<?> getClass()`
+
+Renvoie un objet représentant la classe de l'objet sur lequel on appelle cette méthode.
+
+=== Annotations introduction
+
+`@Deprecated`, `@Override`, ...
+
+=== Interfaces
+
+- séparer le contrat de l'implémentation
+- écrire une interface
+- implémenter une interface
+
+==== Définir une interface
+
+Nous définissons ici l'interface `IMonInterface` :
+
+[source,language="java"]
+----
+public interface IMonInterface {
+	// le mot clé public est facultatif car implicite
+	[public] void afficher();
+	
+	void autreMéthode();
+}
+----
+
+Et ensuite cette interface est _implémentée_ par la classe `UneClasse`.
+
+[source,language="java"]
+----
+public class UneClasse implements IMonInterface {
+	// attributs, méthodes, ...
+	
+	@Override
+	public void afficher() {
+		// .. <1>
+	}
+}
+----
+<1> Implémentation de la méthode `afficher()`.
+
+*Exercice* : recoder l'exercice du jeu de cartes, en créant une interface `ICarte`, une classe de base `AbstractBaseCarte` qui contient le champ `protected` `cout`. Seules `Sortilege` et `Creature` héritent de `AbstractBaseCarte`. Les trois classes de cartes implémentent `ICarte`. Ceci nous montre comment bien séparer implémentation et contrat d'utilisation.
+
+==== Exemple
+
+Soit le code suivant :
+
+[source,language="java"]
+----
+interface IContrat {
+  void commencer();
+  void terminer();
+}
+
+interface ICommencable {
+  void commencer();
+}
+
+interface IMangeable {
+  void manger();
+}
+
+interface IConsommable extends IMangeable {
+  void digerer();
+}
+
+class Base {
+  void manger() {
+    System.out.println( "Manger" );
+  }
+}
+
+abstract class ImplPartielle extends Base implements IContrat {
+  @Override
+  public abstract void commencer();
+  
+  @Override
+  public void terminer() {
+    System.exit( 0 );
+  }
+}
+
+class Implementation extends ImplPartielle implements IConsommable, IMangeable {
+  @Override
+  public void commencer() {
+    System.out.println( "Implementation::commencer()" );
+  }
+  
+  @Override
+  public void terminer() {
+    System.out.println( "Terminer" );
+	
+	super.terminer();
+  }
+}
+----
+
+Voici le diagramme de classe correspondant :
+
+image::exemple-interface-uml.jpg[]
+
+=== Les génériques
+
+Qu'est-ce qui peut être _générique_ en java ?
+
+- les classes,
+- les interfaces,
+- les méthodes.
+
+Type générique:: La classe/interface/méthode dont l'implémentation est écrite sans connaitre à l'avance l'intégralité des types sur lesquels elle s'appuie.
+
+Paramètre de type:: Le nom que l'on donne au type(s) inconnu(s) au sein de l'implémentation d'un type générique.
+
+Type argument:: Le type (réel) qui remplace le paramètre de type au moment de l'utilisation d'une classe/interface/méthode générique.
+
+Contrainte:: Condition(s) que l'on impose au type argument d'un type générique.
+
+==== Classes génériques
+
+Voici un exemple de définition d'une classe générique `Tableau` travaillant sur un paramètre de type `T` :
+
+[source,language="java"]
+----
+class Tableau<T> { <1>
+	private T tableau; <2>
+	
+	Tableau( int taille ) {
+		tableau = (T[]) new Object[taille]; <3>
+	}
+	
+	T get( int index ) { <4>
+		return tableau[index];
+	}
+	
+	void set( int index, T valeur ) {
+		tableau[index] = valeur;
+	}
+}
+----
+<1> Définition du paramètre de type `T`.
+<2> L'attribut `tableau` est un tableau de `T`.
+<3> Ce transtypage est obligatoire. On verra plus tard comment faire mieux.
+<4> On retourne un élément de type `T`.
+
+Voici un exemple de code utilisant la classe générique `Tableau` définie juste au dessus :
+
+[source,language="java"]
+----
+Tableau<String> tableau;
+
+// Syntaxe jusqu'à Java 6
+tableau = new Tableau<String>();
+
+// Syntaxe à partir de Java 7
+tableau = new Tableau<>();
+
+tableau.set( 4, "Une chaine de caractère" );
+----
+
+==== Méthodes génériques
+
+==== Spécifier des contraintes sur le type générique (ex: `<T extends ICarte>`...)
+
+==== Problème de la covariance
+
+*Exercice* : implémenter une classe `TableauDynamique<T>` permettant de stocker un nombre variable d'éléments de type `T`. La classe aura au moins les méthodes `T get(int index)`, `void set(int index, T value)` et `int size()`.
+
+*Exercice* : utiliser la classe `TableauDynamique<ICarte>` dans le projet de cartes...
+
+*Exercice* : refaire l'alogrithme du tri avec les génériques (interface `Triable` plus `<T extends Triable> T[] trier( T[] data )`). Attention, le tri ne fonctionnera plus sur les types primitifs (auto-boxing).
+
+*Exercice* : si on implémente l'algorithme de tri en prenant des données triables (`<T extends Triable>`), par fois la hierarchie des classes ne permet pas de modifier celle-ci. On définit donc une interface `Comparateur<T>` dont on demande une instance dans la nouvelle méthode `trier` : `<T> T[] trier( T[] data, Comparateur<T> comparateur)`. Vérifier que la méthode `trier(...)` a bien été implémentée deux fois. Bien comprendre que la contrainte de type permet de garantir la correspondance entre les types d'entrée et de sortie.
+
+=== Classes imbriquées
+
+Le langage Java permet de créer des classes à l’intérieur d’une autre classe. On parle de classes imbriquées (_nested class_)
+
+[source,language="java"]
+----
+class A {
+   private class B{
+   }
+}
+----
+
+Les classes imbriquées sont divisées en deux catégories : _statique_ ou _non statique_. On parle de classes statiques imbriquées (_static nested class_) et de classes internes (_inner class_) pour les classes imbriquées non statiques.
+
+Contrairement aux classes classiques qui ne peuvent être définies qu’avec une visibilité `public` ou `package`, les classes imbriquées peuvent être aussi bien `private`, `public`, `protected` ou `package`.
+
+==== Classes internes
+
+Une classe interne peut avoir accès aux méthodes et aux attributs de la classe englobante même si ces derniers sont déclarés en *private*.
+
+[source,language="java"]
+----
+public class A {
+    int a = 1;
+    B b = new B();
+    C c = new C();
+    
+    class B {
+        void test() {
+            a = a + 1;
+        }
+    }
+	
+    class C {
+        void test() {
+            a = a + 1;
+            b.test();
+        }
+    }
+}
+----
+
+Une classe interne ne peut pas exister si sa classe englobante n’existe pas. Dans l'exemple suivant il est donc nécessaire d'avoir une instance de A pour créer une instance de B :
+
+[source,language="java"]
+----
+void uneMethode() {
+	A a = new A(); <1>
+	
+	B b = a.new B(); <2>
+}
+----
+<1> Création d'une instance de A.
+<2> Création d'une instance de B reliée à a.
+
+==== Classes imbriquées statiques
+
+Une classe imbriquée statique se comporte avec la classe englobante comme n’importe quelle autre classe de haut niveau. Elle *ne peut pas* accéder aux attributs non statiques de la class englobante. Autrement dit, elle ne peut accéder *qu'aux membres statiques* de la classe englobante.
+
+Exemple :
+
+[source,language="java"]
+----
+public class A {
+    private static int a = 1;
+    
+    public static class B {
+        public void test() {
+            a = a + 1;
+        }
+    }
+}
+----
+
+On peut instancier la classe englobée sans avoir de référence à une instance de la classe englobante.
+
+[source,language="java"]
+----
+void uneMethode() {
+	A.B b = new A.B();
+	b.test();
+	System.out.println(A.a);
+}
+----
+
+==== Cas d'utilisation
+
+Les classes imbriquées sont utiles dans plusieurs cas :
+
+- Si une classe n’est utile qu’à une autre classe il est logique de l’intégrer directement dedans. Ceci aide à la lisibilité et la maintenabilité du code.
+- Si une classe a besoin d’accéder aux éléments d’une autre classe que l’on souhaite garder avec une visibilité privée, définir cette classe comme classe interne permet de répondre à cette problématique. Ceci améliore l’encapsulation.
+
+=== Classes anonymes
+
+Une classe anonyme est une classe déclarée et instanciée en même temps sans définir de nom (il sera donné par le compilateur). Cette classe ne peut être utilisée qu’à l’endroit où elle a été définie.
+
+Une classe anonyme a accès à tous les éléments accessibles à l'endroit de sa définition.
+
+[source,language="java"]
+----
+void uneMethode() {
+	Plateau plateau = new Plateau( 5, 2 );
+	
+	Piece piece = new Piece() { <1>
+		@Override
+		public char getDisplayChar() {
+			return 'X';
+		}
+	}
+	
+	plateau.placer( piece, new Coordonnee( 2, 2 ) );
+}
+----
+<1> On voit ici la création implicite d'une classe implémentant l'interface `Piece`. Cette classe n'a pas de nom : elle est anonyme.
+
+=== Les exceptions
+
+Mécanisme de gestion des erreurs en Java.
+
+Une *exception* est une instance de la classe (ou sous-classe) `Exception`. Elle représente une *erreur* survenue pendant le déroulement du programme.
+
+Trois mot-clés permettent de détecter et traiter ces erreurs : `try`, `catch` et `finally`.
+
+Lorsqu'une erreur est provoquée, une exception est levée grâce au mot-clé `throw`.
+
+Il est possible d'indiquer qu'une méthode peut potentiellement lever un type d'exception avec le mot-clé `throws`.
+
+==== La hiérarchie des classes d'Exception
+
+La classe mère de toutes les exceptions est la classe `Throwable`.
+
+image::exceptions.png[]
+
+`java.lang.Error`:: C'est sous cette classe que sont regroupées toutes les exceptions associées à des erreurs irrécupérables (par exemple: `OutOfMemoryError`, `StackOverflowError`, ...). Cette classe est réservée à Java, elle est d'ailleurs déclarée `final`, ce qui empêche d'en hériter.
+
+`java.lang.Exception`:: Cette classe est la classe mère de toutes les exceptions _gérées_ (par exemple `FileNotFoundException`). C'est à dire que ces exceptions doivent être déclarées au niveau des signatures des méthodes pouvant les lever (avec le mot-clé `throws`, voir plus loin dans le cours).
+
+`java.lang.RuntimeException`:: Cette classe est la classe mère des exceptions _non gérées_ (par exemple `NullPointerException`), c'est à dire qui peuvent être levées sans être déclarées au préalable dans la signature de la méthode (voir plus loin dans le cours).
+
+==== La classe `Throwable`
+
+La classe `Throwable` possède les caractéristiques suivantes :
+
+- un constructeur par défaut `Throwable()`,
+- un constructeur `Throwable( String message )` qui mémorise un message d'erreur,
+- une méthode `String getMessage()` qui permet de retrouver le message passé par le constructeur (`null` sinon),
+- une méthode `void printStackTrace()` qui écrit dans la sortie standard la pile d'exécution au moment de la levée de l'exception,
+- une méthode `void printStackTrace( PrintStream stream )` qui fait la même chose mais dans le flux indiqué en paramètre.
+
+La classe `Throwable` étant la classe mère de *toutes* les exceptions, toutes les exceptions bénéficient de ces fonctionnalités...
+
+==== Détecter et traiter une exception
+
+Si vous exécutez ce code :
+
+[source,language="java"]
+----
+public class TestException {
+	public static void main( String[] args ) {
+		int i = 3;
+		int j = 0;
+		
+		System.out.println("résultat = " + (i / j));
+	}
+}
+----
+
+Vous provoquerez la levée de l'exception `ArithmeticException` :
+
+----
+Exception in thread "main" java.lang.ArithmeticException: by zero
+	at tests.TestException.main(TestException.java:6)
+----
+
+Ce message signifie que l'exception `ArithmeticException` a été levée mais qu'elle n'a été _gérée_ par aucun code de votre programme. L'effet de ceci est donc l'arrêt complet du programme.
+
+Il est possible de gérer les exceptions levées, de reprendre la main sur l'exécution du programme et ainsi de poursuivre les opérations, même après la levée d'une exception. Ceci se fait avec les mot-clés `try`, `catch` et `finally` :
+
+[source,language="java"]
+----
+try {
+	// operation risquées;
+} catch (ExceptionInteressante e) {
+	// traitement de l'exception ExceptionInteressante
+} catch (Exception e) {
+	// traitement du cas d'exception général
+} finally {
+	// traitement exécuté dans tous les cas (exception levée ou pas)
+}
+----
+
+Les instructions situées dans le bloc `try` sont _surveillées_ :
+
+- Si aucune exception n'est levée pendant l'exécution du bloc `try`, l'exécution se poursuit avec le contenu du bloc `finally`.
+- Si une exception est levée pendant l'exécution du bloc `try`, l'exécution de celui-ci s'arrête immédiatement et l'exécution se poursuit avec l'exécution du bloc `catch` correspondant le mieux au type de l'exception levée.
+
+Dans tous les cas (exception levée ou pas), le bloc `finally` est exécuté après les autres (même si on fait `return` dans le bloc `try`).
+
+==== Déclarer la potentielle levée d'une exception
+
+Lorsqu'une méthode peut lever une exception *gérée*, celle-ci doit être déclarée au niveau de la signature de la méthode. L'objectif est multiple : avoir une valeur documentaire, préciser au compilateur que cette méthode pourra lever cette exception et obliger à ce que toute méthode qui l'appelle devra prendre en compte cette exception (traitement ou propagation).
+
+Par exemple, cette méthode doit déclarer `throws IOException` :
+
+[source,language="java"]
+----
+public static String saisir( String message ) throws IOException <2>
+{
+	System.out.println( message );
+	System.out.print( "> " );
+
+	BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
+	return reader.readLine(); <1>
+}
+----
+<1> La méthode `readLine()` peut provoquer l'exception `IOException` qui est une sous-classe de `Exception` (et non de `RuntimeException`).
+<2> Ceci oblige à préciser dans le prototype de `saisir(...)` que cette méthode peut lever `IOException`.
+
+Si l'exception potentiellement est gérée par la méthode, alors il n'est plus nécessaire de la déclarer avec `throws` :
+
+[source,language="java"]
+----
+public static String saisie( String message )
+{
+	System.out.println( message );
+	System.out.print( "> " );
+
+	BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
+	try <1>
+	{
+		return reader.readLine();
+	}
+	catch( IOException e ) <2>
+	{
+		e.printStackTrace(); <3>
+		return null; <4>
+	}
+}
+----
+<1> On surveille l'exécution de la méthode `readLine()`...
+<2> On définit le comportement à adopter si l'exception `IOException` est levée.
+<3> On affiche la pile d'appel ayant provoqué l'exception.
+<4> Mais on décide de retourner `null`...
+
+==== Les exceptions personnalisées
+
+Il est évidemment possible de définir des classes d'exception spécifiques à votre application. Celles-ci doivent être des sous-classes de `RuntimeException` (pour les exceptions non gérées) ou de `Exception`.
+
+Exemple : 
+
+[source,language="java"]
+----
+public class SaisieErroneeException extends Exception { <1>
+	public SaisieErroneeException() {
+	}
+
+	public SaisieErroneeException( String s ) {
+		super( s );
+	}
+}
+
+public class TestSaisieErroneeException {
+	public static void controle( String chaine ) throws SaisieErroneeException {
+		if( "".equals( chaine ) == true )
+			throw new SaisieErroneeException("Saisie erronee : chaine vide"); <2>
+	}
+
+	public static void main( String[] args ) {
+		String chaine1 = "";
+
+		try {
+			controle( chaine1 );
+		} catch ( SaisieErroneeException e ) { <3>
+			System.out.println( "Saisie erronee: " + e.getMessage() );
+		}
+	}
+}
+----
+<1> Nous sommes en train de définir une exception _gérée_.
+<2> Le mot clé `throws` sert à lever une exception.
+<3> Le `catch` ici permet le traitement spécifique de l'exception `SaisieErroneeException`. Toute autre classe d'exception ne sera pas _attrapée_.
+
+==== Exercices
+
+Vous pouvez utiliser cet http://perso.telecom-paristech.fr/~charon/coursJava/exercices/fact+Exc.html[exercice] pour vous familiariser avec la syntaxe des exceptions.
+
+=== Conventions de nommage
+
+En Java on respecte des conventions de nommage qui permettent une meilleure _lisibilité_ du code et qui apportent une _cohérence_ utile au travail d'équipe.
+
+CamelCase:: Le _camelCase_ est la manière la plus utilisée pour nommer en Java. _CamelCase_ veut dire que chaque première lettre d'un mot prend une majuscule, que tous les mots sont collés les uns aux autres et petite subtitlité, le premier mot ne prend pas de majuscule. Pourquoi _camelCase_ .
+
+==== Les packages
+
+- entièrement en minuscules,
+- les caractères autorisés sont alphanumériques (de a à z, de 0 à 9) et peuvent contenir des points (.),
+- tout package doit commencer par `com`, `edu`, `gov`, `mil`, `net`, `org` ou les deux lettres identifiant un pays (`fr` correspond à la France, `en` à l'Angleterre etc).
+
+==== Les classes et interfaces
+
+Les classes et interfaces sont nommées selon la méthode _camelCase_ mais commencent pas une majuscule. Il faut aussi éviter les abréviations et essayer d'utiliser des mots qui décrivent bien la classe tout en étant pas trop long.
+
+Exemple : `FenetrePrincipale`, `SelecteurDeFichiers`, etc.
+
+==== Les méthodes
+
+Les méthodes sont nommées selon la méthode -camelCase- et comportent généralement un verbe d'action. Cela donne par exemple : `fermeLaFenetre()`, `donnerDeLArgent()`, `manger()`, etc.
+
+En plus de cela, il faut savoir que dans une classe on retrouve souvent des méthodes de type _getter_ et _setter_ (accesseur, modificateur), pour récupérer une variable de classe ou la modifier sans toucher directement à la variable. Il se nomme généralement `getNomDeLaVariable()` et `setNomDeLaVariable(Object nomDeLaVariable)`. Il existe également d'autres mot-clés fréquemment utilisés comme _add_ et _remove_ (ajout, supprimer) pour ajouter et supprimer quelque chose : `addQuelqueChose(Object quelqueChose)`, `removeTout()`, etc.
+
+==== Les attributs et variables
+
+Les attributs et variables se nomment également en _camelCase_ et en commençant par une lettre (a-z). Le nom d'une variable devrait être court et clair. Les variables à un seul caractère sont à bannir sauf pour un usage temporaire (`i`, `j`, `k`, `l`, `m`, `n` pour les entiers et `c`, `d `, `e` pour les caractères).
+
+Cela donne par exemple : `nombrePopcorn`, `tailleAppartement`, `i`, etc.
+
+==== Les contantes
+
+Les constantes c'est-à-dire les attributs _static final_ doivent être écrites en majuscules et pour séparer les mots les `_` sont à utiliser.
+
+Cela donne par exemple : `LARGEUR_MAX`, `ID_COURANT`, etc.
+
+=== Autres conventions
+
+==== *On n'utilise JAMAIS le package par défaut.*
+
+==== Nommage explicite
+
+Utilisez un nommage explicite pour vos variables, méthodes et classes.
+
+Par exemple `indexListeProduits` vaut bien mieux que `iLP`. Surtout quand vous retournez dans un projet six mois après avoir créé cette variable !
+
+==== Cohérence du nommage
+
+On respecte une cohérence dans le nommage des classes. Par exemple on crée deux classes servlet qui s'appellent : `ListeProduitsServlet` et `AjouterProduitServlet`. On fera attention à rester cohérent et ne pas faire deux classes : `ListeProduitsServlet` et `ServletAjouterProduit`.
+
+En général, dans une équipe on définit au préalable les conventions de nommage à suivre pour les projets. Il faudra donc se conformer à ces conventions, de façon à conserver la cohérence du code.
+
+==== Organisation en package
+
+Les package permettent d'organiser vos classes, utilisez-les ! Dès qu'un package contient trop de classes avec des fonctionnalités variées on pense à les répartir dans des packages différents.
+
+Ceci vous aidera à trouver facilement vos classes (en fonction des fonctionnalités qu'elles implémentent) et à revenir plus facilement sur le projet plus tard.
+
+==== Pas de Warnings !
+
+Les warnings ne sont certes pas des erreurs mais méritent toutefois d'attirer votre attention. Ils sont des indicateurs donnés par le compilateur pour vous aider à éviter les problèmes.
+
+Il faut donc les éliminer, et un bon projet ne doit avoir _aucun_ warning.
+
+Pour les éliminer, on peut :
+
+- soit corriger effectivement la cause de l'apparition du warning,
+- soit, dans le cas ou le compilateur émet un warning (du genre _Unchecked cast warning_) mais que vous savez que votre code est correct, vous utiliserez l'annotation `@SuppressWarning` pour signaler au compilateur que vous êtes au courant du problème. Le warning n'apparaîtra plus et vous pourrez vous focaliser sur les warnings suivants.
+
+==== Les outils
+
+Il existe des outils automatiques permettant d'avoir une idée plus ou moins précise de la qualité du code.
+
+Sonar, ...
+
+=== Les collections
+
+NOTE: Le lecteur avide de précisions supplémentaires pourra lire ce http://www.jmdoudoux.fr/java/dej/chap-collections.htm[document] très complet de JM Doudoux.
+
+Les classes de collection représentent des objets capables de gérer un ensemble d'objets.
+
+Plusieurs familles de collections existent, avec une interface pour représenter chacune de ces familles. Chaque interface possède plusieurs implémentations répondant à des contraintes techniques variées. Toutes ces interface se retrouvent soit filles de l'interface `Collection` soit de `Map`.
+
+En général une classe de collection permet au moins de stocker un ensemble d'objets, avec des méthodes pour ajouter d'autres objets, en retirer et parcourir les objets présents dans la collection.
+
+Deux interfaces sont utilisées pour parcourir les collections : `Iterator` et `ListIterator`.
+
+Une interface et une classe pour permettre le tri de certaines collections : `Comparable` et `Comparator`.
+
+Deux classes comportant de nombreuses méthodes d'_outillage_ : `Arrays` et `Collections`.
+
+Certaines de ces collections proposent des fonctionnalités comme la suppression des doublons ou encore la recherche d'éléments. Ces opérations s'appuient en général sur le concept d'égalité entre objets définie par les méthodes `equals(...)` et `hashCode()`. Il est donc d'autant plus important d'implémenter ces méthodes correctement lorqu'on les surcharge.
+
+==== L'interface `Collection<E>`
+
+Cette interface est l'interface de base pour `List<E>` et `Set<E>`. Voici quelques méthodes importantes :
+
+`boolean add( E element )`:: Ajoute un élément à la collection
+
+`boolean addAll( Collection<? extends E> collection )`:: Ajoute les éléments d'une collection dans une autre.
+
+`void clear()`:: Vide la collection de tous ses éléments.
+
+`boolean contains( Object o )`:: Teste la présence d'un élément particulier dans la collection. Les méthodes `equals` et `hashCode` sont utilisées pour rechercher l'élément dans la collection. On parle donc de la présence d'un objet _identique_ au sens _applicatif_.
+
+`equals( Object other )` et `hashCode()`:: Ces méthodes sont redéfinies dans les collections pour refléter l'égalité de l'ensemble des éléments d'une collection.
+
+`int size()`:: Retourne le nombre d'éléments dans la collection.
+
+`boolean isEmpty()`:: Permet de savoir si une collection est vide. A utiliser de préférence au lieu de tester `if( collection.size() == 0 )`...
+
+`Iterator<E> iterator()`:: Renvoie un `Iterator` permettant de parcourir la collection. Cette méthode est issue de l'interface `Iterable` qui est utilisée par la boucle `for( Element e : iterableObject )`.
+
+==== `List<V>`, `ArrayList<V>`, `LinkedList<V>`
+
+Un classe qui implémente l'interface `List<V>` représente un ensemble ordonné d'objets de type _V_. Le contrat de `List<V>` n'interdit pas les doublons.
+
+`ArrayList<V>`:: Implémentation de l'interface `List<V>` grâce à un tableau redimensionnable. Non thread-safe. Autorise l'ajout d'élément `null`. La Javadoc est disponible https://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html[ici].
+
+`LinkedList<V>`:: Implémentation de l'interface `List<V>` utilisant une liste (doublement) chaînée.
+
+Voici quelques méthodes très utilisées de `List<V>` : `add( T element )`, `T get( int index )`, `ListIterator<T> listIterator()`, `T remove( int index )`, `T set( int index, T element )`, `List<T> subList( int indexFrom, int indexTo )` (attention ce n'est pas une copie !).
+
+==== `Set<V>`, `HashSet<V>`, `TreeSet<V>`, `LinkedHashSet<V>`
+
+Ensemble d'objet sans doublons. Ne permet pas l'accès direct à un élément de la collection (les éléments ne sont par ordonnés). Il existe une interface `SortedSet<V>` qui interdit les doublons et pour autant ordonne quand même les éléments.
+
+==== `Map<K, V>`, `HashMap<K, V>`, `TreeMap<V>`, `LinkedTreeMap<V>`
+
+Collection de couples d'objets _clé_, _valeur_. Une `Map<K, V>` permet d'associer des `V` à des `K`. Une fois l'association stockée dans l'objet _Map_, consulter l'objet de type `V` associé à une objet `K` est une opération qui sera réalisée avec une complexité algorithmique en _O(1)_.
+
+Un objet de type `Map<K, V>` permet de lier un objet `V` avec une clé de type `K`. Il est ainsi possible d'obtenir un objet à partir de sa clé.
+
+Quelques méthodes :
+
+`V put( K key, V value )`:: Associe un objet à une clé.
+
+`V get( Object key )`:: Retourne la valeur qui a été associée à la clé passée en paramètre, ou null s'il n'y en a pas.
+
+`boolean containsKey( Object key )`:: Indique si un objet est associé à la clé `key` dans la table associative.
+
+`boolean containsValue( Object value )`:: Indique si un objet `value` est stocké dans la table associative.
+
+`V remove( Object key ), qui supprime la clé de cette table, et la valeur qui lui est associée.
+
+`Set<Entry<K, V>> entrySet()`:: Retourne l'ensemble des couples clé-valeur (`Entry<K, V>`) contenues dans la table associative.
+
+`Set<K> keySet()`:: Retourne l'ensemble des clés contenues dans la table associative.
+
+`Collection<V> values()`:: Retourne l'ensemble des valeurs contenues dans la table associative.
+
+*Attention !* les `Map` n'ordonnent pas les couples clé-valeur. Lors du parcours de ces entrées, l'ordre du parcours n'est pas garanti ni censé être le même à chaque fois ! Ceci est illustré par ce petit bout de code :
+
+[source, language="java"]
+----
+import java.util.HashMap;
+
+public class TestHashMapIterator {
+	public static void main( String[] args ) {
+		HashMap<String, String> map = new HashMap<String, String>( 34 );
+		
+		map.put( "1", "un" );
+		map.put( "2", "deux" );
+		map.put( "3", "trois" );
+		map.put( "4", "quatre" );
+		map.put( "5", "cinq" );
+		
+		for( String s : map.keySet() ) {
+			System.out.print( s + " " );
+		}
+	}
+}
+----
+
+Les performances des opérations `get()` et `put()` sont constantes sous réserve que la répartition des éléments dans les différents buckets grâce à leur valeur de hachage soit équitable (implémentation de la méthode `hashCode()` des éléments de la table associative).
+
+==== `Queue<V>`, `LinkedList<V>`, `ArrayDequeue<V>`, `PriorityQueue<V>`
+
+==== La classe `Collections`
+
+Cette classe contient de nombreuses méthodes utilitaires statiques qui facilitent le travail avec les collections.
+
+[source,language="java"]
+----
+Map<String, Piece> m = Collections.synchronizedMap( new HashMap<String, Piece>() );
+----
+
+==== `Iterator<T>`
+
+L'interface `Iterator` permet un parcours très simple d'une collection. Trois méthodes sont fournies.
+
+`boolean hasNext()`:: Renvoie `true` si au moins un élément de la collection n'a pas encore été parcouru.
+
+`T next()`:: Retour l'élément suivant dans le parcours.
+
+`void remove()`:: Retire l'élément tout juste parcouru de la collection.
+
+Exemple d'utilisation:
+
+[source,language="java"]
+----
+Iterator iterator = collection.iterator();
+while( iterator.hasNext() ) {
+	System.out.println( "objet = " + iterator.next() );
+}
+----
+
+==== `ListIterator<T>`, `Comparable<T>`, `Comparator<T>`
+
+=== Communication entre objets
+
+==== Un à un unidirectionnel
+
+C'est le cas le plus simple. Un objet doit avoir accès à un autre objet. Dans ce cas, il suffit de créer un attribut de type `B` dans la classe `A`. On décide ensuite s'il faut mettre un setter du côté `A` ou bien si l'objet `B` est reçu ou construit dans le constructeur de `A`.
+
+==== Un à un bidirectionnel
+
+Dans ce cas, chaque partie de la relation possède une référence vers l'autre partie. `A` a donc un attribut de type `B` et `B` a un attribut de type `A`. Reste à décider comment et dans quel ordre s'effectue l'initialisation.
+
+==== Un à plusieurs unidirectionnel
+
+Dans ce cas, un objet de type `A` possède une relation vers plusieurs objets du type `B`. Il suffit alors d'avoir une _collection_ de `B` du côté de `A`.
+
+La collection peut être initialisée vide à la construction de `A` puis enrichie ensuite (lors de l'appel de méthodes destinées à cet effet).
+
+==== Un à plusieurs bidirectionnel
+
+`A` possède encore une collection de `B`. Par contre chaque objet `B` de la relation doit avoir une référence vers le `A` qui le contient.
+
+NOTE: Il faut prendre garde au moment de l'ajout, retrait ou modification que les attributs sont bien à jour après opération.
+
+==== Plusieurs à plusieurs
+
+Cas le plus complexe. Exemple de `Article` et `Categorie`. Un article peut appartenir à plusieurs catégories et une catégorie peut être liée à plusieurs articles.
+
+==== Le pattern `Observer`
+
+==== Le pattern `EventBus`
+
+=== Le pattern Commande
+
+L'intention du pattern `Commande` est d'_encapsuler une requête comme un objet, autorisant ainsi le paramétrage des clients par différentes requêtes, file d'attente et récapitulatifs de requêtes, et de plus permettant la révision des opérations_. Il est ici fait allusion à deux utilisations des commandes : découpler la création d'une requête de son exécution, et implémenter l'undo.
+
+On peut ainsi découpler :
+
+- La création de la commande,
+- Le paramétrage de la commande,
+- Son exécution (déclenchée par : menu, bouton, raccourci clavier, batch, ...).
+
+Voici une illustration en diagramme de classe :
+
+image::pattern-commande.jpg[Les acteurs du pattern Commande]
+
+Les différents roles des classes sont :
+
+- _Command_ : l'abstraction d'une action, qui permet de découpler la création et le paramétrage de l'action de son exécution,
+- _Invocator_ : celui qui déclenche l'exécution des commandes (ex. : le click d'un bouton, un raccourci clavier, ...),
+- _ConcreteCommand_ : un type de commande particulier avec son implémentation,
+- _Client_ : l'instanciateur de ConcreteCommand. Il fourni les paramètres passés au constructeur de ConcreteCommand,
+- _Receptor_ : la cible d'un type de commande particulier (ex. : un graphique pour une commande "drawLine", une Bibliothèque pour une commande "ajouterDisque", ...).
+
+Ils interagissent de la façon suivante :
+
+- Le _Client_ connaît les valeurs permettant de paramétrer une ConcreteCommand. Il l'instancie en lui passant ces paramètres.
+- L'_Invocator_ déclenche une Command.
+- La _ConcreteCommand_ exécute une action impactant le _Receptor_, en utilisant les paramètres que son constructeur a capturés.
+
+NOTE: Voici trois liens vers des informations additionnelles sur le pattern commande, à méditer : https://fr.wikipedia.org/wiki/Commande_(patron_de_conception), http://jfod.cnam.fr/NSY102/ed/ed_02_pattern/, http://zenika.developpez.com/tutoriels/java/patterns-command/#LVI-B.
+
+On voit que ce pattern permet bien de découpler l'instanciation d'un traitement de son exécution. C'est pour cela qu'on introduit souvent ce degré d'abstraction lorsque les lieux d'instanciation et d'exécution d'un traitement sont éloignés, dans l'espace ou dans le temps.
+
+La séparation modulaire est une motivation suffisante. Le pattern Command permet :
+
+- de garder des modules faiblement couplés : le module d'exécution a juste à connaître l'interface de Command sans se soucier de la création de nouvelles commandes,
+- en particulier, d'ajouter de nouveaux types de commandes (de nouvelles ConcreteCommand) dans le module de création, sans modifier le module d'exécution. Cette approche correspond au principe open-close de Robert Martin (voir aussi les autres principes SOLID du même auteur).
+
+Ceci était un extrait de ce http://zenika.developpez.com/tutoriels/java/patterns-command/[site], vous pouvez le consulter pour aller plus loin et comprendre par exemple comment le pattern Commande peut aider à implémenter les fonctions _undo_ et _redo_...
+
+
+
+
+
+
+
+
+=== Quelques classes du SDK
+
+==== `Date`
+
+La class `java.util.Date` permet d'encoder une date et d'effectuer des traitements.
+
+[source,language="java"]
+----
+Date date = new Date();
+Date date2 = new Date();
+
+date.after( date2 ); // retourne true ou false
+date.before( date2 ); // retourne true ou false
+date.getTime(); // ms depuis 1er Janvier 1970
+date.setTime( long time );
+----
+
+La classe `java.util.Calendar` possèdes des méthodes utiles pour manipuler les dates.
+
+[source,language="java"]
+----
+Calendar cal = Calendar.getInstance(); 
+cal.setTime( date.getTime() );
+cal.add( Calendar.DATE, nbJour );
+Date date = cal.getTime();
+----
+
+Utilisez ce http://www.jmdoudoux.fr/java/dej/chap-utilisation_dates.htm[document] pour aller plus loin...
+
+Demander le formattage d'une date :
+
+[source,language="java"]
+----
+SimpleDateFormat formater = null;
+
+Date aujourdhui = new Date();
+
+formater = new SimpleDateFormat("dd-MM-yy");
+System.out.println(formater.format(aujourdhui));
+
+formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+System.out.println(formater.format(aujourdhui));
+----
+
+Ou _parser_ une saisise utilisateur :
+
+[source,language="java"]
+----
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
+String dateString = "22/06/2016";
+try {
+	Date date = simpleDateFormat.parse( dateString );
+}
+catch( ParseException e ) {
+	e.printStackTrace();
+}
+----
+
+
+
+
+
+
+
+==== `StringBuilder`, ...
+
+==== `BigDecimal`
+
+Pour faire du calcul en virgule fixe avec une grande précision (les traitements sur les devises par exemple ne se feront jamais ni avec *float* ni avec *double* !), on peut utiliser la classe `BigDecimal`.
+
+[source,language="java"]
+----
+BigDecimal valeur1 = new BigDecimal( "10" );
+BigDecimal valeur2 = new BigDecimal( "0.09" );
+
+BigDecimal valeur = valeur1.multiply( valeur2 );
+
+System.out.println( valeur );
+
+// affiche 0.90
+----
+
+Attention aux erreurs de précision lorsque l'on crée des instances de `BigDecimal` :
+
+[source,language="java"]
+----
+BigDecimal valeur1 = new BigDecimal( 2.8 );
+BigDecimal valeur2 = new BigDecimal( "2.8" );
+
+System.out.println( "valeur1=" + valeur1 );
+System.out.println( "valeur2=" + valeur2 );
+
+// affiche :
+// valeur1=2.79999999999999982236431605997495353221893310546875
+// valeur2=2.8
+----
+
+==== Utilisation du système de fichiers
+
+Consultez la section _Utilisation de java.io_ de ce https://openclassrooms.com/courses/apprenez-a-programmer-en-java/les-flux-d-entree-sortie[document] pour connaître l'API de base des fichiers.
+
+Voici trois codes très classiques dans le thème de la gestion des fichiers.
+
+[source,language="java"]
+----
+static void parcourir( String path )
+{
+	File file = new File( path );
+	if( file.exists() )
+	{
+		file.isDirectory();
+		file.isFile();
+		File[] files = file.listFiles();
+		file.getParentFile();
+		file.delete();
+		file.mkdir();
+		file.mkdirs();
+		file.length();
+	}
+
+	try
+	{
+		File tempFile = File.createTempFile( "prefix", "suffix" );
+	}
+	catch( IOException e )
+	{
+		e.printStackTrace();
+	}
+}
+
+static void lireFichierTexte( String path )
+{
+	File file = new File( path );
+
+	FileInputStream fis;
+	try
+	{
+		fis = new FileInputStream( file );
+
+		InputStreamReader isr = new InputStreamReader( fis, "UTF8" );
+
+		BufferedReader reader = new BufferedReader( isr );
+
+		reader.readLine();
+
+		reader.close();
+
+		isr.close();
+
+		fis.close();
+	}
+	// FileInputStream
+	catch( FileNotFoundException e )
+	{
+		e.printStackTrace();
+	}
+	// InputStreamReader
+	catch( UnsupportedEncodingException e )
+	{
+		e.printStackTrace();
+	}
+	// reader.readLine();, reader.close(); isr.close(), fis.close()
+	catch( IOException e )
+	{
+		e.printStackTrace();
+	}
+}
+
+static void ecrireFichierTexte( String path )
+{
+	boolean utilisePrintWriter = false;
+
+	File file = new File( path );
+
+	try
+	{
+		FileOutputStream fos = new FileOutputStream( file );
+
+		if( utilisePrintWriter )
+		{
+			PrintWriter pw = new PrintWriter( fos );
+
+			pw.print( 23 );
+			pw.println( "coucou" );
+
+			pw.flush();
+
+			pw.close();
+		}
+		else
+		{
+			OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF8" );
+
+			Writer out = new BufferedWriter( osw );
+
+			out.append( "Website UTF-8" ).append( "\r\n" );
+
+			out.flush();
+
+			out.close();
+
+			osw.close();
+		}
+
+		fos.close();
+	}
+	// new FileOutputStream( file );
+	catch( FileNotFoundException e )
+	{
+		e.printStackTrace();
+	}
+	// new OutputStreamWriter( fos, "UTF8" );
+	catch( UnsupportedEncodingException e )
+	{
+		e.printStackTrace();
+	}
+	// append(), flush() et close()
+	catch( IOException e )
+	{
+		e.printStackTrace();
+	}
+}
+----
+
+
+
+
+
+
+
+http://www.jmdoudoux.fr/java/dej/indexavecframes.htm
+
+Logging
+
+Réseau
+
+Les threads
+
+JDBC
+
+JPA
+
+==== Java IO
+
+Cette extension concerne les flux d'entrées et sorties en général (fichiers, réseau, buffer).
+
+Les deux classes abstraites InputStream et OutputStream gèrent les entrées et sorties binaires, utilisant des tableaux d'octets.
+
+Les sous-classes de celles-ci sont plus spécialisées :
+
+FileInputStream et FileOutputStream gèrent les fichiers,
+
+ByteArrayInputStream et ByteArrayOutputStream lisent/écrivent depuis/vers un tableau d'octets.
+
+Les classes Reader et Writer utilisent les tableaux de caractères.
+
+Leurs sous-classes sont également plus spécialisées :
+
+FileReader et FileWriter gèrent les fichiers,
+
+StringReader et StringWriter lisent/écrivent depuis/vers une chaîne de caractères.
+
+
+== Les principes de la conception objet
+
+=== DRY
+
+**D**on't **R**epeat **Y**ourself !
+
+=== SOLID
+
+Vous pouvez obtenir des détails https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design[ici] et https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)[la]...
+
+- **S**ingle Responsibility principle : a class should have only a single responsibility (i.e. only one potential change in the software's specification should be able to affect the specification of the class).
+- **O**pen/Closed principle : software entities should be open for extension, but closed for modification.
+- **L**iskov Substitution principle : objects in a program should be replaceable with instances of their subtypes without altering the correctness of that program. Reflète l'*importance du contrat*.
+- **I**nterface Segregation principle : many client-specific interfaces are better than one general-purpose interface.
+- **D**ependency Inversion principle : one should “Depend upon Abstractions. Do not depend upon concretions.
+
+=== GRASP
+
+*General responsibility assignment software patterns*.
+
+Article https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)[Wikipedia].
+
+=== KISS
+
+*Keep it simple, stupid*.
+
+Article https://en.wikipedia.org/wiki/KISS_principle[Wikipedia].
+
+Bjarne Stroustrup : "Make Simple Tasks Simple!".
+
+Antoine de Saint-Exupéry : "It seems that perfection is reached not when there is nothing left to add, but when there is nothing left to take away".
+
+Albert Einstein : "Make everything as simple as possible, but not simpler".
+
+=== Les design patterns
+
+
+=== Communication entre objets (patterns de communication)
+
+
+
+
+== A suivre...
+
+- Java EE - Architectures distribuées
+- Java EE - Servlets, JSP, EJB
+- XML, DTD, XSL, XSLT
+- RIA - Rich internet applications
+- HTML5 CSS3 Javascript, Typescript
+
+- Java : file system, threads, ...
+- Tests unitaires
+- Maven
+- GWT
+- Spring IOC et TDD
+- SOA - Approche orientée services
+- Spring Boot -> les indispensables : JPA, IOC, conf discovery, ...
+- Docker
+
+TOTAL = 8 semaines.
+
+
+

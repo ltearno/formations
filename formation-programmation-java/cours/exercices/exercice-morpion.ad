@@ -1,0 +1,825 @@
+= TP Morpion Webapp
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Exercices de programmation orientée objet avec Java
+:source-highlighter: highlightjs
+:imagesdir: images-tp-morpion
+
+LTE Consulting (C) - 2016
+
+toc::[]
+
+== Introduction
+
+Implémentation d'une application web plateforme de jeux.
+
+== Conception
+
+=== Vues
+
+image::vues.jpg[Les différentes vues de l'appication]
+
+=== Modèle de donnée
+
+image::modele-donnee.jpg[Le modèle de donnée]
+
+=== URLs de l'application
+
+image::urls.jpg[Les différentes URLs de l'application]
+
+=== Structure de fichiers
+
+image::structure-fichiers.jpg[La structure de fichiers]
+
+== Architecture
+
+=== Servlets de vue
+
+La classe `VueServlet`
+
+=== Données dans les scopes
+
+La classe `DonneesScope`
+
+Dans les scopes nous stockerons:
+
+- en scope APPLICATION:
+-- "joueurs" : les joueurs enregistrés dans l'application.
+-- "parties" : les parties enregistrées dans l'application.
+- en scope SESSION:
+-- "joueurConnecte" : le joueur connecté, objet de la classe `Joueur`
+
+== Réalisation
+
+=== Etape 1
+
+Avoir un programme propre, respectant les conventions d'écritures, avec un code correctement formatté.
+
+Avoir un code sans répétition.
+
+Avoir un code avec des méthodes courtes (une dizaine de lignes). Créer des méthodes si besoin pour découper le traitement en plusieurs sous-parties.
+
+Avoir un code bien localisé. Les responsabilités des différentes classes doivent être bien établies.
+
+Avoir bien appliqué les "patterns" _VueServlet_ et _DonneesScope_.
+
+=== Etape 2 - Connexion / Déconnexion
+
+Créer la classe `Joueur` en suivant le modèle de donnée.
+
+Dans WEB-INF, créer deux JSP `login.jsp` et `accueil.jsp`
+
+Dans `accueil.jsp`, écrire un message de bienvenue en utilisant l’expression ${joueur.pseudo} pour 
+afficher le pseudo du joueur connecté. Cette expression appelle la méthode ‘getPseudo()’ de l’objet associé 
+à la clé "joueur" dans la requête.
+
+Cette vue doit aussi afficher un lien ou un bouton vers l'url "logout" 
+que l'on utilisera pour se déconnecter (et que l'on implémente juste après).
+
+Dans `login.jsp`, écrire un formulaire qui envoie en POST les champs ‘login’ et ‘password’ à l'url "login". (utiliser 
+la balise <input type=”password”... pour le mot de passe).
+
+Créer la servlet `AccueilServlet` héritant de `VueServlet`. Cette servlet est reliée à l'url "index.html".
+
+Dans sa méthode `doGet`, implémenter l'algorithme suivant:
+
+- Si un joueur est connecté, afficher la vue "accueil". (Pour connaitre le joueur connecté, c'est à dire le joueur en session, on 
+crée dans la classe `DonneesScope` une méthode `getJoueurSession(...)`). Pour afficher la vue "accueil", on ajoute la méthode correspondante
+à la classe `VueServlet` (`vueAccueil(...)`), cette méthode prendra entre autres le paramètre `joueur` à passer à la vue 
+(pour l'affichage du message de bienvenue).
+- Si aucun joueur n'est connecté, afficher la vue "login" (il faut donc créer la méthode `vueLogin` dans la classe `VueServlet`. 
+Remarquez que cette méthode n'a pas besoin d'autres paramètres que la requête et la réponse !).
+
+Créer une classe servlet `LoginServlet` (héritant de `HttpServlet`), branchée sur l’url ‘/login’. Cette classe suit le même pattern _action/redirection_ que la servlet `LogoutServlet` de l'exercice sur ce pattern.
+
+Dans la méthode ‘doPost’, implémenter l’algorithme suivant :
+
+- Obtenir les paramètres de la requête ‘login’ et ‘password’
+- Créer un objet de la classe Joueur avec ces valeurs (le pseudo et le caractère sont pour l'instant à une valeur de votre choix)
+- Positionner cet objet dans la session (à l'aide d'une méthode `setJoueurSession()` à créer dans la classe `DonneesScope`)
+- Rediriger le navigateur vers son "referer" ou 'index.html' s'il n'y en a pas.
+
+Créer une classe servlet `LogoutServlet` (héritant de `HttpServlet`), branchée sur l’url ‘/logout. Cette classe suit le même pattern _action/redirection_ que la servlet `LogoutServlet` de l'exercice sur ce pattern.
+
+Les méthodes `doPost` et `doGet` ont exactement le même comportement : vider la session. Elles appelleront donc toutes les deux
+une méthode `traiterRequete` que vous rajoutez dans la servlet.
+
+Dans cette méthode traiterRequete’, implémenter l’algorithme suivant :
+
+- Appeler la méthode `viderSession(..)` que vous créez dans la classe `DonneesScope` pour vider la session en cours.
+- Rediriger le navigateur vers son "referer" ou 'index.html' s'il n'y en a pas.
+
+=== Etape 3 - Classe de base pour les servlet d'actions
+
+N'avez vous pas constaté que nous écrivons poour la deuxième fois un code de la forme
+
+[source,language=java]
+----
+String redirection = req.getHeader( "referer" );
+if( redirection == null )
+	redirection = "index.html";
+
+response.sendRedirect( redirection );
+----
+
+Ce bout de code nous servira à chaque fois que nous souhaiterons rediriger le navigateur à partir d'une servlet d'action.
+
+Pour remédier à cette situation, nous allons créer une classe de base `ActionServlet` qui aura une méthode `rediriger(...)` avec
+le code précédent.
+
+Implémentez cette servlet.
+
+Faites de vos classes de servlet d'actions des sous classes de cette servlet.
+
+Dans ces servlet d'actions (`LoginServlet` et `LogoutServlet`), changer votre code pour utiliser la méthode que vous venez d'écrire.
+
+Toutes les prochaines servlet d'actions que nous écrirons respecterons ce pattern.
+
+=== Etape 4 - Un peu d'organisation
+
+Créer les sous packages `servlet.action` et `servlet.vue`.
+
+Ranger `VueServlet`, `JeuServlet` et `AccueilServlet` dans le bon package.
+
+Ranger `ActionServlet`, `LoginServlet` et `LogoutServlet` dans le bon package.
+
+=== Etape 5 - Authentification
+
+Notre application ne vérifie pas le login et mot de passe de l'utilisateur! D'ailleurs elle n'a même pas connaissance 
+d'une "base" d'utilisateurs par rapport à laquelle elle pourrait vérifier les informations données par le joueur pour se connecter.
+
+Dans cette étape nous allons :
+
+- Enregistrer dans le scope APPLICATION la liste des Joueurs connus de l'application (travail dans la classe `DonneesScope`).
+- Confronter les informations de connexion à cette liste.
+
+Dans la classe `DonneesScope` créer une nouvelle méthode permettant de récupérer la liste des joueurs connus de l'application. C'est 
+dans cette liste que nous rajouterons les joueurs inscrits (avec le formulaire de création de compte). Et c'est grâce à cette liste 
+que nous vérifierons le login et mot de passe de l'utilisateur.
+
+Cette méthode s'appelle `List<Joueur> getJoueursApplication( ServletContext context )`, elle reçoit en paramètre un objet du type `ServletContext`.
+
+Son algorithme est le suivant (car elle doit créer et enregistrer la liste des joueurs la première fois qu'elle est appelée) :
+
+- Obtenir l'objet liste des joueurs stocké dans le scope APPLICATION.
+- Si aucune liste n'existe, en créer une et l'enregistrer dans le scope APPLICATION.
+- Retourner la liste des joueurs.
+
+Maintenant, dans la servlet de login (`LoginServlet`), dans la méthode `doPost` qui traite le formulaire de connexion, 
+au lieu de créer systématiquement un joueur, parcourez la liste des joueurs de l'application et ne connectez le joueur
+que si le login et le mot de passe fournis correspondent.
+
+Que le login ait fonctionné ou pas, continuez à rediriger l'utilisateur comme précédemment.
+
+Il n'est normalement à ce stade plus possible de se connecter à l'application ! Ceci est dû à ce que notre liste d'utilisateur est 
+créée vide et que nous n'avons rien écrit pour la remplir...
+
+=== Etape 6 - Création de compte
+
+Ajouter dans la JSP `login.jsp` un lien vers l'url "creationCompte.html", vers la page de création de compte donc.
+
+Création de la JSP `creationCompte.jsp` : une JSP avec un formulaire conformément à la spécification de la vue dans la 
+partie _Conception_ de ce document. Le formulaire envoie le
+formulaire en POST à l'url "creerCompte".
+
+Créer une servlet de vue `CreationCompteServlet` qui affiche la vue "creationCompte". On la branche sur l'url "creationCompte.html".
+
+Création de la servlet d'action `CreerCompteServlet` (hérite de `ActionServlet`) reliée à l'url "creerCompte".
+
+Dans cette servlet, la méthode `doPost` implémente l'algorithme suivant :
+
+- Récupérer les valeurs des champs du formulaire.
+- Vérifier que les valeurs 'mot de passe' et 'confirmation du mot de passe' sont identiques.
+- Vérifier qu'aucun joueur avec ce login n'existe déjà.
+- Si une des étapes précédentes échoue, faire la redirection et c'est tout.
+- Créer un objet joueur avec les informations du formulaire.
+- Ajouter ce joueur dans la liste des joueurs de l'application.
+- Enregistrer ce joueur en session.
+- Faire une redirection vers l'url "index.html" (dans ce cas on n'utilise pas le referer...).
+
+Relancer l'application, la création de compte doit fonctionner.
+
+=== Etape 7 - Création des parties
+
+Nous avons maintenant une application qui permet l'enregistrement et l'authentification de ses utilisateurs.
+
+La prochaine étape consiste à proposer au joueur de créer une partie. Une fois créée par un joueur, la partie est en attente d'un autre joueur. Cet autre joueur pourra rejoindre la partie grâce à ce que nous implémenterons dans l'étape d'après.
+
+Pour l'instant focalisons-nous sur la création de partie.
+
+Tout d'abord, écrivez la classe `Partie` avec les attributs `nom`, `plateau` et `joueurs`. Ecrivez un constructeur permettant de spécifier le nom de la partie ainsi que la taille du plateau.
+
+L'application stocke dans le scope APPLICATION la liste des parties créées (qui peuvent être en attente de joueur, en cours, ou terminées). Nous stockerons la liste des parties dans l'attribut "parties" du scope APPLICATION.
+
+Ecrivez la méthode `List<Partie> DonneesScope.getPartiesApplication( ServletContext context )` qui retourne la liste des parties de l'application. Si aucune partie n'a été enregistrée, la méthode doit au moins retourner une liste vide et l'avoir enregistrer en scope APPLICATION.
+
+Dans la vue 'Accueil', ajoutez un lien ou un bouton vers l'url "creationPartie.html" sur laquelle vous brancherez une nouvelle servlet de vue appellée `CreationPartieServlet` couplée (comme d'habitude) à la jsp `WEB-INF/creationPartie.jsp`.
+
+Implémentez cette vue, qui est décrite au début de ce document, et qui permet au joueur de choisir le nom de la partie ainsi que la taille du plateau. **Ommettez pour l'instant la partie permettant de choisir si le joueur adverse est humain ou l'ordinateur**. Cette vue est donc un formulaire.
+
+Les données du formulaire que l'utilisateur rempli sont à envoyer à l'url "creerPartie" en mode `POST` qui est branchée sur une nouvelle servlet d'action que l'on appellera `CreerPartieServlet`.
+
+Dans cette servlet, créez une nouvelle instance de la classe `Partie`, avec le nom et la taille désirés par le joueur. Enregistrez le joueur qui a fait l'action de créer la partie dans la partie elle-même (en ajoutant une méthode `addJoueur( Joueur joueur )` à la classe `Partie`).
+
+Ajouteze ensuite cette nouvelle partie à la liste des parties de l'application.
+
+Après cette action, redirigez le joueur vers l'url d'accueil.
+
+==== Question additionnelle
+
+Dans le code précédent, quelles erreurs possibles sont à prendre en compte et qui ne l'ont pas été ?
+
+Comment feriez-vous pour gérer ces erreurs ? Pour les signifier à l'utilisateur ?
+
+Cela ne fait-il pas plusieurs fois que vous écrivez la ligne `response.sendRedirect( "index.html" );` ? Quel serait l'avantage d'écrire ce code dans `ActionServlet` et de le réutiliser dans les servlets d'actions ?
+
+
+
+
+=== Etape 8 - Création des utilisateurs au démarrage (facultatif)
+
+A chaque fois que vous redemarrez le serveur, toutes les données sont perdues ! Autant les joueurs que les parties que tout le reste...
+
+A terme cela ne sera plus un problème puisque nous stockerons les données de l'application dans une base de données.
+
+Mais en attendant, il est fastidieux d'avoir à chaque redémarrage à créer des joueurs et des parties.
+
+Nous allons donc insérer du code qui va s'exécuter au démarrage de l'application, et qui créera deux joueurs et une partie.
+
+Java EE nous offres des _points d'entrée_ nous permettant d'exécuter du code à des moments importants dans le cycle de vie de l'application.
+
+Nous allons créer ce qui s'appelle un `Listener`. Il s'agit d'une simple classe annotée de façon à ce que le serveur d'application sache en démarrant votre application que cette classe s'attend à voir ses méthodes appelées à différentes étapes du cycle de vie de l'application.
+
+Créez une nouvelle classe appelée `ApplicationListener`. Annotez cette classe avec l'annotation `@WebListener`.
+
+Déclarez ensuite que cette classe implémente l'interface `ServletContextListener`. Ajoutez les méthodes `contextInitialized` et `contextDestroyed` issues de cette interface.
+
+La méthode `contextInitialized` sera appelée par le serveur d'application juste après que celle-co soit initialisée. Le paramètre `servletContextEvent` de cette méthode contient une méthode `getServletContext()` qui vous permet de retrouver le contexte applicatif et donc le scope APPLICATION.
+
+Vous pouvez donc utiliser les méthodes de `DonneesScope` liées au scope applicatif pour créer deux joueurs et une partie dans le scope APPLICATION.
+
+
+
+=== Etape 9 - Rejoindre une partie
+
+Maintenant que notre application donne la possibilité aux joueurs de créer une partie, permettons à un autre joueur de rejoindre la partie créée par le premier joueur.
+
+Dans la vue _accueil_, ajoutez un lien vers l'url "ralliementPartie.html", sur laquelle vous brancherez une servlet de vue `RalliementPartieServlet` et une nouvelle jsp "ralliementPartie".
+
+L'objectif de cette page est de proposer à l'utilisateur connecté la liste des parties :
+
+- dont il ne fait pas partie des joueurs,
+- dans lesquelles il reste au moins une place (c'est-à-dire qu'il n'y a actuellement qu'un joueur dans la partie).
+
+Le code Java permettant de faire ce filtrage (liste des parties auxquelles peut se joindre l'utilisateur connecté) sera placé dans la méthode `doGet` de la servlet `RalliementPartieServlet`.
+
+Vous pourrez créer des méthodes dans la classe `Partie` comme `joueurPresent( Joueur joueur )` ou encore `possedePlaceLibre( Joueur joueur )` pour rendre plus claire l'algorithme de la servlet.
+
+Le code HTML/JSP affichant la liste de ces parties se trouvera dans le fichier jsp "WEB-INF/ralliementPartie.jsp".
+
+Ecrire une nouvelle méthode `vueRalliementPartie` dans la classe `VueServlet` qui permet d'afficher une liste de `Partie`s.
+
+Cette méthode passe la liste des parties à afficher à la vue JSP, comme d'habitude, en l'associant sous la forme d'un attribut de la requête.
+
+A chaque partie correspondra un bouton qui enverra un formulaire POST à l'URL "rejoindrePartie" avec en paramètre le nom de la partie à rejoindre, branché à la servlet d'action `RejoindrePartieServlet`.
+
+Dans cette servlet d'action, retrouvez la partie demandée, ajouter le joueur à cette partie et redirigez vers l'URL d'accueil pour l'instant (plus tard on redirigera vers l'url de la partie elle-même).
+
+
+=== Etape 10 - Problèmes d'identifiant
+
+Que se passe-t-il si deux parties ou plus possèdent le même nom ?
+
+Il sera pour notre programme impossible de différencier l'une ou l'autre.
+
+Nous allons donc utiliser le concept d'**identifiant** pour repérer les différentes parties de l'application.
+
+Ajoutez un attribut privé `id` de type `String` à la classe `Partie`.
+
+Afin que chaque partie ait un identifiant différent, nous allons utiliser une classe de la bibliothèque Java standard qui permet de générer des identifiants uniques.
+
+Afin d'obtenir un identifiant unique, on peut utiliser le code suivant :
+
+[source,language=java]
+----
+// La classe UUID se situe dans le package java.util
+this.id = UUID.randomUUID().toString();
+----
+
+_Nous avions déjà effectué cette opération dans le project BibliothèqueAudio_.
+
+Ajoutez également la méthode `getId()` retournant l'identifiant de la partie.
+
+Maintenant, corrigez la JSP "ralliementPartie" pour générer des boutons avec l'identifiant de la partie au lieu de son nom.
+
+Corrigez également `RejoindrePartieServlet` afin d'être cohérent avec le nouveau comportement.
+
+Vérifiez qu'un joueur non présent dans une partie est accepté si la partie n'a qu'un joueur.
+
+Vérifiez qu'un joueur ne se voit pas proposé à rallier les parties qu'il a lui-même créées.
+
+
+=== Etape 11 - Sélection de la partie pour jouer
+
+Les joueurs sont là, les parties sont créées, les joueurs peuvent s'y inscrire. Il ne reste plus qu'à... jouer !
+
+Encore faut-il donner la possibilité au joueur de choisir la partie à laquelle il veut jouer (en effet, vu l'architecture de notre programme, un joueur peut participer à autant de perties qu'il le désire).
+
+Ajoutez dans la page d'accueil un lien vers l'url "continuerPartie.html", branché sur une servlet de vue `ContinuerPartieServlet` et une JSP "continuerPartie" que vous créez pour l'occasion.
+
+La JSP à afficher devra proposer à l'utilisateur le choix parmis les parties auxquelles il participe (et qui ne sont pas en attente de joueur)... Cette JSP ressemble fort à celle créée à l'étape précédente à l'exception que le choix se fait maintenant en cliquant sur un lien et donc en envoyant une requête GET avec l'identifiant de la partie en paramètre.
+
+Ecrivez la servlet `ContinuerPartieServlet` et la jsp correspondante. Le choix d'une partie amène le joueur à l'url "partie.html?id=IDENTIFIANT_PARTIE".
+
+Vérifiez que le tout fonctionne.
+
+Nous y sommes presque ! Mais vous devez surement obtenir une page 404 en choisissant la partie !
+
+Suite à l'étape d'après.
+
+=== Etape 12 - Jouer une partie
+
+La page permettant de jouer se trouve à l'url "partie.html". On y affiche la partie en cours et on offre la possibilité au joueur dont c'est le tour de cliquer sur une case pour poser sa pièce.
+
+Créez une servlet de vue `PartieServlet` branchée à l'url "partie.html". L'identifiant de la partie à afficher est donné par le paramètre `id` de la requête.
+
+Dans la méthode `doGet` de cette servlet, retrouvez le joueur connecté (à partir de la session avec `DonneesScope`) ainsi que la partie en cours (avec le paramètre `id` de la requête).
+
+A cette url, on affiche le plateau de la partie en cours. Si c'est au tour du joueur connecté de jouer, on lui permettra d'envoyer à l'url "jouerCoup" en POST une requête portant les informations suivantes : "identifiant de partie", "x", "y".
+
+S'inspirer du mini-projet précédent avec la jsp "jeu.jsp" pour écrire cette partie du programme (dans un soucis de cohérence, vous appellerez la JSP "partie.jsp").
+
+
+=== Etape 13 - Améliorations
+
+Nous voilà avec un programme fonctionnel (les joueurs peuvent s'inscrire et jouer ensemble).
+
+Mais sur le plan ergonomie, l'interface graphique laisse beaucoup à désirer.
+
+En effet, le nombre d'étapes et de clicks à effectuer est assez grand.
+
+On se propose d'améliorer l'ergonomie de l'application.
+
+Les améliorations consistent en ces points :
+
+- après création d'une partie, on souhaite directement aller à la page de cette partie.
+- au lieu de proposer deux liens "rejoindre partie" et "continuer partie", on affichera un tableau récapitulatif de toutes les parties avec un bouton pour chaque action possible (_rejoindre_ ou _continuer_.
+
+==== Amélioration de la création de partie
+
+Lorsqu'un joueur crée un partie, il va être emmené directement vers la page de la partie (partie.html?id=IDENTIFIANT_PARTIE). Mais comme la partie à ce stade n'a qu'un joueur, on considère qu'elle est en attente et qu'il n'est pas encore possible de jouer.
+
+Il faudra donc afficher une vue différente à partir de `PartieServlet` pour signifier au joueur que la partie attend un joueur.
+
+Créez une vue JSP affichant le message "Partie en attente, rechargez la page pour actualiser". Dans le cas où la partie à afficher par `PartieServlet` a moins de deux joueurs, on affichera cette vue à la place du plateau de jeu.
+
+===== Aide
+
+Dans la classe `ActionServlet`, ajoutez une méthode `redirigerPartie( Partie partie, HttpServletResponse response )` qui va faire la redirection vers l'url de la partie passée en paramètre. Pour rappel, l'url d'une partie est `partie.html?id=IDENTIFIANT_PARTIE`.
+
+Utilisez cette nouvelle méthode dans la classe `CreerPartieServlet` pour rediriger le joueur vers la partie qu'il vient de créer au lieu de le rediriger vers l'accueil.
+
+Il faut maintenant s'assurer que l'on affiche un message "PARTIE ${NOMM DE LA PARTIE} EN ATTENTE D'UN AUTRE JOUEUR" lorsque l'on accède à l'url "partie.html" mais que la partie ne contient pas les deux joueurs nécessaires.
+
+Créez une vue JSP "partieAttente.jsp" avec ce message.
+
+Créez la méthode correspondante dans la classe `VueServlet`.
+
+Dans la classe `PartieServlet`, affichez cette nouvelle vue quand la partie à afficher contient moins de deux joueurs.
+
+==== Amélioration du choix des parties
+
+Au lieu d'afficher un lien "rejoindre partie" et "continuer partie", nous allons afficher la liste des parties de l'application et proposer des actions différentes en fonction de l'état de la partie.
+
+Nous en profiterons pour proposer aussi au joueur de suivre une partie dans laquelle il n'est pas joueur (on se réserve pour plus tard de rajouter aux parties une caractéristique de visibilité qui permettra au créateur de la partie de spécifier si celle-ci peut être _observée_ par des joueurs étrangers à la partie).
+
+Modifiez la vue d'accueil afin d'afficher les parties et les actions disponibles sur chacune d'elle.
+
+Voici les actions disponibles sur une partie en fonction de son état :
+
+- Partie créée avec un seul joueur : REJOINDRE (si le joueur connecté n'est pas celui actuellement dans la partie).
+- Partie avec deux joueurs dont le joueur connecté fait partie : CONTINUER.
+- Partie dont le joueur connecté ne fait pas partie : OBSERVER.
+
+===== Aide
+
+Nous allons maintenant afficher dans l'écran d'accueil un tableau de cette forme (imaginons que le joueur connecté s'appelle Alphonse) :
+
+|======
+| Nom partie   | Joueurs présents  | Action
+| XXXXXX       | Robert            | [REJOINDRE], [OBSERVER]
+| YYYYYY       | Robert, Anaïs     | [OBSERVER]
+| ZZZZZZ       | Alphonse, Robert  | [CONTINUER]
+|======
+
+Dans la classe `VueServlet`, modifiez la méthode `vueAccueil` pour accepter un paramètre en plus, contenant la liste des parties de l'application.
+
+Fournissez ce paramètre à partir de la classe `AccueilServlet` qui justement appelle la méthode `vueAccueil`.
+
+Modifiez maintenant la vue `accueil.jsp` afin d'afficher une table semblable à celle illustrée juste au-dessus. Utilisez les JSTL et en particulier la tag lib Core afin de parcourir la liste des parties dans la vue JSP.
+
+Vous utiliserez certainement les choses suivantes :
+
+- `<c:forEach>` pour parcourir les parties ainsi que les joueurs y participant,
+- `<c:if>` pour afficher ou pas les boutons et liens "REJOINDRE", "OBESERVER" et "CONTINUER". Dans le test figurant dans la balise `<c:if>`, vous pouvez appeler les méthode de la classe `Partie` comme `disposePlacePourJoueur( Joueur joueur )` pour savoir si le joueur connecté peut ou pas rejoindre la partie. Il en va de même pour les autres boutons et liens. Vous pourrez aussi ajouter des méthodes à la classe `Partie` comme par exemple `jouableParJoueur( Joueur joueur )` etc. Vous appelerez ces méthodes depuis la JSP pour savoir si oui ou non il faut afficher tel ou tel bouton.
+
+Modifier également la servlet d'action servant à rejoindre une partie pour rediriger le joueur directement vers la partie qu'il vient de rejoindre.
+
+Vérifiez que l'ensemble fonctionne bien.
+
+Vous pouvez maintenant supprimer certains fichiers qu'on n'utilise plus :
+
+- `ContinuerPartieServlet`,
+- `RalliementPartieServlet`,
+- `continuerPartie.jsp`,
+- `ralliementPartie.jsp`.
+
+Vous pouvez également supprimer les méthodes `vueRalliementPartie` et `vueContinuerPartie` dans la classe `VueServlet`.
+
+[NOTE]
+----
+Dans Eclipse il est possible de consulter toutes les utilisations d'une méthode ou d'une classe grâce au raccourcis `ALT+SHIFT+G`. Aussi accessible avec le menu contextuel : "References > Workspace".
+----
+
+=== Etape 14 - Rafraichissement automatique
+
+Il est possible grâce à une balise HTML de demander au navigateur de recharger automatiquement la page toutes les X secondes.
+
+Nous allons mettre à profit cette possibilité afin de rafraichir automatiquement la page "partie.html" lorsque le tour de jeu n'est pas au joueur courant. Ainsi, le joueur n'a pas à rafraichir la page à la main, il regarde son navigateur et quand l'autre joueur aura joué, le prochain rafrachissement montrera la page avec les boutons permettant au joueur de jouer.
+
+Attention, le rafraichissement automatique ne doit se faire que lorsque le tour de jeu n'est pas au joueur courant. En effet dans le cas contraire, il sera possible que le rafraichissement se fasse juste au moment où le joueur s'apprête à cliquer sur une case !
+
+La balise HTML permettant de demander au navigateur de rafraichir la page est :
+
+[source,language=html]
+----
+<!-- rafraichi la page toutes les 5 secondes -->
+<meta http-equiv="refresh" content="5">
+----
+
+Profitez-en pour rafraichir automatiquement aussi la page de partie en attente.
+
+=== Etape 15 - Entête des pages
+
+Il serait sympa de rajouter une entête à nos différentes vues. Cette entête comporterait :
+
+- le logo de l'application,
+- un rappel de l'utilisateur connecté,
+- un lien vers la page d'accueil,
+- un lien pour se déconnecter.
+
+Cette entête devra être incorporée dans toutes nos pages. Mais ceci ne doit pas impacter négativement la _maintenabilité_ du code, c'est-à-dire que si l'on doit changer l'entête un jour, on ne devra changer l'entête qu'à un seul endroit (pas de duplication du code de l'entête dans chacune des pages, ce qui nous obligerait à maintenir plusieurs exemplaires de la même entête).
+
+Heureusement, JSP et Java EE nous permettent d'inclure les JSP les unes dans les autres. On va donc pouvoir inclure notre `entete.jsp` dans chacune de nos pages. Quand on voudra modifier l'entête, on n'aura qu'à modifier seulement ce fichier et la modification sera automatiquement répercutée sur toutes les pages.
+
+==== Création d'un gabarit
+
+Nous allons maintenant redéfinir la façon dont une vue est construite. Au lieu de faire appel à simplement un fichier jsp, nous allons demander la construction de chaque page à partir d'un gabarit.
+
+Créez un fichier JSP `gabarit.jsp`.
+
+Voici son contenu : 
+
+[source,language=jsp]
+----
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<c:if test="${pageReload}"> <1>
+		<meta http-equiv="refresh" content="5">
+	</c:if>
+
+	<title>${pageTitle}</title> <2>
+	
+	<link rel="stylesheet" href="jeu.css">
+</head>
+
+<body>
+	<jsp:include page="entete.jsp" /> <3>
+	
+	<c:if test="${pageContentJsp!=null}">
+		<jsp:include page="${pageContentJsp}" /> <4>
+	</c:if>
+</body>
+
+</html>
+----
+<1> On utilise l'attribut "pageReload" pour savoir s'il faut ou non ajouter la balise déclanchant le rafraichissement automatique.
+<2> On enverra le titre de la page dans les attributs de la requête.
+<3> `entete.jsp` contiendra la barre de menu d'entête de notre application.
+<4> Selon le corps de page que l'on souhaite afficher, l'attribut de requête `pageContentJsp` portera des valeurs différentes.
+
+La JSP `entete.jsp` pourra contenir pour l'instant :
+
+[source,language=jsp]
+----
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<h1>${pageTitle}</h1>
+----
+
+Notez qu'il n'y a plus besoin d'écrire la suite `<html><head></head><body>...</body></html>` car ceci est déjà fait par la JSP `gabarit.jsp`.
+
+Constatez qu'à présent, la vue `gabarit.jsp` a besoin des attributs suivants pour fonctionner :
+
+|====
+| Nom de l'attribut  | Type de l'object correspondant | Signification
+| pageTitle          | `String`                       | Titre de la page
+| pageReload         | `boolean`                      | Faut-il que la page se recharge automatiquement?
+| pageContentJsp     | `String`                       | La JSP à afficher dans le corps de la page
+|====
+
+Modifiez la méthode `callJsp` de la classe `VueServlet` de façon à afficher le gabarit au lieu de la vue demandée. La vue demandée alimente maintenant l'attribut `pageContentJsp` de la requête. Vous devez également ajouter les nouveaux paramètres nécessaires à cette méthode (`pageReload` et `pageTitle`). Voici le code de la méthode mis-à-jour :
+
+[source,language=java]
+----
+private void callJsp( String pageTitle, boolean autoReload, String name, HttpServletRequest request, HttpServletResponse response )
+		throws ServletException, IOException
+{
+	request.setAttribute( "pageTitle", pageTitle );
+	request.setAttribute( "pageReload", autoReload );
+	request.setAttribute( "pageContentJsp", name + ".jsp" );
+
+	getServletContext()
+			.getRequestDispatcher( "/WEB-INF/gabarit.jsp" )
+			.forward( request, response );
+}
+----
+
+Naturellement, après cette modification, de nombreuses erreurs apparaissent dans les autres méthodes de la classe ``VueServlet. Corrigez ces erreurs.
+
+Notez que grâce à notre pattern _Vue Servlet_, les erreurs n'apparaissent que dans cette classe. D'autre part, ce pattern vous assure qu'après avoir modifier et corrigé cette classe, le programme continuera de fonctionner comme auparavant.
+
+Il ne nous reste plus qu'une chose à faire concernant cette évolution. Toutes nos JSP contiennent les balises `<html><head></head><body>...` alors que nous n'en avons plus besoin puisque ces balises sont maintenant générées par la JSP `gabarit.jsp`.
+
+Faites donc un peu de ménage (mais n'oubliez pas de garder `<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>` ainsi que les tag d'importation) ! Vous pouvez noter entre temps que le navigateur est quand même assez sympatique puisqu'il accepte et affiche correctement vos pages contenant les balises `<html>`, `<body>` et `<head>` en double !
+
+=== Etape 16 - Protection des URL nécessitant d'être connecté
+
+*ATTENTION : Le filtre de sécurité que nous créons ici n'est valable qu'à des fins didactiques. Vous ne devez AUCUNEMENT vous en servir pour sécuriser des projets de production. La sécurité est en effet un problème très complexe et il est impératif se s'appuyer sur des implémentations matures et correctement testées. Par exemple le standard _JAAS_ avec Java EE ou bien _Spring Security_ avec _Spring_.*
+
+Il arrive souvent que l'on désire décencher un traitement de façon générique lorsque d'autres traitements sont déclenchés (ici le traitement des requêtes HTTP). Un exemple typique consiste à gérer la sécurisation de nos URLs. En effet, à part la page d'accueil et les resources statiques (fichiers css, javascript, etc), nous désirons protéger l'accès aux autres URLs en imposant que l'utilisateur soit connecté pour y accéder. Cette vérification doit se faire idéalement avant le traitement de chaque requête HTTP que l'application reçoit.
+
+Ceci est possible en implémentant un filtre Java EE (encore une fois le principe _Open Close_). L'idée est que ce filtre sera déclenché par Java EE avant les servlets. Le filtre peut alors soit laisser le traitement de la requête se poursuivre, soit effectuer le traitement de son choix, et même émettre une réponse HTTP à la place de la servlet qui devait être déclenchée pour traiter la requête.
+
+Implémentez dans un filtre l'algorithme suivant :
+
+- si l'URL appelée concerne un fichier statique (c'est-à-dire que `request.getRequestURI()` contient "js/", "css/", "font/" ou "fonts/"), laisser le traitement se poursuivre normalement.
+- si l'URL appelée est l'URL de la page d'accueil, laisser le traitement se poursuivre normalement.
+- si l'URL appelée est l'URL du traitement du formulaire de login, laisser le traitement se poursuivre normalement.
+- dans tous les autres cas, vérifier que l'utilisateur est bien connecté pour laisser le traitement se poursuivre normalement. Sinon envoyer au navigateur une redirection vers la page de connexion.
+
+NOTE : L'idée d'appliquer un traitement avant ou après d'autres traitement est traitée en profondeur dans l'_Aspect Oriented Programming_.
+
+=== Etape 17 - Utilisation d'une base de données pour stocker les Joueurs
+
+==== Créer la base de données
+
+Avec `pgAdmin`, créer une base de donnée 'morpion' dans le serveur PostGre local.
+
+==== Configurer la data source `MorpionDS` dans le serveur Wildfly
+
+Avoir le serveur Wildfly démarré.
+
+Avec la ligne de commande (`WIN+R puis cmd`) dans le répertoire `C:\wildfly-10.1.0-final\bin`, exécutez le fichier de commande `jboss-cli.bat`. Une invite vous propose de saisir des commandes.
+
+Saisissez ceci afin de vous connecter au serveur Wildfly local :
+
+[source]
+----
+connect
+----
+
+Saisissez ceci afin de créer une source de données `MorpionDS` dans la serveur Wildfly :
+
+[source]
+----
+data-source add --jndi-name=java:/MorpionDS --name=MorpionPool --connection-url=jdbc:postgresql://localhost/morpion --driver-name=postgres --user-name=postgres --password=MOT_DE_PASSE_POSTGRE
+----
+
+==== Configurer l'unité de persistence `Morpion`
+
+Créez un fichier `persistence.xml` dans le répertoire `src/main/java/META-INF/`.
+
+Copiez ceci dans le fichier :
+
+[source,language=xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+	                    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Morpion" transaction-type="JTA">
+		<jta-data-source>MorpionDS</jta-data-source>
+
+		<properties>
+			<!-- validate, update, create, create-drop -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.use_sql_comments" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
+----
+
+==== Transformer la classe `Joueur` pour la transformer en entité JPA
+
+Ajoutez les annotations `@Entity`, `@Id` et `@GeneratedValue` sur la classe `Joueur` de façon à ce que JPA la prenne en charge.
+
+==== Ecrire une classe `JoueurDao`
+
+Cette classe est un EJB d'accès aux données dont le rôle et de réaliser les opérations de persistence pour l'entité `Joueur`.
+
+Implémentez cette classe.
+
+==== Enregistrement de la liste des joueurs en base de données
+
+Maintenant adaptez votre code pour que les joueurs de l'application soient enregistrés en base et non dans la session applicative.
+
+**ATTENTION** du coup, pensez bien à ne plus créer des utilisateurs au démarrage de l'application !
+
+
+
+=== Etape 18 - Utilisation de la base de données pour stocker les Partie
+
+Lire ce cours d'abord : http://blog.paumard.org/cours/jpa/chap03-entite-relation.html
+
+==== Transformer la classe `Partie` en entité JPA
+
+Nous allons procéder presque de la même façon que pour `Joueur`.
+
+Ajoutez les annotations `@Entity` et `@Id`.
+
+===== Identifiants UUID
+
+Par contre, pour cette entité, nous allons demander à gérer de façon différente la génération des identifiants. Nous allons utiliser la génération d'UUID sous forme de chaine de caractères.
+
+A cette fin, l'annotation `@GeneratedValue` est déclarée comme suit `@GeneratedValue( generator = "system-uuid" )`.
+
+Et on ajoute une annotation (spécifique à Hibernate) `@GenericGenerator( name = "system-uuid", strategy = "uuid" )`.
+
+Comme cette annotation est spécifique à Hibernate, il faut rajouter la dépendance suivante dans le fichier `pom.xml` du projet.
+
+[source,language=xml]
+----
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-annotations</artifactId>
+	<version>3.5.6-Final</version>
+</dependency>
+----
+
+Le jar ainsi importé contient la classe `@GenericGenerator`.
+
+===== Plateau sous forme de `LOB`
+
+Pour indiquer à JPA que l'on souhaite stocker le plateau de jeu sous forme binaire, on ajoute l'annotation `@Lob` sur l'attribut `Plateau plateau`.
+
+===== Relation avec les Joueurs
+
+Maintenant il faut spécifier correctement la nature de l'association entre les entités `Joueur` et `Partie`.
+
+Indice : un joueur peut être présent dans plusieurs parties, et une partie peut contenir plusieurs joueurs.
+
+==== Finir
+
+Débarrassez vous de la méthode `DonneesScope.getPartiesApplication(...)` et remplassez-la par une classe `PartieDao`.
+
+=== Etape 19 - FACULTATIF - Utilisation d'un framework CSS
+
+Des bibliothèques CSS existent. Si votre feuille CSS ne vous plaît pas, il est aisé d'utiliser des feuilles CSS déjà disponibles sur Internet.
+
+Voici une liste de bibliothèques CSS faciles à intégrer (liste bien sûr non exhaustive!) :
+
+- Milligram
+- Materialize
+- Bootstrap CSS
+- Skeleton CSS
+- ...
+
+Visitez les sites de chacune d'entre elles et décidez de celle qui vous plaît.
+
+Lisez la documentation sur le site et intégrez cette bibliothèque à votre application.
+
+
+=== Etape 20 - Modification du compte utilisateur
+
+Implémentez maintenant la mise à jour du compte utilisateur.
+
+Il faudra :
+
+- un formulaire pour éditer les informations du compte (indice : on a déjà une JSP qui fait ça, peut être est-il possible de la réutiliser moyennant quelques modifications ?).
+- un lien "Mon compte" dans l'entête des pages.
+- une servlet qui reçoit les données issues du formulaire
+- une nouvelle méthode dans `JoueurDao` qui permet de mettre à jour un joueur.
+
+On pourra placer le formulaire d'édition du compte en face de l'url "monCompte".
+
+=== Etape 21 - Utilisation du Javascript
+
+Pour l'instant la page affichée à l'url 'partie.html' est générée côté serveur et rien n'est dynamique dans la partie client.
+
+On a notamment utilisé le _auto-refresh_ du navigateur pour mettre notre page à jour. Mais ceci a pour défaut de crer un _scintillement_ lorsque la page se recharge.
+
+On se propose donc de réécrire cette partie, en s'appuyant sur le langage Javascript côté client ainsi que les services web REST pour le côté serveur.
+
+==== Jouer un coup... en REST
+
+Premièrement, nous allons transformer l'application serveur pour accepter des requêtes avec données encodées en JSON. Pour cela nous allons utiliser la couche JAX-RS de Java EE.
+
+Pour l'instant, l'action de jouer un coup est gérée dans la servlet d'action `JouerCoupServlet`.
+
+Nous allons la remplacer par un service REST.
+
+Créer une classe `PartieWebService` avec l'annotation `@Path("parties")`. Cette classe recevra toutes les requêtes dont l'url commence par 'api/parties'.
+
+Maintenant, définissons la requête qui va permettre de jouer un coup :
+
+- Comme elle _ajoute_ des données, on utilisera le verbe HTTP **POST**.
+- Comme on agit sur une partie dont l'identifiant est connu, l'url de la requête sera 'api/parties/ID_PARTIE'
+- Comme un coup contient deux données : l'abscisse et l'ordonnée, on enverra ces deux données sous la forme JSON. Dans la partie Java, les données liées à un coup seront matérialisées par la classe `Coup` que nous allons créer.
+
+Tout d'abord, créer une classe `Coup` avec :
+
+- `int x`
+- `int y`
+- un constructeur par défaut
+- deux getters.
+
+Cette classe servira à contenir les coordonnées du coup demandé par l'utilisateur.
+
+Dans la classe `PartieWebService`, ajouter une méthode `jouerCoup` reliée aux requêtes décrites juste au-dessus.
+
+Dans cette méthode `jouerCoup` qui reçoit le coup demandé par l'utilisateur, recopiez (en l'adaptant) le code de la servlet `JouerCoupServlet` qui a pour effet de jouer un coup dans la partie.
+
+Et là, problème... Depuis le service REST, nous n'avons pas accès à un objet représentant la requete HTTP de façon à retrouver le joueur connecté depuis la session attachée à la requête.
+
+Heureusement, JAX-RS a tout prévu, et permet d'injecter la requête HTTP en cours en tant que paramètre de la méthode. Pour cela, il faut rajouter dans les paramètres de la méthode ceci : `@Context HttpServletRequest request`. Cela indique à JAX-RS que ce paramètre doit être valorisé avec la requête HTTP en cours de traitement.
+
+Vous pouvez maintenant finir d'implémenter la méthode `jouerCoup`.
+
+==== Demander l'état de la partie en REST
+
+Maintenant nous allons créer dans le service rest, une méthode permettant de récupérer l'état d'une partie.
+
+Tout d'abord, créons une classe `PartieDto` dont les objets serviront à être convertis en JSON pour représenter l'état d'une partie.
+
+Créer la classe `PartieDto` (DTO veut dire _Data Transfer Object_ et désigne des objets dont le rôle est de transporter des données d'un entroit à un autre). Voici les attributs de cette classe :
+
+- `boolean tour` : sera `true` si c'est au joueur qui a demandé l'état de la partie de jouer.
+- `Character[][]` : contiendra la représentation du plateau avec le caractère de la pièce s'il y en a, et null sinon.
+- ajouter le constructeur par défaut
+- et les getters
+
+Maintenant nous pouvons ajouter une méthode `getPartie` dans la classe `PartieWebService` qui permet de récupérer la représentation JSON d'une partie. L'url contient l'identifiant de la partie. Voici le prototype de la méthode à ajouter :
+
+[source,language=java]
+----
+@GET
+@Produces( MediaType.APPLICATION_JSON )
+@Path( "{id}" )
+public PartieDto getPartie( @PathParam( "id" ) String id, @Context HttpServletRequest request )
+----
+
+Dans cette méthode, récupérer la partie demandée, récupérer le joueur connecté. Et écrire le code nécessaire pour créer un objet `PartieDto` à partir d'une `Partie`. L'objet DTO doit contenir les informations sur le tour de jeu ainsi que les pièces disposées sur le plateau, conformément à ses attributs. _Vous aurez à cette fin, bien sûr, à modifier la classe `PartieDto`_.
+
+Avec votre navigateur, aller à l'URL `http://localhost:8080/morpion-web-1.0-SNAPSHOT/api/parties/e5dhdhhdhh...` pour vérifier que le programme génère bien le JSON attendu.
+
+==== Utilisation de Javascript dans la page `partie.html`
+
+Nous avons préparé tous les services web nécessaires pour obtenir :
+
+- l'état d'une partie,
+- jouer un coup.
+
+Maintenant nous allons modifier la page `partie.html`, et utiliser AJAX en Javascript. La page en question ne se rafraichira plus toutes les 5 secondes. A la place nous allons mettre en place le programme suivant dans la page :
+
+- le programme Javascript fait une requête AJAX pour obtenir l'état de la partie
+- le programme Javascript modifie les noeuds DOM correspondant au plateau, de façon à présenter à l'utilisateur une représentation de la partie sous forme de grille (vous pouvez utiliser JQuery à cette fin). Notez que par rapport à notre page JSP statique, le rendu n'a pas à changer. Quand c'est le tour du joueur connecté de jouer, la grille est générée avec des boutons dans les cases vides, afin de permettre au joueur de choisir son coup.
+- lorsque le joueur clique sur une case pour jouer un coup, le programme Javascript envoie une requête POST vers l'url 'api/parties/ID_PARTIE' avec le coup JSON-isé dans le corps de la requête.
+- le programme Javascript redemande au serveur le nouvel état de la partie.
+- le programme Javascript redemande l'état de la partie toutes les X secondes quand ce n'est pas au joueur connecté de jouer (utilisez la fonction `setTimeout`).
+
+Implémentez tous ces changement dans le fichier `partie.jsp`. Gardez en tête que la JSP ne fait que générer du texte (au format HTML/CSS/Javascript). Ce texte ne sera interprété et exécuté que pllus tard, par le navigateur. Rappelez-vous que le Javascript ne s'exécute pas dans le serveur mais dans le navigateur.
+
+Notes:
+
+- vous pouvez utiliser la fonction `requete` que nous avons créé dans le fichier crud-contacts.html, afin de vous simplifiez les interactions avec l'objet `XMLHttpRequest`.
+
+=== Etapes suivantes
+
+On peut imaginer de nombreuses autres améliorations comme par exemple montrer dans la liste des parties à quel joueur est le tour de jeu, la taille du plateau des parties, ...
+
+La possibilité de supprimer une partie.
+
+Les scores...
+
+Etc.

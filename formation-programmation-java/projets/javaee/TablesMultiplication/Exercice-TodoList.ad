@@ -1,0 +1,71 @@
+= Exercice Application Java EE - Todo List
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Exercice Application Java EE - Todo List
+:source-highlighter: highlightjs
+:imagesdir: images-javaee
+
+LTE Consulting (C) - 2017
+
+toc::[]
+
+Ce document décrit l'exercice à réaliser à partir de ce que l'on a fait ce matin.
+
+**ATTENTION : Nous allons implémenter dans cet exercice un mécanisme d'authentification rudimentaire. Ceci est fait à une fin purement didactique et ne représente en rien la véritable sécurisation d'une application. Donc : ne jamais réutiliser ce code dans un cadre professionnel.**
+
+== Enregistrement des utilisateurs dans le contexte applicatif
+
+Même si on a mis en place le stockage de l'utilisateur dans la session, il n'empêche que si l'utilisateur se déconnecte puis se reconnecte, il devra re-saisir son nom et son prénom (et d'ailleurs toute autre information que l'on souhaiterait enregistrer à son propos).
+
+Nous allons améliorer notre application pour permettre d'enregistrer les informations utilisateur une fois pour toute. Chaque nouvel utilisateur de notre application devra passer par une phase d'inscription (il saisit le pseudo qu'il désire utiliser, son mot de passe ainsi que ses nom et prénom).
+
+A la validation de son inscription, on enregistrera un objet `User` dans le scope applicatif.
+
+Il pourra ensuite se déconnecter et se reconnecter avec son couple 'pseudo'/'mot de passe'.
+
+=== Enrichissement de la classe `User`
+
+La classe `User` doit comprendre **en plus** les attributs suivants :
+
+- `String pseudo`
+- `String motDePasse`
+- `List<TodoItem> todoList`
+
+=== Nouveau workflow
+
+L'utilisateur se connecte pour la première fois, on lui propose un formulaire de login (pseudo + mot de passe à saisir). On lui propose également de s'enregistrer s'il ne l'a jamais fait (un simple lien *S'enregistrer* dans la page suffira).
+
+S'il s'est déjà enregistré, il peut saisir son nom et son mot de passe et se connecter.
+
+S'il ne s'est jamais enregistré, il clique sur le lien d'enregistrement et se voit proposer un formulaire contenant des champs pour saisir :
+
+- son pseudo,
+- son mot de passe,
+- son prénom,
+- son nom.
+
+Lorsqu'il valide le formulaire d'inscription, l'application vérifie qu'aucun utilisateur n'utilise déjà le pseudo choisi. Si c'est le cas, on demande à l'utilisateur de saisir le formulaire à nouveau.
+
+Dans le cas où le pseudo n'a pas encore été utilisé, l'enregistrement est validé et l'application va stocker les informations sur ce nouvel utilisateur dans le **scope applicatif**, dans une **liste d'objets `User`**. L'utilisateur est maintenant connecté, c'est-à-dire que l'on stockera aussi dans la session une référence à l'objet `User` présent dans le scope applicatif.
+
+=== Organisation de l'information
+
+==== Contexte applicatif
+
+On stockera dans le contexte applicatif :
+
+- clé `"userDatabase"`, valeur de type `List<User>` : stocke la liste de tous les utilisateurs connus de l'application.
+
+==== Contexte de session
+
+Dans la session utilisateur nous stockerons une référence à l'objet `User` présent dans le scope applicatif et correspondant à l'utilisateur connecté :
+
+- clé `"connectedUser"`, valeur de type `User` : une référence à un objet `User` représentant l'utilisateur connecté. Doit référencer le même objet que celui présent dans le contexte applicatif.
+
+==== URLs de l'application
+
+- `/welcome` : page d'accueil.
+- `/signup` : enregistrement d'un utilisateur
+- `/login` : connextion utilisateur avec son login et mot de passe.
+- `/logout` : déconnexion de l'utilisateur.

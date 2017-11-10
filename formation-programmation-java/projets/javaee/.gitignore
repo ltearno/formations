@@ -1,0 +1,10 @@
+.metadata/
+.recommenders/
+**/bin/
+**/.settings/
+**/.project
+**/.classpath
+**/build/
+**/*.zip
+Servers/
+Servers2/

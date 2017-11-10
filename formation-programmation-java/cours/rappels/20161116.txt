@@ -1,0 +1,87 @@
+Exercice UML -> JAva
+
+Ordinateur
+	Ordinateur( modele: String, capaciteMemoire: int, capaciteDisquesDurs: int[] )
+	
+	modele: String
+	memoire: MemoireVive
+	disquesDurs: DisqueDur[]
+	
+	allumer(): void
+	eteindre(): void
+
+MemoireVive
+	MemoireVive( capacite: int )
+	
+	capacite: int
+	
+	initialiser(): void
+	eteindre(): void
+	
+DisqueDur
+	DisqueDur( capacite: int )
+	
+	capacite: int
+	
+	demarrer(): void
+	lire(): void
+	eteindre(): void
+
+Dans un nouveau projet
+	
+Vous avez trois classes à écrire : Ordinateur, MemoireVive et DisqueDur.
+
+[Faites d'abord ce qui a trait à la memoire, et rajoutez les disques durs après]
+
+Quand on allume l'ordinateur :
+	- on initialise la mémoire,
+	- on démarre tous les disques durs
+	- on lit dans le premier disque dur
+	
+Quand on éteint l'ordinateur :
+	- on eteint les disques dans l'ordre inverse
+	- on eteint la mémoire
+
+Implémenter les méthodes des trois classes, en faisant au moins à chaque fois un System.out de façon à voir ce qui se passe dans la console.
+
+Le programme principal (que l'on écrit dans une classe 'POOOrdinateurs') ressemble à peu près à cela :
+
+
+Ordinateur o = new Ordinateur( "Toto-43", 128, new int[] { 40, 250, 250 } );
+o.allumer();
+
+/* ca doit afficher
+
+	Ordinateur démarre
+	Initialisation mémoire
+	Démarrage DisqueDur de capacité 40
+	Démarrage DisqueDur de capacité 250
+	Démarrage DisqueDur de capacité 250
+	Lecture DisqueDur
+
+*/
+
+o.eteindre();
+
+/* ca doit afficher
+
+	Extinction DisqueDur de capacité 250
+	Extinction DisqueDur de capacité 250
+	Extinction DisqueDur de capacité 40
+	Extinction MemoireVive
+	L'ordinateur est éteint
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+body {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+ul {
+	flex-shrink: 1;
+	overflow: auto;
+}
+
+li {
+	list-style: none;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: baseline;
+	flex-flow: row nowrap;
+}
+
+li>form, li>form>button {
+	margin-bottom: 0;
+}
+
+.item-text {
+	flex-grow: 1;
+}
+
+.item-done {
+	text-decoration: line-through;
+}
+
+.item-date {
+	font-size: 70%;
+	padding-right: 2em;
+}

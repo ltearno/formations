@@ -1,0 +1,634 @@
+= Exercices Programmation Java EE
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Exercices de programmation avec Java EE
+:source-highlighter: highlightjs
+:imagesdir: images-javaee
+
+LTE Consulting (C) - 2016
+
+toc::[]
+
+== Servlets et JSP
+
+Vous consulterez ceci :
+
+- Tutoriel sur les http://blog.paumard.org/cours/servlet/[servlets et JSP] (de José Paumard) à lire *absolument* jusqu'à _Java Server Pages, 4. Utilisation de beans_
+- https://openclassrooms.com/courses/developpez-des-sites-web-avec-java-ee?status=published[Développez des sites Web avec Java EE] chez Open Class Room,
+- https://developer.mozilla.org/fr/docs/Web/Guide/HTML/Formulaires/Mon_premier_formulaire_HTML[Mon premier formulaire] de chez Mozilla Developper Network,
+- https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/formulaires-le-b-a-ba[Formulaire B-A BA] sur Open Class Rooms.
+
+=== Formulaire de connexion
+
+Cet exercice vous permettra d'acquérir et d'être familier avec les notions suivantes :
+
+- Servlet,
+- JSP,
+- Dispatch de servlet vers JSP,
+- Attributs de requête,
+- Session,
+- Les formulaires HTML.
+
+Il s'agit dans cette exercice de construire une mini application Web.
+
+Son unique fonctionnalité est de permettre à l'utilisateur de renseigner son nom, et que l'application se souvienne de celui-ci lorsque l'utilisateur revient sur le site.
+
+Notre application ne propose qu'une URL à l'utilisateur : `/home`.
+
+Sur cette URL est branchée une servlet (que vous écrirez) qui implémente l'algorithme suivant :
+
+image::exercice-jee-1.jpg[]
+
+=== Projet : Gestion d'un jeu de cartes
+
+==== Description
+
+L'application que nous nous proposons de réaliser permet de gérer un ensemble de cartes à jouer ainsi que l'ensemble des joueurs participants (on les appelle _utilisateur_).
+
+L'application utilisera la bibliothèque CSS http://materializecss.com/[_materialize_] pour proposer un design moderne.
+
+L'application proposera plusieurs pages à l'utilisateur. Voici leur rôle.
+
+*Mise à part la page d'acceuil, aucune page n'est accessible à l'utilisateur tant qu'il ne s'est pas connecté*.
+
+Le projet intégralement terminé est disponible à cette https://github.com/ltearno/formation-programmation-java/tree/master/projets/javaee/CartesWebApp[adresse].
+
+===== Page d'accueil et de connexion - `/home`
+
+C'est la page d'accueil de l'application. Lorsque l'utilisateur n'est pas connecté, cette page affiche un formulaire de connexion. Lorsque l'utilisateur est connecté la page affiche un message de bienvenue avec le nom de l'utilisateur.
+
+Voici une illustration du résultat attendu :
+
+image::projet-01.png[Page d'acceuil en mode connexion]
+
+Lorsque l'utilisateur saisit son nom et valide le formulaire, la page affiche maintenant le message de bienvenue :
+
+image::projet-02.png[Page d'accueil une fois l'utilisateur connecté]
+
+_Notez comme la barre de navigation inclut d'autres liens une fois l'utilisateur connecté !_
+
+===== Cartes disponibles - `/cartes`
+
+Cette page permet de visualiser l'ensemble des cartes disponibles dans l'application. Cette liste de cartes est commune à toute l'application et à tous les utilisateurs.
+
+Une carte sera modélisée par la classe `Carte`. Elle possède les attributs suivants : `String id`, `String nom` et `String couleur`. Les identifiants pourront être générés avec la classe Java `UUID` qui garanti la génération de chaines de caractères uniques (eg `new UUID().toString()`).
+
+image::projet-03.png[Affichage de la page des cartes disponibles]
+
+La page affiche donc la liste des cartes (pour chaque carte elle affiche également tous les attributs de la carte).
+
+Pour chaque carte, quatre boutons sont disponibles :
+
+- *RETIRER* (1) : ce bouton retire la carte de la liste des cartes disponibles.
+- *EDITER* (2) : ce bouton emmène l'utilisateur vers la page d'édition d'une carte, qui permet de modifier les caractéristiques de la carte choisie.
+- **+** (4) : ce bouton permet de rajouter la carte à la main de l'utilisateur connecté.
+- **-** (5) : ce bouton permet de retirer la carte de la main de l'utilisateur connecté.
+
+De plus, comme illustré avec le numéro (5) sur la copie d'écran, un bouton *NOUVELLE CARTE* permet à l'utilisateur de créer une nouvelle carte pour l'ajouter aux cartes disponibles.
+
+===== Edition et création d'une carte
+
+Lorsque l'utilisateur crée une nouvelle carte ou désire éditer une carte existante, il est amené vers la page d'édition.
+
+Voici la page d'édition :
+
+image::projet-04.png[Edition d'une carte]
+
+Et la page de création d'une carte :
+
+image::projet-05.png[Création d'une carte]
+
+Une fois le formulaire validé par l'utilisateur, celui-ci est redirigé vers la page `/cartes` avec les données à jour.
+
+===== Main utilisateur - `/main`
+
+Cette page affiche la liste des cartes qui sont actuellement dans la main de l'utilisateur. La main est constituée par l'utilisateur en utilisant les boutons (4) et (5) de la page des _Cartes disponibles_. Comme illustré sur la copie d'écran suivante, l'utilisateur peut aussi retirer une carte de sa main à partir de cette page (avec le bouton **-**).
+
+image::projet-06.png[Main utilisateur]
+
+==== Fonctionnalités à réaliser
+
+- Page d'accueil : formulaire de connexion et message de bienvenue.
+- Page des cartes disponibles : affichage de la liste des cartes.
+- Page des cartes disponibles : implémentation de la suppression d'une carte.
+- Page des cartes disponibles : implémentation de l'édition d'une carte.
+- Page des cartes disponibles : implémentation de l'ajout d'une carte.
+- Page des cartes disponibles : ajout d'une carte à la main de l'utilisateur.
+- Page des cartes disponibles : retrait d'une carte à la main de l'utilisateur.
+- Page de la main utilisateur
+
+==== Fonctionnalités facultatives
+
+A la création d'une carte, proposer une checkbox qui permette d'ajouter directement la carte à la main de l'utilisateur connecté.
+
+
+==== Etapes de développement
+
+Créez un projet Dynamic Web avec Eclipse.
+
+Ce projet utilisera le serveur d'application Tomcat pour son déploiement.
+
+===== Modèle de données
+
+Le plus important est de définir le modèle de données :
+
+- les cartes seront représentées par la classe `Carte`,
+- la liste des cartes disponible est globale à toute l'application, elle sera stockée à terme dans le scope (portée) _application_,
+- la main de l'utilisateur sera représentée par un `Set<String>` contenant les identifiants des cartes contenues dans la main de l'utilisateur. La main de l'utilisateur sera stockée dans l'attribut "main" de la _session_ car chaque main est propre à une connexion utilisateur.
+- l'utilisateur peut avoir un maximum de `Constantes.NB_MAX_CARTES_PAR_MAIN` cartes en main.
+
+===== Page `/home`
+
+Implémentez une servlet `HomeServlet` qui va gérer la page de bienvenue.
+
+Cette servlet doit vérifier si l'utilisateur est connecté ou pas. On garde trace de la connexion de l'utilisateur en stockant son nom en attribut `"nom"` de la session. L'utilisateur est donc considéré comme connecté si on trouve bien une chaine de caractères dans l'attribut `"nom"` de la session.
+
+Ecrire deux _JSP_ correspondant aux deux vues :
+
+- `login.jsp` : formulaire de connexion,
+- `accueil.jsp` : écran de bienvenue.
+
+Le formulaire de connexion enverra une requete POST sans changer d'URL (c'est-à-dire vers l'URL `home`). La servlet `HomeServlet` recevra donc les données de ce formulaire et procédera au traitement du _login_ (en stockant dans la session le nom de l'utilisateur reçu avec le formulaire).
+
+===== Page `/cartes`
+
+Il s'agit maintenant de gérer une liste de cartes globale à toute l'application et donc commune à tous les utilisateurs. Sur cette liste l'utilisateur pourra effectuer les opérations CRUD, c'est-à-dire _consultation_, _ajout_, _suppression_ et _édition_.
+
+====== Préliminaires
+
+Premièrement il conviendra de définir notre principal classe : la classe `Carte`. Implémentez cette classe en lui offrant trois attributs de type `String` : `id`, `nom` et `couleur`. Implémentez également les _setters_ de `nom` et `couleur`, ainsi que les _getters_ des trois attributs. Implémentez un constructeur prenant des valeurs pour `nom` et `couleur`, et qui génère un identifiant avec la classe `UUID`.
+
+La liste des cartes est globale à toute l'application. Afin de pouvoir y accéder depuis n'importe quel endroit dans l'application, créez une classe `ApplicationData` possédant un attribut statique `List<Carte> cartes`. Implémentez ensuite une méthode `public static List<Carte> getCartes()` dans cette classe qui permette de récupérer la liste des cartes. Notez que l'attribut `cartes` doit être initialisé au moment du premier appel à `getCartes()`.
+
+====== Consultation
+
+Maintenant que notre modèle de données est établi, attachez-vous à implémenter la servlet `CartesServlet` et la vue _JSP_ associée (`WEB-INF/cartes.jsp`). La servlet `CartesServlet` a pour fonction de récupérer la liste des cartes et de la transmettre à la vue _JSP_ sous la forme d'un attribut de requête (par exemple "cartes").
+
+====== Suppression
+
+Occupons-nous maintenant de l'opération de suppression.
+
+Cette opération doit être implémentée dans une nouvelle servlet `SuppressionCarteServlet`. Cette servlet recevra les requêtes faites sur l'url `/supprimerCarte`. L'URL devra contenir l'identifiant de la carte à supprimer dans sa partie _query string_ (eg : `http://localhost:8080/CartesApplication/supprimerCarte?id=e77cb352d`).
+
+Assurez-vous que la page d'affichage des cartes génère bien des liens ou des boutons pointant sur l'url de suppression correspondant à chaque carte.
+
+La servlet `SuppressionCarteServlet`, comme toutes nos servlet d'action, se contentera de réaliser l'action de suppression de la carte et ensuite de rediriger le navigateur de l'utilisateur vers l'URL `/home`.
+
+Afin d'implémenter l'opération de suppression, ajoutez une méthode `supprimerCarte( String id )` dans la classe `ApplicationData` écrite auparavant.
+
+Utilisez cette méthode dans la servlet `SuppressionCarteServlet`.
+
+====== Edition
+
+La page d'édition d'une carte est accessible en cliquant sur le bouton "Editer carte" d'une carte dans la page d'affichage des cartes. Elle correspond à l'URL `editerCarte?id=5fcdd622`, qui prend donc en paramètre l'identifiant de la carte que l'on souhaite éditer.
+
+Créez donc une servlet `EditionCarteServlet`. Cette servlet analyse le paramètre de la requête HTTP, utilise une nouvelle méthode `Carte getCarte( String id )` que vous créerez dans la classe `ApplicationData` pour obtenir l'instance `Carte` possédant l'identifiant demandé. Elle alimente ensuite la vue _JSP_ du formulaire d'édition avec cette instance de carte.
+
+Le formulaire est écrit dans la _JSP_ `editerCarte.jsp`. Ce formulaire enverra ses données à sa propre URL (donc `editerCarte`), la servlet `EditerCarteServlet` recevra donc ces informations dans l'appel à la méthode `doPost`. La servlet aura donc encore une fois besoin d'obtenir l'identifiant de la carte à modifier. Vous pouvez utiliser un champ `<input type='hidden' name='id'/>` pour faire transmettre l'id dans la requête POST au moment de l'envoi du formulaire.
+
+Une fois l'action de modification de la carte effectuée, la servlet peut tout simplement rediriger le navigateur vers l'url `/cartes`.
+
+====== Création d'une carte
+
+Essayez d'implémenter cette fonctionnalité en ne créant pas de nouvelle classe ni _JSP_, mais en modifiant la classe `EditerCarteServlet`. Petit indice : ceci peut se faire en traitant dans la servlet `EditerCarteServlet` le cas l'identifiant est absent.
+
+====== Bouton _Ajouter à la main_
+
+Ce bouton doit déclencher l'exécution d'une nouvelle servlet `toggleCarteMainServlet` que vous écrirez. Vous pouvez la brancher sur l'URL `/toggleCarteMain`. Cette servlet recevra en paramètre l'identifiant de la carte à ajouter ou à retirer de la main. La servlet redirigera ensuite l'utilisateur vers l'URL `/cartes`.
+
+Ce bouton ne doit être affiché *que si l'utilisateur n'a pas cette carte en main et que sa main n'est pas encore complète*.
+
+Etant donné que la main de l'utilisateur est stockée en session dans l'attribut "main" (contenant un objet de la classe `Set<String>`), la servlet viendra ajouter l'identifiant de la carte dans le `Set<String>` représentant la main de l'utilisateur.
+
+====== Bouton _Retirer de la main_
+
+Ce bouton déclenche l'exécution de la même servlet (`toggleMainServlet`). La seule différence avec le bouton "AJOUTER A LA MAIN" est graphique : c'est son titre ou son icône qui diffère.
+
+===== Page `/main`
+
+Il s'agit dans cette page d'afficher les cartes qui sont dans la main du joueur.
+
+Vous écrirez donc une servlet `MainServlet` mais vous réutiliserez la vue _JSP_ `cartes.jsp` pour afficher la liste des cartes contenues dans la main de l'utilisateur.
+
+L'astuce consiste ici à partir du `Set<String>` représentant la main à créer une `List<Carte>` (en s'aidant de la classe `ApplicationData` pour récupérer les cartes en fonction de leur identifiant). La liste ainsi créée peut être passée à la vue _JSP_ `cartes.jsp` afin de les afficher.
+
+Par contre il va falloir rajouter des _"paramètres"_ à la vue _JSP_ `cartes`. Pour l'instant celle-ci affiche toujours les boutons "RETIRER LA CARTE" et "EDITER LA CARTE". Ajouter un attribut à la requête et exploitez le dans la _JSP_ pour afficher ou non ces boutons. Demandez leur affichage dans la servlet `CartesServlet` mais pas dans `MainServlet`.
+
+Il en va de même pour les boutons d'ajout et de suppression de la main.
+
+===== Protection des vues _JSP_ avec la classe `Rendu`
+
+A chaque fois que l'on veut afficher une _JSP_, nous procédons aux étapes suivantes :
+
+- alimenter la vue JSP avec ses données en les attachant à la requête sous forme d'attributs,
+- _forwarder_ le traitement de la requête à la _JSP_,
+- dans la _JSP_, exploiter les attributs attendus.
+
+Comme tout ceci se fait de manière non formalisée, et qui plus est nécessite l'écriture de plusieurs lignes de code, vous allez créer une classe `Rendu` qui contiendra autant de méthodes statiques que de vues _JSP_ à afficher.
+
+Par exemple pour afficher la vue _JSP_ du formulaire de login, vous écrirez la méthode suivante :
+
+[source,language="java"]
+----
+public static void pageLogin( ServletContext context, HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+{
+	RequestDispatcher dispatcher = context.getRequestDispatcher( "/WEB-INF/login.jsp" );
+	dispatcher.forward( request, response );
+}
+----
+
+Dans le cas précédent, on voit peut d'intérêt à cette construction. Par contre dans le cas d'une vue _JSP_ nécessitant des données en entrées, l'intérêt sera plus flagrant :
+
+[source,language="java"]
+----
+public static void listeCartes( String titrePage, List<Carte> cartes, boolean montrerActionsMain, boolean montrerActionsCarte, ServletContext context, HttpServletRequest request, HttpServletResponse response )
+	throws ServletException, IOException
+{
+	// alimentation des attributs dont la vus JSP a besoin
+	request.setAttribute( "cartes", cartes );
+	request.setAttribute( "montrerActionsMain", montrerActionsMain );
+	request.setAttribute( "montrerActionsCarte", montrerActionsCarte );
+
+	// affichage de la vue JSP
+	RequestDispatcher dispatcher = context.getRequestDispatcher( "/WEB-INF/cartes.jsp" );
+	dispatcher.forward( request, response );
+}
+----
+
+Maintenant à chaque fois que vous voulez afficher une vue, utilisez la méthode correspondante dans la classe `Rendu`, vous pouvez transférer tous les codes d'appels à vos vues _JSP_ en appel de méthode Java normal. Chaque méthode a un prototype Java bien défini et une erreur de compilation vous préviendra si vous oublié un paramètre, ce qui n'était pas le cas sans mettre en place cette classe (vous aurez probablement une exception dans la vue _JSP_ au moment ou celle-ci essayera d'exploiter un attribut de requête que vous aurez oublié de fournir).
+
+De plus, lorsque le programme évoluera et que les vues auront besoin de plus de données en entrée, il vous suffira de modifier à *un seul endroit* (dans la classe `Rendu`) l'appel à la vue _JSP_ (en adaptant les attributs positionnés sur la requête). S'en suivront quelques erreurs de compilation Java aux endroits des appels à la méthode modifiée. Ceux-ci seront bien plus facile à corriger !
+
+Cette technique est similaire au pattern _Facade_ qui permet d'obtenir un contrat simple (la méthode statique `listeCartes`) à partir d'un contrat plus complexe ou moins "pratique" (l'enregistrement des attributs et la délégation du traitement à la vue _JSP_).
+
+===== Utilisation des constantes pour les noms des paramètres et attributs
+
+Créez une interface `Constantes` qui ne contiendra que des constantes que vous utiliserez à la place des noms de paramètres et attributs. Ceci vous aidera à éviter par exemple d'envoyer un formulaire avec un champ nommé "nom" alors que la servlet traitant ce formulaire attend le paramètre "NOM". _Il est très souvent utile de se donner les moyens de se protéger contre ses propres erreurs !_
+
+===== Utilisation de Listener pour s'intégrer dans le cycle de vie de Java EE
+
+Comme la majorité des outils, framework et bibliothèques de développement, il est possible d'insérer vos traitement à des points précis du cycle de vie de l'outil que vous utilisez, ici Java EE. C'est un principe bien connu sous le nom de _Open Close Principle_.
+
+Java EE n'échappe pas à cette règle et vous permet de déclencher un traitement vous appartenant au moment, par exemple, où Java EE s'initialise et juste avant qu'il commence à prendre en charge les requête HTTP entrantes.
+
+Ceci se fait en créant une classe implémentant l'interface `javax.servlet.ServletContextListener` et en déclarant cette classe dans le fichier `Web.XML` :
+
+[source,language="xml"]
+----
+<listener>
+	<listener-class>fr.lteconsulting.ApplicationDataInitializationListener</listener-class>
+</listener>
+----
+
+Lorsque Java EE démarre, la méthode `public void contextInitialized( ServletContextEvent event )` de notre classe va être appelée ! Lorsque le serveur s'arrête il vous appellera la méthode `contextDestroyed`.
+
+===== Préparation au changement de fournisseur de données
+
+A terme notre projet utilisera une base de donnée. En attendant il fonctionne avec la liste stockée en mémoire sous forme d'un attribut statique de la classe `ApplicationData` (l'attribut `cartes`).
+
+Ici notre conception a comme un problème :toutes les méthodes de `ApplicationData` étant statiques, chaque appel à une de ses méthodes se fait ainsi :
+
+[source,language="java"]
+----
+ApplicationData.getCartes()
+----
+
+Le défaut fondamental de ce design est que dans la même ligne nous indiquons la méthode à appeler (ce qui est correct) mais nous désignons aussi l'implémentation de cette méthode (ici on demande celle de la classe `ApplicationData`). Le fait de préciser la classe d'implémentation nous empêche _de facto_ de faire évoluer le code vers une autre implémentation (stockage des cartes en base de données, gestion différente en fonction de la configuration, ...).
+
+Nous allons réécrire cette partie de façon à rendre notre code plus modulaire (donc plus conforme à la vision _objet_).
+
+Tout d'abord créez une interface `IApplicationData` qui reprend les méthodes publiques de `ApplicationData` mais en les rendant non-statiques.
+
+Ensuite déclarez que la classe `ApplicationData` implémente l'interface `IApplicationData`.
+
+Puis transformez toutes les méthodes et attributs de `ApplicationData` de façon à les rendre non-statiques.
+
+Il n'est maintenant plus possible d'appeler des méthodes de `ApplicationData` sans avoir à disposition une instance de cette classe. Votre projet doit donc maintenant avoir plusieurs erreurs de compilation Java liées aux appels aux méthodes de la classe `ApplicationData`. Laissez-les de côté pour l'instant, nous reviendrons dessus plus tard.
+
+Maintenant que nous avons besoin d'une instance d'`ApplicationData` pour accéder à nos données, se posent les problèmes suivants :
+
+- quand créer l'unique instance de `ApplicationData` dont nous avons besoin ?
+- où stocker cette instance ?
+- comment retrouver cette instance au moment où on en a besoin ?
+
+NOTE: Nous aurions pu utiliser le pattern Singleton pour résoudre ce problème, mais dans le contexte d'une application Java EE, il est préférable de mettre à profit les fonctionnalités offertes et _garanties_ par le serveur d'application.
+
+La réponse à la première question se trouve dans la section précédente, c'est-à-dire que l'on va créer l'instance d'`ApplicationData` au moment où Java EE s'initialise, avant de traiter les requêtes HTTP entrantes.
+
+Pour la deuxième question, la réponse est simple : puisque nous voulons partager cette liste de cartes dans toute l'application, nous pouvons utiliser le _scope application_ de Java EE. Ceci revient donc à stocker notre instance en tant qu'attribut du contexte servlet. Voici un exemple du code réalisant la création et le stockage de l'instance dans un attribut du contexte applicatif :
+
+[source,language="java"]
+----
+@Override
+public void contextInitialized( ServletContextEvent event )
+{
+	IApplicationData applicationData = new ApplicationData();
+
+	ServletContext context = event.getServletContext();
+	context.setAttribute( "applicationData", applicationData );
+}
+----
+
+La réponse à la troisième question est maintenant évidente : pour récupérer notre instance `IApplicationData`, nous devons avoir accès au contexte servlet et aller chercher l'objet enregistré en tant qu'attribut "applicationData". Cela s'écrira donc :
+
+[source,language="java"]
+----
+IApplicationData applicationData = (IApplicationData) context.getAttribute( "applicationData" );
+----
+
+Comme nous aurons assez souvent à écrire ce code, il convient de le factoriser dans une méthode statique, par exemple dans une classe `DataAccess` que nous créons pour l'occasion :
+
+[source,language="java"]
+----
+public class DataAccess
+{
+	public static IApplicationData get( ServletContext context )
+	{
+		return (IApplicationData) context.getAttribute( "applicationData" );
+	}
+}
+----
+
+Nous utiliserons ce code depuis nos servlet ainsi :
+
+[source,language="java"]
+----
+List<Carte> cartes = DataAccess.get( getServletContext() ).getCartes();
+----
+
+====== Création d'une classe abstraite `VueServlet`
+
+Comme il est fastidieux de se répéter et de toujours passer la valeur de retour de `getServletContext()` dans les servlets, vous pouvez créer une classe abstraite `VueServlet` qui héritera de `HttpServlet` et fournira une méthode très simple d'utilisation pour accéder à l'instance IApplicaionData :
+
+[source,language="java"]
+----
+public abstract class DataAccessServlet extends HttpServlet
+{
+	protected IApplicationData getData()
+	{
+		return DataAccess.get( getServletContext() );
+	}
+}
+----
+
+Nos servlet de vue peuvent maintenant en hériter à la place de `HttpServlet` et ainsi utiliser le code suivant pour accéder aux données :
+
+[source,language="java"]
+----
+List<Carte> cartes = getData().getCartes();
+----
+
+Trouvez-vous cela plus agréable ?
+
+NOTE: Il existe des méthodes plus évoluées pour permettre l'utilisation des données et de toutes sortes d'autres composants applicatif au sein du code. Celles-ci sont appelées _Injection de dépendance_ ou plus généralement liées au pattern d'_Inversion de Contrôle_.
+
+===== Protection des URL nécessitant d'être connecté
+
+*ATTENTION : Le filtre de sécurité que nous créons ici n'est valable qu'à des fins didactiques. Vous ne devez AUCUNEMENT vous en servir pour sécuriser des projets de production. La sécurité est en effet un problème très complexe et il est impératif se s'appuyer sur des implémentations matures et correctement testées. Par exemple le standard _JAAS_ avec Java EE ou bien _Spring Security_ avec _Spring_.*
+
+Il arrive souvent que l'on désire décencher un traitement de façon générique lorsque d'autres traitements sont déclenchés (ici le traitement des requêtes HTTP). Un exemple frappant est de gérer la sécurisation de nos URLs. En effet, à part la page d'accueil et les resources statiques (fichiers css, javascript, etc), nous désirons protéger l'accès aux autres URLs en imposant que l'utilisateur soit connecté pour y accéder. Cette vérification doit se faire idéalement avant le traitement de chaque requête HTTP que l'application reçoit.
+
+Ceci est possible en implémentant un filtre Java EE (encore une fois le principe _Open Close_). L'idée est que ce filtre sera déclenché par Java EE avant les servlets. Le filtre peut alors soit laisser le traitement de la requête se poursuivre, soit effectuer le traitement de son choix, et même émettre une réponse HTTP à la place de la servlet qui devait être déclenchée pour traiter la requête.
+
+Implémentez dans un filtre l'algorithme suivant :
+
+- si l'URL appelée concerne un fichier statique (c'est-à-dire que `request.getRequestURI()` contient "js/", "css/", "font/" ou "fonts/"), laisser le traitement se poursuivre normalement.
+- si l'URL appelée est l'URL de la page d'accueil, laisser le traitement se poursuivre normalement.
+- si l'URL appelée est l'URL du traitement du formulaire de login, laisser le traitement se poursuivre normalement.
+- dans tous les autres cas, vérifier que l'utilisateur est bien connecté pour laisser le traitement se poursuivre normalement. Sinon envoyer au navigateur une redirection vers la page de connexion.
+
+NOTE : L'idée d'appliquer un traitement avant ou après d'autres traitement est traitée en profondeur dans l'_Aspect Oriented Programming_.
+
+== Maven
+
+Convertissez le projet en projet Maven `war`.
+
+== JSF
+
+Suivez le https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/premiers-pas-avec-jsf[tutoriel suivant].
+
+=== CRUD Utilisateurs
+
+Partez du projet que l'on trouve http://lteconsulting.fr/java/cartes-webapp.zip[là].
+
+Bien lire les https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/premiers-pas-avec-jsf[deux] https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee/la-gestion-d-un-formulaire-avec-jsf[tutoriels].
+
+Créez une classe `Utilisateur` (celle-ci sera un _Java Bean_). Cette classe possède les attributs suivants :
+
+- `nom` : `String`,
+- `prenom` : `String`,
+- `age` : `int`,
+- `login` : `String`,
+- `motDePasse` : `String`.
+
+Chaque attribut à sa pair de getter et setter associée.
+
+Implémentez une page `users.xhtml` qui permet à l'utilisateur de réaliser les opérations CRUD sur les utilisateurs. Créez pour cette occasion également la classe `UtilisateurDao` (en s'inspirant de `CategorieDao`).
+
+Au sujet du formulaire d'édition et d'ajout d'un utilisateur, voici les contraintes à mettre en oeuvre :
+
+- Nom : _ne peut pas être vide_,
+- Prénom : _ne peut pas être vide_,
+- Age : _doit être supérieur à 18_,
+- Login : _ne peut pas être vide_, _doit avoir au moins 4 caractères_,
+- Mot de passe : Le formulaire doit montrer un champ pour saisir le mot de passe et un autre champ pour le confirmer. _Les deux champs doivent avoir la même valeur_.
+
+=== Intégration avec l'existant
+
+Le reste de l'exercice s'attache à utiliser la classe `Utilisateur` qui vient d'être créée.
+
+Modifiez maintenant l'écran d'accueil de l'application pour demander le _login_ et le _mot de passe_ de l'utilisateur, au lieu de ne demander que le nom.
+
+Dans la servlet correspondante, vérifiez que l'utilisateur existe bien et que le mot de passe fourni est correct. Considérez ensuite l'utilisateur comme connecté.
+
+Pour les nouveaux utilisateurs, créez en plus une page d'inscription avec un champ pour chacun des attributs de la classe `Utilisateur`.
+
+Si vous deviez mettre en place la validation Ajax dans le contexte des pages JSP, trouveriez-vous cela plus facile ou plus difficile qu'avec JSF ?
+
+
+
+
+
+
+== Java EE Full Profile
+
+Avant tou, assurez-vous que le serveur Tomcat est arrêté.
+
+=== Installation de WildFly
+
+Nous allons installer WildFly, un serveur Java EE en _Full Profile_ édité par _RedHat_.
+
+Téléchargez WildFly http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip[ici]
+
+Extraire l'archive dans `C:\wildfly-10.0.0.Final`.
+
+Déclarez cette installation dans Eclipse en faisant : `Fichier`, `New...`, `Server`, puis choisir "JBoss Community WildFly 10". Laissez Eclipse télécharger les modules complémentaires puis saisissez les informations demandées pour configurer le serveur (_The server is local, controlled by filesystem and shell operations, JDK 8_).
+
+=== Prise en main
+
+Démarrez WildFly en exécutant le fichier `bin/standalone.bat`.
+
+Rendez vous à l'adresse http://localhost:8080.
+
+Exécutez le programme `bin/add-user.bat` pour créer un utilisateur avec accès à la console de gestion de WildFly.
+
+Connectez vous à l'adresse http://localhost:9990/ avec cet utilisateur.
+
+Explorez la console d'administration.
+
+=== Exécution de l'application Cartes dans WildFly
+
+Retour à l'application _Cartes_.
+
+Pour paramétrer l'url de base de l'application dans WildFly, ajoutez un ficher `WEB-INF/jboss-web.xml` dans les fichiers de l'application avec comme contenu :
+
+[source,language="xml"]
+----
+<jboss-web>
+	<context-root>/cartes-webapp</context-root>
+</jboss-web>
+----
+
+L'application sera (une fois WildFly démarré) accessible à l'adresse : http://localhost:8080/cartes-webapp
+
+Déployez et exécutez l'application dans WildFly avec l'aide d'Eclipse. Celle-ci doit fonctionner comme auparavant.
+
+== JPA
+
+=== Installation d'un serveur MySQL
+
+Installez le package _WAMP_ disponible à cette https://sourceforge.net/projects/wampserver/files/WampServer%203/WampServer%203.0.0/wampserver3.0.4_x64_apache2.4.18_mysql5.7.11_php5.6.19-7.0.4.exe/download[adresse] (c'est la version 64 bits avec MySQL en version 5.6.15 dans le site http://www.wampserver.com/).
+
+Avec http://localhost/phpmyadmin/index.php[phpMyAdmin], créez une base de donnée nommée `cartes` avec l'interclassement _utf8-bin_ (onglet _Bases de données_ dans phpMyAdmin).
+
+=== Liaison serveur MySQL avec WildFly
+
+La connexion entre une application Java EE et une base de données est séparée en deux parties :
+
+- On configure une source de données (_Data Source_) directement dans le serveur.
+- Celle-ci est alors accessible à l'application par un nom _JNDI_. L'application n'a donc qu'à connaître le nom de la source de données, pas besoin de connaître les informations de connexion à la base.
+
+==== Installation du driver MySQL en tant que module WildFly
+
+Téléchargez le driver MySQL à cette http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar[adresse].
+
+Dans le répertoire `C:\wildfly-10.0.0.Final\modules\system\layers\base`, créez un sous-répertoire `com/mysql/driver/main`. Y copier le fichier `mysql-connector-java-5.1.39.jar` téléchargé auparavant. Toujours dans ce répertoire créez un fichier `module.xml` avec le contenu suivant :
+
+[source]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.3" name="com.mysql.driver">
+	<resources>
+		<resource-root path="mysql-connector-java-5.1.39.jar" />
+	</resources>
+	<dependencies>
+		<module name="javax.api"/>
+		<module name="javax.transaction.api"/>
+	</dependencies>
+</module>
+----
+
+Ensuite assurez vous que WildFly est démarré (`bin\standalone.bat`) et lancez en ligne de commande dans le répertoire `bin` de WildFly la commande :
+
+		jboss-cli.bat
+
+Une invite doit apparaître vous signifiant que vous n'êtes pas encore connecté au serveur. Tapez la commande `connect`, celle-ci va connecter notre console d'administration en mode texte au serveur WildFly en cours d'exécution.
+
+Tapez ensuite la commande `/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql.driver,driver-class-name=com.mysql.jdbc.Driver)`.
+
+Le serveur répond normalement avec le message `{"outcome" => "success"}`.
+
+Vous pouvez quitter la console d'administration en ligne de commande en tapant `exit` et en validant ensuite.
+
+Vérifiez que dans le fichier de configuration `standalone/configuration/standalone.xml`, on a bien :
+
+[source]
+----
+<driver name="mysql" module="com.mysql.driver">
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+</driver>
+----
+
+==== Ajout de la Data Source
+
+Maintenant, toujours avec WildFly démarré, accédez à l'adresse http://localhost:9990/
+
+Configuration > Subsystem > Data sources > Non-XA > bouton Add.
+
+Choisir _MySQL Datasource_. Choisir pour nom `CartesDS` ainsi que le nom JNDI : `java:/CartesDS`.
+
+Choisir ensuite le driver JDBC concerné, pour ceci sélectionnez l'onglet _Detected driver_ et choisissez _MySQL_.
+
+Choisir ensuite l'URL de connexion : `jdbc:mysql://localhost:3306/cartes`, et choisir l'utilisateur et mot de passe (_root_ et mot de passe vide par défaut).
+
+Testez ensuite la connexion comme c'est proposé, le test doit réussir.
+
+Vérifiez que dans le fichier `standalone.xml`, on a bien :
+
+[source]
+----
+<datasource jta="true" jndi-name="java:/CartesDS" pool-name="CartesDS" enabled="true" use-ccm="true">
+	<connection-url>jdbc:mysql://localhost:3306/cartes</connection-url>
+	<driver-class>com.mysql.jdbc.Driver</driver-class>
+	<driver>mysql</driver>
+	<security>
+		<user-name>root</user-name>
+	</security>
+	<validation>
+		<valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+		<background-validation>true</background-validation>
+		<exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+	</validation>
+</datasource>
+----
+
+Vous avez ainsi créé une source de données appelée `CartesDS`, celle-ci est maintenant disponible aux applications qui en ont besoin ! La prochaine étape est donc d'utiliser cette base de données dans notre application _Cartes_.
+
+=== Liaison WildFly avec l'application
+
+Dans le fichier `pom.xml` de l'application, ajoutez les dépendances suivantes :
+
+[source]
+----
+<!-- JPA API Persistence -->
+<dependency>
+	<groupId>org.hibernate.javax.persistence</groupId>
+	<artifactId>hibernate-jpa-2.1-api</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-annotations</artifactId>
+	<version>3.5.6-Final</version>
+</dependency>
+----
+
+Dans le projet, avec Eclipse, créez un dossier `src/main/java/META-INF/`. Dans celui-ci, créez un fichier `persistence.xml` avec le contenu suivant :
+
+[source]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+	                    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Cartes" transaction-type="JTA">
+		<jta-data-source>CartesDS</jta-data-source>
+
+		<properties>
+			<!-- validate, update, create, create-drop -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.use_sql_comments" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
+----
+
+=== Les entités JPA
+
+Génération des ids avec uuid
+
+Aller dans `Preferences` -> `Java Persistence` -> `JPA` -> `Errors/Warnings` `Queries and Generators` et changer `Generator is not defined in the persistence unit` pour le configurer en _warning_ et non en _erreur_.

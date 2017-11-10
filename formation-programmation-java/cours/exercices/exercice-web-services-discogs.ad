@@ -1,0 +1,75 @@
+= TP Web Services Utilisation de Discogs avec la bibliotheque Audio
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: TP Web Services
+:imagesdir: images-struts
+:source-highlighter: highlightjs
+
+LTE Consulting (C) - 2017
+
+toc::[]
+
+== Exercice
+
+L'objectif est d'alimenter notre bibliothèque avec des données fournies par le service Discogs (https://www.discogs.com).
+
+Nous travaillons sur le project `javaee-bibliotheque-audio`.
+
+L'idée est d'avoir une servlet interne à notre projet, répondant à l'url `/importationDiscogs` qui se chargera de consommer le service Discogs pour importer des disques.
+
+== Consommation d'un client REST
+
+=== Lire la documentation du service
+
+Lire la page https://www.discogs.com/developers/
+
+On y apprend par exemple qu'en faisant une requête `GET` à l'url `https://api.discogs.com/releases/24950`, on obtient les informations sur le disque identifié 24950 chez Discogs.
+
+Essayez de faire cette requête avec votre navigateur ou PostMan.
+
+Cette url est documentée ici : https://www.discogs.com/developers/#page:database,header:database-release.
+
+Observer la structure des données reçues.
+
+Dans le projet java, définissez le contrat pour l'API de `discogs` sous la forme d'une interface Java compatible avec `JAX-RS`.
+
+Toujours dans ce projet, définir les classes Java correspondant aux données envoyées par le service. Voici un court début :
+
+[source,language=java]
+----
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+// Classe Java représentant les Releases chez Discogs
+// Permet d'ignorer les champs dans le JSON qui ne sont pas définis dans la classe Java
+@JsonIgnoreProperties( ignoreUnknown = true )
+public class DiscogsRelease
+{
+	public List<String> styles;
+	public int year;
+	public String title;
+	// ...
+}
+----
+
+== Utilisation avancée
+
+Pour certaines requêtes, Discogs demande la création d'un compte. Voici quelques informations.
+
+=== Création du compte Discogs
+
+Créez un compte sur le site.
+
+Pour info, Discogs demande la création de compte pour pouvoir gérer les appels de services que vous consommerez.
+
+=== Paramétrage du compte
+
+NOTE **CECI N'EST PAS OBLIGATOIRE POUR LES REQUETES DE BASE, COMME ALLER CHERCHER UN DISQUE. A NE PAS FAIRE DES LE DEBUT DONC**
+
+Dans les paramètres de votre compte, allez dans la partie **Developers** et créez une application. Cela va vous permettre de générer deux informations dont vous aurez besoins pour appeler le service :
+
+- le `Consumer Key` et
+- le `Consumer Secret`.
+
+Ce sont l'équivalent des mots de passes, mais dans le contexte ou une application (la vôtre) discute avec une autre (discogs).
+

@@ -1,0 +1,75 @@
+Exercice rapide
+
+On cherche à modéliser des factures.
+
+Implémenter les classes suivantes :
+
+	Facture
+		- nomClient: String
+		- lignes: List<LigneFacture>
+		
+		+ Facture( nomClient: String )
+		+ ajouterLigne( LigneFacture ligne ): void
+		+ afficher(): void
+		+ getPrixTotalHT() : double
+		+ getPrixTotalTTC() : double
+	
+	LigneFacture
+		- intitule : String
+		- montantHT: double
+		- tauxTVA : double
+		
+		+ LigneFacture( intitule, montantHT, tauxTVA )
+		+ getPrixHT(): double
+		+ getPrixTTC(): double
+
+Ecrire une méthode main dans une classe Application qui montre que l'ensemble fonctionne bien
+		
+		
+		
+		
+Exercice Comptes en banque
+
+	ICompte <<interface>>
+		getIban(): String
+		getSolde(): double
+		modifierSolde( double montant ): void
+		effectuerOperationsAnnuelles(): void
+		afficher(): void
+		
+	CompteCourant (implémente ICompte)
+		- solde: double
+		(aucune opération annuelle)
+	
+	CompteRemunere (implemente ICompte)
+		- solde: double
+		- tauxRemuneration: double
+		(tous les ans on applique le taux)
+		
+	Banque
+		- comptes: Map<String, ICompte> (associe les Iban avec les ICompte)
+		
+		+ ajouterCompte( ICompte compte ):void
+		+ effectuerVirement( String ibanDebiteur, String ibanCrediteur, double montant )
+		+ effectuerOperationsAnnuelles() : void
+		+ bilan():void   => affiche l'ensemble des comptes
+
+Le programme principal fait qque chose comme :
+
+	- création de la banque
+	- création de quelques comptes (des courants et des rémunérés) et ajout de ces comptes à la banque
+	- faire quelques demandes de virement à la banque
+	- afficher l'état des comptes.
+	- (comme c'est la fin de l'année), demander à la banque d'effectuer les operations annuelles
+	- afficher l'état des comptes.
+		
+ETAPE 2
+	Lorsque le code de la méthode Banque.effectuerVirement est appelé avec des iban inexistants, on souhaite lever l'exception CompteInexistantException.
+
+
+	Gérer les découverts et les adgios
+	Ecrire les exceptions et les lever lorsque pour un virement l'opération n'est pas possible (donc vérifier que le solde débiteur permet de réaliser l'opération)
+		ecrire les classes d'exception CompteInexistantException, SoldeInsuffisantException
+	
+ETAPE 3
+	Utiliser la classe BigDecimal (lire la javadoc) pour stocker les valeurs monétaires

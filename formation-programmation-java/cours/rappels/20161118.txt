@@ -1,0 +1,318 @@
+Javadoc
+Jar
+Exceptions
+
+
+
+Méthodes et attributs statiques
+
+Mot-clé : `static`
+
+Jusqu'à présent :
+
+	public class Oiseau {
+		// l'attribut 'nom' est valorisé pour chaque objet
+		private String nom;
+		
+		public Oiseau( String nom ) {
+			this.nom = nom;
+		}
+		
+		// la méthode 'getNom' est exécuté par rapport à un objet
+		public getNom() {
+			return nom;
+		}
+	}
+
+	...
+
+	Oiseau o = new Oiseau( "Piaf" );
+	
+	String sonNom = o.getNom();
+
+On a la possibilité en Java de définir des attributs dont la valeur est partagée par toutes les instances de la classe.
+
+On utilise pour cela le mot-clé `static` :
+
+	public class Oiseau {
+		// la valeur de cet attribut est partagée par toutes
+		// les instances de la classe Oiseau
+		private static nbOiseauxCrees;
+		
+		// l'attribut 'nom' est valorisé pour chaque objet
+		private String nom;
+		
+		public Oiseau( String nom ) {
+			this.nom = nom;
+			
+			nbOiseauxCrees++;
+		}
+		
+		// la méthode 'getNom' est exécuté par rapport à un objet
+		public getNom() {
+			return nom;
+		}
+	}
+
+Le mot-clé `static` peut aussi être utilisé sur les méthodes. A ce moment, ces méthodes seront exécutées par rapport à la classe dans laquelle elles sont définies. Mais pas par rapport à une instance de cette classe.
+
+Exemple :
+
+	public class Oiseau {
+		// la valeur de cet attribut est partagée par toutes
+		// les instances de la classe Oiseau
+		private static nbOiseauxCrees;
+		
+		// l'attribut 'nom' est valorisé pour chaque objet
+		private String nom;
+		
+		public Oiseau( String nom ) {
+			this.nom = nom;
+			
+			nbOiseauxCrees++;
+		}
+		
+		public static int getNbOiseauxCrees() {
+			return nbOiseauxCrees;
+		}
+		
+		// la méthode 'getNom' est exécuté par rapport à un objet
+		public getNom() {
+			return nom;
+		}
+	}
+	
+	...
+
+	for( int i=0; i<10; i++ ) {
+		Oiseau o = new Oiseau( "xxx" );
+		System.out.println( "Nom de l'oiseau : " + o.getNom() );
+	}
+	
+	int nbCrees = Oiseau.getNbOiseauxCrees(); // vaut 10
+	
+	o.getNbOiseauxCrees(); // ca marche mais on a un warning
+
+	
+	
+Mot-clé `final`
+
+Lorsqu'on souhaite qu'un attribut (statique ou pas) ne puisse pas changer de valeur, on lui rajoute le mot-clé `final`.
+
+	public class Oiseau {
+		// le mot-clé final signifie que la valeur de l'attribut ne pourra pas changer.
+		private final String nom;
+		
+		public Oiseau( String nom ) {
+			this.nom = nom;
+		}
+		
+		// la méthode 'getNom' est exécuté par rapport à un objet
+		public getNom() {
+			return nom;
+		}
+		
+		public void uneMethode() {
+			nom = "Un autre nom"; // ERREUR DE COMPILATION
+		}
+	}
+
+On peut l'utiliser sur des attributs d'instance. On peut l'utiliser sur les attributs statiques. Ce cas d'utilisation correspond en général à la définitions de constantes.
+
+	public class Math {
+		// l'attribut PI est :
+		//     - public : accessible aux autres classes,
+		//     - statique : sur toute la classe,
+		//     - final : sa valeur ne peut pas changer.
+		public static final double PI = 3.1415...;
+	}
+	
+	...
+	
+	// permet de faire par exemple :
+	
+	double aire = Math.PI * rayon * rayon;
+	
+Le mot-clé `final` appliqué sur une classe :
+
+	// la classe étant `final`, on ne peut plus définir de sous-classe
+	public final class Perroquet extends Oiseau {
+		// ...
+	}
+	
+	// ERREUR DE COMPILATION, INTERDIT D'ETENDRE LA CLASSE Perroquet
+	// (du fait que la classe Perroquet soit `final`)
+	public class Ara extends Perroquet {
+		// ...
+	}
+	
+Par exemple, la classe `String` est final.
+
+
+Le mot-clé `final` appliqué aux méthodes :
+
+Signifie que la méthode ne peut pas être redéfinie dans nune sous-classe.
+
+Exemple :
+	
+	public class Oiseau {
+		// ...
+		
+		public final void chante() {
+			// ...
+		}
+	}
+	
+	public class Pivert extends Oiseau {
+		// ERREUR DE COMPILATION : INTERDIT DE REDEFINIR LA METHODE `chante()`
+		// CAR CELLE-CI EST DECLAREE `final`
+		@Override
+		public void chante() {
+		}
+	}
+	
+
+	
+	
+Retour sur les momdificateurs de visibilité
+
+
+public
+	accessible par toutes les classes
+	
+- (package protected)
+	accessible seulement par les classes du même package que celle dans laquelle le modificateur est appliqué/
+	
+protected
+	accessible seulement à la classe et aux sous-classes
+	
+private
+	accesible seulement à la classe elle-même
+	
+	
+	
+	
+Interfaces
+
+Déclaration :
+
+	public interface Souris {
+		int getX();
+		int getY();
+		boolean isClickPushed();
+	}
+	
+Implémentation d'une interface par une classe :
+
+	public class SourisX412Toptech implements Souris {
+		int getX() {
+			return ...;
+		}
+		
+		int getY() {
+			return ...;
+		}
+		
+		boolean isClickPushed() {
+			return ...;
+		}
+	}
+	
+	// Par polymorphisme :
+	
+	Souris s = new SourisX412Toptech();
+	
+	s.getX();
+	
+Règles d'héritage en Java
+
+	Une classe ne peut hériter que d'une seule autre classe.
+	
+	Une classe peut implémenter plusieurs interfaces. !
+	
+	
+	
+Les collections
+
+Ce sont des classes qui permettent de gérer une collection d'objets "homogènes".
+
+
+Pour commencer, on va étudier l'interface List<T> et une classe qui implémente cette interface : ArrayList<T>.
+
+
+L'interface List<T> représente le contrat qu'on a avec une collection ordonnée d'objet T.
+
+	interface List<T> {
+		int size(); // renvoie le nombre d'éléments dans la liste
+		
+		void add( T element ); // ajoute un élément à la fin de la liste
+		
+		T get( int i ); // retourne l'élément à l'index i
+		
+		void set( int i, T valeur ); // remplace l'element à l'index i par valeur
+	}
+	
+Une implémentation très utilisée de List<T> s'appelle ArrayList<T>
+
+Par exemple, créons une liste de Personne dans laquelle on ajoute trois personnes:
+
+	ArrayList<Personne> list = new ArrayList<>();
+	
+	list.add( new Personne(...) );
+	list.add( new Personne(...) );
+	list.add( new Personne(...) );
+	
+	list.size(); // renvoie 3
+	
+	Personne p = list.get( 1 ); // obtient la deuxième personne
+
+Parcours d'une liste
+
+	for( int i=0; i<list.size(); i++ ) {
+		Personne p = list.get( i );
+		
+		// ...
+	}
+	
+	for( Personne p : list ) {
+		// ...
+	}
+
+
+Exercice
+
+Ecrire un programme qui :
+
+ - demande à l'utilisateur combien de personnes il souhaite saisir
+ - autant de fois que l'utilisateur l'a demandé, on demande à celui-ci :
+		- le nom,
+		- le prénom,
+		- le codePostal
+		
+		A chaque fois, on crée une nouvelle Personne, que l'on rajoute à une liste de personnes.
+ - à la fin, on affiche la liste des personnes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	

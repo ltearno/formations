@@ -1,0 +1,82 @@
+= Les profils UML
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: beige
+:revealjs_history: true
+:source-highlighter: highlightjs
+
+== Les profils UML
+
+== Enrichir UML
+
+Enrichir la capacité de modélisation d'UML pour supporter :
+
+- une plateforme spécifique (.net, java...)
+- un domaine particulier
+
+== Nature de l'enrichissement
+
+- stéréotypes,
+- étiquettes,
+- contraintes
+
+== Le métamodèle
+
+Description des éléments participant aux modèles.
+
+Ressemblent aux éléments du modèle (les méta-classes)
+
+== Stéréotypes
+
+- Défini comme une extension d'une méta-classe
+
+- Une méta classe est une classe dont les instances sont des éléments d'UML
+
+- Exemples de méta-classes :
+
+	Class, Interface, Associations, ...
+
+== Principales méta classes :
+
+- Association 
+- Class
+- Interface
+- Operation
+- Package
+- Property
+
+== Méta classes
+
+- Association d'un stéréotype à une ou plusieurs méta-classes
+
+- La contrainte `{required}`
+
+- Spécialisation et généralisation des stéréotypes
+
+
+== Les étiquettes
+
+Association d'un `nom` et d'une `valeur`.
+
+Fonctionne de façon similaires aux attributs de classe.
+
+Mais une valeur s'applique au niveau de la classe
+
+== Associations entre stéréotypes
+
+Fonctionne de la même façon qu'avec les classes.
+
+== Les contraintes
+
+Il est aussi possible de définir des contraintes qui s'appliqueront sur les éléments concernés par le stéréotype.
+
+*Exemple* : le fait d'interdire l'héritage multiple en Java est défini sous forme de contrainte dans le profil UML Java officiel.
+
+== En résumé un profil contient :
+
+- Des stéréotypes,
+- Des étiquettes,
+- Des contraintes,
+- Peut aussi ajouter des classes, types, interface, ...

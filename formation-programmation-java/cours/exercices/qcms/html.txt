@@ -1,0 +1,119 @@
+1. Quelle est l’erreur dans le code HTML suivant ?
+
+	<p class="laClasse">
+		<span class="laClasse">test</span>
+		<img alt="une image" title="une image" src="url/image.jpg" />
+	</p>
+-La balise `img` n’est pas fermée
+-En HTML il faut toujours utiliser des simple quotes pour les attributs
+-Une classe ne peut être assignée qu’à une seule balise
+-Il n’y a pas d’erreur
+
+2. Le HTML est un language dit :
+- encodé
+- crypté
+- balisé
+- livré
+
+3. Quel est le shéma HTML correct ?
+- `<html><body><head></head></body></html>`
+- `<html><head></head><body></body></html>`
+- `<html><head></head><body></html></body>`
+
+4. Quel est le tag à utiliser pour placer une image ?
+- `<image src="" alt="">`
+- `<img source="" alt="">`
+- `<img src="" alt="">`
+
+5. L'attribut du tag `a` définissant l'URL d'un lien hypertexte est :
+- `href`
+- `url`
+- `location`
+
+6. Un meta-tag doit se placer
+- Dans l'entête
+- Dans le corps
+- En-dehors du HTML
+
+7. A quoi sert l'attribut `class`?
+- A ordonner des éléments
+- A spécifier la classe de style
+- A spécifier le type de HTML utilisé
+
+8. Quel est le rôle de l’attribut `colspan` ?
+- faire fusionner des cellules horizontalement.
+- faire fusionner des cellules verticalement.
+- mettre en valeur une cellule.
+- supprimer une cellule.
+
+9. Dans un tableau HTML quelle balise n’existe pas ?
+- `<td>`
+- `<tr>`
+- `<tf>`
+- `<th>`
+
+10. Quel doit être le type  d’un bouton d’envoi d’un formulaire HTML5 ?
+- send
+- submit
+- post
+- go
+
+11. Quelles sont parmis ceux-ci les attributs possibles pour une balise `<form>`
+- method
+- post
+- action
+- form
+
+12. La règle de style `p.ville { .........}` s'applique :
+- aux paragraphes `<p class="ville">...<p>`
+- aux paragraphes `<p id="ville">...<p>`
+- aux paragraphes `<p value="ville">...<p>`
+- aux paragraphes `<p> <span "ville">...</span><p>`
+
+13. Que signifie CSS ?
+- Common System Services
+- Cascading Style Sheet
+- Common Style Services
+- Common Style System
+
+14. Quels choix sont des valeurs possibles de la propriété `display` ?
+- absolute
+- flex
+- flexbox
+- block
+
+15. Quels choix sont des valeurs possibles de la propriété `position` ?
+- fixed
+- none
+- float
+- relative
+
+16. Qu'est-ce que le "padding" ?
+- le rembourrage interne d'un élément
+- la marge externe d'un élément
+- l'espacement entre deux cellules
+- l'espacement entre deux colonnes
+
+17. Comment mettre un commentaire en HTML ?
+- `<!-- -->`
+- `/* */`
+- `{ }`
+- `// //`
+
+18. A quoi sert la propriété de style "border-radius" ?
+- à appliquer une rotation à un encadré
+- à arrondir les coins des encadrés
+- à définir des angles précis pour les encadré
+- à définir un effet de perspective selon un angle pour un encadré
+
+19. Comment afficher une barre de défilement uniquement si le contenu d'un bloc déborde ?
+- `p {overflow: scroll ; }`
+- `p {overflow: auto ; }`
+- `p {overflow: visible ; }`
+- `p {overflow: autoscroll ; }`
+
+20. A quoi sert la balise `<ul>` ?
+- à définir une cellule de tableau
+- à mettre en forme une liste
+- à souligner du texte
+- à barrer du texte

@@ -1,0 +1,147 @@
+= Introduction à Maven
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:backend: revealjs
+:deckjs_theme: neon
+:revealjs_theme: beige
+:revealjs_history: true
+:imagesdir: images-javaee
+:source-highlighter: highlightjs
+
+== Introduction à Maven
+
+=== Qu'est-ce que Maven ?
+
+Un outil qui sert à :
+
+- Organisation des projets,
+- Compilation des projets,
+- Gestion des dépendances,
+- Tests unitaires, d'intégration, ...,
+- etc !
+
+=== Le POM
+
+Chaque projet Maven est défini dans un fichier `pom.xml`.
+
+Ce fichier est au format `xml`.
+
+https://maven.apache.org/guides/introduction/introduction-to-the-pom.html[Introduction au modèle Maven].
+
+=== Utilisation
+
+Au lieu de créer nos projets dans Eclipse, nous allons déclarer dans un fichier `pom.xml` :
+
+- l'identité de notre projet (GAV),
+- la liste des bibliothèques dont il dépend,
+- la façon dont on veut construire le projet.
+
+Ensuite nous dirons à Eclipse d'utiliser les informations du `pom.xml` pour se configurer.
+
+=== Principe fondamental
+
+Nommage des _artefacts_ par :
+
+- un _groupId_,
+- un _artifactId_,
+- un numéro de _version_.
+
+Ceci constitue le _GAV_.
+
+=== Allons-y !
+
+Téléchargement de Maven ici :
+
+https://maven.apache.org/download.html
+
+=== On vérifie la version
+
+		mvn --version
+
+On obtient quelque chose comme :
+
+[source]
+----
+Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 14:51:28+0100)
+Maven home: D:\apache-maven-3.0.5\bin\..
+Java version: 1.8.0_25, vendor: Sun Microsystems Inc.
+Java home: C:\Program Files\Java\jdk1.8.0_25\jre
+Default locale: nl_NL, platform encoding: Cp1252
+OS name: "windows 12", version: "6.1", arch: "amd64", family: "windows"
+----
+
+=== Création d'un projet
+
+[source]
+----
+mvn archetype:generate \
+	-DarchetypeArtifactId=maven-archetype-quickstart \
+	-DgroupId=fr.lteconsulting.formation \
+	-DartifactId=exemple
+----
+
+Ceci crée un projet dans le sous-répertoire `exemple`.
+
+=== La structure du projet
+
+[source]
+----
+exemple
+|-- pom.xml
+`-- src
+    |-- main
+    |   `-- java
+    |       `-- fr
+    |           `-- lteconsulting
+    |               `-- exemple
+    |                   `-- App.java
+    `-- test
+        `-- java
+            `-- fr
+                `-- lteconsulting
+                    `-- exemple
+                        `-- AppTest.java
+----
+
+[%notitle]
+=== .
+
+*Examinons le fichier `pom.xml`...*
+
+=== Construction du projet
+
+Maven possède plusieurs _phases_ de travail correspondant au cycle de vie de la construction du projet.
+
+		mvn package
+		
+Ceci déclenche l'exécution de la phase _package_ qui va de la compilation à la génération de l'artéfact binaire (`jar` ou `war` par exemple).
+
+=== Lancement du projet
+
+Avec la commande précédente, un fichier `jar` a été généré dans le répertoire `target`.
+
+On peut le lancer ainsi :
+
+		java -cp target/exemple-1.0-SNAPSHOT.jar fr.lteconsulting.exemple.App
+
+=== Le dépôt local
+
+Maven stocke l'ensemble des artifacts dont il s'est servi dans son _dépôt local_.
+
+Pour placer le résultat de notre compilation dans le dépôt local, lancer
+
+		mvn install
+
+Allons voir le contenu du dépôt local dans `C:\Users\Moi\.m2`...
+
+=== Génération du site de documentation
+
+La commande :
+
+		mvn site
+
+génèrera un site de documentation dans le sous-répertoire `target/site`.
+
+=== Les phases
+
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[Introduction]

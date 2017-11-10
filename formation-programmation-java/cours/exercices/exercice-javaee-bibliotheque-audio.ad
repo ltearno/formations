@@ -1,0 +1,40 @@
+﻿= Exercice Java EE Bibliotheque Audio
+
+== Création du projet
+
+- créer un projet _Dynamic Web Project_ nommé "javaee-bibliotheque-audio"
+
+- reprendre les classes `Bibliotheque`, `Disque` et `Chanson` de l'exercice `bibliotheque-audio`.
+
+- activer Jax-RS dans votre projet (il faut remplir `web.xml` avec le contenu présenté dans le cours.
+
+== Classe de service
+
+Créer un service web REST (avec une nouvelle classe `BibliothequeAudioWebService`).
+
+L'url de base de ce service sera 'http://localhost:8080/javaee-bibliotheque-audio/api/bibliotheque/'
+
+Cette classe possèdera un attribut `private static Bibliotheque bibliotheque = new Bibliotheque();`
+
+NOTE : Pour avoir des disques et des chansons dans la bibliothèque dès le démarrage du serveur, ajouter ceci dans la classe de service :
+
+	// exécute ce bloc d'instruction au chargement de la classe (juste après l'initialisation des attributs `static`)
+	static {
+		bibliotheque.genereDisqueAleatoire(50);
+	}
+
+Implémenter les méthodes nécessaires pour que le service réponde aux requêtes HTTP suivantes :
+
+- GET `http://.../api/bibliotheque/disques` : renvoie la liste des disques contenus dans la bibliothèque en JSON,
+- GET `http://.../api/bibliotheque/disques/e55-654-334` : renvoie le disque demandé en JSON,
+- GET `http://.../api/bibliotheque/disques/e55-654-334/duree` : renvoie la durée en secondes du disque demandé,
+- GET `http://.../api/bibliotheque/disques/6e4-455-324/chansons` : la liste des chanson du disque spécifié,
+- GET `http://.../api/bibliotheque/disques/6e4-455-324/chansons/4` : renvoie la 5ième chanson du disque spécifié,
+- POST `http://.../api/bibliotheque/disques` : ajout d'un disque à partir de la représentation JSON du disque à ajouter (se trouvant dans la requête),
+- POST `http://.../api/bibliotheque/disques/6e4-455-324/chansons` : ajouter une chanson (en JSON dans le body de la req) dans le disque spécifié,
+
+Utiliser le logiciel PostMan pour tester et vérifier le bon fonctionnement de votre programme.
+
+- GET `http://.../api/bibliotheque/disques/search?name=coucou` : renvoie la liste des disques contenant la chaine de caractère 'coucou' dans leur titre.
+
+Ajouter ensuite les urls pour les effacements (méthode/verbe DELETE) puis les mises à jour (méthode/verbe PUT).
