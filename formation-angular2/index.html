@@ -1073,7 +1073,7 @@ describe('LicorneComponent', () =&gt; {
     expect($('small').getText()).toBe('How cool is that?')
   })
 })</code></pre></div></div></section></section>
-<section id="_style_des_compodants_et_encapsulation"><h2>Style des compodants et encapsulation</h2></section>
+<section id="_style_des_composants_et_encapsulation"><h2>Style des composants et encapsulation</h2></section>
 <section id="_transclusion"><h2>Transclusion</h2></section>
 <section id="_cycle_de_vie_des_composants_et_hooks"><h2>Cycle de vie des composants et hooks</h2><div class="paragraph"><p>Il est possible de demander au runtime Angular d&#8217;exécuter des fonctions spécifiques de nos composants à différentes étapes du cycle de vie des composants. Pour ceci il suffit à un composant d&#8217;implémenter certaines méthodes (prédéfinies dans des interfaces Typescript).</p></div>
 <table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">Méthode de Hook</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Utilisation</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnChanges</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">A chaque fois qu&#8217;une entrée (<code>@Input</code>) change de valeur. Reçoit une liste de <code>SimpleChanges</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnInit</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Appellé une fois après le premier <code>ngOnChanges</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngDoCheck</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Détection et gestion des changements custom. Offre la possibilité de faire un traitement pendant le cycle de détection des changements.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngAfterViewInit</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Après l&#8217;initialisation de la vue et des vues enfant.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>ngOnDestroy</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">A la destruction du composant.</p></td></tr></tbody></table>
@@ -1135,7 +1135,7 @@ RxJS : introduction&#8201;&#8212;&#8201;Observables&#8201;&#8212;&#8201;principe
     Créer un service
     Injection de service
     Template : interpolation/expression, "Binding" et filtres.
-    Directives de transformation : ngIf, ngFor, ngSwitch&#8230;&#8203;
+    Directives structurelles : ngIf, ngFor, ngSwitch&#8230;&#8203;
     Evènements utilisateur.</p></li><li><p>Jour 3
 Service HTTP
 Communication avec une API&#8201;&#8212;&#8201;requetes HTTP vers un serveur&#8201;&#8212;&#8201;WebSockets

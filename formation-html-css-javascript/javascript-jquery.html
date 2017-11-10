@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="generator" content="Asciidoctor 1.5.4">
 <meta name="author" content="Arnaud Tournier">
 <title>Javascript et JQuery</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -18,6 +18,7 @@ audio:not([controls]){display:none;height:0}
 [hidden],template{display:none}
 script{display:none!important}
 html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{margin:0}
 a{background:transparent}
 a:focus{outline:thin dotted}
 a:active,a:hover{outline:0}
@@ -52,7 +53,7 @@ textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}
 *,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 html,body{font-size:100%}
-body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto}
 a:hover{cursor:pointer}
 img,object,embed{max-width:100%;height:auto}
 object,embed{height:100%}
@@ -64,6 +65,7 @@ img{-ms-interpolation-mode:bicubic}
 .text-center{text-align:center!important}
 .text-justify{text-align:justify!important}
 .hide{display:none}
+body{-webkit-font-smoothing:antialiased}
 img,object,svg{display:inline-block;vertical-align:middle}
 textarea{height:auto;min-height:50px}
 select{width:100%}
@@ -118,16 +120,13 @@ table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:
 table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
 table tr.even,table tr.alt,table tr:nth-of-type(even){background:#f8f8f7}
 table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+body{tab-size:4}
 h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
 h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
 .clearfix:before,.clearfix:after,.float-group:before,.float-group:after{content:" ";display:table}
 .clearfix:after,.float-group:after{clear:both}
-*:not(pre)>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background-color:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
-*:not(pre)>code.nobreak{word-wrap:normal}
-*:not(pre)>code.nowrap{white-space:nowrap}
+*:not(pre)>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background-color:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre,pre>code{line-height:1.45;color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;text-rendering:optimizeSpeed}
-em em{font-style:normal}
-strong strong{font-weight:400}
 .keyseq{color:rgba(51,51,51,.8)}
 kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background-color:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
 .keyseq kbd:first-child{margin-left:0}
@@ -438,7 +437,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_javascript_et_jquery">Javascript et JQuery</a>
 <ul class="sectlevel2">
+<li><a href="#_construction_d_un_objet">Construction d&#8217;un objet</a></li>
+<li><a href="#_opérateur_new">Opérateur new</a></li>
+<li><a href="#_le_mot_clé_code_this_code">Le mot-clé <code>this</code></a></li>
+<li><a href="#_le_mode_em_strict_em">Le mode <em>strict</em></a></li>
+<li><a href="#_dom_api">DOM API</a></li>
+<li><a href="#_api_réseau">API Réseau</a></li>
+<li><a href="#_canvas">Canvas</a></li>
+<li><a href="#_web_components">Web Components&#8230;&#8203;</a></li>
 <li><a href="#_exercices">Exercices</a></li>
+<li><a href="#_javascript_coté_serveur">Javascript coté serveur</a></li>
+<li><a href="#_le_navigateur_sans_navigateur">Le navigateur sans navigateur</a></li>
+<li><a href="#_optimisations">Optimisations</a></li>
+<li><a href="#_es6">ES6</a></li>
 </ul>
 </li>
 </ul>
@@ -448,6 +459,251 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_javascript_et_jquery">Javascript et JQuery</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Référence javascript : <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference" class="bare">https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference</a></p>
+</div>
+<div class="paragraph">
+<p>Types de base du langage. Instruction <code>typeof</code>.</p>
+</div>
+<div class="paragraph">
+<p>Mécanisme d&#8217;héritage de prototype. Attention pas de notion de classe en JS.</p>
+</div>
+<div class="paragraph">
+<p>Chaque objet possède un lien vers son <em>prototype</em>.</p>
+</div>
+<div class="paragraph">
+<p>La recherche d&#8217;une propriété d&#8217;un objet se fait en parcourant la chaîne des prototypes.</p>
+</div>
+<div class="sect2">
+<h3 id="_construction_d_un_objet">Construction d&#8217;un objet</h3>
+<div class="paragraph">
+<p>Avec des littéraux :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">var o = { a : 1 };
+// o ---&gt; Object.prototype ---&gt; null
+
+var a = ["super", 66, true];
+// a ---&gt; Array.prototype ---&gt; Object.prototype ---&gt; null
+
+function f() {
+	return 42;
+}
+// f ---&gt; Function.prototype ---&gt; Object.prototype ---&gt; null</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ou l&#8217;opérateur <code>new</code> et un constructeur :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">function Graph() {
+  this.sommets = [];
+  this.aretes = [];
+}
+
+Graph.prototype = {
+  ajouteSommet: function(v) {
+    this.sommets.push(v);
+  }
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ou avec <code>Object.create()</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">var a = {a: 1};
+// a ---&gt; Object.prototype ---&gt; null
+
+var b = Object.create(a);
+// b ---&gt; a ---&gt; Object.prototype ---&gt; null
+console.log(b.a); // 1 (hérité)
+
+var c = Object.create(b);
+// c ---&gt; b ---&gt; a ---&gt; Object.prototype ---&gt; null
+
+var d = Object.create(null);
+// d ---&gt; null
+console.log(d.hasOwnProperty); // undefined, en effet d n'hérite pas de Object.prototype</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Avec ES6, on peut aussi utiliser le mot-clé <code>class</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="__code_object_hasownproperty_code"><code>Object.hasOwnProperty()</code></h4>
+
+</div>
+<div class="sect3">
+<h4 id="__code_object_setprototypeof_code"><code>Object.setPrototypeOf()</code></h4>
+
+</div>
+<div class="sect3">
+<h4 id="__code_object_isprototypeof_code"><code>Object.isPrototypeOf()</code></h4>
+
+</div>
+<div class="sect3">
+<h4 id="__code_instanceof_code"><code>instanceof</code></h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_opérateur_new">Opérateur new</h3>
+<div class="paragraph">
+<p><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Op%C3%A9rateurs/L_op%C3%A9rateur_new" class="bare">https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Op%C3%A9rateurs/L_op%C3%A9rateur_new</a></p>
+</div>
+<div class="paragraph">
+<p>Exemple de création d&#8217;une chaine de prototype :</p>
+</div>
+<div class="paragraph">
+<p><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/prototype" class="bare">https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/prototype</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">var Personne = function() {
+  this.peutParler = true;
+  this.salutation = function() {
+    if (this.peutParler) {
+      console.log('Bonjour, je suis ' + this.nom);
+    }
+  };
+};
+
+var Employe = function(nom, titre) {
+  this.nom = nom;
+  this.titre = titre;
+  this.salutation = function() {
+    if (this.peutParler) {
+      console.log("Bonjour, je suis " + this.nom + ", le " + this.titre);
+    }
+  };
+};
+Employe.prototype = new Personne();
+
+var Client = function(nom) {
+  this.nom = nom;
+};
+Client.prototype = new Personne();
+
+var Mime = function(nom) {
+  this.nom = nom;
+  this.peutParler = false;
+};
+Mime.prototype = new Personne();
+
+var bob = new Employe('Bob', 'bricoleur');
+var joe = new Client('Joe');
+var rg = new Employe('Red Green', 'réparateur');
+var mike = new Client('Mike');
+var mime = new Mime('Mime');
+
+bob.salutation();
+// Bonjour, je suis Bob, le bricoleur
+
+joe.salutation();
+// Bonjour, je suis Joe
+
+rg.salutation();
+// Bonjour, je suis Red Green, le réparateur
+
+mike.salutation();
+// Bonjour, je suis Mike
+
+mime.salutation();</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_le_mot_clé_code_this_code">Le mot-clé <code>this</code></h3>
+<div class="paragraph">
+<p>C&#8217;est un mot-clé spécial pour qui est habitué au développement en Java.</p>
+</div>
+<div class="paragraph">
+<p>Sa valeur dépend de la façon dont une fonction a été appelée (sauf à utiliser <code>bind</code>&#8230;&#8203;).</p>
+</div>
+<div class="paragraph">
+<p>En dehors de toute fonction, <code>this</code> pointe sur le contexte global (<code>this.document</code>, <code>this.window</code>).</p>
+</div>
+<div class="paragraph">
+<p>Dans un appel de fonction sans applicatioin sur un objet, <code>this</code> vaut <code>undefined</code> (en mode strict).</p>
+</div>
+<div class="paragraph">
+<p>On peut préciser la valeur que l&#8217;on souhaite pour <code>this</code> avec les méthodes <code>call</code> et <code>apply</code> (qui font parti du prototype du type <code>Function</code>).</p>
+</div>
+<div class="paragraph">
+<p>Avec la fonction <code>bind</code>, on peut créer une fonction qui sera toujours appelée avec le même <code>this</code>.</p>
+</div>
+<div class="paragraph">
+<p>Par contre pour les fonctions fléchées, <code>this</code> aura toujours la valeur qui est celle qu&#8217;il y avait lors de la création de la fonction.</p>
+</div>
+<div class="paragraph">
+<p>Lorsqu&#8217;une fonction est appelée en tant que méthode d&#8217;un objet, le mot-clé <code>this</code> fait référence à l&#8217;objet en question.</p>
+</div>
+<div class="paragraph">
+<p>Dans une fonction constructeur, le mot-clé <code>this</code> pointe vers l&#8217;objet en cours de construction.</p>
+</div>
+<div class="paragraph">
+<p>Dans un gestionnaire d&#8217;événement DOM, <code>this</code> pointe vers l&#8217;élément ayant déclenché l&#8217;événement (<code>event.currentTarget</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_le_mode_em_strict_em">Le mode <em>strict</em></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_dom_api">DOM API</h3>
+<div class="paragraph">
+<p>Manipulation de la partie graphique du navigateur. Chaque noeud du DOM possède sa représentation sous forme d&#8217;objet JS. Avec :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>des propriétés (lecture/écriture ou lecture seule)</p>
+</li>
+<li>
+<p>des fonctions</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>S&#8217;abonner aux évènements utilisateur.</p>
+</div>
+<div class="paragraph">
+<p><code>document</code>, <code>window</code>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p><code>getElementById</code>, <code>addEventListener</code>&#8230;&#8203;</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_api_réseau">API Réseau</h3>
+<div class="paragraph">
+<p><code>XMLHttpRequest</code> inventée par IE 6.</p>
+</div>
+<div class="paragraph">
+<p><code>FetchAPI</code> plus moderne&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Utilisation des <code>Promises</code></p>
+</div>
+<div class="sect3">
+<h4 id="_transfert_de_données">Transfert de données</h4>
+<div class="paragraph">
+<p>Souvent en JSON</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_canvas">Canvas</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_web_components">Web Components&#8230;&#8203;</h3>
+
+</div>
 <div class="sect2">
 <h3 id="_exercices">Exercices</h3>
 <div class="ulist">
@@ -473,12 +729,83 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_javascript_coté_serveur">Javascript coté serveur</h3>
+<div class="paragraph">
+<p>NodeJS est un serveur avec comme principe une gestion des I/O monothread par évènements.</p>
+</div>
+<div class="paragraph">
+<p>En plus du langage, on a un binding vers les libs standards C/C++.</p>
+</div>
+<div class="sect3">
+<h4 id="_ecosystème">Ecosystème</h4>
+<div class="paragraph">
+<p>Vaste et dynamique&#8230;&#8203;</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>npm,</p>
+</li>
+<li>
+<p>yarn&#8230;&#8203;</p>
+</li>
+<li>
+<p>yeoman&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Langages ciblant JS :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Typescript,</p>
+</li>
+<li>
+<p>Coffeescript,</p>
+</li>
+<li>
+<p>Dart,</p>
+</li>
+<li>
+<p>Java (GWT),</p>
+</li>
+<li>
+<p>&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_le_navigateur_sans_navigateur">Le navigateur sans navigateur</h3>
+<div class="paragraph">
+<p>Architectures de type Electron.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_optimisations">Optimisations</h3>
+<div class="paragraph">
+<p><code>eval</code> is not evil anymore ! Compilation. Appels monomorphique, polymorphiques, mégamorphiques.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_es6">ES6</h3>
+<div class="paragraph">
+<p>EcmaScript 2015.</p>
+</div>
+<div class="paragraph">
+<p>Voir formation Angular 2.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-11-02 15:09:00 Paris, Madrid
+Last updated 2017-11-09 11:16:30 CET
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

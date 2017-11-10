@@ -5,8 +5,8 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse">
-<title>Angular 2 - Travaux pratiques</title>
+<meta name="author" content="Arnaud Tournier">
+<title>Catalogue des formations</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -420,305 +420,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Angular 2 - Travaux pratiques</h1>
+<h1>Catalogue des formations</h1>
 <div class="details">
-<span id="author" class="author">Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</span><br>
+<span id="author" class="author">Arnaud Tournier</span><br>
 <span id="email" class="email"><a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></span><br>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_installer_l_environnement">Installer l&#8217;environnement</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>NodeJS et NPM</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p>nodejs.org</p>
+<p>LTE Consulting &#169; - 2017</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Chrome</p>
-</li>
-<li>
-<p>Typescript</p>
-</li>
-</ul>
-</div>
+<!-- toc disabled -->
 <div class="paragraph">
-<p><code>npm install -g typescript</code></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Angular</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Un IDE</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Visual Studio Code</p>
-</li>
-<li>
-<p>ou Web Storm</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_projet_simple_helloworld">Projet simple "HelloWorld"</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Création d&#8217;un projet simple avec Angular</p>
-</div>
-<div class="paragraph">
-<p>Créer un répertoire pour le projet.</p>
-</div>
-<div class="paragraph">
-<p><code>tsc --init --target es5 --sourceMap --experimentalDecorators --emitDecoratorMetadata</code></p>
-</div>
-<div class="paragraph">
-<p>Il est aussi possible d&#8217;éditer directement le fichier <code>tsconfig.json</code> à la main.</p>
-</div>
-<div class="paragraph">
-<p>Créer le projet NPM</p>
-</div>
-<div class="paragraph">
-<p><code>npm init</code></p>
-</div>
-<div class="paragraph">
-<p>Répondez aux questions.</p>
-</div>
-<div class="paragraph">
-<p>Ajout des dépendances à Angular</p>
-</div>
-<div class="paragraph">
-<p><code>npm install --save @angular/core @angular/compiler @angular/common @angular/platform-browser @angular/platform-browser-dynamic rxjs reflect-metadata zone.js</code></p>
-</div>
-<div class="paragraph">
-<p>Installation des typings</p>
-</div>
-<div class="paragraph">
-<p><code>npm install --save-dev @types/core-js</code></p>
-</div>
-<div class="paragraph">
-<p>Création du composant</p>
-</div>
-<div class="paragraph">
-<p>Créer un fichier <code>app.component.ts</code>.</p>
-</div>
-<div class="paragraph">
-<p>Y créer une classe :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript" data-lang="javascript">import {Component} from '@angular/core'; <b class="conum">(1)</b>
-
-@Component({ <b class="conum">(2)</b>
-    selector: 'angular-app', <b class="conum">(3)</b>
-    template: '&lt;h1&gt;Hello !&lt;/h1&gt;' <b class="conum">(4)</b>
-})
-export class AngularAppComponent { <b class="conum">(5)</b>
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<ol>
-<li>
-<p>import de la bibliothèque centrale d&#8217;Angular</p>
-</li>
-<li>
-<p>le décorateur <code>@Component</code> déclare un composant Angular</p>
-</li>
-<li>
-<p>ce composant sera instancié en lieu et place de <code>&lt;angular-app&gt;&lt;/angular-app&gt;</code> dans le dom de l&#8217;application</p>
-</li>
-<li>
-<p>la vue de notre composant en HTML</p>
-</li>
-<li>
-<p>nous exportons la classe afin qu&#8217;elle puisse être utilisée par le framework.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Création du module</p>
-</div>
-<div class="paragraph">
-<p>Créer un fichier <code>app.module.ts</code>.</p>
-</div>
-<div class="paragraph">
-<p>Y créer la classe du module principal de notre application :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript" data-lang="javascript">import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AngularAppComponent } from './app.component';
-
-@NgModule({ <b class="conum">(1)</b>
-    imports: [BrowserModule], <b class="conum">(2)</b>
-    declarations: [AngularAppComponent], <b class="conum">(3)</b>
-    bootstrap: [AngularAppComponent] <b class="conum">(4)</b>
-})
-export class AppModule {
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<ol>
-<li>
-<p>le décorateur <code>NgModule</code> pour les classes module.</p>
-</li>
-<li>
-<p>notre application importe le module <code>BrowserModule</code> fourni par Angular</p>
-</li>
-<li>
-<p>notre module déclare le composant <code>AngularAppComponent</code></p>
-</li>
-<li>
-<p>c&#8217;est ce même composant qui est le composant principal de l&#8217;application et sert à la démarrer.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Créer un fichier <code>main.ts</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code>import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'; <b class="conum">(1)</b>
-import { AppModule } from './app.module';
-
-platformBrowserDynamic().bootstrapModule(AppModule); <b class="conum">(2)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<ol>
-<li>
-<p>module d&#8217;initialisation d&#8217;Angular pour les navigateurs</p>
-</li>
-<li>
-<p>appel à la fonction d&#8217;initialisation d&#8217;Angular</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Création de la page html</p>
-</div>
-<div class="paragraph">
-<p>Créer un fichier <code>index.html</code> :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-html" data-lang="html">&lt;html&gt;
-
-&lt;head&gt;&lt;/head&gt;
-
-&lt;body&gt;
-    &lt;angular-app&gt;
-        Message d'attente...
-    &lt;/angular-app&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Installation de SystemJS</p>
-</div>
-<div class="paragraph">
-<p><code>npm install --save systemjs</code></p>
-</div>
-<div class="paragraph">
-<p>Modification du fichier <code>index.html</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-html" data-lang="html">&lt;html&gt;
-
-&lt;head&gt;
-    &lt;script src="node_modules/zone.js/dist/zone.js"&gt;&lt;/script&gt;
-    &lt;script src="node_modules/reflect-metadata/Reflect.js"&gt;&lt;/script&gt;
-    &lt;script src="node_modules/systemjs/dist/system.js"&gt;&lt;/script&gt;
-    &lt;script&gt;
-        System.config({
-            // the app will need the following dependencies
-            map: {
-                '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
-                '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
-                '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
-                '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
-                '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-                'rxjs': 'node_modules/rxjs'
-            },
-
-            packages: {
-                // we want to import our modules without writing '.js' at the end
-                // we declare them as packages and SystemJS will add the extension for us
-                '.': {}
-            }
-        });
-
-        // and to finish, let's boot the app!
-        System.import('main');
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-    &lt;angular-app&gt;
-        Message d'attente...
-    &lt;/angular-app&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Compilation du projet</p>
-</div>
-<div class="paragraph">
-<p>Pour lancer le compilateur Typescript en mode surveillance des fichiers (les fichiers sources sont recompilés automatiquemen à chaque changement), on lance :</p>
-</div>
-<div class="paragraph">
-<p><code>tsc</code></p>
-</div>
-<div class="paragraph">
-<p>Installation d&#8217;un mini serveur HTTP</p>
-</div>
-<div class="paragraph">
-<p><code>npm install -g http-server</code></p>
-</div>
-<div class="paragraph">
-<p>Démarrage de l&#8217;application</p>
-</div>
-<div class="paragraph">
-<p>Aller dans le répertoire de l&#8217;application et taper :</p>
-</div>
-<div class="paragraph">
-<p><code>http-server</code></p>
-</div>
-<div class="paragraph">
-<p>Aller à l&#8217;adresse <code><a href="http://localhost:8080" class="bare">http://localhost:8080</a></code></p>
-</div>
-<div class="paragraph">
-<p>Normalement le message "Hello !" doit apparaître après chargement et initialisation de l&#8217;application.</p>
-</div>
-</div>
+<p>Ces cours sont Open Source. Les sources sont disponibles en ligne <a href="https://github.com/ltearno/formations">ici</a></p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-09 11:16:30 CET
+Last updated 2017-11-10 10:36:34 CET
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

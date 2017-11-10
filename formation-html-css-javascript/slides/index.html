@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
-  <meta name="author" content="" />
   <title>HTML CSS Javascript</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -27,13 +26,12 @@
 
 <section>
     <h1 class="title">HTML CSS Javascript</h1>
-    <h2 class="author"></h2>
     <h3 class="date">Formation HTML CSS Javascript CS - 2016 - Arnaud Tournier - LTE Consulting</h3>
 </section>
 
-<section><section id="html" class="titleslide slide level2"><h2>HTML</h2></section></section>
-<section><section id="html---introduction" class="titleslide slide level2"><h2>HTML - Introduction</h2></section><section id="la-balise" class="slide level3">
-<h3>La balise</h3>
+<section><section id="html" class="titleslide slide level2"><h1>HTML</h1></section></section>
+<section><section id="html---introduction" class="titleslide slide level2"><h1>HTML - Introduction</h1></section><section id="la-balise" class="slide level3">
+<h1>La balise</h1>
 <p>Elément textuel fondamental d'une page web. Elle est interprétée par le navigateur.</p>
 <p>Elle est toujours délimitée par les signes &lt; et &gt;.</p>
 <pre><code>&lt;html&gt;
@@ -41,14 +39,14 @@
     &lt;span&gt;Une ligne de texte&lt;/span&gt;
 &lt;/html&gt;</code></pre>
 </section><section id="attributs" class="slide level3">
-<h3>Attributs</h3>
+<h1>Attributs</h1>
 <p>Une balise peut en plus comporter des attributs. Un attributs est une informations complémentaire. Ils se présentent sous la forme <code>nomattribut=&quot;valeur&quot;</code>.</p>
 <pre><code>&lt;html lang=&quot;fr&quot;&gt;
     ...
     &lt;img src=&quot;pomme.png&quot;/&gt;
 &lt;/html&gt;</code></pre>
 </section><section id="ouverture-et-fermeture" class="slide level3">
-<h3>Ouverture et fermeture</h3>
+<h1>Ouverture et fermeture</h1>
 <p>Chaque balise ouverte doit être fermée, cependant il existe des exceptions.</p>
 <p>On distingue deux types de balises :</p>
 <ul>
@@ -56,21 +54,21 @@
 <li>Les balises doubles.</li>
 </ul>
 </section><section id="les-balises-simples" class="slide level3">
-<h3>Les balises simples</h3>
+<h1>Les balises simples</h1>
 <p>Elles sont &quot;vides&quot;, c'est-à-dire qu'elles ne contiennent aucune autre balise HTML. Ces balises sont fermées directement.</p>
 <p>Exemple :</p>
 <pre><code>&lt;img src=&quot;tomates.png&quot;/&gt;
 
 &lt;br/&gt;</code></pre>
 </section><section id="les-balises-doubles" class="slide level3">
-<h3>Les balises doubles</h3>
+<h1>Les balises doubles</h1>
 <p>Elles nécessitent deux balises, une ouvrante et une fermante dans lesquelles on va pouvoir mettre d'autres balises ou du texte.</p>
 <p>La balise fermante est identique à la balise ouvrante, à la différence qu'elle contient un &quot;/&quot; pour indiquer à quel endroit on la ferme.</p>
 <pre><code>&lt;p&gt;Ici du texte ou tout autre balise.
 Et la ligne suivante ferme le paragraphe
 &lt;/p&gt;</code></pre>
 </section><section id="imbrication-des-balises" class="slide level3">
-<h3>Imbrication des balises</h3>
+<h1>Imbrication des balises</h1>
 <p>Lorsque l'on imbrique des balises, il est impératif de respecter la hiérarchie des balises, c'est-à-dire que la première ouverte sera la dernière à être fermée.</p>
 <p>Le chevauchement des balises est une grave erreur.</p>
 <p>Exemple</p>
@@ -78,11 +76,11 @@ Et la ligne suivante ferme le paragraphe
 
 &lt;b&gt;&lt;u&gt;Ici les balises ne sont&lt;/b&gt; pas correctes, c&#39;est une erreur</code></pre>
 </section><section id="le-texte-à-lintérieur-des-balises" class="slide level3">
-<h3>Le texte à l'intérieur des balises</h3>
+<h1>Le texte à l'intérieur des balises</h1>
 <p>Le HTML ne prend pas en compte les espaces et retours chariots lorsqu'ils sont consécutifs. HTML n'en retient qu'un.</p>
 <p>Vous pouvez donc insérer des retours chariot où bon vous semble, cela ne perturbera pas la mise en page.</p>
 </section><section id="structure-dun-document-html" class="slide level3">
-<h3>Structure d'un document HTML</h3>
+<h1>Structure d'un document HTML</h1>
 <p>Structure minimale obligatoire d'une page :</p>
 <pre><code>&lt;!doctype html&gt;
 &lt;html&gt;
@@ -97,18 +95,18 @@ Et la ligne suivante ferme le paragraphe
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </section><section id="le-doctype" class="slide level3">
-<h3>Le DOCTYPE</h3>
+<h1>Le DOCTYPE</h1>
 <p>La première ligne du document s'appelle le DOCTYPE. C'est une balise indispensable pour conserver la compatibilité du rendu de votre page sur les différents navigateurs modernes.</p>
 <p>Validation W3C.</p>
 </section><section id="quirks-mode" class="slide level3">
-<h3>Quirks mode</h3>
+<h1>Quirks mode</h1>
 <p>L'absence de cette balise est appelée le mode Quirks, ou non conforme, alors qu'au contraire, la présence de cette balise est appelée le mode Standard, ou conforme.</p>
 <p>Exemple de différence de rendu :</p>
 <figure>
 <img src="quirks-mode.gif" />
 </figure>
 </section><section id="la-balise-html" class="slide level3">
-<h3>La balise HTML</h3>
+<h1>La balise HTML</h1>
 <p>Vient ensuite la balise &lt;html&gt;. Elle encadre l'ensemble des autres balises.</p>
 <p>Elle contient deux balises :</p>
 <ul>
@@ -117,7 +115,7 @@ Et la ligne suivante ferme le paragraphe
 </ul>
 <p><strong>Attention</strong> : dans un document, les balises <strong>html</strong>, <strong>body</strong> et <strong>head</strong> doivent être uniques !</p>
 </section><section id="les-commentaires" class="slide level3">
-<h3>Les commentaires</h3>
+<h1>Les commentaires</h1>
 <p>Les commentaires permettent de laisser des informations ou des descriptions du code et sont utilisables à n'importe quel endroit de votre document.</p>
 <p>Ces commentaires ne seront pas affichés dans le navigateur mais ils resteront présents dans la page.</p>
 <p>Ils sont délimités par &lt;!-- et --&gt; et peuvent être multilignes.</p>
@@ -126,20 +124,20 @@ Et la ligne suivante ferme le paragraphe
 &lt;!-- Voici un deuxième commentaire.
      Celui-ci est multilignes. --&gt;</code></pre>
 </section></section>
-<section><section id="html---entête-du-document" class="titleslide slide level2"><h2>HTML - Entête du document</h2></section><section id="titre" class="slide level3">
-<h3>Titre</h3>
+<section><section id="html---entête-du-document" class="titleslide slide level2"><h1>HTML - Entête du document</h1></section><section id="titre" class="slide level3">
+<h1>Titre</h1>
 <p>Le titre de la page est positionné avec la balise <code>&lt;title&gt;</code>.</p>
 <pre><code>    &lt;title&gt;Application&lt;/title&gt;</code></pre>
 </section><section id="scripts" class="slide level3">
-<h3>Scripts</h3>
+<h1>Scripts</h1>
 <p>Programmes <em>Javascript</em> ajoutés à la page pour gérer le contenu dynamiquement.</p>
 <p>Script interne et externe.</p>
 </section><section id="script-externe" class="slide level3">
-<h3>Script externe</h3>
+<h1>Script externe</h1>
 <p>Pour inclure une bibliothèque ou un script extérieur à la page :</p>
 <pre><code>    &lt;script type=&quot;text/javascript&quot; src=&quot;chemin/du/fichier/javascript.js&quot;&gt;&lt;/script&gt;</code></pre>
 </section><section id="script-interne" class="slide level3">
-<h3>Script interne</h3>
+<h1>Script interne</h1>
 <p>Code javascript écrit directement dans la page.</p>
 <pre><code>    &lt;script type=&quot;text/javascript&quot;&gt;
         function maFonction()
@@ -149,11 +147,11 @@ Et la ligne suivante ferme le paragraphe
     &lt;/script&gt;</code></pre>
 <p><em>Note : la balise script peut s'utiliser partout dans la page</em></p>
 </section><section id="les-styles" class="slide level3">
-<h3>Les styles</h3>
+<h1>Les styles</h1>
 <p>Les feuilles de style en cascade (CSS) sont déclarées ou importées dans la balise <code>head</code>.</p>
 <p>Il y a deux façons d'ajouter du CSS à une page : externe ou interne.</p>
 </section><section id="css-interne" class="slide level3">
-<h3>CSS Interne</h3>
+<h1>CSS Interne</h1>
 <pre><code>    &lt;style type=&quot;text/css&quot;&gt;
         body
         {
@@ -161,11 +159,11 @@ Et la ligne suivante ferme le paragraphe
         }
     &lt;/style&gt;</code></pre>
 </section><section id="css-externe" class="slide level3">
-<h3>CSS Externe</h3>
+<h1>CSS Externe</h1>
 <p>Utilisé pour inclure un fichier CSS de définition.</p>
 <pre><code>    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;moncss.css&quot;&gt;</code></pre>
 </section><section id="méta" class="slide level3">
-<h3>Méta</h3>
+<h1>Méta</h1>
 <p>Renseigne des informations sur la page : auteur, description du document, mot-clés, encodage...</p>
 <p>Deux types de balise méta :</p>
 <ul>
@@ -173,20 +171,20 @@ Et la ligne suivante ferme le paragraphe
 <li>Les méta <strong>http-equiv</strong> : concernent la communication du navigateur.</li>
 </ul>
 </section><section id="content-type" class="slide level3">
-<h3>Content-type</h3>
+<h1>Content-type</h1>
 <p>Précise le type <strong>MIME</strong> de contenu ainsi que le jeu de caractères utilisé pour l'encodage du fichier.</p>
 <pre><code>    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;</code></pre>
 <p>Autres méta <code>http-equiv</code> : <em>refresh</em>, <em>pragma</em>, <em>expires</em>, <em>set-cookie</em></p>
 </section><section id="autres-métas" class="slide level3">
-<h3>Autres métas</h3>
+<h1>Autres métas</h1>
 <pre><code>    &lt;meta name=&quot;author&quot; content=&quot;Arnaud TOURNIER&quot;&gt;</code></pre>
 <p>Ainsi que d'autres : <em>description</em>, <em>keywords</em>, <em>subject</em>, <em>language</em>.</p>
 </section></section>
-<section><section id="html---corps-du-document" class="titleslide slide level2"><h2>HTML - Corps du document</h2></section><section id="corps-du-document" class="slide level3">
-<h3>Corps du document</h3>
+<section><section id="html---corps-du-document" class="titleslide slide level2"><h1>HTML - Corps du document</h1></section><section id="corps-du-document" class="slide level3">
+<h1>Corps du document</h1>
 <p>C'est dans la balise <code>&lt;body&gt;</code> que nous allons mettre tout le texte et toutes les images qui apparaîtront lorsqu'un visiteur viendra sur notre page.</p>
 </section><section id="les-niveaux-de-titres" class="slide level3">
-<h3>Les niveaux de titres</h3>
+<h1>Les niveaux de titres</h1>
 <p>Il existe différents niveaux de titres, ils vont de 1 à 6 et ont chacun leur importance. La balise représentant ces niveaux de titre est <code>&lt;hX&gt;</code> où <code>X</code> représente le niveau.</p>
 <p>Exemple :</p>
 <pre><code>&lt;h1&gt;Titre de ma page&lt;/h1&gt;
@@ -194,64 +192,64 @@ Et la ligne suivante ferme le paragraphe
 <p>Il est important de respecter la hiérarchie des différents niveaux de titres (pas de <em>h2</em> au dessus d'un *h1).</p>
 <p>On choisi un niveau de titre de façon logique et non en fonction du rendu désiré (qui se fera avec le CSS).</p>
 </section><section id="les-paragraphes-de-texte" class="slide level3">
-<h3>Les paragraphes de texte</h3>
+<h1>Les paragraphes de texte</h1>
 <p>En HTML c'est la même chose on précise où commence un paragraphe et où il se termine. C'est ce à quoi sert la balise <code>&lt;p&gt;</code>.</p>
 <pre><code>&lt;p&gt;Voici un premier paragraphe.&lt;/p&gt;
  
 &lt;p&gt;Voici un deuxième paragraphe.&lt;/p&gt;</code></pre>
 </section><section id="retour-à-la-ligne" class="slide level3">
-<h3>Retour à la ligne ?</h3>
+<h1>Retour à la ligne ?</h1>
 <p>Au sein d'un paragraphe, on utilise la balise <code>&lt;br/&gt;</code> :</p>
 <pre><code>    &lt;p&gt;Voici un premier paragraphe avec un &lt;br/&gt; retour à la ligne !!&lt;/p&gt;</code></pre>
 </section><section id="la-mise-en-forme-de-texte" class="slide level3">
-<h3>La mise en forme de texte</h3>
+<h1>La mise en forme de texte</h1>
 <p>Ici nous étudions les techniques rudimentaires de formattage du texte. CSS nous permettra de faire beaucoup mieux !</p>
 </section><section id="le-texte-en-gras" class="slide level3">
-<h3>Le texte en gras</h3>
+<h1>Le texte en gras</h1>
 <p>Pour mettre le texte en gras on l'encadre de la balise <code>&lt;b&gt;</code> :</p>
 <pre><code>&lt;b&gt;Ce texte s&#39;affichera en gras.&lt;/b&gt;</code></pre>
 </section><section id="le-texte-italique" class="slide level3">
-<h3>Le texte italique</h3>
+<h1>Le texte italique</h1>
 <p>Pour mettre le texte en italique on l'encadre de la balise <code>&lt;i&gt;</code> :</p>
 <pre><code>&lt;i&gt;Ce texte s&#39;affichera en italique.&lt;/i&gt;</code></pre>
 </section><section id="le-texte-souligné" class="slide level3">
-<h3>Le texte souligné</h3>
+<h1>Le texte souligné</h1>
 <p>Pour souligner le texte on l'encadre de la balise <code>&lt;u&gt;</code> :</p>
 <pre><code>&lt;u&gt;Ce texte sera souligné.&lt;/u&gt;</code></pre>
 </section><section id="le-texte-barré" class="slide level3">
-<h3>Le texte barré</h3>
+<h1>Le texte barré</h1>
 <p>Pour barrer le texte on l'encadre de la balise <code>&lt;s&gt;</code> :</p>
 <pre><code>&lt;s&gt;Ce texte sera barré.&lt;/s&gt;</code></pre>
 </section><section id="le-texte-en-exposant" class="slide level3">
-<h3>Le texte en exposant</h3>
+<h1>Le texte en exposant</h1>
 <p>Pour placer le texte en exposant on l'encadre de la balise <code>&lt;sup&gt;</code> :</p>
 <pre><code>&lt;sup&gt;Ce texte sera en exposant.&lt;/sup&gt;</code></pre>
 </section><section id="le-texte-en-indice" class="slide level3">
-<h3>Le texte en indice</h3>
+<h1>Le texte en indice</h1>
 <p>Pour placer le texte en indice on l'encadre de la balise <code>&lt;sub&gt;</code> :</p>
 <pre><code>&lt;sub&gt;Ce texte sera en indice.&lt;/sub&gt;</code></pre>
 </section><section id="modifier-la-couleur-du-texte" class="slide level3">
-<h3>Modifier la couleur du texte</h3>
+<h1>Modifier la couleur du texte</h1>
 <p>Pour modifier la couleur du texte on utilise l'attribut color de la balise <code>&lt;font&gt;</code> :</p>
 <pre><code>&lt;font color=&quot;#ff0000&quot;&gt;Ce texte sera en rouge.&lt;/font&gt;</code></pre>
 </section><section id="les-couleurs" class="slide level3">
-<h3>Les couleurs</h3>
+<h1>Les couleurs</h1>
 <p>Les couleurs peuvent être écrites de deux manières :</p>
 <ul>
 <li><p>en hexadécimal de type RVB et précédées d'un dièse (#). Par exemple : #ff0000 =&gt; rouge, #00ff00 =&gt; vert, #0000ff =&gt; bleu.</p></li>
 <li><p>textuelle (en anglais). Par exemple : <code>red</code>, <code>yellow</code>, <code>pink</code>.</p></li>
 </ul>
 </section><section id="modifier-la-police-du-texte" class="slide level3">
-<h3>Modifier la police du texte</h3>
+<h1>Modifier la police du texte</h1>
 <p>Pour modifier la police du texte on utilise l'attribut face de la balise <code>&lt;font&gt;</code> :</p>
 <pre><code>&lt;font face=&quot;verdana&quot;&gt;Ce texte sera en verdana.&lt;/font&gt;</code></pre>
 <p>On a tendance à demander une famille de polices plutôt qu'une seule police. En effet, cela permet d'être sûr d'obtenir la plus proche si non installée.</p>
 </section><section id="polices-par-préférence" class="slide level3">
-<h3>Polices par préférence</h3>
+<h1>Polices par préférence</h1>
 <p>On sépare alors les différentes polices par une virgule dans l'ordre de sélection le cas où la précédente ne peut pas être affichée.</p>
 <pre><code>&lt;font face=&quot;verdana,sans-serif&quot;&gt;Ce texte sera en verdana ou en sans-serif si verdana n&#39;est pas installée.&lt;/font&gt;</code></pre>
 </section><section id="modifier-la-taille-du-texte" class="slide level3">
-<h3>Modifier la taille du texte</h3>
+<h1>Modifier la taille du texte</h1>
 <p>Pour modifier la taille du texte on utilise l'attribut size de la balise <code>&lt;font&gt;</code> :</p>
 <pre><code>&lt;font size=&quot;5&quot;&gt;Ce texte sera en taille 5.&lt;/font&gt;</code></pre>
 <p>Par défaut, la valeur de l'attribut size vaut &quot;3&quot;.</p>
@@ -261,10 +259,10 @@ Et la ligne suivante ferme le paragraphe
 <li>En relatif : Les valeurs possibles les entiers de &quot;-2&quot; à &quot;+4&quot;.</li>
 </ul>
 </section><section id="font-combinaison-color-face-et-size" class="slide level3">
-<h3>Font, combinaison color, face et size</h3>
+<h1>Font, combinaison color, face et size</h1>
 <p>Et il est bien évidemment possible de renseigner ces trois attributs (color, face, size) à la fois dans la même balise <code>&lt;font&gt;</code>.</p>
 </section><section id="les-images" class="slide level3">
-<h3>Les images</h3>
+<h1>Les images</h1>
 <p>Pour afficher une image on utilise la balise <code>&lt;img&gt;</code>.</p>
 <p>Plus important attributs : <code>src</code> et <code>alt</code>.</p>
 <ul>
@@ -273,7 +271,7 @@ Et la ligne suivante ferme le paragraphe
 <pre><code>&lt;img src=&quot;monImage.png&quot; alt=&quot;Description de l&#39;image&quot; title=&quot;coucou !&quot;/&gt;</code></pre></li>
 </ul>
 </section><section id="les-liens-hypertextes" class="slide level3">
-<h3>Les liens hypertextes</h3>
+<h1>Les liens hypertextes</h1>
 <p>Un lien hypertexte est un élement HTML permettant d'envoyer le visiteur vers une nouvelle page. On peut insérer dans cet élément toute sorte de textes, images et autres balises dites &quot;inline&quot; (comme les balises <code>&lt;span&gt;</code>, <code>&lt;strong&gt;</code>, etc).</p>
 <p>Un lien sera représenté dans le code par la balise <code>&lt;a&gt;</code>. Tout ce qui sera dans cette balise fera office de lien. L'adresse de destination doit se trouver dans l'attribut href.</p>
 <pre><code>&lt;a href=&quot;adresse/de/destination.html&quot;&gt;Texte du lien&lt;/a&gt;
@@ -281,14 +279,14 @@ Et la ligne suivante ferme le paragraphe
 &lt;a href=&quot;adresse/de/destination.html&quot;&gt;&lt;img src=&quot;adresse/de/l/image.gif&quot;&gt;&lt;/a&gt;</code></pre>
 <p>On distingue deux types de liens, les liens externes et les liens internes.</p>
 </section><section id="les-liens-externes" class="slide level3">
-<h3>Les liens externes</h3>
+<h1>Les liens externes</h1>
 <p>Un lien externe est un lien hypertexte qui renvoie vers une page hébergée par un site différent de celui qui a servi la page.</p>
 </section><section id="les-liens-internes" class="slide level3">
-<h3>Les liens internes</h3>
+<h1>Les liens internes</h1>
 <p>Un lien interne est un lien qui renvoie vers une page appartenant au même site que celui qui a fourni la page dans laquelle se trouve le lien en question.</p>
 <p>On utilise pour cela les <em>ancres</em>.</p>
 </section><section id="les-ancres" class="slide level3">
-<h3>Les ancres</h3>
+<h1>Les ancres</h1>
 <p>Les ancres permettent de naviguer à l'intérieur d'une même page.</p>
 <p>Pour faire une ancre, il faut utiliser <code>#</code> suivi d'un mot-clef. Ce mot-clef sera repris dans l'attribut <code>id</code> d'une balise à laquelle on fait faire une ancre :</p>
 <pre><code>&lt;h2 id=&quot;motClef&quot;&gt;Texte vers lequel l&#39;ancre est renvoyée&lt;/h2&gt;
@@ -299,11 +297,11 @@ Et la ligne suivante ferme le paragraphe
 <p>Si vous voulez faire une ancre vers une page externe :</p>
 <pre><code>&lt;a href=&quot;adresse/de/destination.html#motClef&quot;&gt;Texte de mon ancre&lt;/a&gt;</code></pre>
 </section><section id="liens-vers-dautres-cadres" class="slide level3">
-<h3>Liens vers d'autres cadres</h3>
+<h1>Liens vers d'autres cadres</h1>
 <p>Si vous utilisez des cadres pour votre navigations, on peut les utiliser comme destination :</p>
 <pre><code>&lt;a href=&quot;adresse/de/destination.html&quot; target=&quot;cadrePrincipal&quot;&gt;Lien de mon menu&lt;/a&gt;</code></pre>
 </section><section id="nomenclature-des-cadres" class="slide level3">
-<h3>Nomenclature des cadres</h3>
+<h1>Nomenclature des cadres</h1>
 <p>Il existe plusieurs valeurs pour l'attribut target :</p>
 <ul>
 <li>_self : Affichage dans le cadre courant (par défaut).</li>
@@ -313,7 +311,7 @@ Et la ligne suivante ferme le paragraphe
 <li><em>NomDuCadre</em> : Affichage dans le cadre spécifié.</li>
 </ul>
 </section><section id="les-liens-e-mails" class="slide level3">
-<h3>Les liens e-mails</h3>
+<h1>Les liens e-mails</h1>
 <p>Vous pouvez permettre à vos visiteurs d'écrire sur votre adresse e-mail avec la syntaxe &quot;mailto:&quot; :</p>
 <pre><code>&lt;a href=&quot;mailto:jwillette@monsite.com&quot;&gt;Ecrivez-moi&lt;/a&gt;</code></pre>
 <p>Ce type de liens ouvre le logiciel de messagerie par défaut de vos visiteurs.</p>
@@ -324,10 +322,10 @@ Et la ligne suivante ferme le paragraphe
 
 &lt;a href=&quot;mailto:destinataire1@monsite.com?cc=destinataire2@monsite.com&quot;&gt;Ecrivez-nous&lt;/a&gt;</code></pre>
 </section><section id="les-cadres" class="slide level3">
-<h3>Les cadres</h3>
+<h1>Les cadres</h1>
 <p>Les cadres servent à séparer la fenêtre en différents morceaux indépendants qui peuvent chacun contenir une page HTML différente, ces morceaux ayant la capacité de communiquer entre eux.</p>
 </section><section id="débuter-avec-les-cadres" class="slide level3">
-<h3>Débuter avec les cadres</h3>
+<h1>Débuter avec les cadres</h1>
 <p>Création d'une page avec cadres qui chargent les sous-pages. On utilise les balises <code>&lt;frameset&gt;</code> et <code>&lt;frame&gt;</code>.</p>
 <pre><code>&lt;!doctype html&gt;
 &lt;html&gt;
@@ -347,13 +345,13 @@ Et la ligne suivante ferme le paragraphe
 &lt;/html&gt;</code></pre>
 <p>Ici, <code>&lt;frameset&gt;</code> a remplacé <code>&lt;body&gt;</code>.</p>
 </section><section id="les-cadres-locaux" class="slide level3">
-<h3>Les cadres locaux</h3>
+<h1>Les cadres locaux</h1>
 <p>Le cadre local ou &quot;iframe&quot; permet également d'insérer une page externe dans notre site, à la différence qu'il sera à la suite du contenu de notre propre document et non pas séparé par un troisième fichier qui fait la jointure.</p>
 <pre><code>&lt;iframe frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; src=&quot;http://adresse/d/une/page.html&quot;&gt;
     Désolé, votre navigateur ne supporte pas les cadres locaux
 &lt;/iframe&gt;</code></pre>
 </section><section id="les-listes" class="slide level3">
-<h3>Les listes</h3>
+<h1>Les listes</h1>
 <p>Elles servent, comme leur nom l'indique, à créer une liste d'items, plus précisément à les énumérer.</p>
 <p>Différents types :</p>
 <ul>
@@ -363,7 +361,7 @@ Et la ligne suivante ferme le paragraphe
 <li>Les listes de menus.</li>
 </ul>
 </section><section id="les-listes-non-ordonnées" class="slide level3">
-<h3>Les listes non ordonnées</h3>
+<h1>Les listes non ordonnées</h1>
 <p>Elles sont démarquées par la balise <code>&lt;ul&gt;</code> et chacun des items est entouré de la balise <code>&lt;li&gt;</code> :</p>
 <pre><code>&lt;p&gt;Ma liste de courses :&lt;/p&gt;
 &lt;ul&gt;
@@ -373,7 +371,7 @@ Et la ligne suivante ferme le paragraphe
     &lt;li&gt;Céréales&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
 </section><section id="différents-types-de-puces" class="slide level3">
-<h3>Différents types de puces</h3>
+<h1>Différents types de puces</h1>
 <p>L'attribut <code>type</code> de <code>ul</code> peut prendre ces valeurs :</p>
 <ul>
 <li>disc (par défaut au niveau 1 d'imbrication)</li>
@@ -388,7 +386,7 @@ Et la ligne suivante ferme le paragraphe
 &lt;/ul&gt;</code></pre></li>
 </ul>
 </section><section id="les-puces-en-image" class="slide level3">
-<h3>Les puces en image</h3>
+<h1>Les puces en image</h1>
 <p>On peut aussi utiliser des images externes pour dessiner les puces, avec CSS :</p>
 <pre><code>&lt;p&gt;Ma liste de courses :&lt;/p&gt;
 &lt;ul&gt;
@@ -403,7 +401,7 @@ li
     list-style-image : url(puce.gif);
 }</code></pre>
 </section><section id="les-listes-ordonnées" class="slide level3">
-<h3>Les listes ordonnées</h3>
+<h1>Les listes ordonnées</h1>
 <p>Elles sont introduites par la balise <code>&lt;ol&gt;</code> et chacun des items est encadré par la balise <code>&lt;li&gt;</code> :</p>
 <pre><code>&lt;p&gt;Top 3 du tiercé :&lt;/p&gt;
 &lt;ol&gt;
@@ -412,7 +410,7 @@ li
     &lt;li&gt;Tornade&lt;/li&gt;
 &lt;/ol&gt;</code></pre>
 </section><section id="types-de-numérotation" class="slide level3">
-<h3>Types de numérotation</h3>
+<h1>Types de numérotation</h1>
 <p>L'attribut <code>type</code> de la balise <code>ol</code> permet de définir la numérotation à utiliser :</p>
 <ul>
 <li><code>1</code> : Numérotation par les chiffres arabes (par défaut).</li>
@@ -428,7 +426,7 @@ li
 &lt;/ol&gt;</code></pre></li>
 </ul>
 </section><section id="modifier-le-début-de-la-numérotation" class="slide level3">
-<h3>Modifier le début de la numérotation</h3>
+<h1>Modifier le début de la numérotation</h1>
 <p>Il est possible de modifier le numéro de départ par lequel va s'incrémenter la numérotation.</p>
 <pre><code>&lt;p&gt;Top 3 inversé du tiercé :&lt;/p&gt;
 &lt;ol type=&quot;I&quot; start=&quot;8&quot;&gt;
@@ -437,7 +435,7 @@ li
     &lt;li&gt;Limace&lt;/li&gt;
 &lt;/ol&gt;</code></pre>
 </section><section id="les-listes-de-définitions" class="slide level3">
-<h3>Les listes de définitions</h3>
+<h1>Les listes de définitions</h1>
 <p>Elles sont délimitées par la balise <code>&lt;dl&gt;</code> qui comprend une liste de termes à définir représentés par la balise <code>&lt;dt&gt;</code> qui peuvent avoir une ou plusieurs définitions elles-mêmes encadrées par la balise <code>&lt;dd&gt;</code>.</p>
 <pre><code>&lt;dl&gt;
     &lt;dt&gt;Oreiller&lt;/dt&gt;
@@ -447,7 +445,7 @@ li
     &lt;dd&gt;Marché où l&#39;on vend des objets d&#39;occasion.&lt;/dd&gt;
 &lt;/dl&gt;</code></pre>
 </section><section id="les-listes-de-menus" class="slide level3">
-<h3>Les listes de menus</h3>
+<h1>Les listes de menus</h1>
 <p>Elles sont représentées par la balise <code>&lt;menu&gt;</code> et chacun des items est délimité par la balise <code>&lt;li&gt;</code>.</p>
 <pre><code>&lt;menu&gt;
     &lt;li&gt;Accueil&lt;/li&gt;
@@ -455,7 +453,7 @@ li
     &lt;li&gt;Page 2&lt;/li&gt;
 &lt;/menu&gt;</code></pre>
 </section><section id="les-listes-imbriquées" class="slide level3">
-<h3>Les listes imbriquées</h3>
+<h1>Les listes imbriquées</h1>
 <p>L'imbrication des listes permet une présentation claire et détaillée d'un menu ou d'un sommaire par exemple.</p>
 <pre><code>&lt;ol type=&quot;I&quot;&gt;
     &lt;li&gt;La genèse&lt;/li&gt;
@@ -475,16 +473,16 @@ li
     &lt;li&gt;La mort&lt;/li&gt;
 &lt;/ol&gt;</code></pre>
 </section><section id="lutilité-des-listes" class="slide level3">
-<h3>L'utilité des listes</h3>
+<h1>L'utilité des listes</h1>
 <p>L'utilisation des listes non ordonnées imbriquées avec un peu de CSS permet de construire des menus déroulants.</p>
 <p>D'autre part, on peut retrouver les listes ordonnées principalement pour la rédaction de sommaires.</p>
 </section><section id="les-tableaux" class="slide level3">
-<h3>Les tableaux</h3>
+<h1>Les tableaux</h1>
 <p>Affichage de données tabulées.</p>
 <p><strong>Attention</strong> : A une époque (révolue) les tableaux étaient utilisés pour effectuer de la mise en page.</p>
 <p>Aujourd'hui il faut préférer le CSS à cette fin !</p>
 </section><section id="les-bases-dun-tableau" class="slide level3">
-<h3>Les bases d'un tableau</h3>
+<h1>Les bases d'un tableau</h1>
 <p>Un tableau est délimité par la balise <code>&lt;table&gt;</code>. Le contenu d'un tableau HTML est généré ligne par ligne. On crée des lignes grâce aux balises <code>&lt;tr&gt;</code>. On y insère des cellules grâce aux balises <code>&lt;td&gt;</code>.</p>
 <p>Le contenu de chaque cellule se trouve à l'intérieur des balises <code>&lt;td&gt;</code>.</p>
 <pre><code>&lt;table border=&quot;1&quot; cellspacing=0 callpadding=0 summary=&quot;Pour les non-voyants&quot;&gt;
@@ -498,7 +496,7 @@ li
     &lt;/tr&gt;
 &lt;/table&gt;</code></pre>
 </section><section id="le-titre-dun-tableau" class="slide level3">
-<h3>Le titre d'un tableau</h3>
+<h1>Le titre d'un tableau</h1>
 <p>Pour décrire le contenu d'un tableau il faut utiliser la balise <code>&lt;caption&gt;</code> :</p>
 <pre><code>&lt;table border=&quot;1&quot;&gt;
     &lt;caption align=&quot;bottom&quot;&gt;Notes de la classe de 3èmeB&lt;/caption&gt;
@@ -512,7 +510,7 @@ li
     &lt;/tr&gt;
 &lt;/table&gt;</code></pre>
 </section><section id="la-ligne-den-tête-dun-tableau" class="slide level3">
-<h3>La ligne d'en-tête d'un tableau</h3>
+<h1>La ligne d'en-tête d'un tableau</h1>
 <p>On utilise la balise <code>&lt;th&gt;</code> pour la ligne d'en-tête :</p>
 <pre><code>&lt;table border=&quot;1&quot;&gt;
     &lt;caption align=&quot;bottom&quot;&gt;Notes de la classe de 3èmeB&lt;/caption&gt;
@@ -528,7 +526,7 @@ li
     &lt;/tr&gt;
 &lt;/table&gt;</code></pre>
 </section><section id="les-différentes-parties-dun-tableau" class="slide level3">
-<h3>Les différentes parties d'un tableau</h3>
+<h1>Les différentes parties d'un tableau</h1>
 <p>On peut différencier trois grandes parties : <code>thead</code>, <code>tfoot</code> et <code>tbody</code> :</p>
 <pre><code>    &lt;table border=&quot;1&quot;&gt;
         &lt;caption align=&quot;bottom&quot;&gt;Notes de la classe de 3èmeB&lt;/caption&gt;
@@ -556,7 +554,7 @@ li
         &lt;/tbody&gt;
     &lt;/table&gt;</code></pre>
 </section><section id="fusion-de-lignes-et-de-colonnes" class="slide level3">
-<h3>Fusion de lignes et de colonnes</h3>
+<h1>Fusion de lignes et de colonnes</h1>
 <p>La fusion peut être horizontale ou verticale. Elle s'opère sur les cellules, donc sur la balise <code>&lt;td&gt;</code>. On utilise les attributs <code>colspan</code> ou <code>rowspan</code>. Ces attributs prennent pour valeurs le nombre de cellules à fusionner.</p>
 <pre><code>&lt;table border=&quot;1&quot;&gt;
     &lt;tr&gt;
@@ -571,7 +569,7 @@ li
     &lt;/tr&gt;
 &lt;/table&gt;</code></pre>
 </section><section id="illustration-rowspan" class="slide level3">
-<h3>Illustration rowspan</h3>
+<h1>Illustration rowspan</h1>
 <pre><code>&lt;table border=&quot;1&quot;&gt;
     &lt;tr&gt;
         &lt;td rowspan=&quot;2&quot;&gt;Cellule sur deux lignes&lt;/td&gt;
@@ -587,7 +585,7 @@ li
 &lt;/table&gt;</code></pre>
 <p>On peut bien sur combiner les deux techniques dans un même tableau !</p>
 </section><section id="lutilité-des-tableaux" class="slide level3">
-<h3>L'utilité des tableaux</h3>
+<h1>L'utilité des tableaux</h1>
 <p>Les techniques de fusion ont donné lieu à une utilisation des tableaux pour faire de la mise en page. Cette utilisation est à proscrire absolument (responsive design).</p>
 <ul>
 <li>alourdissent les pages HTML.</li>
@@ -596,11 +594,11 @@ li
 </ul>
 <p>On ne doit donc utiliser les tableaux que pour présenter de données tabulaires.</p>
 </section><section id="les-formulaires" class="slide level3">
-<h3>Les formulaires</h3>
+<h1>Les formulaires</h1>
 <p>Les formulaires servent à envoyer au serveur des données saisies par l'utilisateur (login, formulaire d'inscription ...).</p>
 <p>Les formulaires sont dotés de divers contrôles comme des champs de saisie, des boutons, des listes, etc, qui permettent au visiteur d'interagir avec la page.</p>
 </section><section id="la-balise-form" class="slide level3">
-<h3>La balise form</h3>
+<h1>La balise form</h1>
 <p>Tous les champs de formulaires doivent se trouver dans la balise <code>&lt;form&gt;</code>.</p>
 <p>Cette balise est utile pour :</p>
 <ul>
@@ -615,7 +613,7 @@ li
         &lt;!-- Champs du formulaire --&gt;
     &lt;/form&gt;</code></pre>
 </section><section id="les-champs-texte-monolignes" class="slide level3">
-<h3>Les champs texte monolignes</h3>
+<h1>Les champs texte monolignes</h1>
 <p>Balise : <code>input</code> avec attribut <code>type</code> à 'text' ou 'password'.</p>
 <p>Attributs :</p>
 <ul>
@@ -626,7 +624,7 @@ li
 <li>readonly et disabled : mettre le champ en readonly ou désactivé (la valeur d'un champ désactivé n'est pas envoyé au serveur).</li>
 </ul>
 </section><section id="champs-texte-exemples" class="slide level3">
-<h3>Champs texte, exemples</h3>
+<h1>Champs texte, exemples</h1>
 <pre><code>    &lt;input type=&quot;text&quot; size=&quot;5&quot; name=&quot;code_postal&quot; maxlength=&quot;5&quot;&gt;
      
     &lt;input type=&quot;text&quot; name=&quot;nom_champ&quot; readonly=&quot;readonly&quot; value=&quot;Champ vérouillé&quot;&gt;
@@ -635,7 +633,7 @@ li
      
     &lt;input type=&quot;password&quot; name=&quot;mdp&quot;&gt;</code></pre>
 </section><section id="zone-de-texte" class="slide level3">
-<h3>Zone de texte</h3>
+<h1>Zone de texte</h1>
 <p>Pour saisir de plus longs messages, on utilise la balise <code>&lt;textarea&gt;</code>. C'est une balise double, son contenu (sa valeur) est contenue entre ses deux balises.</p>
 <p>Attributs :</p>
 <ul>
@@ -643,27 +641,27 @@ li
 <li>name, readonly et disabled.</li>
 </ul>
 </section><section id="textarea-exemple" class="slide level3">
-<h3>TextArea, exemple</h3>
+<h1>TextArea, exemple</h1>
 <pre><code>    &lt;textarea name=&quot;commentaire&quot; rows=&quot;5&quot; cols=&quot;80&quot;&gt;&lt;/textarea&gt;
      
     &lt;textarea name=&quot;sujet&quot; rows=&quot;6&quot; cols=&quot;100&quot;&gt;Texte par défaut&lt;/textarea&gt;</code></pre>
 </section><section id="les-champs-cachés" class="slide level3">
-<h3>Les champs cachés</h3>
+<h1>Les champs cachés</h1>
 <p>Lorsque l'on souhaite envoyer au serveur une donnée qu'on ne veut pas montrer à l'utilisateur. <strong>Attention</strong> : n'apporte aucune sécurité car la valeur du champ peut être aisément trouvée avec les outils de dév du navigateur.</p>
 <pre><code>    &lt;input type=&quot;hidden&quot; name=&quot;clef&quot; value=&quot;a182f7d8e844d956a65b18e84f&quot;/&gt;</code></pre>
 </section><section id="les-champs-de-fichiers" class="slide level3">
-<h3>Les champs de fichiers</h3>
+<h1>Les champs de fichiers</h1>
 <p>Pour permettre aux visiteurs d'envoyer des fichiers on va utiliser la balise <code>&lt;input&gt;</code> dont l'attribut <strong>type</strong> est renseigné à <strong>file</strong>.</p>
 <p>Avec ce type champ, la balise <code>&lt;form&gt;</code> doit prendre l'attribut <strong>enctype</strong> à <strong>multipart/form-data</strong>.</p>
 <pre><code>    &lt;input type=&quot;file&quot; name=&quot;image&quot;/&gt;</code></pre>
 </section><section id="les-boutons-radio" class="slide level3">
-<h3>Les boutons radio</h3>
+<h1>Les boutons radio</h1>
 <p>Les boutons radio sont utilisés pour proposer un choix à l'utilisateur. La balise est alors <code>&lt;input&gt;</code> dont l'attribut type est renseigné à &quot;radio&quot;.</p>
 <p>Fonctionne par groupe (même attribut <strong>name</strong> pour les champs du même groupe).</p>
 <p>La valeur transmise sera celle de l'attribut <strong>value</strong> de la case cochée.</p>
 <p>Pour forcer l'état du radio on utilise l'attribut &quot;checked&quot;.</p>
 </section><section id="radio-boutons-exemple" class="slide level3">
-<h3>Radio boutons, exemple</h3>
+<h1>Radio boutons, exemple</h1>
 <pre><code>    &lt;input type=&quot;radio&quot; name=&quot;civilité&quot; value=&quot;mlle&quot;&gt; Mademoiselle
     &lt;input type=&quot;radio&quot; name=&quot;civilité&quot; value=&quot;mme&quot;&gt; Madame
     &lt;input type=&quot;radio&quot; name=&quot;civilité&quot; value=&quot;mr&quot;&gt; Monsieur
@@ -673,7 +671,7 @@ li
     &lt;input type=&quot;radio&quot; name=&quot;genre&quot; value=&quot;et&quot;&gt; Alien
     &lt;input type=&quot;radio&quot; name=&quot;genre&quot; value=&quot;indéfini&quot;&gt; Indéfini</code></pre>
 </section><section id="les-cases-à-cocher" class="slide level3">
-<h3>Les cases à cocher</h3>
+<h1>Les cases à cocher</h1>
 <p>Semblable aux boutons radio, mais avec la possibilité de choisir plusieurs cases.</p>
 <p>L'attribut <strong>type</strong> de l'élément <strong>input</strong> est placé à <em>checkbox</em>.</p>
 <p><strong>Attention</strong> il faut préciser le nom avec le suffixe <code>[]</code> pour indiquer au serveur qu'il s'agit d'un tableau de valeurs.</p>
@@ -683,7 +681,7 @@ li
     &lt;input type=&quot;checkbox&quot; name=&quot;qualite[]&quot; value=&quot;fort&quot;&gt; Fort
     &lt;input type=&quot;checkbox&quot; name=&quot;qualite[]&quot; value=&quot;généreux&quot;&gt; Généreux</code></pre>
 </section><section id="les-listes-1" class="slide level3">
-<h3>Les listes</h3>
+<h1>Les listes</h1>
 <p><select name="couleur_yeux"> <option value="bleus">Bleus</option> <option value="bruns" selected="selected">Bruns</option> <option value="verts">Verts</option> <option value="noisettes">Noisettes</option> <option value="gris">Gris</option> <option value="vairons">Vairons</option> </select></p>
 <p>Les listes permettent de laisser un choix aux visiteurs.</p>
 <p>On utilise la balise <code>&lt;select&gt;</code> qui comprend les différents choix sous forme de balise <code>&lt;option&gt;</code> (avec <code>value</code> positionné).</p>
@@ -697,7 +695,7 @@ li
         &lt;option value=&quot;vairons&quot;&gt;Vairons&lt;/option&gt;
     &lt;/select&gt;</code></pre>
 </section><section id="liste-à-choix-multiples" class="slide level3">
-<h3>Liste à choix multiples</h3>
+<h1>Liste à choix multiples</h1>
 <p><select name="matieres_preferees" multiple="multiple"> <option value="maths">Maths</option> <option value="anglais">Anglais</option> <option value="histoire">Histoire</option> <option value="physique">Physique</option> <option value="sciences naturelles">Sciences naturelles</option> </select></p>
 <p>On rajoute l'attribut <code>multiple</code> à la valeur <code>multiple</code>. La valeur de l'attribut <code>size</code> doit aussi être renseigné.</p>
 <pre><code>    &lt;select name=&quot;matieres_preferees&quot; size=&quot;5&quot; multiple=&quot;multiple&quot;&gt;
@@ -708,11 +706,11 @@ li
         &lt;option value=&quot;sciences naturelles&quot;&gt;Sciences naturelles&lt;/option&gt;
     &lt;/select&gt;</code></pre>
 </section><section id="les-boutons" class="slide level3">
-<h3>Les boutons</h3>
+<h1>Les boutons</h1>
 <p>Deux balises sont possibles : <code>&lt;button&gt;</code> et <code>&lt;input&gt;</code>. <code>&lt;button&gt;</code> est double. La balise <code>&lt;button&gt;</code> permet de faire plus de mise en forme.</p>
 <p>Le bouton peut être utilisé au sein d'un formulaire ou pas (avec Javascript dans ce cas).</p>
 </section><section id="le-bouton-denvoi-de-formulaire" class="slide level3">
-<h3>Le bouton d'envoi de formulaire</h3>
+<h1>Le bouton d'envoi de formulaire</h1>
 <form action>
 <input type="submit" name="envoyer" value="Valider">
 </form>
@@ -724,19 +722,19 @@ Soumettre<br/>les réponses...
      
     &lt;button type=&quot;submit&quot; name=&quot;soumettre&quot;&gt;Soumettre&lt;br&gt;les réponses&lt;/button&gt;</code></pre>
 </section><section id="le-bouton-effacer" class="slide level3">
-<h3>Le bouton effacer</h3>
+<h1>Le bouton effacer</h1>
 <p>Permet de réinitialiser un formulaire.</p>
 <pre><code>    &lt;input type=&quot;reset&quot; name=&quot;effacer&quot; value=&quot;Effacer toutes les valeurs&quot;&gt;
      
     &lt;button type=&quot;reset&quot; name=&quot;effacer&quot;&gt;Réinitialiser&lt;/button&gt;</code></pre>
 </section><section id="le-bouton-simple" class="slide level3">
-<h3>Le bouton simple</h3>
+<h1>Le bouton simple</h1>
 <p>Utilisé avec du Javascript pour spécifier un comportement...</p>
 <pre><code>    &lt;button onclick=&quot;alert(&#39;Coucou !&#39;);&quot;&gt;
         &lt;b&gt;Multiplier&lt;/b&gt;
     &lt;/button&gt;</code></pre>
 </section><section id="accessibilité-des-formulaires" class="slide level3">
-<h3>Accessibilité des formulaires</h3>
+<h1>Accessibilité des formulaires</h1>
 <p>La balise <code>&lt;fieldset&gt;</code> permet de grouper logiquement des champs de formulaires de même nature.</p>
 <pre><code>    &lt;form&gt;
         &lt;fieldset&gt;
@@ -746,7 +744,7 @@ Soumettre<br/>les réponses...
         &lt;/fieldset&gt;
     &lt;/form&gt;</code></pre>
 </section><section id="accessibilité-des-formulaires-1" class="slide level3">
-<h3>Accessibilité des formulaires</h3>
+<h1>Accessibilité des formulaires</h1>
 <p>Il y a d'autre part, la balise <code>&lt;label&gt;</code> qui permet de donner un libellé à un champ de formulaire en les associant à l'aide de l'attribut for de cette balise qui doit être identique à l'attribut id du champ auquel elle est rattachée. Le texte mis dans le label est alors cliquable.</p>
 <div>
 <p><label for="nom">Votre nom</label> <input type="text" name="nom" id="nom"> Aimez-vous la viande ? <label for="oui">Oui</label> <input type="radio" name="viande" id="oui"> <label for="non">Non</label> <input type="radio" name="viande" id="non"></p>
@@ -757,24 +755,24 @@ Soumettre<br/>les réponses...
     &lt;label for=&quot;oui&quot;&gt;Oui&lt;/label&gt; &lt;input type=&quot;radio&quot; name=&quot;viande&quot; id=&quot;oui&quot;&gt;
     &lt;label for=&quot;non&quot;&gt;Non&lt;/label&gt; &lt;input type=&quot;radio&quot; name=&quot;viande&quot; id=&quot;non&quot;&gt;</code></pre>
 </section><section id="la-division" class="slide level3">
-<h3>La DIVision</h3>
+<h1>La DIVision</h1>
 <p>Elément neutre, division du document. Affiché par défaut en mode <code>block</code>.</p>
 <p>Il permet d'organiser le contenu mais ne représente rien en particulier.</p>
 <p>A ne pas utiliser si un élément sémantique convient mieux (<code>nav</code>, <code>article</code>, <code>header</code>, <code>footer</code>, <code>section</code>).</p>
 </section><section id="span" class="slide level3">
-<h3>Span</h3>
+<h1>Span</h1>
 <p>Conteneur générique de ligne pour les contenus phrasés. Il ne représente rien par lui-même.</p>
 <p>Utilisé pour grouper des éléments afin de les styliser.</p>
 <p>A la différence de <code>&lt;div&gt;</code> qui est un élément <code>block</code>, <code>&lt;span&gt;</code> est un élement de ligne (<code>inline</code>).</p>
 <pre><code>    &lt;span&gt;Un morceau de texte&lt;/span&gt;</code></pre>
 </section></section>
-<section><section id="css" class="titleslide slide level2"><h2>CSS</h2></section><section id="introduction" class="slide level3">
-<h3>Introduction</h3>
+<section><section id="css" class="titleslide slide level2"><h1>CSS</h1></section><section id="introduction" class="slide level3">
+<h1>Introduction</h1>
 <p>Langage pour spécifier la façon dont sont présentés les documents html.</p>
 <p>CSS est utilisé pour définir des styles, le design, le layout et les variations d'affichage selon la résolution.</p>
 <p>Le document HTML spécifie la structure, le CSS l'affichage.</p>
 </section><section id="premier-essai" class="slide level3">
-<h3>Premier essai</h3>
+<h1>Premier essai</h1>
 <p>HTML avec son CSS inclus :</p>
 <html>
 <pre><code>&lt;head&gt;
@@ -791,7 +789,7 @@ Soumettre<br/>les réponses...
 Cascading Style Sheets
 </p>
 </section><section id="autre-possibilité" class="slide level3">
-<h3>Autre possibilité</h3>
+<h1>Autre possibilité</h1>
 <p>On peut définir le style directement dans l'attribut <code>style</code> de la balise cible.</p>
 <pre><code>    &lt;p style=&#39;color:blue;font-size:120%;&#39;&gt;Cascading Style Sheets&lt;/p&gt;</code></pre>
 <p>donne :</p>
@@ -799,7 +797,7 @@ Cascading Style Sheets
 Cascading Style Sheets
 </p>
 </section><section id="la-cascade" class="slide level3">
-<h3>La cascade</h3>
+<h1>La cascade</h1>
 <p>Le style final appliqué a un élément peut être spécifié à partir de différents endroits. Les intéractions peuvent donc être complexes, ce qui rend CSS à la fois puissant et difficile à débugguer.</p>
 <p>Sources d'information en cascade :</p>
 <ul>
@@ -809,7 +807,7 @@ Cascading Style Sheets
 <li>attribut 'style' de l'élément.</li>
 </ul>
 </section><section id="exemple" class="slide level3">
-<h3>Exemple</h3>
+<h1>Exemple</h1>
 <p>Dans l'exemple suivant :</p>
 <pre><code>    &lt;strong style=&#39;color:red;&#39;&gt;Je&lt;/strong&gt; suis strong</code></pre>
 <p>Le mot &quot;<strong style='color:red;'>Je</strong>&quot; est :</p>
@@ -819,7 +817,7 @@ Cascading Style Sheets
 <li>rouge car le style est spécifié dans l'attribut.</li>
 </ul>
 </section><section id="héritage-exemple" class="slide level3">
-<h3>Héritage, exemple</h3>
+<h1>Héritage, exemple</h1>
 <p>Maintenant créons une feuille externe avec :</p>
 <pre><code>    p { 
         color: blue;
@@ -830,7 +828,7 @@ Cascading Style Sheets
         color: red;
     }</code></pre>
 </section><section id="héritage-exemple-1" class="slide level3">
-<h3>Héritage, exemple</h3>
+<h1>Héritage, exemple</h1>
 <p>Et le contenu html suivant :</p>
 <pre><code>    &lt;p&gt;
       &lt;strong&gt;C&lt;/strong&gt;ascading
@@ -839,26 +837,26 @@ Cascading Style Sheets
     &lt;/p&gt;</code></pre>
 <p><span style="color:blue;text-decoration:underline;"><span style="color:red;text-decoration:underline;">Voyez</span> comment l'héritage est appliqué.</span></p>
 </section><section id="sélecteurs" class="slide level3">
-<h3>Sélecteurs</h3>
+<h1>Sélecteurs</h1>
 <p>Le texte suivant :</p>
 <pre><code>    strong {
         color: red;
     }</code></pre>
 <p>est appelé une <strong>règle</strong> CSS. <em>strong</em> est le <strong>sélecteur</strong>, il sélectionne les éléments sur lesquels s'appliquent la règle.</p>
 </section><section id="sélecteur-par-type" class="slide level3">
-<h3>Sélecteur par type</h3>
+<h1>Sélecteur par type</h1>
 <p>Sélectionne tous les éléments du type spécifié :</p>
 <pre><code>    a { color: red; }
     ul { margin-left: 0; }</code></pre>
 </section><section id="sélecteur-par-classe" class="slide level3">
-<h3>Sélecteur par classe</h3>
+<h1>Sélecteur par classe</h1>
 <p>L'attribut <code>class</code> dans un élément permet de lui assigner une ou plusieurs <em>classes</em> nommées. Les classes peuvent être référencées par plusieurs éléments.</p>
 <pre><code>    &lt;p class=&#39;rouge avertissement&#39;&gt;Un paragraphe&lt;/p&gt;</code></pre>
 <p>Dans le fichier CSS on a :</p>
 <pre><code>    .rouge { ... }
     .avertissement { font-weight: bolder; }</code></pre>
 </section><section id="sélecteur-par-id" class="slide level3">
-<h3>Sélecteur par ID</h3>
+<h1>Sélecteur par ID</h1>
 <p>L'attribut <code>id</code> d'un noeud peut aussi être mis à profit dans une feuille de style :</p>
 <pre><code>    .urgent { font-size: bold; color: red; }
     #principal { color: green; }</code></pre>
@@ -866,7 +864,7 @@ Cascading Style Sheets
 <pre><code>    &lt;div id=&quot;principal&quot; class=&quot;urgent&quot;&gt;&lt;/div&gt;</code></pre>
 <p>La règle la plus spécifique prendra le dessus sur les autres.</p>
 </section><section id="les-pseudo-sélecteurs" class="slide level3">
-<h3>Les pseudo-sélecteurs</h3>
+<h1>Les pseudo-sélecteurs</h1>
 <style>.urgent:hover {font-size:300%;}</style>
 <p>Suffixe ajouté à un sélecteur pour spécifier filtrer l'application des règles en fonction de l'état des noeuds.</p>
 <p>Par exemple le sélecteur <code>:hover</code> permet d'appliquer un style lorsque la souris survole l'élément :</p>
@@ -875,11 +873,11 @@ Cascading Style Sheets
 Passez la souris...
 </div>
 </section><section id="liste-de-pseudo-sélecteurs" class="slide level3">
-<h3>Liste de pseudo-sélecteurs</h3>
+<h1>Liste de pseudo-sélecteurs</h1>
 <p>Liste complète ici : <a href="http://www.w3.org/TR/selectors/#selectors">w3.org/TR/selectors</a>.</p>
 <p>Exemples : <em>link</em>, <em>visited</em>, <em>active</em>, <em>hover</em>, <em>focus</em>, <em>first-child</em>, <em>last-child</em>, <em>nth-child</em>, <em>nth-last-child</em>, <em>first-of-type</em>, <em>last-of-type</em>, <em>empty</em>, <em>target</em>, <em>checked</em>, <em>enabled</em>, <em>disabled</em>.</p>
 </section><section id="le-sélecteur" class="slide level3">
-<h3>Le sélecteur *</h3>
+<h1>Le sélecteur *</h1>
 <p>Sélectionne tous les éléments.</p>
 <pre><code>    * {
         margin: 0;
@@ -890,50 +888,50 @@ Passez la souris...
         border: 1px solid black;
     }</code></pre>
 </section><section id="sélecteurs-de-relation" class="slide level3">
-<h3>Sélecteurs de relation</h3>
+<h1>Sélecteurs de relation</h1>
 <p>Il est possible de combiner les sélecteurs (ici A et E sont des sélecteur que l'on combine) :</p>
 <table>
 <thead>
 <tr class="header">
-<th>Sélecteur</th>
-<th>Sélectionne les élements satisfaisant...</th>
+<th style="text-align: left;">Sélecteur</th>
+<th style="text-align: left;">Sélectionne les élements satisfaisant...</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>A, E</td>
-<td>A <strong>ou</strong> E</td>
+<td style="text-align: left;">A, E</td>
+<td style="text-align: left;">A <strong>ou</strong> E</td>
 </tr>
 <tr class="even">
-<td>AE</td>
-<td>A <strong>et</strong> E</td>
+<td style="text-align: left;">AE</td>
+<td style="text-align: left;">A <strong>et</strong> E</td>
 </tr>
 <tr class="odd">
-<td>A E</td>
-<td>E et descendant d'un élément satisfaisant A</td>
+<td style="text-align: left;">A E</td>
+<td style="text-align: left;">E et descendant d'un élément satisfaisant A</td>
 </tr>
 <tr class="even">
-<td>A &gt; E</td>
-<td>E et fils <strong>direct</strong> d'un élément satisfaisant A</td>
+<td style="text-align: left;">A &gt; E</td>
+<td style="text-align: left;">E et fils <strong>direct</strong> d'un élément satisfaisant A</td>
 </tr>
 <tr class="odd">
-<td>E:first-child</td>
-<td>E et qui sont dans l'état décrit par le pseudo-sélecteur</td>
+<td style="text-align: left;">E:first-child</td>
+<td style="text-align: left;">E et qui sont dans l'état décrit par le pseudo-sélecteur</td>
 </tr>
 <tr class="even">
-<td>B + E</td>
-<td>E et qui suivent un élément satisfaisant B (avec le même parent)</td>
+<td style="text-align: left;">B + E</td>
+<td style="text-align: left;">E et qui suivent un élément satisfaisant B (avec le même parent)</td>
 </tr>
 </tbody>
 </table>
 </section><section id="relation-exemple" class="slide level3">
-<h3>Relation, exemple</h3>
+<h1>Relation, exemple</h1>
 <pre><code>    &lt;style&gt;
         #data-table-1 td:first-child {font-weight: bolder;}
         #data-table-1 td:first-child + td {font-family: monospace;}
     &lt;/style&gt;</code></pre>
 </section><section id="relation-exemple-1" class="slide level3">
-<h3>Relation, exemple</h3>
+<h1>Relation, exemple</h1>
 <p>Voici un code :</p>
 <pre><code>    &lt;style&gt;
         #data-table-1 td:first-child {font-weight: bolder;}
@@ -948,7 +946,7 @@ Passez la souris...
         &lt;/tr&gt;
     &lt;/table&gt;</code></pre>
 </section><section id="relation-exemple-2" class="slide level3">
-<h3>Relation, exemple</h3>
+<h1>Relation, exemple</h1>
 <style>
     #data-table-1 td:first-child {font-weight: bolder;}
     #data-table-1 td:first-child + td {font-family: monospace;}
@@ -968,7 +966,7 @@ default
 </tr>
 </table>
 </section><section id="autres-sélecteurs" class="slide level3">
-<h3>Autres sélecteurs</h3>
+<h1>Autres sélecteurs</h1>
 <pre><code>    a[title] {
         color: green;
     }
@@ -983,7 +981,7 @@ default
         color: #1f6053;
     }</code></pre>
 </section><section id="autres-sélecteurs-1" class="slide level3">
-<h3>Autres sélecteurs</h3>
+<h1>Autres sélecteurs</h1>
 <pre><code>    /* commence par */
     a[href^=&quot;http&quot;] {
         background: url(path/to/external/icon.png) no-repeat;
@@ -996,7 +994,7 @@ default
         color: red;
     }</code></pre>
 </section><section id="autres-sélecteurs-2" class="slide level3">
-<h3>Autres sélecteurs</h3>
+<h1>Autres sélecteurs</h1>
 <pre><code>    input[type=radio]:checked {
         border: 1px solid black;
     }
@@ -1005,7 +1003,7 @@ default
         color: blue;
     }</code></pre>
 </section><section id="autres-sélecteurs-3" class="slide level3">
-<h3>Autres sélecteurs</h3>
+<h1>Autres sélecteurs</h1>
 <pre><code>    p::first-line {
         font-weight: bold;
         font-size: 1.2em;
@@ -1023,7 +1021,7 @@ default
         color: red;
     }</code></pre>
 </section><section id="autres-sélecteurs-4" class="slide level3">
-<h3>Autres sélecteurs</h3>
+<h1>Autres sélecteurs</h1>
 <pre><code>    /* Eléments impairs */
     ul:nth-child(odd) {
         border: 1px solid black;
@@ -1034,7 +1032,7 @@ default
         border: 1px solid pink;
     }</code></pre>
 </section><section id="exemple-personnaliser-une-liste" class="slide level3">
-<h3>Exemple : personnaliser une liste</h3>
+<h1>Exemple : personnaliser une liste</h1>
 <pre><code>    &lt;ul&gt;
        &lt;li&gt; List Item &lt;/li&gt;
        &lt;li&gt; List Item &lt;/li&gt;
@@ -1053,7 +1051,7 @@ List Item
 </li>
 </ul>
 </section><section id="exemple-personnaliser-une-liste-1" class="slide level3">
-<h3>Exemple : personnaliser une liste</h3>
+<h1>Exemple : personnaliser une liste</h1>
 <pre><code>    ul {
         width: 200px;
         background: #292929;
@@ -1068,7 +1066,7 @@ List Item
         border-top: 1px solid #3c3c3c;
     }</code></pre>
 </section><section id="liste-personnalisée" class="slide level3">
-<h3>Liste personnalisée</h3>
+<h1>Liste personnalisée</h1>
 <p>Résultat :</p>
 <style>
 ul.lp {
@@ -1101,18 +1099,18 @@ Dernier élément
 </li>
 </ul>
 </section><section id="mettre-ses-css-au-propre" class="slide level3">
-<h3>Mettre ses CSS au propre !</h3>
+<h1>Mettre ses CSS au propre !</h1>
 <p>Ne pas oublier l'indentation,</p>
 <p>Utiliser les commentaires (<code>/* ... */</code>),</p>
 <p>Grouper les sélecteurs (<code>h1, h2, h3 { color: navy; }</code>)</p>
 </section><section id="styles-pour-le-texte" class="slide level3">
-<h3>Styles pour le texte</h3>
+<h1>Styles pour le texte</h1>
 <p><span style="font: italic 75%/125% &quot;Comic Sans MS&quot;, cursive;">C'est le style <code>font</code></span>.</p>
 <pre><code>    p {font: italic 75%/125% &quot;Comic Sans MS&quot;, cursive;}</code></pre>
 <p>Police : il est bon d'au moins demander la famille de police (serif, sans-serif, cursive, fantasy, monospace).</p>
 <p>Changer seulement la police est accessible avec le style <code>font-family</code>.</p>
 </section><section id="styles-pour-le-texte-1" class="slide level3">
-<h3>Styles pour le texte</h3>
+<h1>Styles pour le texte</h1>
 <p>Le style <code>font-size</code> permet de spécifier la taille du texte. Soit en absolu (<code>14pt</code>, <code>16px</code>) ou relatif (<code>smaller</code>, <code>larger</code>, <code>150%</code>, <code>1.5em</code>).</p>
 <p>La hauteur de ligne est spécifiable avec <code>line-height</code>.</p>
 <p>Il est possible de décorer le texte avec <code>text-decoration</code> qui peut être <code>underline</code> ou <code>line-through</code>...</p>
@@ -1122,7 +1120,7 @@ Dernier élément
         font-variant: small-caps;
     }</code></pre>
 </section><section id="couleurs" class="slide level3">
-<h3>Couleurs</h3>
+<h1>Couleurs</h1>
 <p>Couleur de premier plan : <code>color</code>.</p>
 <p>Couleur d'arrière plan : <code>background-color</code>.</p>
 <pre><code>    .test {
@@ -1131,7 +1129,7 @@ Dernier élément
     }</code></pre>
 <p><span style="background-color: green;color: rgb(160,5,4);">Et voilà !</span></p>
 </section><section id="ajout-de-contenu" class="slide level3">
-<h3>Ajout de contenu</h3>
+<h1>Ajout de contenu</h1>
 <p>CSS permet l'ajout de contenu avant ou après un élément sélectionné.</p>
 <pre><code>    Voici une &lt;span class=&#39;ref&#39;&gt;référence&lt;/span&gt;
 
@@ -1144,17 +1142,17 @@ Dernier élément
         content: &quot; &quot; url(&quot;images/glossaire.png&quot;);
     }</code></pre>
 </section><section id="utilisation-dune-url" class="slide level3">
-<h3>Utilisation d'une url</h3>
+<h1>Utilisation d'une url</h1>
 <p>Il est possible de spécifier des url dans certains styles CSS. Par exemple le style <code>background</code> l'autorise :</p>
 <pre><code>    background: url(&quot;lune-rousse.png&quot;);</code></pre>
 </section><section id="personnaliser-une-liste" class="slide level3">
-<h3>Personnaliser une liste</h3>
+<h1>Personnaliser une liste</h1>
 <p>On utilise la propriété <code>list-style</code> pour spécifier le type de marqueur souhaité.</p>
 <p>La propriété peut être appliquée aux différents <code>&lt;li&gt;</code> ou bien au <code>&lt;ul&gt;</code> qui le transmettra par héritage.</p>
 <p>Pour une liste <strong>ul</strong>, la propriété peut valoir <code>circle</code>, <code>disc</code> ou <code>square</code>.</p>
 <p>Pour une liste <strong>ol</strong>, la propriété peut valoir <code>decimal</code>, <code>lower-roman</code>, <code>upper-roman</code>, <code>lower-latin</code> ou <code>upper-latin</code>.</p>
 </section><section id="les-puces-en-image-1" class="slide level3">
-<h3>Les puces en image</h3>
+<h1>Les puces en image</h1>
 <p>On peut aussi utiliser des images externes pour dessiner les puces, avec CSS :</p>
 <pre><code>&lt;p&gt;Ma liste de courses :&lt;/p&gt;
 &lt;ul&gt;
@@ -1169,12 +1167,12 @@ li
     list-style-image : url(puce.gif);
 }</code></pre>
 </section><section id="tables" class="slide level3">
-<h3>Tables</h3>
+<h1>Tables</h1>
 <p>Les cellules n'ont pas de marge.</p>
 <p>Elles ont une bordure et un padding. Par défaut les bordures sont séparées par <code>border-spacing</code> (sur la table).</p>
 <p>L'espace entre bordures peut être retiré avec <code>border-collapse</code> à <code>collapse</code>.</p>
 </section><section id="tables---caption" class="slide level3">
-<h3>Tables - caption</h3>
+<h1>Tables - caption</h1>
 <p>La légende peut être positionnée avec la propriété <code>caption-side</code> (<code>top</code> ou <code>bottom</code>).</p>
 <pre><code>    #demo-table &gt; caption {
         caption-side: bottom;
@@ -1182,24 +1180,24 @@ li
         text-align: right;
     }</code></pre>
 </section><section id="tables---exercice" class="slide level3">
-<h3>Tables - exercice</h3>
+<h1>Tables - exercice</h1>
 <figure>
 <img src="table-exo.png" />
 </figure>
 <p>La liste complète des propriétés CSS destinées aux tables est disponible <a href="http://www.w3.org/TR/CSS21/propidx.html">ici</a>.</p>
 </section><section id="modèle-de-boîte" class="slide level3">
-<h3>Modèle de boîte</h3>
+<h1>Modèle de boîte</h1>
 <p>Lorsque le navigateur affiche un élément, l'espace occupé est découpé en quatre parties : l'<em>élément</em>, son <em>padding</em>, sa <em>bordure</em> et sa <em>marge</em>.</p>
 <figure>
 <img src="box.png" />
 </figure>
 </section><section id="modèle-de-boîte-1" class="slide level3">
-<h3>Modèle de boîte</h3>
+<h1>Modèle de boîte</h1>
 <p>La marge et le padding peuvent être précisé par côté (top, left, bottom, right).</p>
 <p>La zone padding est de même couleur que le <code>background</code> de l'élément.</p>
 <p>La zone margin est toujours transparente.</p>
 </section><section id="modèle-de-boîte-2" class="slide level3">
-<h3>Modèle de boîte</h3>
+<h1>Modèle de boîte</h1>
 <p>La propriété <code>box-sizing</code> permet de modifier la façon dont sont calculées la largeur et la hauteur d'une boîte.</p>
 <p>Elle peut prendre deux valeurs :</p>
 <ul>
@@ -1207,7 +1205,7 @@ li
 <li><strong>border-box</strong> : largeur et hauteur incluent le padding et la bordure, mais pas la marge.</li>
 </ul>
 </section><section id="la-bordure" class="slide level3">
-<h3>La bordure</h3>
+<h1>La bordure</h1>
 <p>La propriété est <code>border</code>. On spécifie la <strong>largeur</strong>, le <strong>style</strong> et la <strong>couleur</strong> de la bordure :</p>
 <pre><code>    h3 {
         border: 6px dashed black;
@@ -1217,7 +1215,7 @@ li
 <img src="border-style.png" />
 </figure>
 </section><section id="marge-et-padding" class="slide level3">
-<h3>Marge et padding</h3>
+<h1>Marge et padding</h1>
 <p>Voici un exemple :</p>
 <style>
 p.remark {
@@ -1237,7 +1235,7 @@ p.remark {
 Je suis une remarque !
 </p>
 </section><section id="positionnement-des-éléments" class="slide level3">
-<h3>Positionnement des éléments</h3>
+<h1>Positionnement des éléments</h1>
 <p>Le navigateur dispose les éléments dans la page en fonction plusieurs règles, en suivant un <em>&quot;flux&quot;</em>.</p>
 <p>Deux critères sont principalement utilisés:</p>
 <ul>
@@ -1245,7 +1243,7 @@ Je suis une remarque !
 <li>la propriété <code>position</code>.</li>
 </ul>
 </section><section id="la-propriété-display" class="slide level3">
-<h3>La propriété <code>display</code></h3>
+<h1>La propriété <code>display</code></h1>
 <p>Peut prendre les valeurs <code>block</code>, <code>inline</code>, <code>none</code> (et bien d'autres).</p>
 <p>Chaque élément HTML possède sa propre valeur intrinsèque, modifiable avec CSS.</p>
 <ul>
@@ -1253,7 +1251,7 @@ Je suis une remarque !
 <li>Un <code>span</code> est par défaut en <code>display: inline;</code></li>
 </ul>
 </section><section id="display-block" class="slide level3">
-<h3><code>display: block;</code></h3>
+<h1><code>display: block;</code></h1>
 <p>Un élément <code>block</code> :</p>
 <ul>
 <li>passe à la ligne,</li>
@@ -1262,7 +1260,7 @@ Je suis une remarque !
 <li>permet la modification de sa largeur et hauteur.</li>
 </ul>
 </section><section id="display-inline" class="slide level3">
-<h3><code>display: inline;</code></h3>
+<h1><code>display: inline;</code></h1>
 <p>Un élément <code>inline</code> :</p>
 <ul>
 <li>a une taille dépendant de son contenu,</li>
@@ -1270,29 +1268,29 @@ Je suis une remarque !
 <li>est enchaîné directement avec les <code>inline</code> suivants.</li>
 </ul>
 </section><section id="la-propriété-position" class="slide level3">
-<h3>La propriété <code>position</code></h3>
+<h1>La propriété <code>position</code></h1>
 <p>Altère le positionnement d'un élément en suivant (ou pas) le flux standard.</p>
 </section><section id="position-static" class="slide level3">
-<h3><code>position: static;</code></h3>
+<h1><code>position: static;</code></h1>
 <p>C'est la <strong>valeur par défaut</strong>, l'élément suit le flux normal du positionnement.</p>
 </section><section id="position-relative" class="slide level3">
-<h3><code>position: relative;</code></h3>
+<h1><code>position: relative;</code></h1>
 <p>L'élément est décalé de sa position normale tout en restant dans le flux.</p>
 <p>Les autres éléments ne sont pas impactés.</p>
 <p>On peut utiliser les propriétés <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> pour spécifier le décalage voulu.</p>
 <p><em>Positionne</em> l'élément, il devient un référentiel pour les descendants positionnés en <code>absolute</code>.</p>
 </section><section id="position-absolute" class="slide level3">
-<h3><code>position: absolute;</code></h3>
+<h1><code>position: absolute;</code></h1>
 <p>L'élément sort complètement du flux standard.</p>
 <p>Son positionnement devient relatif à son premier parent positionné (avec position à <em>absolute</em> ou <em>relative</em>).</p>
 <p>On peut utiliser les propriétés <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, <code>width</code> et <code>height</code> pour spécifier sa position et sa taille.</p>
 <p><em>Positionne</em> l'élément, il devient un référentiel pour les descendants positionnés en <code>absolute</code>.</p>
 </section><section id="position-fixed" class="slide level3">
-<h3><code>position: fixed;</code></h3>
+<h1><code>position: fixed;</code></h1>
 <p>La position de l'élément est relative à la <strong>fenêtre</strong> du navigateur (et non au body).</p>
 <p>On peut utiliser les propriétés <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, <code>width</code> et <code>height</code> pour spécifier sa position et sa taille.</p>
 </section><section id="overflow" class="slide level3">
-<h3>Overflow</h3>
+<h1>Overflow</h1>
 <p>Définit le comportement à adopter dans le cas où un contenu est plus grand que son contenant. Les valeurs possibles sont :</p>
 <ul>
 <li><code>visible</code>: mode par <strong>défaut</strong>. La partie dépassant n'est pas rognée et sera affiché en dehors du contenant.</li>
@@ -1302,7 +1300,7 @@ Je suis une remarque !
 </ul>
 <p><em>Note</em> : crée un contexte de formattage, en relation avec les balises flottantes, démonstration...</p>
 </section><section id="float" class="slide level3">
-<h3>Float</h3>
+<h1>Float</h1>
 <p>Permet de créer un &quot;habillage&quot;.</p>
 <ul>
 <li>L'élément est d'abord placé normalement dans le flux. Donc si un autre élément bloc est placé avant lui, l'élément flottant se positionnera en dessous; et si un élément bloc le suit, ce dernier sera placé dessous.</li>
@@ -1310,14 +1308,14 @@ Je suis une remarque !
 <li>Les éléments qui le suivent au sein du conteneur se placent autour de lui.</li>
 </ul>
 </section><section id="clear" class="slide level3">
-<h3>Clear</h3>
+<h1>Clear</h1>
 <p>On utilise la propriété <code>clear</code> (<code>left</code>, <code>right</code>, <code>both</code>) pour annuler l'effet d'un <code>float</code>.</p>
 <p><code>clear</code> demande à un élément de se placer en dessous des flottants le précédant. Appliquable autant à des flottants qu'à des non-flottants.</p>
 <pre><code>    &lt;img style=&#39;float:right;&#39; src=&#39;...&#39;/&gt;
     &lt;p&gt;Un paragraphe de texte bla bla bla...&lt;/p&gt;
     &lt;p style=&#39;clear:both;&#39;&gt;Un autre paragraphe après&lt;/p&gt;</code></pre>
 </section><section id="empêcher-les-flottants-de-dépasser" class="slide level3">
-<h3>Empêcher les flottants de dépasser</h3>
+<h1>Empêcher les flottants de dépasser</h1>
 <p>Lorsqu'un conteneur ne contient que des flottants, sa hauteur est virtuellement '0'. Première façon d'éviter cela avec la propriété <code>overflow</code> qui crée un nouveau contexte de formattage.</p>
 <pre><code>    &lt;div id=&quot;conteneur&quot;&gt;
       &lt;div class=&quot;colonne&quot;&gt;AAA&lt;/div&gt;
@@ -1334,7 +1332,7 @@ Je suis une remarque !
       overflow: hidden;
     }</code></pre>
 </section><section id="la-propriété-clear" class="slide level3">
-<h3>La propriété <code>clear</code></h3>
+<h1>La propriété <code>clear</code></h1>
 <pre><code>    &lt;div id=&quot;conteneur&quot;&gt;
       &lt;div class=&quot;colonne&quot;&gt;…&lt;/div&gt;
       &lt;div class=&quot;colonne&quot;&gt;…&lt;/div&gt;
@@ -1347,7 +1345,7 @@ Je suis une remarque !
       height: 0; overflow: hidden; /* Précaution pour IE 7 */
     }</code></pre>
 </section><section id="le-clear-fix" class="slide level3">
-<h3>Le clear-fix</h3>
+<h1>Le clear-fix</h1>
 <p>Au lieu de rajouter manuellement un élément vide avec <code>clear: both;</code>, on utilise le pseudo-élément <code>::after</code>.</p>
 <pre><code>    &lt;div id=&quot;conteneur&quot;&gt;
       &lt;div class=&quot;colonne&quot;&gt;AAA&lt;/div&gt;
@@ -1361,7 +1359,7 @@ Je suis une remarque !
       clear: both;
     }</code></pre>
 </section><section id="règles-pour-le-positionnement" class="slide level3">
-<h3>Règles pour le positionnement</h3>
+<h1>Règles pour le positionnement</h1>
 <ul>
 <li>essayer de garder les éléments dans le flux tant que possible,</li>
 <li>modifier le mode de rendu avec la propriété <code>display</code>,</li>
@@ -1373,7 +1371,7 @@ Je suis une remarque !
 </ul>
 <p>Voir l'<strong>excellent</strong> article <a href="http://www.alsacreations.com/article/lire/53-guide-de-survie-du-positionnement-css.html">Guide de survie du positionnement CSS</a></p>
 </section><section id="centrer-horizontalement" class="slide level3">
-<h3>Centrer horizontalement</h3>
+<h1>Centrer horizontalement</h1>
 <p>Pour centrer un bloc horizontalement, on utilise la technique des <em>margin auto</em>.</p>
 <p>Un bloc ayant la propriété <code>width</code> fixée peut recevoir <code>auto</code> comme valeur de marge :</p>
 <pre><code>    div#page {
@@ -1381,7 +1379,7 @@ Je suis une remarque !
         margin: 0 auto;
     }</code></pre>
 </section><section id="centrer-verticalement" class="slide level3">
-<h3>Centrer verticalement</h3>
+<h1>Centrer verticalement</h1>
 <p>On met à profit le mode de placement spécifique des tables.</p>
 <pre><code>    &lt;table id=&quot;page-table&quot;&gt;&lt;tr&gt;&lt;td id=&quot;page-td&quot;&gt;
         &lt;div id=&quot;contenu&quot;&gt;
@@ -1389,7 +1387,7 @@ Je suis une remarque !
         &lt;/div&gt;&lt;!-- #global --&gt;
     &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code></pre>
 </section><section id="centrer-verticalement-1" class="slide level3">
-<h3>Centrer verticalement</h3>
+<h1>Centrer verticalement</h1>
 <pre><code>    #page-table {
         height: 100%;
         width: 100%;
@@ -1406,7 +1404,7 @@ Je suis une remarque !
         margin: 20px auto;
     }</code></pre>
 </section><section id="centrer-verticalement-2" class="slide level3">
-<h3>Centrer verticalement</h3>
+<h1>Centrer verticalement</h1>
 <p>Note : il est possible d'effectuer la même chose avec des <code>divs</code> (sans table). Pour cela on modifie le type d'affichage avec la propriété <code>display</code> :</p>
 <pre><code>    .container {
         display: table;
@@ -1424,7 +1422,7 @@ Je suis une remarque !
         height: 100%;
     }</code></pre>
 </section><section id="centrer-verticalement-3" class="slide level3">
-<h3>Centrer verticalement</h3>
+<h1>Centrer verticalement</h1>
 <p>Le markup associé devient donc :</p>
 <pre><code>    &lt;div class=&quot;container&quot;&gt;
       &lt;div class=&quot;container-row&quot;&gt;
@@ -1436,14 +1434,14 @@ Je suis une remarque !
       &lt;/div&gt;
     &lt;/div&gt;</code></pre>
 </section><section id="organisation-du-texte" class="slide level3">
-<h3>Organisation du texte</h3>
+<h1>Organisation du texte</h1>
 <p>Deux propriétés sont disponibles pour spécifier l'alignment d'un contenu de type texte :</p>
 <ul>
 <li><code>text-align</code> peut prendre les valeurs <code>left</code>, <code>right</code>, <code>center</code>et <code>justify</code> et aligne le contenu.</li>
 <li><code>text-indent</code> indente le contenu.</li>
 </ul>
 </section><section id="multi-colonne" class="slide level3">
-<h3>Multi colonne</h3>
+<h1>Multi colonne</h1>
 <p>Dans une div, on peut demander l'affichage en multi-colonne :</p>
 <pre><code>    div.colonnes {
         column-count: 3;
@@ -1454,63 +1452,63 @@ Je suis une remarque !
         column-rule-color: pink;
     }</code></pre>
 </section><section id="flexbox" class="slide level3">
-<h3>Flexbox</h3>
+<h1>Flexbox</h1>
 <p>Il existe un modèle de placement nouveau appelé <code>flexbox</code> qui résout beaucoup des problèmes classiques.</p>
 <p>Flexbox se base sur le fait que le parent adapte la taille de ses enfants pour remplir au mieux l'espace disponible.</p>
 <p>L'agencement est indépendant de la direction du flux.</p>
 </section><section id="flexbox-utilisation" class="slide level3">
-<h3>Flexbox, utilisation</h3>
+<h1>Flexbox, utilisation</h1>
 <p>On définit un conteneur flex en plaçant la propriété <code>display</code> à la valeur <code>flex</code> ou <code>inline-flex</code>. Ses enfants deviennent des <em>élément (item) flex</em>.</p>
 <pre><code>    .container {
       display: flex; /* ou inline-flex */
     }</code></pre>
 </section><section id="flexbox-flex-direction" class="slide level3">
-<h3>Flexbox, flex-direction</h3>
+<h1>Flexbox, flex-direction</h1>
 <figure>
 <img src="flex-direction.png" />
 </figure>
 <p>La propriété <code>flex-direction</code> spécifie la direction du flux. Elle peut être <strong><code>row</code></strong> (gauche à droite), <code>row-reverse</code> (droite à gauche<code>),</code>column<code>(de haut en bas) et</code>column-reverse<code>(</code>bas en haut`).</p>
 <p>Elle définit donc l'<strong>axe principal</strong> du conteneur flex.</p>
 </section><section id="flexbox-flex-wrap" class="slide level3">
-<h3>Flexbox, flex-wrap</h3>
+<h1>Flexbox, flex-wrap</h1>
 <figure>
 <img src="flex-wrap.png" />
 </figure>
 <p>Par défaut, un conteneur flexbox essaie de placer tous se enfants sur une seule ligne. Il est possible de changer ce comportement avec la propriété <code>flex-wrap</code>.</p>
 <p>Valeurs : <strong><code>nowrap</code></strong>, <code>wrap</code>, <code>wrap-reverse</code>.</p>
 </section><section id="flexbox-flex-flow" class="slide level3">
-<h3>Flexbox, flex-flow</h3>
+<h1>Flexbox, flex-flow</h1>
 <p>Les propriétés <code>flex-direction</code> et <code>flex-wrap</code> sont rassemblées dans <code>flex-flow</code> :</p>
 <pre><code>    .container {
         flex-flow: row wrap;
     }</code></pre>
 </section><section id="flexbox-justify-content" class="slide level3">
-<h3>Flexbox, justify-content</h3>
+<h1>Flexbox, justify-content</h1>
 <p>Définit la répartition de l'espace restant sur l'axe principal.</p>
 <figure>
 <img src="justify-content.png" />
 </figure>
 <p>Valeurs possibles : <strong><code>flex-start</code></strong>, <code>flex-end</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>.</p>
 </section><section id="flexbox-align-items" class="slide level3">
-<h3>Flexbox, align-items</h3>
+<h1>Flexbox, align-items</h1>
 <p>Définit la façon dont sont répartis les <code>items</code> le long de l'axe secondaire.</p>
 <figure>
 <img src="align-items.png" />
 </figure>
 <p>Valeurs possibles : <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <strong><code>stretch</code></strong>, <code>baseline</code>.</p>
 </section><section id="flexbox-align-content" class="slide level3">
-<h3>Flexbox, align-content</h3>
+<h1>Flexbox, align-content</h1>
 <p>Aligne les lignes quand il reste de l'espace sur l'axe secondaire. Aucun effet lorsqu'il n'y a qu'une ligne.</p>
 <figure>
 <img src="align-content.png" />
 </figure>
 <p>Valeurs possibles : <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <strong><code>stretch</code></strong>, <code>space-between</code>, <code>space-around</code>.</p>
 </section><section id="flexbox-propriétés-des-enfants" class="slide level3">
-<h3>Flexbox, propriétés des enfants</h3>
+<h1>Flexbox, propriétés des enfants</h1>
 <p>Avec flexbox, on positionne certaines propriétés sur les enfants, de façon à ajuster la façon dont fonctionne le placement.</p>
 <p>Ces propriétés sont à placer sur les enfants directs d'un conteneur flexbox (appelés <code>flex items</code>).</p>
 </section><section id="flexbox-order" class="slide level3">
-<h3>Flexbox, order</h3>
+<h1>Flexbox, order</h1>
 <figure>
 <img src="order.png" />
 </figure>
@@ -1519,32 +1517,32 @@ Je suis une remarque !
         order: 2;
     }</code></pre>
 </section><section id="flexbox-flex-grow" class="slide level3">
-<h3>Flexbox, flex-grow</h3>
+<h1>Flexbox, flex-grow</h1>
 <figure>
 <img src="flex-grow.png" />
 </figure>
 <p>Définit si un élément peut grossir si nécessaire. La valeur donnée est une proportion (par rapport aux autres éléments). La valeur par défaut est <strong>0</strong>.</p>
 </section><section id="flexbox-flex-shrink" class="slide level3">
-<h3>Flexbox, flex-shrink</h3>
+<h1>Flexbox, flex-shrink</h1>
 <p>De la même manière il est possible de définir la capacité d'un enfant à réduire sa taille. Valeur par défaut : 1.</p>
 </section><section id="flexbox-flex-basis" class="slide level3">
-<h3>Flexbox, flex-basis</h3>
+<h1>Flexbox, flex-basis</h1>
 <p>Définit la taille de l'élément avant que n'ait lieu la répartition de l'espace disponible. Peut être une longueur (<code>20%</code>, <code>5em</code>) ou le mot-clé <code>auto</code>.</p>
 <p>Le mot clé <code>auto</code> indique à flexbox qu'il faut utiliser les valeurs des propriétés <code>width</code> et <code>height</code> de l'élément.</p>
 </section><section id="flexbox-flex" class="slide level3">
-<h3>Flexbox, flex</h3>
+<h1>Flexbox, flex</h1>
 <p>La propriété <code>flex</code> regroupe les propriétés <code>flex-grow</code>, <code>flex-shrink</code> et <code>flex-basis</code>.</p>
 <pre><code>    .item {
         flex: 1 0 auto;
     }</code></pre>
 </section><section id="flexbox-align-self" class="slide level3">
-<h3>Flexbox, align-self</h3>
+<h1>Flexbox, align-self</h1>
 <figure>
 <img src="align-self.png" />
 </figure>
 <p>Permet de modifier l'alignement d'un élément en particulier au sein d'un conteneur flexbox.</p>
 </section><section id="flexbox-pour-résumer" class="slide level3">
-<h3>Flexbox, pour résumer</h3>
+<h1>Flexbox, pour résumer</h1>
 <p>Sur le noeud container :</p>
 <pre><code>    .container {
         display: flex;
@@ -1560,7 +1558,7 @@ Je suis une remarque !
         align-self: flex-end;
     }</code></pre>
 </section><section id="flexbox-centrer-un-élément" class="slide level3">
-<h3>Flexbox, centrer un élément</h3>
+<h1>Flexbox, centrer un élément</h1>
 <p>Aussi simple que cela !</p>
 <pre><code>.parent {
   display: flex;
@@ -1571,12 +1569,12 @@ Je suis une remarque !
 }</code></pre>
 <p><em>(horizontalement ET verticalement bien sûr !)</em></p>
 </section><section id="flexbox-autres-exemples" class="slide level3">
-<h3>Flexbox, autres exemples</h3>
+<h1>Flexbox, autres exemples</h1>
 <figure>
 <img src="flexbox-layout.png" />
 </figure>
 </section><section id="media" class="slide level3">
-<h3>Media</h3>
+<h1>Media</h1>
 <p>CSS permet de modifier l'affichage en fonction du média de rendu.</p>
 <p>Par exemple il est possible de définir un ensemble de règles ne s'appliquant que pour un certain média :</p>
 <pre><code>    @media print {
@@ -1584,13 +1582,13 @@ Je suis une remarque !
     }</code></pre>
 <p>Voici quelques médias : <code>screen</code>, <code>print</code>, <code>projection</code>, <code>all</code>.</p>
 </section><section id="impression" class="slide level3">
-<h3>Impression</h3>
+<h1>Impression</h1>
 <p>Pour les médias <em>paginés</em>, on peut spécifier les marges.</p>
 <pre><code>    @page { margin: 2.5cm; }</code></pre>
 <p>On peut faire des sauts de page :</p>
 <pre><code>    h1 { page-break-before: always; }</code></pre>
 </section><section id="media-queries" class="slide level3">
-<h3>Media queries</h3>
+<h1>Media queries</h1>
 <p>Il est possible de changer de définition CSS en fonction de la taille de l'écran, grâce aux <code>media queries</code>.</p>
 <pre><code>    &lt;style&gt;
     @media (max-width: 600px) {
@@ -1610,7 +1608,7 @@ Je suis une remarque !
     @media print and (min-resolution: 300dpi) { ... }
     &lt;/style&gt;</code></pre>
 </section><section id="importation" class="slide level3">
-<h3>Importation</h3>
+<h1>Importation</h1>
 <p>Il est possible d'importer une feuille CSS externe :</p>
 <pre><code>    @import url;
     @import url list-of-media-queries;
@@ -1618,18 +1616,18 @@ Je suis une remarque !
     @import url(&quot;fineprint.css&quot;) print;</code></pre>
 <p>A noter : l'instruction d'import permet de conditionner l'import par une <code>media query</code>.</p>
 </section></section>
-<section><section id="responsive-design" class="titleslide slide level2"><h2>Responsive design</h2></section><section id="principe" class="slide level3">
-<h3>Principe</h3>
+<section><section id="responsive-design" class="titleslide slide level2"><h1>Responsive design</h1></section><section id="principe" class="slide level3">
+<h1>Principe</h1>
 <p>On met à profit les media queries en fonction de la taille de l'écran.</p>
 <p>On crée une structure HTML valable dans tous les modes.</p>
 <p>On définit un CSS pour chaque mode.</p>
 <p>Mais attention ! ...</p>
 </section><section id="le-viewport" class="slide level3">
-<h3>Le viewport</h3>
+<h1>Le viewport</h1>
 <p>Ne pas oublier de rajouter ceci :</p>
 <pre><code>    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</code></pre>
 </section><section id="viewport" class="slide level3">
-<h3>Viewport</h3>
+<h1>Viewport</h1>
 <p>Différentes façons de mesurer la définition de l'écran :</p>
 <ul>
 <li>la taille physique,</li>
@@ -1637,128 +1635,128 @@ Je suis une remarque !
 <li>la taille du viewport !</li>
 </ul>
 </section><section id="exemple-1" class="slide level3">
-<h3>Exemple</h3>
+<h1>Exemple</h1>
 <table>
 <thead>
 <tr class="header">
-<th>Taille</th>
-<th>iPhone 5</th>
-<th>Galaxy SIII</th>
+<th style="text-align: left;">Taille</th>
+<th style="text-align: left;">iPhone 5</th>
+<th style="text-align: left;">Galaxy SIII</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Physique</td>
-<td>640x1136</td>
-<td>720x1280</td>
+<td style="text-align: left;">Physique</td>
+<td style="text-align: left;">640x1136</td>
+<td style="text-align: left;">720x1280</td>
 </tr>
 <tr class="even">
-<td>CSS</td>
-<td>320x</td>
-<td>360x</td>
+<td style="text-align: left;">CSS</td>
+<td style="text-align: left;">320x</td>
+<td style="text-align: left;">360x</td>
 </tr>
 <tr class="odd">
-<td>Viewport</td>
-<td>980x (Safari)</td>
-<td>980x (Android 4)</td>
+<td style="text-align: left;">Viewport</td>
+<td style="text-align: left;">980x (Safari)</td>
+<td style="text-align: left;">980x (Android 4)</td>
 </tr>
 </tbody>
 </table>
 <p>Pour tous les connaître : <a href="http://screensiz.es">screensiz.es</a></p>
 </section><section id="viewport-le-navigateur-adapte" class="slide level3">
-<h3>Viewport, le navigateur adapte</h3>
+<h1>Viewport, le navigateur adapte</h1>
 <p>Afin d'afficher correctement les pages destinées aux <em>desktop</em>, les navigateurs mobiles font croire que la largeur de l'écran est de 980px (selon les navigateurs).</p>
 </section><section id="viewport-zoom-initial" class="slide level3">
-<h3>Viewport, zoom initial</h3>
+<h1>Viewport, zoom initial</h1>
 <p>Au démarrage d'une page (sans méta), le navigateur utilise un zoom permettant d'afficher l'ensemble de la page</p>
 <p><code>device-width</code> / <code>viewport</code></p>
 <p>Mais pour un site conçu pour le mobile, cela est génant.</p>
 <p>La balise meta permet donc de basculer sur la résolution réelle...</p>
 </section><section id="viewport-illustration" class="slide level3">
-<h3>Viewport, illustration</h3>
+<h1>Viewport, illustration</h1>
 <div style="display:flex;justify-content:center;">
 <p><img src="viewport-1.png"/> <img src="viewport-2.png"/></p>
 </div>
 </section></section>
-<section><section id="nouveaux-éléments-html5" class="titleslide slide level2"><h2>Nouveaux éléments HTML5</h2></section><section id="eléments-de-structure" class="slide level3">
-<h3>Eléments de structure</h3>
+<section><section id="nouveaux-éléments-html5" class="titleslide slide level2"><h1>Nouveaux éléments HTML5</h1></section><section id="eléments-de-structure" class="slide level3">
+<h1>Eléments de structure</h1>
 <table>
 <thead>
 <tr class="header">
-<th>Element</th>
-<th>Role</th>
+<th style="text-align: left;">Element</th>
+<th style="text-align: left;">Role</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>header</code></td>
-<td>entête de la page (sommaire, logo, menu)</td>
+<td style="text-align: left;"><code>header</code></td>
+<td style="text-align: left;">entête de la page (sommaire, logo, menu)</td>
 </tr>
 <tr class="even">
-<td><code>footer</code></td>
-<td>pieds de page (auteur, liens, copyright...)</td>
+<td style="text-align: left;"><code>footer</code></td>
+<td style="text-align: left;">pieds de page (auteur, liens, copyright...)</td>
 </tr>
 <tr class="odd">
-<td><code>nav</code></td>
-<td>zone de navigation</td>
+<td style="text-align: left;"><code>nav</code></td>
+<td style="text-align: left;">zone de navigation</td>
 </tr>
 <tr class="even">
-<td><code>section</code></td>
-<td>regroupement thématique</td>
+<td style="text-align: left;"><code>section</code></td>
+<td style="text-align: left;">regroupement thématique</td>
 </tr>
 <tr class="odd">
-<td><code>article</code></td>
-<td>contenu autonome</td>
+<td style="text-align: left;"><code>article</code></td>
+<td style="text-align: left;">contenu autonome</td>
 </tr>
 <tr class="even">
-<td><code>aside</code></td>
-<td>afficher un contenu associé</td>
+<td style="text-align: left;"><code>aside</code></td>
+<td style="text-align: left;">afficher un contenu associé</td>
 </tr>
 <tr class="odd">
-<td><code>main</code></td>
-<td>contenu principal de la page</td>
+<td style="text-align: left;"><code>main</code></td>
+<td style="text-align: left;">contenu principal de la page</td>
 </tr>
 </tbody>
 </table>
 </section><section id="nouveaux-elements" class="slide level3">
-<h3>Nouveaux elements</h3>
+<h1>Nouveaux elements</h1>
 <table>
 <thead>
 <tr class="header">
-<th>Element</th>
-<th>Role</th>
+<th style="text-align: left;">Element</th>
+<th style="text-align: left;">Role</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>time</code></td>
-<td>contenu lié au temps</td>
+<td style="text-align: left;"><code>time</code></td>
+<td style="text-align: left;">contenu lié au temps</td>
 </tr>
 <tr class="even">
-<td><code>mark</code></td>
-<td>mise en évidence</td>
+<td style="text-align: left;"><code>mark</code></td>
+<td style="text-align: left;">mise en évidence</td>
 </tr>
 <tr class="odd">
-<td><code>meter</code></td>
-<td>indication d'une mesure (<em>value, min, low, max, ...</em>)</td>
+<td style="text-align: left;"><code>meter</code></td>
+<td style="text-align: left;">indication d'une mesure (<em>value, min, low, max, ...</em>)</td>
 </tr>
 <tr class="even">
-<td><code>detail</code>, <code>summary</code></td>
-<td>affichage master/detail</td>
+<td style="text-align: left;"><code>detail</code>, <code>summary</code></td>
+<td style="text-align: left;">affichage master/detail</td>
 </tr>
 <tr class="odd">
-<td><code>progress</code></td>
-<td>barre de progression</td>
+<td style="text-align: left;"><code>progress</code></td>
+<td style="text-align: left;">barre de progression</td>
 </tr>
 <tr class="even">
-<td><code>figure</code>, <code>figcaption</code></td>
-<td>une figure et sa légende</td>
+<td style="text-align: left;"><code>figure</code>, <code>figcaption</code></td>
+<td style="text-align: left;">une figure et sa légende</td>
 </tr>
 </tbody>
 </table>
 </section></section>
-<section><section id="nouveautés-css3" class="titleslide slide level2"><h2>Nouveautés CSS3</h2></section><section id="coins-arrondis" class="slide level3">
-<h3>Coins arrondis</h3>
+<section><section id="nouveautés-css3" class="titleslide slide level2"><h1>Nouveautés CSS3</h1></section><section id="coins-arrondis" class="slide level3">
+<h1>Coins arrondis</h1>
 <p>Donner des bords arrondis à un élément :</p>
 <pre><code>    border-radius: 10px;
     border-radius: 1em/5em;
@@ -1768,10 +1766,10 @@ Je suis une remarque !
     border-bottom-left-radius:  3px 4px;</code></pre>
 <p>Attention aux préfixes !</p>
 </section><section id="dégradés" class="slide level3">
-<h3>Dégradés</h3>
+<h1>Dégradés</h1>
 <p>On utilise dans la propriété <code>background</code> l'attribut <code>-linear-gradient</code>, <code>-radial-gradient</code> et <code>gradient</code> selon le navigateur.</p>
 </section><section id="ombres-portées" class="slide level3">
-<h3>Ombres portées</h3>
+<h1>Ombres portées</h1>
 <p>Propriété <code>box-shadow</code>. Ses attributs sont dans l'ordre :</p>
 <ul>
 <li>distance horizontale,</li>
@@ -1784,14 +1782,14 @@ Je suis une remarque !
 <p>On peut postionner plusieurs ombres, à séparer par des virgules.</p>
 <p>Voir le site de génération <a href="css3gen.com/box-shadow">ici</a>.</p>
 </section><section id="générateurs" class="slide level3">
-<h3>Générateurs</h3>
+<h1>Générateurs</h1>
 <p><a href="http://www.css3generator.com/">css3generator.com</a></p>
 <p><a href="http://www.colorzilla.com/gradient-editor/">colorzilla.com/gradient-editor</a></p>
 <p><a href="http://css3gen.com/box-shadow">css3gen.com/box-shadow</a></p>
 <p><a href="http://css3.me/">css3.me/</a></p>
 </section></section>
-<section><section id="transformations" class="titleslide slide level2"><h2>Transformations</h2></section><section id="transformations-1" class="slide level3">
-<h3>Transformations</h3>
+<section><section id="transformations" class="titleslide slide level2"><h1>Transformations</h1></section><section id="transformations-1" class="slide level3">
+<h1>Transformations</h1>
 <p>Permet de modifier les coordonnées de formatage visuel. On peut faire subir à n'importe quel élément une <em>translation</em>, <em>rotation</em>, <em>homotéthie</em> ou encore <em>inclinaison</em>.</p>
 <style>
 .basTransfo {
@@ -1818,8 +1816,8 @@ Rotation !
     transform: perspective(17px)
     transform: translateX(10px) rotate(10deg) translateY(5px)</code></pre>
 </section></section>
-<section><section id="transitions" class="titleslide slide level2"><h2>Transitions</h2></section><section id="transitions-1" class="slide level3">
-<h3>Transitions</h3>
+<section><section id="transitions" class="titleslide slide level2"><h1>Transitions</h1></section><section id="transitions-1" class="slide level3">
+<h1>Transitions</h1>
 <p>La propriété <code>transition</code> permet de positionner :</p>
 <ul>
 <li><code>transition-delay</code>, 0s par défaut,</li>
@@ -1830,7 +1828,7 @@ Rotation !
 <p>On peut combiner les transitions avec <code>,</code>.</p>
 <p>Documentation <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions">ici</a></p>
 </section><section id="transitions-exemple" class="slide level3">
-<h3>Transitions, exemple</h3>
+<h1>Transitions, exemple</h1>
 <style>
 #delay1 {
     border: 1px solid black;
@@ -1868,8 +1866,8 @@ Rotation !
       font-size: 36px;
     }</code></pre>
 </section></section>
-<section><section id="animations" class="titleslide slide level2"><h2>Animations</h2></section><section id="animations-exemple" class="slide level3">
-<h3>Animations, exemple</h3>
+<section><section id="animations" class="titleslide slide level2"><h1>Animations</h1></section><section id="animations-exemple" class="slide level3">
+<h1>Animations, exemple</h1>
 <style type="text/css">
 .anime {
 animation-duration: 3s;
@@ -1917,11 +1915,11 @@ Je ne suis pas animé !
         }
     }</code></pre>
 </section></section>
-<section><section id="canvas" class="titleslide slide level2"><h2>Canvas</h2></section><section id="canvas-introduction" class="slide level3">
-<h3>Canvas, introduction</h3>
+<section><section id="canvas" class="titleslide slide level2"><h1>Canvas</h1></section><section id="canvas-introduction" class="slide level3">
+<h1>Canvas, introduction</h1>
 <p><code>&lt;canvas&gt;</code> est un élément HTML qui peut être utilisé pour dessiner des éléments graphiques à l'aide de scripts (habituellement JavaScript). Il permet par exemple de dessiner des graphiques, de réaliser des compositions de photographies ou des animations simples.</p>
 </section><section id="canvas-exemple" class="slide level3">
-<h3>Canvas, exemple</h3>
+<h1>Canvas, exemple</h1>
 <canvas id="canevas" width="150" height="150">
 </canvas>
 <script type="text/javascript">
@@ -1946,8 +1944,8 @@ ctx.fillRect (30, 30, 55, 50);
     ctx.fillRect (30, 30, 55, 50);</code></pre>
 <p>Documentation <a href="https://developer.mozilla.org/fr/docs/Tutoriel_canvas/Utilisation_de_base">ici</a></p>
 </section></section>
-<section><section id="svg" class="titleslide slide level2"><h2>SVG</h2></section><section id="svg-introduction" class="slide level3">
-<h3>SVG, introduction</h3>
+<section><section id="svg" class="titleslide slide level2"><h1>SVG</h1></section><section id="svg-introduction" class="slide level3">
+<h1>SVG, introduction</h1>
 <p>SVG est un langage de balisage permettant de décrire des images vectorielles.</p>
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 <rect width="100%" height="100%" fill="red"/> <circle cx="150" cy="70" r="60" fill="green"/> <text x="150" y="95" font-size="60" text-anchor="middle" fill="white">SVG</text>
@@ -1958,26 +1956,26 @@ ctx.fillRect (30, 30, 55, 50);
         &lt;text x=&quot;150&quot; y=&quot;95&quot; font-size=&quot;60&quot; text-anchor=&quot;middle&quot; fill=&quot;white&quot;&gt;SVG&lt;/text&gt;
     &lt;/svg&gt;</code></pre>
 </section></section>
-<section><section id="javascript" class="titleslide slide level2"><h2>Javascript</h2></section><section id="javascript-définition" class="slide level3">
-<h3>Javascript, définition</h3>
+<section><section id="javascript" class="titleslide slide level2"><h1>Javascript</h1></section><section id="javascript-définition" class="slide level3">
+<h1>Javascript, définition</h1>
 <pre><code>    var f = function() {
         alert(&#39;bonjour à tous !&#39;);
     }
 
     f();</code></pre>
 </section><section id="getelementbyid" class="slide level3">
-<h3>getElementById</h3>
+<h1>getElementById</h1>
 </section><section id="addeventlistener" class="slide level3">
-<h3>addEventListener</h3>
+<h1>addEventListener</h1>
 </section><section id="jquery" class="slide level3">
-<h3>JQuery</h3>
+<h1>JQuery</h1>
 <pre><code>    &lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>puis</p>
 <pre><code>    $(&#39;ul&gt;li&gt;a&#39;).click(function () {
         $(this).slideUp();
     });</code></pre>
 </section><section id="json" class="slide level3">
-<h3>JSON</h3>
+<h1>JSON</h1>
 <p>Un sous-ensemble de JavaScript permettant de décrire des données.</p>
 <p>Exemple :</p>
 <pre><code>    [
@@ -1986,7 +1984,7 @@ ctx.fillRect (30, 30, 55, 50);
     ]</code></pre>
 <p><em>Attention à new pas oublier les <code>&quot;</code> dans le nom des propriétés !</em></p>
 </section><section id="utilisation-json" class="slide level3">
-<h3>Utilisation JSON</h3>
+<h1>Utilisation JSON</h1>
 <p>Quand on échange des données entre le navigateur et le serveur, il est courant d'utiliser le format <strong>JSON</strong>.</p>
 <p>Deux fonctions permettent de passer de la représentation JSON à un <em>object vivant</em> :</p>
 <pre><code>    var texte = &#39;{ &quot;id&quot;: 3, &quot;category&quot;: &quot;youp&quot; }&#39;;
@@ -2000,12 +1998,12 @@ ctx.fillRect (30, 30, 55, 50);
     // texteAuFormatJSON est un string :
     // &#39;[2, { &quot;couleur&quot;: &quot;bleu&quot; }]&#39;</code></pre>
 </section><section id="ajax" class="slide level3">
-<h3>AJAX</h3>
+<h1>AJAX</h1>
 <p><code>XMLHttpRequest</code> permet d'effectuer des requêtes vers le serveur, sans recharger la page.</p>
 <p>En fonction des données reçues, le programme Javascript va modifier la structure du document.</p>
 <p>C'est le Web 2.0 !</p>
 </section><section id="faire-une-requête-ajax" class="slide level3">
-<h3>Faire une requête AJAX</h3>
+<h1>Faire une requête AJAX</h1>
 <pre><code>    var requete = new XMLHttpRequest();
     requete.open(&#39;GET&#39;, url);
     requete.onreadystatechange = function () {
@@ -2019,12 +2017,12 @@ ctx.fillRect (30, 30, 55, 50);
     req.send(null); // null =&gt; corps de la requête (données)</code></pre>
 <p>Seules les requêtes vers le serveur qui a produit la page HTML sont autorisées par défaut.</p>
 </section><section id="architecture-rest" class="slide level3">
-<h3>Architecture REST</h3>
+<h1>Architecture REST</h1>
 <p>Architecture logicielle qui consiste à utiliser le protocole <strong>HTTP</strong> pour <strong>échanger des données</strong> entre un serveur et un client.</p>
 <p>Dans le cadre de cette architecture, à chaque <strong>URL</strong> possible correspond une <strong>ressource</strong> que l'on peut <strong>consulter, ajouter, supprimer et modifier</strong>.</p>
 <p>Cette architecture est détaillée dans la formation Java EE.</p>
 </section><section id="web-components" class="slide level3">
-<h3>Web Components</h3>
+<h1>Web Components</h1>
 <p>Standard en préparation permettant de :</p>
 <ul>
 <li>étendre les noeuds html,</li>
@@ -2033,11 +2031,11 @@ ctx.fillRect (30, 30, 55, 50);
 </ul>
 <p>Voir <a href="http://webcomponents.org/">webcomponents.org</a> et <a href="https://www.polymer-project.org/1.0/">polymer</a>.</p>
 </section><section id="lassembleur-du-web..." class="slide level3">
-<h3>L'assembleur du web...</h3>
+<h1>L'assembleur du web...</h1>
 <p>Voir WebAssembly</p>
 </section></section>
-<section><section id="la-plateforme-web" class="titleslide slide level2"><h2>La plateforme Web</h2></section><section id="evolution-depuis-10-ans" class="slide level3">
-<h3>Evolution depuis 10 ans</h3>
+<section><section id="la-plateforme-web" class="titleslide slide level2"><h1>La plateforme Web</h1></section><section id="evolution-depuis-10-ans" class="slide level3">
+<h1>Evolution depuis 10 ans</h1>
 <p>Evolution avec HTML 5, permet maintenant de remplacer les clients lourds dans de nombreux cas :</p>
 <ul>
 <li>Web Sockets : communication full-duplex,</li>
@@ -2049,7 +2047,7 @@ ctx.fillRect (30, 30, 55, 50);
 <li>...</li>
 </ul>
 </section><section id="sans-compter-le-web-détourné" class="slide level3">
-<h3>Sans compter le web détourné</h3>
+<h1>Sans compter le web détourné</h1>
 <p>Un navigateur est composé de :</p>
 <ul>
 <li>un moteur javascript (V8 pour Chrome),</li>
@@ -2058,13 +2056,13 @@ ctx.fillRect (30, 30, 55, 50);
 <p>Le projet <strong>NodeJS</strong> permet d'exécuter du javascript sur le serveur (en utilisant seulement V8 + les bindings système).</p>
 <p>Les projets <strong>Atom-shell</strong>, <strong>NodeWebkit</strong> permettent de développer des clients lourds et de sortir de la &quot;sandbox&quot; navigateur pour avoir accès à l'OS. C'est le retour du client lourd !</p>
 </section></section>
-<section><section id="ecosystème" class="titleslide slide level2"><h2>Ecosystème</h2></section><section id="section" class="slide level3">
-<h3></h3>
+<section><section id="ecosystème" class="titleslide slide level2"><h1>Ecosystème</h1></section><section id="section" class="slide level3">
+<h1></h1>
 <p>Sass, Less</p>
 <p>Frameworks CSS : bootstrap, foundation, basscss, skeleton</p>
 </section></section>
-<section><section id="liens" class="titleslide slide level2"><h2>Liens</h2></section><section id="section-1" class="slide level3">
-<h3></h3>
+<section><section id="liens" class="titleslide slide level2"><h1>Liens</h1></section><section id="section-1" class="slide level3">
+<h1></h1>
 <p>MDN, HTML5Rocks, W3C,</p>
 </section></section>
     </div>

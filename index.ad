@@ -1,0 +1,13 @@
+= Catalogue des formations
+:author: Arnaud Tournier
+:email: ltearno@gmail.com
+:toc: macro
+:toc-title: Cours de programmation orientée objet avec Java et Java EE
+:imagesdir: images-java
+:source-highlighter: highlightjs
+
+LTE Consulting (C) - 2017
+
+toc::[]
+
+Ces cours sont Open Source. Les sources sont disponibles en ligne https://github.com/ltearno/formations[ici]
