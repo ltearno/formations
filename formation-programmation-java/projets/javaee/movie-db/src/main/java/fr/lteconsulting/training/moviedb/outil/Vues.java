@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class Vues {
-    public static void afficherCategories(HttpServletRequest req, HttpServletResponse resp, List<Categorie> categories) throws ServletException, IOException {
+    public static void afficherCategories(HttpServletRequest req, HttpServletResponse resp, List<Categorie> categories, Map<Integer, Long> nbProduitsParCategorie) throws ServletException, IOException {
         req.setAttribute("categories", categories);
+        req.setAttribute("nbProduitsParCategorie", nbProduitsParCategorie);
 
         afficherPage(req, resp, "Visualisation des catégories", "categories");
     }
@@ -23,8 +25,9 @@ public class Vues {
         afficherPage(req, resp, "Edition catégorie", "editionCategorie");
     }
 
-    public static void afficherFabricants(HttpServletRequest req, HttpServletResponse resp, List<Fabricant> fabricants) throws ServletException, IOException {
+    public static void afficherFabricants(HttpServletRequest req, HttpServletResponse resp, List<Fabricant> fabricants, Map<Integer, Long> nbProduitsParFabricant) throws ServletException, IOException {
         req.setAttribute("fabricants", fabricants);
+        req.setAttribute("nbProduitsParFabricant", nbProduitsParFabricant);
 
         afficherPage(req, resp, "Visualisation fabricants", "fabricants");
     }

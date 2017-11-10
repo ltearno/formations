@@ -5,6 +5,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * Ceci est une implémentation générique d'un EJB d'accès aux données (souvent appelé DAO).
+ *
+ * Il apporte les opérations de base communes à toutes nos entités (Categorie, Fabricant et Produit).
+ *
+ * Il stocke la classe sur laquelle il travaille dans son attribut 'managedClass'.
+ *
+ * Les sous-classes concrètes pourront ajouter des méthodes selon les besoins spécifiques.
+ *
+ * @param <T> Le type que l'EJB gère
+ */
 @Stateless
 public abstract class GestionGenerique<T> {
     @PersistenceContext(unitName = "Catalogue", name = "Catalogue")

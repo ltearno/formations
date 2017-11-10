@@ -1,5 +1,6 @@
 <%@ page import="fr.lteconsulting.training.moviedb.model.Fabricant" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,6 +13,7 @@
 
 <%
     List<Fabricant> fabricants = (List<Fabricant>) request.getAttribute("fabricants");
+    Map<Integer, Long> nbProduitsParFabricant = (Map<Integer, Long>) request.getAttribute("nbProduitsParFabricant");
 %>
 
 <h1>Fabricants</h1>
@@ -20,6 +22,7 @@
         <th>ID</th>
         <th>Nom</th>
         <th>Adresse</th>
+        <th>Nombre de produit</th>
         <th>Actions</th>
     </tr>
     <%
@@ -31,6 +34,8 @@
         <td><%= fabricant.getNom()%>
         </td>
         <td><%= fabricant.getAdresse()%>
+        </td>
+        <td><%= nbProduitsParFabricant.get(fabricant.getId())%>
         </td>
         <td>
             <form method="get" action="editionFabricant" style="display: inline-block;">

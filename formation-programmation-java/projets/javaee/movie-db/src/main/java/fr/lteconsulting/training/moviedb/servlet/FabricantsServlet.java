@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/fabricants")
 public class FabricantsServlet extends HttpServlet {
@@ -22,6 +24,11 @@ public class FabricantsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Fabricant> fabricants = gestionFabricants.findAll();
 
-        Vues.afficherFabricants(req, resp, fabricants);
+        Map<Integer, Long> nbProduitsParFabricant = new HashMap<>();
+        for (Fabricant fabricant : fabricants) {
+            nbProduitsParFabricant.put(fabricant.getId(), gestionFabricants.getNbProduitParFabricantId(fabricant.getId()));
+        }
+
+        Vues.afficherFabricants(req, resp, fabricants, nbProduitsParFabricant);
     }
 }

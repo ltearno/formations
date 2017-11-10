@@ -1,15 +1,16 @@
 package fr.lteconsulting.training.moviedb.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Categorie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToMany(mappedBy = "categorie")
+    private List<Produit> produits;
 
     private String nom;
 
@@ -19,6 +20,14 @@ public class Categorie {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
     }
 
     public String getNom() {
