@@ -2,14 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Categories</title>
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/normalize.css">
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/skeleton.css">
-</head>
-<body>
 
 <%
     List<Fabricant> fabricants = (List<Fabricant>) request.getAttribute("fabricants");
@@ -63,6 +55,3 @@
         <td></td>
     </tr>
 </table>
-
-</body>
-</html>

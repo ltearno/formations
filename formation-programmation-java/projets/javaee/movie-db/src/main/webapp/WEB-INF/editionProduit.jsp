@@ -3,14 +3,6 @@
 <%@ page import="fr.lteconsulting.training.moviedb.model.Produit" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Edition produit</title>
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/normalize.css">
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/skeleton.css">
-</head>
-<body>
 
 <%
     Produit produit = (Produit) request.getAttribute("produit");
@@ -44,5 +36,3 @@
     </select></label>
     <button>Valider</button>
 </form>
-</body>
-</html>

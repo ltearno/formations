@@ -1,13 +1,5 @@
 <%@ page import="fr.lteconsulting.training.moviedb.model.Categorie" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Edition catégorie</title>
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/normalize.css">
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/skeleton.css">
-</head>
-<body>
 
 <%
     Categorie categorie = (Categorie) request.getAttribute("categorie");
@@ -20,5 +12,3 @@
     <label>Nom: <input type="text" name="nom" value="<%=categorie.getNom()%>" autofocus></label>
     <button>Valider</button>
 </form>
-</body>
-</html>

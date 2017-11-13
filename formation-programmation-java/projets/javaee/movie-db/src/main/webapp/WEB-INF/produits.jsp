@@ -1,14 +1,6 @@
 <%@ page import="fr.lteconsulting.training.moviedb.model.Produit" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Produits</title>
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/normalize.css">
-    <link rel="stylesheet" href="Skeleton-2.0.4/css/skeleton.css">
-</head>
-<body>
 
 <%
     List<Produit> produits = (List<Produit>) request.getAttribute("produits");
@@ -68,5 +60,5 @@
     </tr>
 </table>
 
-</body>
-</html>
+<h1>Exportation</h1>
+<a href="export.xls" download="export.xls">export.xls</a>
