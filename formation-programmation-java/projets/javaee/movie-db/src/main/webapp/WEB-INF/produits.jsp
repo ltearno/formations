@@ -60,5 +60,11 @@
     </tr>
 </table>
 
-<h1>Exportation</h1>
-<a href="export.xls" download="export.xls">export.xls</a>
+<h1>Import / Export</h1>
+Exportation : <a href="export.xls" download="export.xls">export.xls</a><br/>
+Importation :
+
+<form method="post" enctype="multipart/form-data" action="importation">
+    <input type="file" name="file">
+    <button>Importer</button>
+</form>

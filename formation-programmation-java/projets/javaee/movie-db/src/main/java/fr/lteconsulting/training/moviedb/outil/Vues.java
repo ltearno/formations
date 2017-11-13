@@ -52,6 +52,12 @@ public class Vues {
         afficherPage(req, resp, "Edition produit", "editionProduit");
     }
 
+    public static void afficherResultatImportation(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException {
+        req.setAttribute("message", message);
+
+        afficherPage(req, resp, "Résultat importation", "resultatImportation");
+    }
+
     public static void afficherPage(HttpServletRequest req, HttpServletResponse resp, String title, String pageToDisplay) throws ServletException, IOException {
         req.setAttribute("title", title);
         req.setAttribute("pageToDisplay", pageToDisplay + ".jsp");
