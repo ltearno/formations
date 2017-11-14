@@ -10,7 +10,9 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,8 @@ public class GestionProduitsTest {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addPackage(Categorie.class.getPackage())
                 .addPackage(GestionCategories.class.getPackage())
+                // on inclut POI, ca ne sert pas mais ca vous montre commen ont fait
+                .addAsLibraries(Maven.resolver().resolve("org.apache.poi:poi:3.17").withTransitivity().as(JavaArchive.class))
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
