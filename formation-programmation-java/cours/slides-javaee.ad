@@ -1407,7 +1407,7 @@ Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une
 |Méthode exécutée avant et après chaque test
 |===
 
-=== Annotations
+=== JUnit 4 - Annotations
 
 [cols="2*"]
 |===
@@ -1416,7 +1416,12 @@ Un ensemble d'annotations (package `org.junit`) est utilisé pour configurer une
 
 |`@Ignore`
 |Ignore un test
+|===
 
+=== JUnit 4 - Annotations
+
+[cols="2*"]
+|===
 |`@Test(expected=SQLException.class)`
 |Le test échoue si l'exception n'est pas levée
 
@@ -1492,15 +1497,14 @@ l'application dans un environnement _équivalent_ à celui de production (base d
 
 _Arquillian_ (http://arquillian.org/invasion/[site]) est un outil qui facilite la mise en place des tests d'intégration :
 
-- Gère le lancement et l'arrêt d'un AS complet.
-- Produit une archive contenant le code à tester à la volée.
-- Déploie l'archive dans le conteneur de test.
-- Exécute les tests d'intégration.
-- Produit un rapport d'exécution.
+- Produit une archive contenant le code à tester
+- Gère le lancement et l'arrêt d'un AS complet
+- Déploie l'archive dans le conteneur de test
+- Exécute les tests d'intégration
 
-S'intègre à `JUnit` et `TestNG`.
+S'intègre à `JUnit` et `TestNG` pour exécuter les tests.
 
-Avantanges : on n'a plus besoin de mocker les dépendances, tout est en place !
+Avantanges : on n'a plus besoin de mocker les dépendances.
 
 Inconvénients : lent puisque qu'on bootstrappe tout l'environnement de l'application.
 
