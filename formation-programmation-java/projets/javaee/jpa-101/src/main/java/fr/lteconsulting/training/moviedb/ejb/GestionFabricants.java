@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 
 @Stateless
 public class GestionFabricants extends GestionGenerique<Fabricant> {
-    public GestionFabricants() {
+    public GestionFabricants() throws NoSuchFieldException {
         super(Fabricant.class);
     }
 

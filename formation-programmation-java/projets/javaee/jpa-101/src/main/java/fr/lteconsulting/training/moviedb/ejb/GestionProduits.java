@@ -8,7 +8,7 @@ import java.util.List;
 
 @Stateless
 public class GestionProduits extends GestionGenerique<Produit> {
-    public GestionProduits() {
+    public GestionProduits() throws NoSuchFieldException {
         super(Produit.class);
     }
 
