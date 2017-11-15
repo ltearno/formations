@@ -1506,7 +1506,7 @@ S'intègre à `JUnit` et `TestNG` pour exécuter les tests.
 
 Avantanges : on n'a plus besoin de mocker les dépendances.
 
-Inconvénients : lent puisque qu'on bootstrappe tout l'environnement de l'application.
+Inconvénients : lent puisque qu'on bootstrappe tout l'envi	ronnement de l'application.
 
 === Exemple
 
