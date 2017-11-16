@@ -39,11 +39,6 @@ public class ImportServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!Session.estConnecte(request)) {
-            response.sendRedirect("login");
-            return;
-        }
-
         String message = importationExcel(request);
 
         Vues.afficherResultatImportation(request, response, message);

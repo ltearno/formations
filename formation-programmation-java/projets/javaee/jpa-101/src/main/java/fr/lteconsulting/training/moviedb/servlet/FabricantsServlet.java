@@ -23,11 +23,6 @@ public class FabricantsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         List<Fabricant> fabricants = gestionFabricants.findAll();
 
         Map<Integer, Long> nbProduitsParFabricant = new HashMap<>();

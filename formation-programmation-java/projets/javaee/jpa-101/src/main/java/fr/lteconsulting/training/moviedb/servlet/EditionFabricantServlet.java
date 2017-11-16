@@ -21,11 +21,6 @@ public class EditionFabricantServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         Fabricant fabricant = null;
 
         try {
@@ -47,11 +42,6 @@ public class EditionFabricantServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         Fabricant fabricant = new Fabricant();
 
         try {

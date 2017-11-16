@@ -20,7 +20,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Vues.afficherLogin(req, resp, "Bienvenue");
+        if (Session.estConnecte(req))
+            resp.sendRedirect("produits");
+        else
+            Vues.afficherLogin(req, resp, "Bienvenue");
     }
 
     @Override

@@ -21,11 +21,6 @@ public class ProduitsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         List<Produit> produits;
 
         String search = req.getParameter("search");

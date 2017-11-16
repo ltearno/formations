@@ -1,7 +1,6 @@
 package fr.lteconsulting.training.moviedb.servlet;
 
 import fr.lteconsulting.training.moviedb.ejb.GestionCategories;
-import fr.lteconsulting.training.moviedb.outil.Session;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -18,11 +17,6 @@ public class SuppressionCategorieServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         try {
             int id = Integer.parseInt(req.getParameter("id"));
 

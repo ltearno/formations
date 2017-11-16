@@ -18,11 +18,6 @@ public class SuppressionProduitServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         try {
             int id = Integer.parseInt(req.getParameter("id"));
 

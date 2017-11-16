@@ -32,11 +32,6 @@ public class ExportServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!Session.estConnecte(req)) {
-            resp.sendRedirect("login");
-            return;
-        }
-
         resp.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
         resp.setHeader("content-type", "application/xls");
 
