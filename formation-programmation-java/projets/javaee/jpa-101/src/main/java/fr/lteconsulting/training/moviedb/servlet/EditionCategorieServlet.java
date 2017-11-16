@@ -1,6 +1,7 @@
 package fr.lteconsulting.training.moviedb.servlet;
 
 import fr.lteconsulting.training.moviedb.ejb.GestionCategories;
+import fr.lteconsulting.training.moviedb.outil.Session;
 import fr.lteconsulting.training.moviedb.outil.Vues;
 import fr.lteconsulting.training.moviedb.model.Categorie;
 
@@ -19,6 +20,11 @@ public class EditionCategorieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Categorie categorie = null;
 
         try {
@@ -39,6 +45,11 @@ public class EditionCategorieServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Categorie categorie = new Categorie();
 
         try {

@@ -7,6 +7,7 @@ import fr.lteconsulting.training.moviedb.model.Categorie;
 import fr.lteconsulting.training.moviedb.model.Fabricant;
 import fr.lteconsulting.training.moviedb.model.Produit;
 import fr.lteconsulting.training.moviedb.outil.ExportExcel;
+import fr.lteconsulting.training.moviedb.outil.Session;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -31,6 +32,11 @@ public class ExportServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         resp.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
         resp.setHeader("content-type", "application/xls");
 

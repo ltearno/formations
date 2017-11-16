@@ -6,6 +6,7 @@ import fr.lteconsulting.training.moviedb.ejb.GestionProduits;
 import fr.lteconsulting.training.moviedb.model.Categorie;
 import fr.lteconsulting.training.moviedb.model.Fabricant;
 import fr.lteconsulting.training.moviedb.model.Produit;
+import fr.lteconsulting.training.moviedb.outil.Session;
 import fr.lteconsulting.training.moviedb.outil.Vues;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,6 +39,11 @@ public class ImportServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!Session.estConnecte(request)) {
+            response.sendRedirect("login");
+            return;
+        }
+
         String message = importationExcel(request);
 
         Vues.afficherResultatImportation(request, response, message);

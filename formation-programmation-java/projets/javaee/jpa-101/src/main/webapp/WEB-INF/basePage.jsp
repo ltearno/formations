@@ -35,6 +35,8 @@
         <a href="categories">catégories</a>
         -
         <a href="fabricants">fabricants</a>
+        -
+        <a href="logout">se déconnecter</a>
     </div>
 </div>
 </body>

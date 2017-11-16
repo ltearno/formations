@@ -4,6 +4,7 @@ import fr.lteconsulting.training.moviedb.ejb.GestionCategories;
 import fr.lteconsulting.training.moviedb.ejb.GestionFabricants;
 import fr.lteconsulting.training.moviedb.ejb.GestionProduits;
 import fr.lteconsulting.training.moviedb.model.Produit;
+import fr.lteconsulting.training.moviedb.outil.Session;
 import fr.lteconsulting.training.moviedb.outil.Vues;
 
 import javax.ejb.EJB;
@@ -27,6 +28,11 @@ public class EditionProduitServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Produit produit = null;
 
         try {
@@ -47,6 +53,11 @@ public class EditionProduitServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Produit produit = new Produit();
 
         try {

@@ -12,6 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 public class Vues {
+    public static void afficherLogin(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException {
+        req.setAttribute("message", message);
+
+        afficherPage(req, resp, "Connexion", "login");
+    }
+
+    public static void afficherInscription(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException {
+        req.setAttribute("message", message);
+
+        afficherPage(req, resp, "Inscription", "inscription");
+    }
+
     public static void afficherCategories(HttpServletRequest req, HttpServletResponse resp, List<Categorie> categories, Map<Integer, Long> nbProduitsParCategorie) throws ServletException, IOException {
         req.setAttribute("categories", categories);
         req.setAttribute("nbProduitsParCategorie", nbProduitsParCategorie);

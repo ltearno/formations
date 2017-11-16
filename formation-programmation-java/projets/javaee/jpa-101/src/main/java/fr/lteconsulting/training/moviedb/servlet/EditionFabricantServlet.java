@@ -3,6 +3,7 @@ package fr.lteconsulting.training.moviedb.servlet;
 import fr.lteconsulting.training.moviedb.ejb.GestionFabricants;
 import fr.lteconsulting.training.moviedb.model.Categorie;
 import fr.lteconsulting.training.moviedb.model.Fabricant;
+import fr.lteconsulting.training.moviedb.outil.Session;
 import fr.lteconsulting.training.moviedb.outil.Vues;
 
 import javax.ejb.EJB;
@@ -20,6 +21,11 @@ public class EditionFabricantServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Fabricant fabricant = null;
 
         try {
@@ -41,6 +47,11 @@ public class EditionFabricantServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         Fabricant fabricant = new Fabricant();
 
         try {

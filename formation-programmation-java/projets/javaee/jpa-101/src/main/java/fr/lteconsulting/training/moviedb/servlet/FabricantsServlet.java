@@ -2,6 +2,7 @@ package fr.lteconsulting.training.moviedb.servlet;
 
 import fr.lteconsulting.training.moviedb.ejb.GestionFabricants;
 import fr.lteconsulting.training.moviedb.model.Fabricant;
+import fr.lteconsulting.training.moviedb.outil.Session;
 import fr.lteconsulting.training.moviedb.outil.Vues;
 
 import javax.ejb.EJB;
@@ -22,6 +23,11 @@ public class FabricantsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!Session.estConnecte(req)) {
+            resp.sendRedirect("login");
+            return;
+        }
+
         List<Fabricant> fabricants = gestionFabricants.findAll();
 
         Map<Integer, Long> nbProduitsParFabricant = new HashMap<>();
