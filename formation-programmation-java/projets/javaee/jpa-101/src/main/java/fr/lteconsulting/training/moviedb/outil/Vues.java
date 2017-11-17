@@ -1,6 +1,7 @@
 package fr.lteconsulting.training.moviedb.outil;
 
 import fr.lteconsulting.training.moviedb.model.Categorie;
+import fr.lteconsulting.training.moviedb.model.Commande;
 import fr.lteconsulting.training.moviedb.model.Fabricant;
 import fr.lteconsulting.training.moviedb.model.Produit;
 
@@ -68,6 +69,20 @@ public class Vues {
         req.setAttribute("message", message);
 
         afficherPage(req, resp, "Résultat importation", "resultatImportation");
+    }
+
+    public static void afficherCommandes(HttpServletRequest req, HttpServletResponse resp, List<Commande> commandes) throws ServletException, IOException {
+        req.setAttribute("commandes", commandes);
+
+        afficherPage(req, resp, "Liste des commandes", "commandes");
+    }
+
+    public static void afficherEditionCommande(HttpServletRequest req, HttpServletResponse resp, Commande commande, List<Produit> produits, String message) throws ServletException, IOException {
+        req.setAttribute("commande", commande);
+        req.setAttribute("produits", produits);
+        req.setAttribute("message", message);
+
+        afficherPage(req, resp, "Edition commande", "editionCommande");
     }
 
     public static void afficherPage(HttpServletRequest req, HttpServletResponse resp, String title, String pageToDisplay) throws ServletException, IOException {
