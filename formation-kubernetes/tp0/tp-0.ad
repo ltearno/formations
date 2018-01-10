@@ -1,0 +1,88 @@
+= TP 0 - Prise en main de K8S
+
+== Sur avec la plateforme GCP
+
+https://cloud.google.com/kubernetes-engine/docs/quickstart
+
+Dans la console GCP :
+
+- Activer Kubernetes sur votre projet GCP
+
+- Créer un cluster Kubernetes
+
+Sur votre poste :
+
+- installer `gcloud`
+- installer `kubectl`
+- Lancer une image docker sur le cluster k8s
+- Exposer le endpoint de l'application déployée sur une IP publique
+- Accéder à l'appli par le navigateur
+- Tout tuer, tout refermer
+
+== Avec Minkube
+
+=== Installation
+
+Installer Docker pour votre machine
+
+Installer `kubectl` en suivant les instructions ici : https://kubernetes.io/docs/tasks/tools/install-kubectl/
+
+Installer `minikube` : https://github.com/kubernetes/minikube/releases (sous Linux, il suffit de faire `curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.26.1/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/`).
+
+Démarrer minikube : `minikube start`
+
+=== Autres drivers
+
+Avec le driver none (directement sur la machine) : `minikube start --vm-driver none`
+
+(c'est le plus simple, mais d'autres drivers sont à disposition, voir ici : https://github.com/kubernetes/minikube/blob/master/docs/drivers.md)
+
+=== Installation du driver kvm2
+
+Sous Ubuntu, il est plus approprié d'utiliser l'hyperviseur KVM avec le driver kvm2.
+
+Voici les commandes à taper :
+
+`sudo apt install libvirt-bin qemu-kvm`
+
+`sudo usermod -a -G libvirtd $(whoami)`
+
+`newgrp libvirtd`
+
+=== Prise en main
+
+Déployer une image docker dans k8s :
+
+`kubectl run hello-minikube --image=k8s.gcr.io/echoserver:1.4 --port=8080`
+
+Exposer le service
+
+`kubectl expose deployment hello-minikube --type=NodePort`
+
+Connaitre l'ip du service
+
+`minikube ip`
+
+`minikube service hello-minikube --url`
+
+(grosso-modo tout ceci ressemble à https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
+
+Interroger le serveur avec une requete get
+
+`curl $(minikube service hello-minikube --url)`, ou depuis un navigateur
+
+Inspecter kubernetes avec le dashboard
+
+`minikube dashboard`
+
+Interroger les resources kubernetes
+
+`kubectl get`, `kubectl get pod`, `kubectl get service`, ...
+
+`kubectl logs`, `kubectl exec`...
+
+Détruire le déploiement et libérer les resources
+
+`kubectl delete services hello-minikube`
+
+`kubectl delete deployment hello-minikube`

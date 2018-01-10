@@ -1,0 +1,22 @@
+= TP Jouer avec l'orchestrateur
+
+- On part de `blockchain-js`. Clonez ce projet.
+
+Le problème est qu'aucun noeud blockchain n'est présent côté serveur (seuls les navigateurs agissent en tant que noeud dans l'application telle qu'elle est aujourd'hui).
+
+On se propose d'exposer en plus le serveur `blockchain-js-node` dans un déploiement à part et de pouvoir y accéder depuis internet.
+
+On doit d'ores-et-déjà pouvoir se connecter depuis le front-end au nouveau service.
+
+On désire maintenant augmenter le nombre d'instances de noeuds dans le déploiement. Modifiez le déploiement pour atteindre un nombre de réplicas de 10.
+
+Le problème maintenant est que les noeuds ne sont pas connectés ensemble. On y accède par le service correspondant qui fait le load balancing. Donc on ne tombe jamis sur le même noeud, donc les données sont incohérentes puisque les noeuds ne partagent rien entre eux.
+
+L'objectif de cette étape est de développer un service qui se connecte au API du cluster kubernetes et connecte les noeuds ensemble. Il n'est pas nécessaire que chaque noeud soit connecté à tous les autres mais simplement qu'il existe au moins un chemin entre tous les noeuds.
+
+Constatez que tout fonctionne bien.
+
+Consultez les logs des noeuds.
+
+Bravo ! Si plusieurs équipes ont terminé, vous pouvez connecter vos noeuds blockchain par l'intermédiaire de vos navigateurs...
+

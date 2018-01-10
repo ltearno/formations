@@ -1,0 +1,63 @@
+= TP 1 - Création d'une image et lancement sur la plateforme GCP
+
+== Introduction
+
+Ce TP vous permet d'avoir les connaissances de base pour construire une image Docker et déployer une application sur Kubernetes/GCP
+
+== Etapes
+
+Lancer PHP pour voir
+
+       docker run -it -p 80:80 php:7.0-apache
+
+A partir de là on peut accéder à `http://localhost`
+
+Ecrire un programme Php index.php
+
+Pour exécuter l’image php server AVEC le fichier php dedans :
+
+        docker run -it -p 80:80 -v "$PWD":/var/www/html php:7.0-apache
+
+Création de l’image docker : Daas un fichier Dockerfile, écrire :
+
+        # Commence TOUJOURS par donner l'image de base
+        FROM php:7.0-apache
+
+        # Ajoute dans l'image mon fichier source
+        ADD index.php /var/www/html/
+
+
+Pour construire l’image docker corrrespondante et lui donner un nom, 
+
+        docker build -t store:1.0 . # cela construit l’image docker spécifiée dans le Dockerfile
+
+Pour lancer notre appli packagée :
+
+        docker run -it -p 80:80 store:1.0
+
+On tente de lancer cette image sur le cluster kube sur GCP :
+
+	kubectl run store --image store:1.0 --port 80
+
+On constate l’erreur ImagePullBackOff sur le pod créé par le déploiement. En effet l'image que nous avons construit n'a pas été uploadée sur l'infra gcp
+
+	kubectl get pod
+
+Activer GCR (Google Container Registry) => console gcp, Container Registry
+
+Push de l’image :
+
+	# on taggue l’image
+	docker tag store:1.0 eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0
+
+	# on la pousse chez google
+	gcloud docker -- push eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0
+
+
+Une fois publiée sur le gcr de google, on peut recréer le déploiement :
+
+	kubectl delete deployment store
+
+	kubectl run store --image eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0 --port 80
+
+Et là, normalement, kubectl get pods ne montre pas d’erreur

@@ -1,0 +1,119 @@
+= TP 2
+
+== Sujet
+
+Il s'agit de déployer une application en microservice, composée d'une front, d'un back et d'un store de données.
+
+=== Frontend
+
+Un serveur Web stateless et appli en Javascript Vanilla, React ou Angular (ou whatever).
+
+N'est utilisé que pour servir les assets destinés au navigateur, le véritable service est fourni par le backend, 
+et est accédé par requêtes XHR depuis le navigateur.
+
+=== Backend
+
+Un serveur Web stateless avec api en REST qui reçoit les appels du front-end.
+
+Les données sont gérées par le pod suivant : un serveur de données.
+
+=== Store
+
+Il s'agit du microservice qui gère le stokage des données
+
+A noter que sur un vrai projet, on utilisera probablement un service managé pour gérer la persistance, redondance et haute-dispo.
+
+== Etape 1
+
+Dans cette étape, créer une application store vraiment basique qui répond ainsi (en dur dans le code) en http :
+
+- Requête GET sur /count
+- donne une Réponse en json : `{ "count" : 42, "hostname" : "NOM_DU_POD" }`
+
+Créer une image Docker contenant cette application,
+
+Poussez l'image sur le GCR de votre projet GCP.
+
+Déployer l'image avec un seul réplica. Le nom de déploiement doit être `store`.
+
+Exposez le déploiement avec un service en mode LoadBalancer. Le nom du service doit être `store-service`.
+
+Utilisez le mode déclaratif par fichier pour gérer vos resources (fichier .yaml et `kubectl apply -f ...`).
+
+NB : le nom du pod est accessible en consultant le nom d'hôte dans le code de votre application.
+
+=== Livrable
+
+- le code de l'appli,
+- fichiers yaml pour gérer k8s,
+- Dockerfile du déploiement et du sevice,
+- quel est l'url de ce service depuis l'extérieur ?
+
+== Etape 2
+
+On décide de ne plus exposer le service précédemment créé publiquement. Il ne sera en effet attaqué que par notre backend.
+
+Changez le type de service en `NodePort` et mettez à jour votre déploiement k8s.
+
+=== Librable
+
+- montrez les changements effectués
+- vérifiez que l'url ne répond plus
+
+== Etape 3
+
+Nous allons maintenant écrire l'application backend.
+
+Cette application répond aux requêtes `GET` sur `/` avec le contenu suivant :
+
+```json
+{
+    "count": 42,
+    "store-pod" : "NOM DU POD STORE SOLLICITé",
+    "backend-pod" : "NOM DU POD BACKEND SOLLICITé"
+}
+```
+
+Le champ `count` est le contenu de ce qu'à renvoyé le store.
+
+Le champ `store-pod` reprend le nom d'hôte rendu par le store.
+
+Le champ `backend-pod` contient le nom du pod de backend qui a traité la requête.
+
+- écrire l'application, construire l'image
+- déployez l'image avec comme nom de déploiement `backend`
+- exposez le service backend au public (service de type LoadBalancer)
+- vérifier que l'ensemble fonctionne bien (quand on appelle le backend, il appelle le store et fait remonter l'information)
+
+=== Livrable
+
+- montrez votre code,
+- montrez les fichiers de configuration k8s,
+- vérifier que le programme fonctionne bien comme attendu.
+
+== Etape 4
+
+Augmentation du nombre de réplicas. Modifiez le nombre de réplicas pour avoir 3 `store` et 2 `backend`.
+
+=== Librable
+
+- vérifiez que le nombre des pods correspond à vos modifications
+- vérifier que le nom des pods change au fur et a mesure des requêtes
+
+== Etape 5
+
+On s'imagine maintenant dans un contexte industriel.
+
+Ecrivez les scripts nécessaires pour pouvoir construire les images, les pousser sur GCP et mettre à jour les déploiements K8s.
+
+Organisez votre projet de façon à avoir quelque chose de propre et satisfaisant.
+
+On doit être capable d'effectuer toutes ces opérations en appelant simplement :
+
+`./buildPushAndDeploy.sh 1.2` pour construire et déployer la version 1.2
+
+=== Livrable
+
+- un projet bien organisé,
+- des scripts propres,
+- la possibilité de simplement modifier les sources php et de tout redéployer en un seul appel de script.

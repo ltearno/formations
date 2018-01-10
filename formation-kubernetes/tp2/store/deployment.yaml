@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: store
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: store
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: store
+    spec:
+      containers:
+      - image: eu.gcr.io/blockchain-js/store:VERSION
+        imagePullPolicy: IfNotPresent
+        name: store
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}

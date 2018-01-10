@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - Stack Labs - 2018 - Toulouse"><title>Kubernetes</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Kubernetes</h1><p><small>Arnaud Tournier - @ltearno - Stack Labs - 2018 - Toulouse</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Directeur R&amp;D chez Stack Labs, fondateur de LTE Consulting</p></div>
+<div class="paragraph"><p>Email: <a href="mailto:arnaud.tournier@stack-labs.com">arnaud.tournier@stack-labs.com</a></p></div>
+<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div>
+<div class="paragraph"><p>Web: <a href="http://www.stack-labs.com">stack-labs.com</a></p></div>
+<div class="paragraph"><p>Speaker à Java One, Devoxx, GDG, JUG, GWTCon&#8230;&#8203;</p></div></section>
+<section id="_rappel"><h2>Rappel</h2><div class="paragraph"><p>Processus (et programme en général) :</p></div>
+<div class="ulist"><ul><li><p>execution (CPU, GPU, &#8230;&#8203;)</p></li><li><p>mémoire</p></li><li><p>entrées sorties :</p></li><li><p>réseau,</p></li><li><p>disque (file system),</p></li><li><p>&#8230;&#8203;</p></li></ul></div></section>
+<section id="_operating_system"><h2>Operating System</h2><div class="paragraph"><p>L&#8217;OS gère les resources de la machine et l&#8217;exécution des processus</p></div>
+<div class="paragraph"><p>Les processus voient et partagent les resources</p></div></section>
+<section id="_environnement"><h2>Environnement</h2><div class="paragraph"><p>Le programme a tout un tas de dépendances implicites :</p></div>
+<div class="ulist"><ul><li><p>bibliothèque runtime du langage de programmation,</p></li><li><p>parties du file system,</p></li><li><p>variables d&#8217;environnement&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p>Le lancement réussi d&#8217;un programme dépend donc d&#8217;un environnement adéquat</p></div></section>
+<section><section id="_chroot"><h2>CHROOT</h2><div class="paragraph"><p>Change le répertoire racine d&#8217;un processus</p></div><div class="paragraph"><p>Isolation de l&#8217;execution du processus</p></div><div class="paragraph"><p>A partir de là il est possible de construire l&#8217;environnement FS adequat</p></div></section><section id="_exemple"><h2>Exemple</h2><div class="paragraph"><p>Pour commencer sous Docker :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash">docker run -it ubuntu
+apt update</code></pre></div></div>
+<div class="paragraph"><p>Sinon :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash">sudo -i</code></pre></div></div>
+<div class="paragraph"><p>Puis :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash">apt install debootstrap
+
+mkdir /test-chroot
+debootstrap --include=locales-all wheezy /test-chroot http://ftp.fr.debian.org/debian
+echo "coucou" &gt; /test-chroot/coucou.txt
+chroot /test-chroot /bin/bash
+
+# S'execute dans le processus chroot-é
+cat /coucou.txt</code></pre></div></div>
+<div class="paragraph"><p>Puis quitter&#8230;&#8203;</p></div>
+<div class="paragraph"><p>(<a href="https://artisan.karma-lab.net/magie-chroot" class="bare">https://artisan.karma-lab.net/magie-chroot</a>)</p></div></section></section>
+<section><section id="_lxc"><h2>LXC</h2><div class="paragraph"><p>On veut pallier aux limitations de chroot :</p></div><div class="ulist"><ul><li><p>mieux isoler les processus</p></li><li><p>créer des interfaces réseaux, bridges, etc</p></li></ul></div><div class="paragraph"><p>Comprend :</p></div><div class="ulist"><ul><li><p>namespaces : isolation des resources</p></li><li><p>cgroups : contrôle des resources</p></li></ul></div></section><section id="_lxc_mise_en_oeuvre"><h2>LXC - mise en oeuvre</h2><div class="paragraph"><p>Un pus peut avoir ses propres <code>hostname</code>, utilisateurs, interfaces réseau, vision des autres processus&#8230;&#8203;</p></div>
+<div class="paragraph"><p>Ces fonctionnalités sont disponibles en standard dans le noyau Linux</p></div>
+<div class="paragraph"><p>Monter des containers LXC est fastidieux et passe par des étapes de :</p></div>
+<div class="ulist"><ul><li><p>création d&#8217;interface réseau et de bridge,</p></li><li><p>copie d&#8217;une distribution Linux,</p></li><li><p>paramétrage des systèmes de fichier,</p></li><li><p>création des cgroups</p></li></ul></div>
+<div class="paragraph"><p>(<a href="https://linuxcontainers.org/fr/" class="bare">https://linuxcontainers.org/fr/</a>)
+(<a href="https://artisan.karma-lab.net/conteneurs-linux" class="bare">https://artisan.karma-lab.net/conteneurs-linux</a>)</p></div></section></section>
+<section id="_docker"><h2>Docker</h2><div class="paragraph"><p>Utilise toutes ces technologies pour proposer une expérience pratique</p></div>
+<div class="paragraph"><p>Gère toutes les opérations précédemment citées</p></div>
+<div class="paragraph"><p>Un démon <code>dockerd</code> réside sur la machine hôte et exécute les requêtes du programme <code>docker</code></p></div>
+<div class="paragraph"><p>Lancer un bash dans une distribution revient à la simple commande :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash">docker run -it ubuntu</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash"># lance l'image hello world provenant du registry officiel de Docker
+docker run hello-world</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="bash language-bash"># lance un serveur Web hello world
+docker run -p 8080 google/nodejs-hello</code></pre></div></div>
+<div class="paragraph"><p><code>docker ps</code>, <code>docker exec</code>, <code>docker network create</code>&#8230;&#8203;</p></div></section>
+<section id="_microservices"><h2>Microservices</h2><div class="paragraph"><p>Docker a favorisé le développement des microservices grâce à la
+facilité de reproduire l&#8217;environnement nécessaire aux applications</p></div>
+<div class="paragraph"><p>Le mouvement DevOps a grandement bénéficié des microservices en rendant
+les environnements de développement et de production (quasi) identiques</p></div>
+<div class="paragraph"><p>Chaque service est lancé dans un conteneur. Les conteneurs sont paramétrés
+pour communiquer ensemble. On scale l&#8217;application en ajoutant de nouveaux
+conteneurs. Ce n&#8217;est pas nouveau mais beaucoup plus facile à mettre en
+oeuvre que les machines virtuelles.</p></div></section>
+<section id="_problématiques"><h2>Problématiques</h2><div class="paragraph"><p>La multiplication du nombre de conteneurs à gérer a amené son lot de problématiques :</p></div>
+<div class="ulist"><ul><li><p>orchestration,</p></li><li><p>configuration,</p></li><li><p>liaison,</p></li><li><p>état de l&#8217;application,</p></li><li><p>gestion des volumes&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p>Pets vs Cattle</p></div>
+<div class="paragraph"><p>Il y a besoin de solutions <em>haut-niveau</em> pour gérer les nouvelles possibilités offertes par la <em>containerization</em></p></div></section>
+<section id="_qu_est_ce_que_kubernetes"><h2>Qu&#8217;est-ce que Kubernetes</h2><div class="paragraph"><p>Historique (Borg, besoins internes google, etc)</p></div>
+<div class="paragraph"><p>Conçu par Google, annoncé en 2014</p></div>
+<div class="paragraph"><p>Création de la CNCF</p></div>
+<div class="paragraph"><p>Gérer des clusters de machines</p></div>
+<div class="paragraph"><p>Déployer, maintenir et scaler des applications. Conçu pour être extensible et adaptable.</p></div>
+<div class="paragraph"><p>Abbréviations : kube, k8s,&#8230;&#8203;</p></div></section>
+<section><section id="_vision_à_grosse_maille"><h2>Vision à grosse maille :</h2><div class="ulist"><ul><li><p>description déclarative des déploiements</p></li><li><p>placement automatique des containers en fonction des contraintes et prérequis déclarés par l&#8217;application</p></li><li><p>gestion des failles (les containers redémarrent automatiquement)</p></li><li><p>mise à l&#8217;échelle horizontale</p></li><li><p>découverte de services et load balancing</p></li><li><p>mises à jour en rollout et rollback</p></li><li><p>stockage</p></li><li><p>gestion de la configuration applicative</p></li><li><p>auto-healing</p></li></ul></div></section><section id="_ecosystème"><h2>Ecosystème :</h2><div class="paragraph"><p>docker compose</p></div>
+<div class="paragraph"><p>docker swarm</p></div>
+<div class="paragraph"><p>mesos/marathon</p></div></section></section>
+<section><section id="_environnement_de_développement"><h2>Environnement de développement</h2><div class="paragraph"><p>Kubernetes met à disposition un outil <code>kubectl</code></p></div><div class="paragraph"><p>Kubernetes est platforme-agnostique et s&#8217;intègre avec différents plateformes comme par exemple :</p></div><div class="ulist"><ul><li><p>AWS,</p></li><li><p>GCP,</p></li><li><p>OpenShift,</p></li><li><p>Minikube&#8230;&#8203;</p></li></ul></div><div class="paragraph"><p>Aujourd&#8217;hui kubernetes se fonde sur un environnement GNU/Linux.</p></div><div class="paragraph"><p>Pour GCP, outil <code>gcloud</code> est utilisé pour provisionner les resources.</p></div></section><section id="_tp_0_prise_en_main"><h2>TP 0 : prise en main</h2><div class="paragraph"><p>tp-0.html[Aller au TP 0]</p></div></section></section>
+<section id="_que_s_est_il_passé"><h2>Que s&#8217;est-il passé ?</h2><div class="paragraph"><p>Débrief du TP en passant en revue les resources créées pour l&#8217;occasion :</p></div>
+<div class="ulist"><ul><li><p>kubectl get deployment,&#8230;&#8203;</p></li></ul></div></section>
+<section id="_vue_d_ensemble"><h2>Vue d&#8217;ensemble</h2><div class="paragraph"><p>Le développeur utilise l&#8217;API k8s (souvent avec <code>kubectl</code>) pour décrire l&#8217;état désiré du cluster
+(applications à exécuter, quels conteneurs utiliser, nombre de réplicas,
+les resources réseau et disque etc)</p></div>
+<div class="paragraph"><p>Les services Kubernetes (<em>control plan</em>, exécuté sur les noeuds du cluster)
+surveillent les resources demandées par l&#8217;application et mettent en place
+automatiquement celles-ci.</p></div>
+<div class="paragraph"><p>Le noeud master exécute <code>kube-apiserver</code>, <code>kube-controller-manager</code> et <code>kube-scheduler</code></p></div>
+<div class="paragraph"><p>Chaque noeud esclave exécute :</p></div>
+<div class="ulist"><ul><li><p><code>kubelet</code> qui communique avec le master</p></li><li><p><code>kube-proxy</code> qui gère les services réseaux du noeud (add host name, fill IP tables,&#8230;&#8203;)</p></li></ul></div></section>
+<section id="_objets"><h2>Objets</h2><div class="paragraph"><p>Graphique illustrant l&#8217;imbrication des concepts (deployment, service, pods, &#8230;&#8203;)</p></div></section>
+<section id="_labels_et_selectors"><h2>Labels et selectors</h2><div class="paragraph"><p><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors" class="bare">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors</a></p></div></section>
+<section id="_cluster"><h2>Cluster</h2><div class="paragraph"><p>L&#8217;ensemble des machines (noeuds) exécutant les services kubernetes</p></div>
+<div class="paragraph"><p>Ces machines hébergent les charges applicatives</p></div></section>
+<section id="_pods"><h2>Pods</h2><div class="paragraph"><p>Un groupe de containers s&#8217;exécutant sur une machine et en partageant les resources :
+- stockage (définition de volumes),
+- réseau (adresse IP unique dans le cluster)</p></div>
+<div class="paragraph"><p>Les containers d&#8217;un même pod partage la même adresse IP et le même espace de ports TCP.
+Ils peuvent communiquer entre eux par <code>localhost</code> et autres IPC.
+Ils ont accès aux volumes partagés définis au niveau du pod (et montables dans le file system).</p></div>
+<div class="paragraph"><p>Les pods sont schédulés sur des noeuds. Ils sont gérés en général par des <em>controleurs</em> (Deployment, StatefulSet, DaemonSet&#8230;&#8203;)</p></div></section>
+<section><section id="_services"><h2>Services</h2><div class="paragraph"><p>Une façon d&#8217;accéder aux ports exposés par les pods</p></div><div class="paragraph"><p>Abstraction définissant un ensemble logique de Pods et une politique d&#8217;accès</p></div><div class="paragraph"><p>L&#8217;ensemble des pods ciblés par un service est déterminé par un Label Selector</p></div><div class="paragraph"><p>Quatre types :</p></div><div class="ulist"><ul><li><p>ClusterIP : expose le service sur une IP interne au cluster</p></li><li><p>NodePort : expose un port statique (et crée un service ClusterIP)</p></li><li><p>LoadBalancer : expose un service sur une IP externe (et crée un service NodePort)</p></li><li><p>ExternalIP : expose une IP externe au cluster</p></li></ul></div></section><section id="_services_2"><h2>Services</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="yaml language-yaml">kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9376</code></pre></div></div>
+<div class="paragraph"><p>Ce service se verra attribuer une adresse IP appelée <code>ClusterIP</code></p></div>
+<div class="paragraph"><p>L&#8217;ip du service est disponible dans les variables d&#8217;environnement (<code>{NOM_DU_SERVICE}_SERVICE_HOST</code> et <code>{NOM_DU_SERVICE}_SERVICE_PORT</code>)</p></div>
+<div class="paragraph"><p>Le service est accessible avec le nom <code>SERVICE.NAMESPACE.svc.cluster.local</code></p></div>
+<div class="paragraph"><p>On peut définir une affinité de session (<code>SessionAffinty</code>)</p></div>
+<div class="paragraph"><p>Les pods ciblés par le service sont spécifiés par le <code>selector</code>.</p></div></section></section>
+<section id="_volumes"><h2>Volumes</h2><div class="paragraph"><p>Stocker des données de manière persistante.</p></div></section>
+<section id="_namespace"><h2>Namespace</h2><div class="paragraph"><p>Permet l&#8217;isolation des resources</p></div>
+<div class="paragraph"><p>Il est possible de définir des quotas par namespace</p></div>
+<div class="paragraph"><p>Le namespace par défaut s&#8217;appelle <code>default</code>. Kube utilise ses propres namespaces (<code>kube-system</code> et <code>kube-public</code>)</p></div></section>
+<section id="_replicaset"><h2>ReplicaSet</h2><div class="paragraph"><p>Réplication de plusieurs Pods.</p></div>
+<div class="paragraph"><p>Ces objets sont très rarement accédés par le développeur, mais par les controlleurs
+de déploiement (page suivante)</p></div></section>
+<section><section id="_deployments"><h2>Deployments</h2><div class="paragraph"><p>Un déploiement est une mise à jour déclarative de pods ou de ReplicaSets.</p></div><div class="paragraph"><p>Le Deployment décrit l&#8217;état voulu,
+Le DeploymentController met tout en oeuvre pour y arriver.</p></div><div class="paragraph"><p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" class="bare">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a></p></div></section><section id="_déploiements"><h2>Déploiements</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="yaml language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80</code></pre></div></div></section></section>
+<section id="_statefulset"><h2>StatefulSet</h2></section>
+<section id="_daemonset"><h2>DaemonSet</h2></section>
+<section><section id="_job"><h2>Job</h2></section><section id="_tp_1_utilisation_du_mode_impératif"><h2>TP 1 : utilisation du mode impératif</h2><div class="paragraph"><p>tp-1.html[Aller au TP 1]</p></div></section></section>
+<section id="_manipulation_des_objets_kubernetes"><h2>Manipulation des objets kubernetes</h2><div class="paragraph"><p>On peut utiliser des constructions impératives. Mais k8s excelle dans la description déclarative.</p></div>
+<div class="literalblock"><div class="content"><pre>kubectl apply -f directory/</pre></div></div>
+<div class="paragraph"><p>Pour détruire un objet</p></div>
+<div class="literalblock"><div class="content"><pre>kubectl delete -f fileName</pre></div></div>
+<div class="paragraph"><p>Obtenir des informations sur un objet</p></div>
+<div class="literalblock"><div class="content"><pre>kubectl get -f fileName -o yaml</pre></div></div>
+<div class="paragraph"><p><a href="https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/" class="bare">https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/</a></p></div></section>
+<section id="_créer_ses_fichiers_de_configuration_à_partir_de_l_état_courant"><h2>Créer ses fichiers de configuration à partir de l&#8217;état courant</h2><div class="paragraph"><p>Exporter les objects :</p></div>
+<div class="literalblock"><div class="content"><pre>kubectl get / -o yaml --export &gt; _.yaml</pre></div></div>
+<div class="paragraph"><p>Retirer les champs de status des fichiers</p></div>
+<div class="paragraph"><p>Ensuite, on utilise <code>kubectl apply</code></p></div></section>
+<section><section id="_commandes_courantes"><h2>Commandes courantes</h2><div class="paragraph"><p>Décrire un pod</p></div><div class="literalblock"><div class="content"><pre>kubectl describe po at-broker-srv-2526195473-qgknh</pre></div></div><div class="paragraph"><p>Lancer un bash sur un pod distant</p></div><div class="literalblock"><div class="content"><pre>kubectl exec -it at-referential-1960433735-42319 bash</pre></div></div><div class="paragraph"><p>Décrire un pod particulier</p></div><div class="literalblock"><div class="content"><pre>kubectl describe pod/at-referential-1960433735-42319 -n default</pre></div></div></section><section id="_mettre_à_jour_un_déploiement"><h2>Mettre à jour un déploiement</h2><div class="paragraph"><p>Exemples</p></div>
+<div class="literalblock"><div class="content"><pre>kubectl set image deployment/nginx-deployment nginx=nginx:1.9.1</pre></div></div>
+<div class="literalblock"><div class="content"><pre>kubectl edit deployment/nginx-deployment</pre></div></div>
+<div class="literalblock"><div class="content"><pre>kubectl rollout status deployment/nginx-deployment</pre></div></div>
+<div class="literalblock"><div class="content"><pre>kubectl scale deployment nginx-deployment --replicas=10</pre></div></div>
+<div class="literalblock"><div class="content"><pre>kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80</pre></div></div>
+<div class="paragraph"><p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" class="bare">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a></p></div></section></section>
+<section id="_architecture"><h2>Architecture</h2><div class="paragraph"><p>Organisation des cluster</p></div>
+<div class="paragraph"><p>Kube Master + (kubelet et kubeproxy)</p></div>
+<div class="paragraph"><p>Authentification et autorisation</p></div></section>
+<section id="_le_scheduler"><h2>Le scheduler</h2><div class="paragraph"><p>Il a pour rôle d&#8217;affecter à chaque pod un ou des noeuds pour l&#8217;exécution, puis de séquencer le démarrage de ces pods.</p></div>
+<div class="paragraph"><p>Très important : les health check qui permettent au controleur de connaître le statut de chaque container, il est donc indispensable de les spécifier.</p></div></section>
+<section><section id="_rappel_2"><h2>Rappel</h2><div class="imageblock" style=""><div class="content"><img src="images/20180515_093847.jpg" alt="Global view"></div></div></section><section id="_rappel_3"><h2>Rappel</h2><div class="imageblock" style=""><div class="content"><img src="images/20180515_093851.jpg" alt="Architecture"></div></div></section><section id="_rappel_4"><h2>Rappel</h2><div class="imageblock" style=""><div class="content"><img src="images/20180515_093858.jpg" alt="Exemple"></div></div></section><section id="_rappel_5"><h2>Rappel</h2><div class="imageblock" style=""><div class="content"><img src="images/20180515_095809.jpg" alt="Utiliser le mode déclaratif"></div></div></section><section id="_tp_2_utilisation_du_mode_déclaratif"><h2>TP 2 : utilisation du mode déclaratif</h2><div class="paragraph"><p>tp-2.html[Aller au TP 2]</p></div></section></section>
+<section id="_avancé"><h2>Avancé</h2><div class="paragraph"><p>Monter une infra on premise.</p></div>
+<div class="paragraph"><p>Si Windows 10 pro &#8658; HyperV</p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'white',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
