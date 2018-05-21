@@ -95,7 +95,7 @@ On peut aussi configurer l'auto-complétion (sous Linux)
 
 ## Sha
 
-Les SHA sont partour dans git !
+Les SHA sont partout dans git !
 
 40 caractères représentant la signature d'un contenu
 
