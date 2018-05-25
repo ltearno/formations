@@ -133,6 +133,8 @@ La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
 %>
 ----
 
+La classe `Tools` est à écrire par vos soins. En particulier la méthode `getCookie` permet à partir d'un objet `HttpServletRequest` et d'un nom de cookie, de retrouver la valeur de ce cookie (`String`) ou `null` si aucun cookie n'est présent.
+
 Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur 
 contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
 
@@ -754,3 +756,30 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 |Déploiement sur un vrai cluster
 |JMeter
 |==================
+
+== Troubleshooting
+
+=== Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"
+
+Ne pas prendre en compte cette erreur, c'est juste Eclipse qui est à la rue !
+
+=== `JRE_HOME` / `JAVA_HOME` n'est pas défini
+
+En ligne de commande, le démarrage de Tomcat échoue à cause de cette erreur.
+
+C'est avec cette variable que Tomcat détecte le répertoire 
+d'installation de la version de Java à utiliser.
+
+Solution :
+
+- trouver le répertoire d'installation de Java (choisir un JDK et non un JRE) (sous Windows, c'est souvent : `C:\Program Files\Java\jdk1.8`)
+- alimenter laes variables d'environnement avec ce répertoire.
+
+==== Sous Windows
+
+- Dans la barre "rechercher", taper "environnement" et sélectionner "Modifier les variables d'environnement"
+- Choisir "Utilisateur" (bouton "Pour votre compte..."),
+- Choisir "Nouvelle ..."
+- Nom de la variable : `JAVA_HOME`, et comme valeur le chemin d'installation de Java
+- Faire pareil pour la variable `JRE_HOME`
+- A ce stde les variables sont positionnées, **MAIS** il faut redémarrer la console ligne de commande pour qu'elles soient prises en compte

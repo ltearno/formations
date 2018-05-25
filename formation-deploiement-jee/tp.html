@@ -484,6 +484,12 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </li>
 <li><a href="#_exercice_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 <li><a href="#_bilan">Bilan</a></li>
+<li><a href="#_troubleshooting">Troubleshooting</a>
+<ul class="sectlevel2">
+<li><a href="#_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</a></li>
+<li><a href="#__code_jre_home_code_code_java_home_code_n_est_pas_défini"><code>JRE_HOME</code> / <code>JAVA_HOME</code> n&#8217;est pas défini</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -659,6 +665,9 @@ La valeur du cookie MONCOOKIE est : &lt;%=valeurCookie%&gt;&lt;br /&gt;
 	}
 %&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>La classe <code>Tools</code> est à écrire par vos soins. En particulier la méthode <code>getCookie</code> permet à partir d&#8217;un objet <code>HttpServletRequest</code> et d&#8217;un nom de cookie, de retrouver la valeur de ce cookie (<code>String</code>) ou <code>null</code> si aucun cookie n&#8217;est présent.</p>
 </div>
 <div class="paragraph">
 <p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur
@@ -1666,10 +1675,69 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_troubleshooting">Troubleshooting</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</h3>
+<div class="paragraph">
+<p>Ne pas prendre en compte cette erreur, c&#8217;est juste Eclipse qui est à la rue !</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__code_jre_home_code_code_java_home_code_n_est_pas_défini"><code>JRE_HOME</code> / <code>JAVA_HOME</code> n&#8217;est pas défini</h3>
+<div class="paragraph">
+<p>En ligne de commande, le démarrage de Tomcat échoue à cause de cette erreur.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est avec cette variable que Tomcat détecte le répertoire
+d&#8217;installation de la version de Java à utiliser.</p>
+</div>
+<div class="paragraph">
+<p>Solution :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>trouver le répertoire d&#8217;installation de Java (choisir un JDK et non un JRE) (sous Windows, c&#8217;est souvent : <code>C:\Program Files\Java\jdk1.8</code>)</p>
+</li>
+<li>
+<p>alimenter laes variables d&#8217;environnement avec ce répertoire.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_sous_windows_3">Sous Windows</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Dans la barre "rechercher", taper "environnement" et sélectionner "Modifier les variables d&#8217;environnement"</p>
+</li>
+<li>
+<p>Choisir "Utilisateur" (bouton "Pour votre compte&#8230;&#8203;"),</p>
+</li>
+<li>
+<p>Choisir "Nouvelle &#8230;&#8203;"</p>
+</li>
+<li>
+<p>Nom de la variable : <code>JAVA_HOME</code>, et comme valeur le chemin d&#8217;installation de Java</p>
+</li>
+<li>
+<p>Faire pareil pour la variable <code>JRE_HOME</code></p>
+</li>
+<li>
+<p>A ce stde les variables sont positionnées, <strong>MAIS</strong> il faut redémarrer la console ligne de commande pour qu&#8217;elles soient prises en compte</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-09 11:16:30 CET
+Last updated 2018-05-25 10:54:09 CEST
 </div>
 </div>
 </body>
