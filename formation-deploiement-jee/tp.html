@@ -466,6 +466,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_installation">Installation</a></li>
 <li><a href="#_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</a></li>
 <li><a href="#_importation_du_projet_maven_dans_eclipse">Importation du projet Maven dans Eclipse</a></li>
+<li><a href="#_cycle_de_développement">Cycle de développement</a></li>
 </ul>
 </li>
 <li><a href="#_exercice_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
@@ -758,6 +759,28 @@ telle application.</p>
 </div>
 <div class="paragraph">
 <p>Choisir le répertoire du projet (celui dans lequel on trouve le fichier <code>pom.xml</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cycle_de_développement">Cycle de développement</h3>
+<div class="paragraph">
+<p><strong>ATTENTION, Tomcat ne doit pas être lancé avec Eclipse</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>coder dans Eclipse, sauvegarder</p>
+</li>
+<li>
+<p>en ligne de commande dans le projet : <code>mvn install</code></p>
+</li>
+<li>
+<p>copie du <code>target/XXXX.war</code> dans le répertoire de déploiement de Tomcat</p>
+</li>
+<li>
+<p>actualisation dans le navigateur</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1815,7 +1838,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-25 12:14:50 CEST
+Last updated 2018-05-25 12:23:58 CEST
 </div>
 </div>
 </body>

@@ -182,6 +182,15 @@ Dans Eclipse, menu `File`, `Import...`, dans la zone de filtre taper `maven`, `E
 
 Choisir le répertoire du projet (celui dans lequel on trouve le fichier `pom.xml`).
 
+=== Cycle de développement
+
+**ATTENTION, Tomcat ne doit pas être lancé avec Eclipse**
+
+- coder dans Eclipse, sauvegarder
+- en ligne de commande dans le projet : `mvn install`
+- copie du `target/XXXX.war` dans le répertoire de déploiement de Tomcat
+- actualisation dans le navigateur
+
 == Exercice : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
