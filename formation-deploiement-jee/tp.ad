@@ -176,6 +176,12 @@ Déployer le fichier _war_ que vous trouvez dans le sous répertoire `target` da
 
 Accéder à l'application avec votre navigateur.
 
+=== Importation du projet Maven dans Eclipse
+
+Dans Eclipse, menu `File`, `Import...`, dans la zone de filtre taper `maven`, `Existing Maven Project`, `Next`.
+
+Choisir le répertoire du projet (celui dans lequel on trouve le fichier `pom.xml`).
+
 == Exercice : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
