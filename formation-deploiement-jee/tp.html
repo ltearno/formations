@@ -459,6 +459,14 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
 </ul>
 </li>
+<li><a href="#_exercice_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice : utilisation de Maven pour construire le fichier <code>.war</code></a>
+<ul class="sectlevel2">
+<li><a href="#_télécharger_maven">Télécharger Maven</a></li>
+<li><a href="#_extraire_maven">Extraire Maven</a></li>
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</a></li>
+</ul>
+</li>
 <li><a href="#_exercice_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
 <ul class="sectlevel2">
 <li><a href="#_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</a></li>
@@ -680,6 +688,66 @@ contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
 <p>A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est
 valorisée et stable au fur et à mesure des rafraichissements. C&#8217;est le comportement attendu d&#8217;une
 telle application.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercice_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice : utilisation de Maven pour construire le fichier <code>.war</code></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_télécharger_maven">Télécharger Maven</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Dans google : "Apache Maven"</p>
+</li>
+<li>
+<p>Cliquer sur 'Download'</p>
+</li>
+<li>
+<p>Cliquer sur le lien suggéré (<a href="http://wwwftp.ciril.fr/pub/apache/" class="bare">http://wwwftp.ciril.fr/pub/apache/</a>)</p>
+</li>
+<li>
+<p>Choisir le répertoire <code>maven/maven-3/3.5.3/binaries/</code></p>
+</li>
+<li>
+<p>Télécharger le fichier <code>apache-maven-3.5.3-bin.zip</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extraire_maven">Extraire Maven</h3>
+<div class="paragraph">
+<p>Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n&#8217;utilisez pas le répertoire <code>Program Files</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installation">Installation</h3>
+<div class="paragraph">
+<p>Ajouter le répertoire <code>VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin</code> dans la variable d&#8217;environnement <code>PATH</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
+<div class="paragraph">
+<p>Télécharger <a href="http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip" class="bare">http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip</a></p>
+</div>
+<div class="paragraph">
+<p>Aller dans le répertoire d&#8217;extraction</p>
+</div>
+<div class="paragraph">
+<p>Taper <code>mvn install</code></p>
+</div>
+<div class="paragraph">
+<p>Normalement il télécharge plein de choses (la première fois), puis il finit par un message <em>success</em>.</p>
+</div>
+<div class="paragraph">
+<p>Déployer le fichier <em>war</em> que vous trouvez dans le sous répertoire <code>target</code> dans votre serveur Tomcat.</p>
+</div>
+<div class="paragraph">
+<p>Accéder à l&#8217;application avec votre navigateur.</p>
 </div>
 </div>
 </div>
@@ -1737,7 +1805,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-25 10:54:09 CEST
+Last updated 2018-05-25 12:10:33 CEST
 </div>
 </div>
 </body>

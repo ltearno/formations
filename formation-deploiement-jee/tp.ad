@@ -144,6 +144,38 @@ A la première connexion la page doit afficher une valeur de session nulle, puis
 valorisée et stable au fur et à mesure des rafraichissements. C'est le comportement attendu d'une
 telle application.
 
+== Exercice : utilisation de Maven pour construire le fichier `.war`
+
+=== Télécharger Maven
+
+- Dans google : "Apache Maven"
+- Cliquer sur 'Download'
+- Cliquer sur le lien suggéré (http://wwwftp.ciril.fr/pub/apache/)
+- Choisir le répertoire `maven/maven-3/3.5.3/binaries/`
+- Télécharger le fichier `apache-maven-3.5.3-bin.zip`
+
+=== Extraire Maven
+
+Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n'utilisez pas le répertoire `Program Files`).
+
+=== Installation
+
+Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la variable d'environnement `PATH`.
+
+=== Compilation du squelette de projet Java EE Maven
+
+Télécharger http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip
+
+Aller dans le répertoire d'extraction
+
+Taper `mvn install`
+
+Normalement il télécharge plein de choses (la première fois), puis il finit par un message _success_.
+
+Déployer le fichier _war_ que vous trouvez dans le sous répertoire `target` dans votre serveur Tomcat.
+
+Accéder à l'application avec votre navigateur.
+
 == Exercice : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
