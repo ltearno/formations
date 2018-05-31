@@ -480,6 +480,8 @@ Une spécification existe, c'est JWT (Json Web Token).
 
 Nous allons utiliser JJWT, une bibliothèque open source pour la gestion de JWT :
 
+Pour un projet utilisant Maven, vous pouvez simplement ajouter ce bout de XML dans le fichier `pom.xml` dans le noeud `dependencies` :
+
 [source,xml]
 ----
 <dependency>
