@@ -48,7 +48,7 @@ Pour créer le fichier `.war`, utiliser le menu `Fichier`/`Exporter...` d'Eclips
 
 _Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._
 
-== Exercice : déployer l'application dans Tomcat
+== Exercice 1 : déployer l'application dans Tomcat
 
 Le déploiement de l'application peut se faire depuis Eclipse ou en général n'importe quel IDE. Néanmoins, il est interressant 
 de savoir déployer une application à la main.
@@ -71,17 +71,7 @@ version Windows Batch (`.bat`)).
 
 Vous devez pouvoir accéder à l'adresse `http://localhost:8080/NOM_DE_VOTRE_APPLICATION}` dans un navigateur.
 
-=== Conclusions
-
-La mise en oeuvre est très simple !
-
-Mais quels sont les problèmes ?
-
-- Crash serveur = arrêt du service
-- Montée de version = arrêt du service
-- Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
-
-== Exercice : ajouter un état à l'application
+== Exercice 2 : ajouter un état à l'application
 
 === Une application à état (simple)
 
@@ -202,7 +192,17 @@ Choisir le répertoire du projet (celui dans lequel on trouve le fichier `pom.xm
 - copie du `target/XXXX.war` dans le répertoire de déploiement de Tomcat
 - actualisation dans le navigateur
 
-== Exercice : déployer l'application sur deux Tomcat avec load balancing
+=== Conclusions
+
+La mise en oeuvre est très simple !
+
+Mais quels sont les problèmes ?
+
+- Crash serveur = arrêt du service
+- Montée de version = arrêt du service
+- Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
+
+== Exercice 3 : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
 impactent son fonctionnement.
@@ -359,7 +359,7 @@ INCONVENIENTS :
 - mauvaise répartition de la charge.
 - Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
 
-==== Exercice : Déport de la session dans une base externe
+==== Exercice 4 : Déport de la session dans une base externe
 
 Le phénomène de perte de session précédent est l'effet du standard Java EE.
 
@@ -479,7 +479,7 @@ INCONVENIENTS:
 - on a un serveur de base de donnée à gérer en plus !
 - les resources ne sont pas forcément bien gérées non plus : on va avoir tendance à ne pas remplir les serveurs ce qui empêche de les mettre à l'arrêt... Solution : remettre les sticky-sessions pour avoir le meilleur des deux mondes.
 
-==== Utilisation de JWT
+==== Exercice 5 : Utilisation de JWT
 
 Il est possible de déporter les données de sessions directement dans le navigateur !
 
@@ -528,7 +528,7 @@ Key createKey() {
 }
 ----
 
-==== Exercice : stockage d'une information de session dans un jeton JWT
+==== Exercice 6 : stockage d'une information de session dans un jeton JWT
 
 Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
 
@@ -562,7 +562,7 @@ Toujours une histoire de compromis, il faut choisir le meilleur entre :
 - complexité de la solution,
 - productivité.
 
-== Exercice : Déploiement de l'application avec Docker.
+== Exercice 7 : Déploiement de l'application avec Docker.
 
 === Installation de Docker
 
@@ -672,7 +672,7 @@ Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement u
 
 Tuer quelques containers pour constater que l'application n'est nullement dérangée.
 
-== Exercice : Gérer notre application avec Kubernetes
+== Exercice 8 : Gérer notre application avec Kubernetes
 
 Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
 
@@ -756,7 +756,7 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
-== Exercice : Utilisation de `JMeter` pour analyser les stratégies de déploiement
+== Exercice 9 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
 
 Groupez vous par groupe de 8 personnes.
 
