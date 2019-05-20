@@ -16,21 +16,23 @@
 ////
 :revealjs_transition: zoom
 Déploiement Java EE
-UTI Blagnac - 2016 - LTE Consulting
+UTI Blagnac - 2019 - Stack Labs
 :source-highlighter: pygments
 ////
 
 == Arnaud Tournier
 
-Développeur, formateur et architecte à **LTE Consulting**.
+Directeur Recherche et Développement à **Stack Labs**.
 
-Speaker **Devoxx**, **GWT.create**, **Paris**/**Toulouse JUG**, etc...
+Architecte, Développeur, Formateur et Speaker
 
-Email : ltearno@gmail.com
+Spécialiste en systèmes distribués et en cybersécurité
+
+Email : arnaud.tournier@stack-labs.com
 
 Twitter : @ltearno
 
-Web : www.lteconsulting.fr
+Web : www.stack-labs.com
 
 Full stack (x86_64 to JavaScript)
 
@@ -72,6 +74,8 @@ image::dataCenter.jpg[height=400]
 - tests,
 - **déploiement** et mises à jour,
 - surveillance, interventions d'urgence...*.
+
+Métier formalisé comme SRE : Service Reliability Engineer
 
 === Qualité et vitesse
 
@@ -168,9 +172,11 @@ image::monoServeur.png[]
 
 === Multiplier les serveurs
 
+**Scalabilité horizontale**.
+
 En adaptant le logiciel, on peut répliquer l'application sur plusieurs serveurs (cluster).
 
-**Scalabilité horizontale**.
+Ceci va permettre de s'appuyer sur du matériel grand public (avec assez peu de performances).
 
 === Web 2.0
 
@@ -183,6 +189,8 @@ Ceci encourage à créer des *architectures orientées service* et a se concentr
 Les architectures modernes sont composées de multiples serveurs exécutant de multiples applications collaborant entre elles (*par internet*).
 
 Elles fournissent des services universellement accessibles.
+
+Elles répondent dynamiquement à la charge, tout en optimisant le coût des resources informatiques.
 
 == Déploiement distribué
 
