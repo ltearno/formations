@@ -4,7 +4,7 @@
 :toc: macro
 :toc-title: Plan des exercices
 
-IUT Blagnac LP APSIO - 2017 - LTE Consulting
+IUT Blagnac LP APSIO - 2019 - LTE Consulting
 
 Exercices liés au déploiement d'application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
@@ -24,7 +24,7 @@ Télécharger Tomcat en version 8.5 et l'extraire dans un répertoire (faites at
 
 === Installer Eclipse
 
-Utiliser la dernière version d'Eclipse (Neon en 2017) dans la variante "Java EE" de façon à profiter des outils Java EE.
+Utiliser la dernière version d'Eclipse dans la variante "Java EE" de façon à profiter des outils Java EE.
 
 === Création d'une application vraiment très simple
 
@@ -143,6 +143,17 @@ Déployer et vérifier que l'application fonctionne.
 A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est 
 valorisée et stable au fur et à mesure des rafraichissements. C'est le comportement attendu d'une
 telle application.
+
+=== Ajout d'un compteur
+
+Ajoutez maintenant le code nécessaire pour qu'un compteur s'affiche sur la page.
+
+Ce compteur doit compter uniquement le nombre d'affichages particulier à chaque session. Par exemple, si
+votre utilisateur ouvre un onglet avec navigation privée, le compteur doit recommencer de zéro.
+
+=== Comment fonctionne le principe de session ?
+
+Expliquez le mécanisme associé aux sessions (c'est un mécanisme assez universel, identique à celui de PHP par exemple).
 
 == Exercice : utilisation de Maven pour construire le fichier `.war`
 

@@ -431,7 +431,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>IUT Blagnac LP APSIO - 2017 - LTE Consulting</p>
+<p>IUT Blagnac LP APSIO - 2019 - LTE Consulting</p>
 </div>
 <div class="paragraph">
 <p>Exercices liés au déploiement d&#8217;application Java EE.
@@ -458,6 +458,8 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_exercice_ajouter_un_état_à_l_application">Exercice : ajouter un état à l&#8217;application</a>
 <ul class="sectlevel2">
 <li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
+<li><a href="#_ajout_d_un_compteur">Ajout d&#8217;un compteur</a></li>
+<li><a href="#_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</a></li>
 </ul>
 </li>
 <li><a href="#_exercice_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice : utilisation de Maven pour construire le fichier <code>.war</code></a>
@@ -530,7 +532,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <div class="sect2">
 <h3 id="_installer_eclipse">Installer Eclipse</h3>
 <div class="paragraph">
-<p>Utiliser la dernière version d&#8217;Eclipse (Neon en 2017) dans la variante "Java EE" de façon à profiter des outils Java EE.</p>
+<p>Utiliser la dernière version d&#8217;Eclipse dans la variante "Java EE" de façon à profiter des outils Java EE.</p>
 </div>
 </div>
 <div class="sect2">
@@ -691,6 +693,22 @@ contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
 <p>A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est
 valorisée et stable au fur et à mesure des rafraichissements. C&#8217;est le comportement attendu d&#8217;une
 telle application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ajout_d_un_compteur">Ajout d&#8217;un compteur</h3>
+<div class="paragraph">
+<p>Ajoutez maintenant le code nécessaire pour qu&#8217;un compteur s&#8217;affiche sur la page.</p>
+</div>
+<div class="paragraph">
+<p>Ce compteur doit compter uniquement le nombre d&#8217;affichages particulier à chaque session. Par exemple, si
+votre utilisateur ouvre un onglet avec navigation privée, le compteur doit recommencer de zéro.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</h3>
+<div class="paragraph">
+<p>Expliquez le mécanisme associé aux sessions (c&#8217;est un mécanisme assez universel, identique à celui de PHP par exemple).</p>
 </div>
 </div>
 </div>
@@ -1842,7 +1860,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-31 18:09:36 CEST
+Last updated 2019-05-20 12:43:47 CEST
 </div>
 </div>
 </body>
