@@ -461,7 +461,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice : utilisation de Maven pour construire le fichier <code>.war</code></a>
+<li><a href="#_exercice_3_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice 3 : utilisation de Maven pour construire le fichier <code>.war</code></a>
 <ul class="sectlevel2">
 <li><a href="#_télécharger_maven">Télécharger Maven</a></li>
 <li><a href="#_extraire_maven">Extraire Maven</a></li>
@@ -472,7 +472,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_conclusions">Conclusions</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
+<li><a href="#_exercice_4_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 4 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
 <ul class="sectlevel2">
 <li><a href="#_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</a></li>
 <li><a href="#_installer_la_seconde_instance_de_tomcat">Installer la seconde instance de Tomcat</a></li>
@@ -484,18 +484,18 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_7_déploiement_de_l_application_avec_docker">Exercice 7 : Déploiement de l&#8217;application avec Docker.</a>
+<li><a href="#_exercice_8_déploiement_de_l_application_avec_docker">Exercice 8 : Déploiement de l&#8217;application avec Docker.</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_de_docker">Installation de Docker</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_8_gérer_notre_application_avec_kubernetes">Exercice 8 : Gérer notre application avec Kubernetes</a>
+<li><a href="#_exercice_9_gérer_notre_application_avec_kubernetes">Exercice 9 : Gérer notre application avec Kubernetes</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_et_création_d_un_cluster_de_développement">Installation et création d&#8217;un cluster de développement</a></li>
 <li><a href="#_exécution_de_l_application">Exécution de l&#8217;application</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_9_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 9 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
+<li><a href="#_exercice_10_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 10 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 <li><a href="#_bilan">Bilan</a></li>
 <li><a href="#_troubleshooting">Troubleshooting</a>
 <ul class="sectlevel2">
@@ -692,7 +692,7 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice : utilisation de Maven pour construire le fichier <code>.war</code></h2>
+<h2 id="_exercice_3_utilisation_de_maven_pour_construire_le_fichier_code_war_code">Exercice 3 : utilisation de Maven pour construire le fichier <code>.war</code></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_télécharger_maven">Télécharger Maven</h3>
@@ -705,7 +705,7 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 <p>Cliquer sur 'Download'</p>
 </li>
 <li>
-<p>Cliquer sur le lien suggéré (<a href="http://wwwftp.ciril.fr/pub/apache/" class="bare">http://wwwftp.ciril.fr/pub/apache/</a>)</p>
+<p>Cliquer sur le lien suggéré</p>
 </li>
 <li>
 <p>Choisir le répertoire <code>maven/maven-3/3.5.3/binaries/</code></p>
@@ -732,6 +732,9 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 <h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
 <div class="paragraph">
 <p>Télécharger <a href="http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip" class="bare">http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip</a></p>
+</div>
+<div class="paragraph">
+<p>Intégrez votre travail de l&#8217;exercice précédent dans ce squelette. Vous pouvez également continuer votre travail précédent en intégrant le <code>pom.xml</code> du squelette.</p>
 </div>
 <div class="paragraph">
 <p>Aller dans le répertoire d&#8217;extraction</p>
@@ -805,7 +808,7 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_3_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 3 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
+<h2 id="_exercice_4_déployer_l_application_sur_deux_tomcat_avec_load_balancing">Exercice 4 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
@@ -1070,7 +1073,7 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 </div>
 </div>
 <div class="sect3">
-<h4 id="_exercice_4_déport_de_la_session_dans_une_base_externe">Exercice 4 : Déport de la session dans une base externe</h4>
+<h4 id="_exercice_5_déport_de_la_session_dans_une_base_externe">Exercice 5 : Déport de la session dans une base externe</h4>
 <div class="paragraph">
 <p>Le phénomène de perte de session précédent est l&#8217;effet du standard Java EE.</p>
 </div>
@@ -1266,7 +1269,7 @@ cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_exercice_5_utilisation_de_jwt">Exercice 5 : Utilisation de JWT</h4>
+<h4 id="_exercice_6_utilisation_de_jwt">Exercice 6 : Utilisation de JWT</h4>
 <div class="paragraph">
 <p>Il est possible de déporter les données de sessions directement dans le navigateur !</p>
 </div>
@@ -1325,7 +1328,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_exercice_6_stockage_d_une_information_de_session_dans_un_jeton_jwt">Exercice 6 : stockage d&#8217;une information de session dans un jeton JWT</h4>
+<h4 id="_exercice_7_stockage_d_une_information_de_session_dans_un_jeton_jwt">Exercice 7 : stockage d&#8217;une information de session dans un jeton JWT</h4>
 <div class="paragraph">
 <p>Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le <em>pseudo</em> de l&#8217;utilisateur.</p>
 </div>
@@ -1400,7 +1403,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_7_déploiement_de_l_application_avec_docker">Exercice 7 : Déploiement de l&#8217;application avec Docker.</h2>
+<h2 id="_exercice_8_déploiement_de_l_application_avec_docker">Exercice 8 : Déploiement de l&#8217;application avec Docker.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_installation_de_docker">Installation de Docker</h3>
@@ -1562,7 +1565,7 @@ docker rm $(docker ps -a -q)</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_8_gérer_notre_application_avec_kubernetes">Exercice 8 : Gérer notre application avec Kubernetes</h2>
+<h2 id="_exercice_9_gérer_notre_application_avec_kubernetes">Exercice 9 : Gérer notre application avec Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Voir la <a href="http://kubernetes.io/docs/getting-started-guides/docker/">doc</a> pour commencer.</p>
@@ -1660,7 +1663,7 @@ kubectl delete pod application</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_9_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 9 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h2>
+<h2 id="_exercice_10_utilisation_de_code_jmeter_code_pour_analyser_les_stratégies_de_déploiement">Exercice 10 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Groupez vous par groupe de 8 personnes.</p>
@@ -1860,7 +1863,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-05-20 16:02:53 CEST
+Last updated 2019-05-27 11:24:08 CEST
 </div>
 </div>
 </body>

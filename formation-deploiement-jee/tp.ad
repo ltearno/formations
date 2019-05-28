@@ -145,13 +145,13 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 
 Expliquez le mécanisme associé aux sessions (c'est un mécanisme assez universel, identique à celui de PHP par exemple).
 
-== Exercice : utilisation de Maven pour construire le fichier `.war`
+== Exercice 3 : utilisation de Maven pour construire le fichier `.war`
 
 === Télécharger Maven
 
 - Dans google : "Apache Maven"
 - Cliquer sur 'Download'
-- Cliquer sur le lien suggéré (http://wwwftp.ciril.fr/pub/apache/)
+- Cliquer sur le lien suggéré
 - Choisir le répertoire `maven/maven-3/3.5.3/binaries/`
 - Télécharger le fichier `apache-maven-3.5.3-bin.zip`
 
@@ -166,6 +166,8 @@ Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la var
 === Compilation du squelette de projet Java EE Maven
 
 Télécharger http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip
+
+Intégrez votre travail de l'exercice précédent dans ce squelette. Vous pouvez également continuer votre travail précédent en intégrant le `pom.xml` du squelette.
 
 Aller dans le répertoire d'extraction
 
@@ -202,7 +204,7 @@ Mais quels sont les problèmes ?
 - Montée de version = arrêt du service
 - Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
 
-== Exercice 3 : déployer l'application sur deux Tomcat avec load balancing
+== Exercice 4 : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
 impactent son fonctionnement.
@@ -359,7 +361,7 @@ INCONVENIENTS :
 - mauvaise répartition de la charge.
 - Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
 
-==== Exercice 4 : Déport de la session dans une base externe
+==== Exercice 5 : Déport de la session dans une base externe
 
 Le phénomène de perte de session précédent est l'effet du standard Java EE.
 
@@ -479,7 +481,7 @@ INCONVENIENTS:
 - on a un serveur de base de donnée à gérer en plus !
 - les resources ne sont pas forcément bien gérées non plus : on va avoir tendance à ne pas remplir les serveurs ce qui empêche de les mettre à l'arrêt... Solution : remettre les sticky-sessions pour avoir le meilleur des deux mondes.
 
-==== Exercice 5 : Utilisation de JWT
+==== Exercice 6 : Utilisation de JWT
 
 Il est possible de déporter les données de sessions directement dans le navigateur !
 
@@ -528,7 +530,7 @@ Key createKey() {
 }
 ----
 
-==== Exercice 6 : stockage d'une information de session dans un jeton JWT
+==== Exercice 7 : stockage d'une information de session dans un jeton JWT
 
 Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
 
@@ -562,7 +564,7 @@ Toujours une histoire de compromis, il faut choisir le meilleur entre :
 - complexité de la solution,
 - productivité.
 
-== Exercice 7 : Déploiement de l'application avec Docker.
+== Exercice 8 : Déploiement de l'application avec Docker.
 
 === Installation de Docker
 
@@ -672,7 +674,7 @@ Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement u
 
 Tuer quelques containers pour constater que l'application n'est nullement dérangée.
 
-== Exercice 8 : Gérer notre application avec Kubernetes
+== Exercice 9 : Gérer notre application avec Kubernetes
 
 Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
 
@@ -756,7 +758,7 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
-== Exercice 9 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
+== Exercice 10 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
 
 Groupez vous par groupe de 8 personnes.
 
