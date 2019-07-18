@@ -44,9 +44,9 @@ Processus (et programme en général) :
 
 == Operating System
 
-L'OS gère les resources de la machine et l'exécution des processus
+L'OS gère les ressources de la machine et l'exécution des processus
 
-Les processus voient et partagent les resources
+Les processus voient et partagent les ressources
 
 == Environnement
 
@@ -62,9 +62,9 @@ Le lancement réussi d'un programme dépend donc d'un environnement adéquat
 
 Change le répertoire racine d'un processus
 
-Isolation de l'execution du processus
+Isolation de l'exécution du processus
 
-A partir de là il est possible de construire l'environnement FS adequat
+A partir de là il est possible de construire l'environnement FS adéquat
 
 === Exemple
 
@@ -197,7 +197,7 @@ Abbréviations : kube, k8s,...
 == Vision à grosse maille :
 
 - description déclarative des déploiements
-- placement automatique des containers en fonction des contraintes et prérequis déclarés par l'application
+- placement automatique des containers en fonction des contraintes et pré-requis déclarés par l'application
 - gestion des failles (les containers redémarrent automatiquement)
 - mise à l'échelle horizontale
 - découverte de services et load balancing
@@ -236,15 +236,14 @@ Pour GCP, outil `gcloud` est utilisé pour provisionner les resources.
 
 === TP 0 : prise en main
 
-tp-0.html[Aller au TP 0]
-
+link:tp0/tp-0.html[Aller au TP 0]
 
 
 
 == Que s'est-il passé ?
 
 
-Débrief du TP en passant en revue les resources créées pour l'occasion :
+Débrief du TP en passant en revue les ressources créées pour l'occasion :
 
 - kubectl get deployment,...
 
@@ -252,11 +251,11 @@ Débrief du TP en passant en revue les resources créées pour l'occasion :
 == Vue d'ensemble
 
 Le développeur utilise l'API k8s (souvent avec `kubectl`) pour décrire l'état désiré du cluster 
-(applications à exécuter, quels conteneurs utiliser, nombre de réplicas, 
-les resources réseau et disque etc)
+(applications à exécuter, quels conteneurs utiliser, nombre de répliquas, 
+les ressources réseau et disque etc)
 
 Les services Kubernetes (_control plan_, exécuté sur les noeuds du cluster) 
-surveillent les resources demandées par l'application et mettent en place
+surveillent les ressources demandées par l'application et mettent en place
 automatiquement celles-ci.
 
 Le noeud master exécute `kube-apiserver`, `kube-controller-manager` et `kube-scheduler`
@@ -287,7 +286,7 @@ Ces machines hébergent les charges applicatives
 
 == Pods
 
-Un groupe de containers s'exécutant sur une machine et en partageant les resources :
+Un groupe de containers s'exécutant sur une machine et en partageant les ressources :
 - stockage (définition de volumes),
 - réseau (adresse IP unique dans le cluster)
 
@@ -295,7 +294,7 @@ Les containers d'un même pod partage la même adresse IP et le même espace de 
 Ils peuvent communiquer entre eux par `localhost` et autres IPC.
 Ils ont accès aux volumes partagés définis au niveau du pod (et montables dans le file system).
 
-Les pods sont schédulés sur des noeuds. Ils sont gérés en général par des _controleurs_ (Deployment, StatefulSet, DaemonSet...)
+Les pods sont schédulés sur des noeuds. Ils sont gérés en général par des _contrôleurs_ (Deployment, StatefulSet, DaemonSet...)
 
 == Services
 
@@ -354,7 +353,7 @@ Le namespace par défaut s'appelle `default`. Kube utilise ses propres namespace
 
 Réplication de plusieurs Pods.
 
-Ces objets sont très rarement accédés par le développeur, mais par les controlleurs
+Ces objets sont très rarement accédé par le développeur, mais par les contrôleurs
 de déploiement (page suivante)
 
 == Deployments
@@ -401,7 +400,7 @@ spec:
 
 === TP 1 : utilisation du mode impératif
 
-tp-1.html[Aller au TP 1]
+link:tp1/tp-1.html[Aller au TP 1]
 
 
 
@@ -480,7 +479,7 @@ Authentification et autorisation
 
 Il a pour rôle d'affecter à chaque pod un ou des noeuds pour l'exécution, puis de séquencer le démarrage de ces pods.
 
-Très important : les health check qui permettent au controleur de connaître le statut de chaque container, il est donc indispensable de les spécifier.
+Très important : les health check qui permettent au contrôleur de connaître le statut de chaque container, il est donc indispensable de les spécifier.
 
 == Rappel
 
@@ -502,7 +501,7 @@ image::20180515_095809.jpg[Utiliser le mode déclaratif]
 
 === TP 2 : utilisation du mode déclaratif
 
-tp-2.html[Aller au TP 2]
+link:tp2/tp-2.html[Aller au TP 2]
 
 
 
