@@ -236,8 +236,7 @@ Pour GCP, outil `gcloud` est utilisé pour provisionner les resources.
 
 === TP 0 : prise en main
 
-tp-0.html[Aller au TP 0]
-
+link:tp0/tp-0.html[Aller au TP 0]
 
 
 
@@ -401,7 +400,7 @@ spec:
 
 === TP 1 : utilisation du mode impératif
 
-tp-1.html[Aller au TP 1]
+link:tp1/tp-1.html[Aller au TP 1]
 
 
 
@@ -502,7 +501,7 @@ image::20180515_095809.jpg[Utiliser le mode déclaratif]
 
 === TP 2 : utilisation du mode déclaratif
 
-tp-2.html[Aller au TP 2]
+link:tp2/tp-2.html[Aller au TP 2]
 
 
 
