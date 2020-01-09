@@ -51,7 +51,8 @@ Push de l’image :
 	docker tag store:1.0 eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0
 
 	# on la pousse chez google
-	gcloud docker -- push eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0
+        gcloud auth configure-docker
+	docker push eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0
 
 
 Une fois publiée sur le gcr de google, on peut recréer le déploiement :

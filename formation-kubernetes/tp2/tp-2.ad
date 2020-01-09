@@ -40,7 +40,7 @@ Exposez le déploiement avec un service en mode LoadBalancer. Le nom du service 
 
 Utilisez le mode déclaratif par fichier pour gérer vos resources (fichier .yaml et `kubectl apply -f ...`).
 
-NB : le nom du pod est accessible en consultant le nom d'hôte dans le code de votre application.
+NB : le nom du pod est accessible en consultant le nom d'hôte dans le code de votre application. On peut aussi l'injecter dans une variable d'environnement avec une configuration yaml spéciale.
 
 === Livrable
 
