@@ -4,6 +4,8 @@
 
 Ce TP vous permet d'avoir les connaissances de base pour construire une image Docker et déployer une application sur Kubernetes/GCP
 
+Si vous avez des difficultés avec la commande `kubectl`, voici un lien vers la https://kubernetes.io/fr/docs/reference/kubectl/cheatsheet/[cheat sheet] officielle
+
 == Etapes
 
 Lancer PHP pour voir
@@ -18,7 +20,7 @@ Pour exécuter l’image php server AVEC le fichier php dedans :
 
         docker run -it -p 80:80 -v "$PWD":/var/www/html php:7.0-apache
 
-Création de l’image docker : Daas un fichier Dockerfile, écrire :
+Création de l’image docker : dans un fichier Dockerfile, écrire :
 
         # Commence TOUJOURS par donner l'image de base
         FROM php:7.0-apache
@@ -62,3 +64,9 @@ Une fois publiée sur le gcr de google, on peut recréer le déploiement :
 	kubectl run store --image eu.gcr.io/NOM_DE_VOTRE_PROJET_GCP/store:1.0 --port 80
 
 Et là, normalement, kubectl get pods ne montre pas d’erreur
+
+Pour consulter la description des resources que l'on vient de créer :
+
+        kubectl get deploy --export -o yaml
+        kubectl get service --export -o yaml
+        kubectl get pod --export -o yaml

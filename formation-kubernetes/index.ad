@@ -172,9 +172,9 @@ La multiplication du nombre de conteneurs à gérer a amené son lot de problém
 
 - orchestration,
 - configuration,
-- liaison,
+- liaison (réseau, SDN...),
 - état de l'application,
-- gestion des volumes...
+- gestion des volumes, des secrets...
 
 Pets vs Cattle
 
@@ -209,11 +209,11 @@ Abbréviations : kube, k8s,...
 
 === Ecosystème :
 
-docker compose
+mesos/marathon
 
 docker swarm
 
-mesos/marathon
+docker compose
 
 
 
@@ -223,7 +223,7 @@ mesos/marathon
 
 Kubernetes met à disposition un outil `kubectl`
 
-Kubernetes est platforme-agnostique et s'intègre avec différents plateformes comme par exemple :
+Kubernetes est _platforme-agnostique_ et s'intègre avec différents plateformes comme par exemple :
 
 - AWS,
 - GCP,
@@ -236,7 +236,7 @@ Pour GCP, outil `gcloud` est utilisé pour provisionner les resources.
 
 === TP 0 : prise en main
 
-tp-0.html[Aller au TP 0]
+link:tp0/tp-0.html[Aller au TP 0]
 
 
 
@@ -268,16 +268,9 @@ Chaque noeud esclave exécute :
 
 
 
+== Architecture
 
-== Objets
-
-Graphique illustrant l'imbrication des concepts (deployment, service, pods, ...)
-
-[Kubernetes.png dans ce répertoire]
-
-== Labels et selectors
-
-https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors
+image:Kubernetes.png[{fullWidth}]
 
 == Cluster
 
@@ -285,9 +278,32 @@ L'ensemble des machines (noeuds) exécutant les services kubernetes
 
 Ces machines hébergent les charges applicatives
 
+Elles peuvent être _teintées_ afin de contraindre le déploiement des containers
+
+== Namespace
+
+Permet l'isolation des resources
+
+Le namespace par défaut s'appelle `default`. Kube utilise ses propres namespaces (`kube-system` et `kube-public`)
+
+On peut faire un gros cluster avec bcp de namespaces (souvent on prem) ou bcp de petits clusters mono-namespace (souvent cloud public, plus cher)
+
+== Objets
+
+Graphique illustrant l'imbrication des concepts (deployment, service, pods, ...)
+
+[Kubernetes.png dans ce répertoire]
+
+== Labels, selectors et métadonnées
+
+Quasiment utilisable sur tous les objets Kubernetes
+
+https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors
+
 == Pods
 
 Un groupe de containers s'exécutant sur une machine et en partageant les resources :
+
 - stockage (définition de volumes),
 - réseau (adresse IP unique dans le cluster)
 
@@ -296,59 +312,6 @@ Ils peuvent communiquer entre eux par `localhost` et autres IPC.
 Ils ont accès aux volumes partagés définis au niveau du pod (et montables dans le file system).
 
 Les pods sont schédulés sur des noeuds. Ils sont gérés en général par des _controleurs_ (Deployment, StatefulSet, DaemonSet...)
-
-== Services
-
-Une façon d'accéder aux ports exposés par les pods
-
-Abstraction définissant un ensemble logique de Pods et une politique d'accès
-
-L'ensemble des pods ciblés par un service est déterminé par un Label Selector
-
-Quatre types :
-
-- ClusterIP : expose le service sur une IP interne au cluster
-- NodePort : expose un port statique (et crée un service ClusterIP)
-- LoadBalancer : expose un service sur une IP externe (et crée un service NodePort)
-- ExternalIP : expose une IP externe au cluster
-
-=== Services
-
-```yaml
-kind: Service
-apiVersion: v1
-metadata:
-  name: my-service
-spec:
-  selector:
-    app: MyApp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 9376
-```
-
-Ce service se verra attribuer une adresse IP appelée `ClusterIP`
-
-L'ip du service est disponible dans les variables d'environnement (`{NOM_DU_SERVICE}_SERVICE_HOST` et `{NOM_DU_SERVICE}_SERVICE_PORT`)
-
-Le service est accessible avec le nom `SERVICE.NAMESPACE.svc.cluster.local`
-
-On peut définir une affinité de session (`SessionAffinty`)
-
-Les pods ciblés par le service sont spécifiés par le `selector`.
-
-== Volumes
-
-Stocker des données de manière persistante.
-
-== Namespace
-
-Permet l'isolation des resources
-
-Il est possible de définir des quotas par namespace
-
-Le namespace par défaut s'appelle `default`. Kube utilise ses propres namespaces (`kube-system` et `kube-public`)
 
 == ReplicaSet
 
@@ -361,8 +324,8 @@ de déploiement (page suivante)
 
 Un déploiement est une mise à jour déclarative de pods ou de ReplicaSets.
 
-Le Deployment décrit l'état voulu,
-Le DeploymentController met tout en oeuvre pour y arriver.
+- Le Deployment décrit l'état voulu,
+- Le DeploymentController met tout en oeuvre pour y arriver.
 
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 
@@ -392,16 +355,67 @@ spec:
         - containerPort: 80
 ```
 
+== Services
+
+Une façon d'accéder aux ports exposés par les pods
+
+Abstraction définissant un ensemble logique de Pods et une politique d'accès
+
+L'ensemble des pods ciblés par un service est déterminé par un Label Selector
+
+Quatre types :
+
+- `ClusterIP` : expose le service sur une VIP interne au cluster
+- `NodePort` : expose un port statique (et crée un service ClusterIP) sur tous les noeuds du cluster
+- `LoadBalancer` : expose un service sur une IP externe (et crée un service NodePort)
+- `ExternalIP` : expose une IP externe au cluster (_peu utilisé en pratique_)
+
+Kube fournit un service de DNS qui permet d'utiliser très facilement les services (aussi simple que `http://monservice:8080/api`)
+
+=== Services
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9376
+```
+
+Ce service se verra attribuer une adresse IP appelée `ClusterIP`
+
+L'ip du service est disponible dans les variables d'environnement (`{NOM_DU_SERVICE}_SERVICE_HOST` et `{NOM_DU_SERVICE}_SERVICE_PORT`)
+
+Le service est accessible avec le nom `SERVICE.NAMESPACE.svc.cluster.local`
+
+On peut définir une affinité de session (`SessionAffinty`)
+
+Les pods ciblés par le service sont spécifiés par le `selector`.
+
 == StatefulSet
+
+Comme un _Deployment_ mais avec un ordre de démarrage garanti
 
 == DaemonSet
 
+Des pods qui vont tourner sur tous les noeuds du cluster (pour ajouter des composants à Kubernetes)
+
 == Job
+
+== Volumes
+
+Stocker des données de manière persistante.
 
 
 === TP 1 : utilisation du mode impératif
 
-tp-1.html[Aller au TP 1]
+link:tp1/tp-1.html[Aller au TP 1]
 
 
 
@@ -502,15 +516,7 @@ image::20180515_095809.jpg[Utiliser le mode déclaratif]
 
 === TP 2 : utilisation du mode déclaratif
 
-tp-2.html[Aller au TP 2]
+link:tp2/tp-2.html[Aller au TP 2]
 
 
 
-== Avancé
-
-Monter une infra on premise.
-
-
-
-
-Si Windows 10 pro => HyperV

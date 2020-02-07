@@ -1,6 +1,9 @@
 #!/bin/bash
 
-asciidoctor -T asciidoctor-reveal.js/templates/slim index.ad
+#gem install asciidoctor tilt haml thread_safe concurrent-ruby
+#gem install slim --version 2.1.0
+
+asciidoctor -T asciidoctor-reveal.js/templates/slim index.ad -o index.html
 
 cd tp0
 asciidoctor tp-0.ad
