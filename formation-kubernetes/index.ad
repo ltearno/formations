@@ -1,5 +1,5 @@
 = Kubernetes
-:author: Arnaud Tournier - @ltearno - Stack Labs - 2018 - Toulouse
+:author: Arnaud Tournier - @ltearno - Stack Labs - 2020 - Toulouse
 :email: arnaud.tournier@stack-labs.com
 :backend: revealjs
 :imagesdir: images
@@ -211,7 +211,7 @@ Abbréviations : kube, k8s,...
 
 mesos/marathon
 
-docker swarm
+(RIP - docker swarm)
 
 docker compose
 
@@ -531,3 +531,32 @@ https://jpetazzo.github.io/2018/11/14/docker-compose-kubernetes-2/
 https://www.slideshare.net/mobile/slideshow/embed_code/key/roGl1OhagxSkHu
 
 https://github.com/ramitsurana/awesome-kubernetes
+
+== TODO
+
+Secrets
+
+ConfigMaps
+
+Horizontal Pod Autoscaler
+
+Resource limits : https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/
+
+Probes et Graceful shutdown => comment faire des updates HA (tp 4)
+
+Istio Linkerd ServiceMesh, AB/BlueGreen/Canary...
+
+
+
+
+Service Accounts
+
+Ingress avec TLS
+
+InitContainers
+
+Helm/Kustomize
+
+Utiliser l'API K8S depuis un pod : où trouver le token, etc...
+
+Taints

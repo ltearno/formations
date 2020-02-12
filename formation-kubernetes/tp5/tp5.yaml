@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-server
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    run: echo-server
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: tls-pour-ingress
+data:
+  tls.crt: CERTIFICAT
+  tls.key: CLE_PRIVEE
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mon-ingress
+spec:
+  tls:
+  - secretName: tls-pour-ingress
+  rules:
+    - http:
+        paths:
+        - path: /
+          backend:
+            serviceName: echo-server
+            servicePort: 8080
