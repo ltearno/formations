@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: mon-iam-admin
+rules:
+- apiGroups: [""]
+  resources: ["roles"]
+  verbs: ["create"]
+- apiGroups: [""]
+  resources: ["rolebindings"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mon-iam-admin
+  namespace: default
+subjects:
+- kind: User
+  name: g.rodriguez@opendecide.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: virginie.baudron@gmail.com
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: mon-iam-binding
+  apiGroup: rbac.authorization.k8s.io

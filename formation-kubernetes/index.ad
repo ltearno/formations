@@ -532,6 +532,18 @@ https://www.slideshare.net/mobile/slideshow/embed_code/key/roGl1OhagxSkHu
 
 https://github.com/ramitsurana/awesome-kubernetes
 
+https://training.play-with-kubernetes.com/kubernetes-workshop/
+
+https://unofficial-kubernetes.readthedocs.io
+
+https://github.com/kubernetes/kubernetes
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way
+
+https://container.training/kube-selfpaced.yml.html
+
+https://kubernetes.io/docs/reference/
+
 == TODO
 
 Secrets
@@ -546,17 +558,19 @@ Probes et Graceful shutdown => comment faire des updates HA (tp 4)
 
 Istio Linkerd ServiceMesh, AB/BlueGreen/Canary...
 
+Ingress avec TLS
 
-
+Helm/Kustomize
 
 Service Accounts
 
-Ingress avec TLS
-
 InitContainers
-
-Helm/Kustomize
 
 Utiliser l'API K8S depuis un pod : où trouver le token, etc...
 
 Taints
+
+
+
+
+NetworkPolicy

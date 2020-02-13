@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secret-reader
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: secret-reader
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["config-secret"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-reader
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: secret-reader
+roleRef:
+  kind: Role
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+data:
+  key: aXV5aXV5aXV5
+kind: Secret
+metadata:
+  name: config-secret
+  namespace: default
+type: Opaque
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: echo-server
+  name: echo-server
+  namespace: default
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: echo-server
+  template:
+    metadata:
+      labels:
+        run: echo-server
+    spec:
+      # le token du compte de service sera monté dans le pod à cet endroit :
+      # /var/run/secrets/kubernetes.io/serviceaccount/token
+      serviceAccountName: secret-reader
+      initContainers:
+      - name: secret-reader
+        image: eu.gcr.io/imposing-ratio-260511/secret-reader
+        volumeMounts:
+        - name: secrets-storage
+          mountPath: /data/secrets
+      containers:
+      - env:
+        - name: USE_CPU
+          value: "true"
+        - name: REQUEST_DURATION
+          value: "10000"
+        image: eu.gcr.io/imposing-ratio-260511/echo-server
+        imagePullPolicy: Always
+        name: echo-server
+        volumeMounts:
+        - name: secrets-storage
+          mountPath: /data/secrets
+      volumes:
+      - name: secrets-storage
+        emptyDir: {}
+# curl -k https://kubernetes/api/v1/namespaces/default/secrets/config-secret -H "Authorization: Beare $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"

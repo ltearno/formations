@@ -25,6 +25,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: mon-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
 spec:
   tls:
   - secretName: tls-pour-ingress
