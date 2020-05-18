@@ -24,42 +24,42 @@ Ce cours est open source et est disponible en ligne :
 
 Télécharger Tomcat en version 8.5 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
 
-=== Développement
+=== Outils de développement
 
 Vous pouvez utiliser les outils de votre choix (IDE comme Eclipse, IntelliJ, VSCode, ou autre vi, emacs...).
 
 Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.
 
-=== Création d'une application vraiment très simple
+=== Télécharger Maven
 
-Avec Eclipse, créer une application *Dynamic Web Application* avec un seul JSP simple qui affiche le répertoire de Tomcat.
+Maven sera utilisé pour construire le fichier `.war` qui sera ensuite déployé dans Tomcat.
 
-`index.jsp` :
+- Dans google : "Apache Maven"
+- Cliquer sur 'Download'
+- Cliquer sur le lien suggéré
+- Choisir le répertoire `maven/maven-3/3.5.3/binaries/`
+- Télécharger le fichier `apache-maven-3.5.3-bin.zip`
 
-[source,jsp]
-----
-Hello world, le répertoire de déploiement est <%= System.getProperty("catalina.base") %>
-----
+=== Extraire Maven et son installation
 
-C'est une application vraiment simple (ne possédant pas d'état).
+Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n'utilisez pas le répertoire `Program Files`).
 
-Cette application affiche la propriété `catalina.base` qui reflète le répertoire d'installation de Tomcat.
+Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la variable d'environnement `PATH`.
 
-=== Création du fichier `.war`
+=== Compilation du squelette de projet Java EE Maven
 
-Pour créer le fichier `.war`, utiliser le menu `Fichier`/`Exporter...` d'Eclipse.
+Télécharger http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip c'est un squelette de projet de type _hello world_.
 
-_Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._. Nous ferons ceci lors des étapes suivantes.
+Aller dans le répertoire d'extraction
 
-== Exercice 1 : déployer l'application dans Tomcat
+Taper `mvn install`
 
-Le déploiement de l'application peut se faire depuis Eclipse ou en général n'importe quel IDE. Néanmoins, il est interressant 
-de savoir déployer une application à la main.
+Normalement il télécharge plein de choses (la première fois), puis il finit par un message _success_.
 
-Dans un environnement d'usine logicielle, il serait de toutes façons inenvisageable d'utiliser Eclipse ou 
-un IDE pour construire et déployer l'application !
+Maven a construit le fichier `.war` contenant toutes les informations dont Tomcat a besoin pour exécuter notre application. Ce fichier `.war` se trouve 
+dans le sous répertoire `target`.
 
-=== Déploiement de l'application dans le serveur Tomcat
+== Déploiement de l'application dans Tomcat
 
 Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `.war` dans 
 le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle également le répertoire de déploiement.
@@ -67,16 +67,21 @@ le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle éga
 A chaque fois que vous copierez une nouvelle version du `war` dans le répertoire de 
 déploiement de Tomcat, celui-ci relance l'application (c'est le comportement par défaut, il est configurable).
 
-=== Lancement de Tomcat
+== Lancement de Tomcat
 
-Lancer Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
+Lancez Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
 version Windows Batch (`.bat`)).
+
+== Accéder à l'application avec votre navigateur.
 
 Vous devez pouvoir accéder à l'adresse `http://localhost:8080/NOM_DE_VOTRE_APPLICATION}` dans un navigateur.
 
 Normalement, la page s'affichant dans le navigateur correspond à l'exécution du fichier `index.jsp`.
 
-== Exercice 2 : ajouter un état à l'application
+C'est une application vraiment simple (qui ne possède aucun état).
+
+Cette application affiche la propriété `catalina.base` qui reflète le répertoire d'installation de Tomcat.
+Cette information nous sera utile quand nous déploierons de multiples instances de Tomcat pour gérer la haute-disponibilité.
 
 === Une application à état (simple)
 
@@ -98,51 +103,9 @@ Cependant afin de nous concentrer sur les notions qui nous interressents, l'appl
 - une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d'une session,
 - une chaine de caractère provenant du cookie `MONCOOKIE` apporté par le client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et la retourner au client comme cookie `MONCOOKIE`.
 
-Changez le contenu de la JSP pour :
+Implémentez la page et testez l'application.
 
-[source,jsp]
-----
-Server Id : <%= ManagementFactory.getRuntimeMXBean().getName() %><br/>
-<br /> Le répertoire de déploiement est :
-<%=System.getProperty("catalina.base")%><br />
 
-Identifiant de session : <%=session.getId()%><br />
-<!-- Session Java EE -->
-<%
-	String valeur = (String) session.getAttribute("VALEUR");
-%>
-
-La clé 'VALEUR' de la session est : <%=valeur%><br />
-<%
-	if (valeur == null) {
-		valeur = "VALEUR_" + UUID.randomUUID().toString();
-		session.setAttribute("VALEUR", valeur);
-		%>
-		Création de la VALEUR de session : <%=valeur %><br />
-		<%
-	}
-%>
-
-<!-- Utilisation d'un cookie -->
-<%
-	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
-%>
-La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
-<%
-	if (valeurCookie == null) {
-		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
-		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
-		%>
-		Création du cookie MONCOOKIE : <%=valeurCookie %><br />
-		<%
-	}
-%>
-----
-
-La classe `Tools` est à écrire par vos soins. En particulier la méthode `getCookie` permet à partir d'un objet `HttpServletRequest` et d'un nom de cookie, de retrouver la valeur de ce cookie (`String`) ou `null` si aucun cookie n'est présent.
-
-Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur 
-contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
 
 
 
@@ -153,6 +116,11 @@ Déployer et vérifier que l'application fonctionne.
 A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est 
 valorisée et stable au fur et à mesure des rafraichissements. C'est le comportement attendu d'une
 telle application.
+
+
+
+
+
 
 === Ajout d'un compteur
 
@@ -167,60 +135,22 @@ Expliquez le mécanisme associé aux sessions (c'est un mécanisme universel que
 
 
 
-
-
-
-
-
-
-== Exercice 3 : utilisation de Maven pour construire le fichier `.war`
-
-=== Télécharger Maven
-
-- Dans google : "Apache Maven"
-- Cliquer sur 'Download'
-- Cliquer sur le lien suggéré
-- Choisir le répertoire `maven/maven-3/3.5.3/binaries/`
-- Télécharger le fichier `apache-maven-3.5.3-bin.zip`
-
-=== Extraire Maven
-
-Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n'utilisez pas le répertoire `Program Files`).
-
-=== Installation
-
-Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la variable d'environnement `PATH`.
-
-=== Compilation du squelette de projet Java EE Maven
-
-Télécharger http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip
-
-Intégrez votre travail de l'exercice précédent dans ce squelette. Vous pouvez également continuer votre travail précédent en intégrant le `pom.xml` du squelette.
-
-Aller dans le répertoire d'extraction
-
-Taper `mvn install`
-
-Normalement il télécharge plein de choses (la première fois), puis il finit par un message _success_.
-
-Déployer le fichier _war_ que vous trouvez dans le sous répertoire `target` dans votre serveur Tomcat.
-
-Accéder à l'application avec votre navigateur.
-
-=== Importation du projet Maven dans Eclipse
-
-Dans Eclipse, menu `File`, `Import...`, dans la zone de filtre taper `maven`, `Existing Maven Project`, `Next`.
-
-Choisir le répertoire du projet (celui dans lequel on trouve le fichier `pom.xml`).
-
 === Cycle de développement
 
 **ATTENTION, Tomcat ne doit pas être lancé avec Eclipse**
 
-- coder dans Eclipse, sauvegarder
+- coder dans Eclipse ou autre éditeur/IDE, sauvegarder
 - en ligne de commande dans le projet : `mvn install`
 - copie du `target/XXXX.war` dans le répertoire de déploiement de Tomcat
 - actualisation dans le navigateur
+
+== Automatisation
+
+Maintenant écrivez des scripts pour ne pas avoir à retaper les tâches manuelles répétitives (qui sont d'ailleurs très souvent source d'erreur).
+
+- construction du war (simple appel à `mvn install`)
+- copie du war dans le répertoire de Tomcat
+- lancement de Tomcat.
 
 === Conclusions
 
@@ -250,7 +180,7 @@ Mais quels sont les problèmes ?
 
 
 
-== Exercice 4 : déployer l'application sur deux Tomcat avec load balancing
+== Exercice 2 : déployer l'application sur deux Tomcat avec load balancing
 
 Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
 impactent son fonctionnement.

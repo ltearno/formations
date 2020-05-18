@@ -152,6 +152,18 @@ La norme Java EE est implémentée par des fournisseurs apportant leurs spécifi
 - Configuration avancée,
 - Gestion d'un cluster.
 
+=== Le modèle mémoire de Java EE
+
+Trois niveau de mémoire :
+
+- les objets du serveur,
+- les sessions http (en standard en mémoire avec flush disque),
+- les bases de donnée (distribuées ou pas elle sont vues comme un service).
+
+Les deux premiers posent des problèmes de répartition.
+
+Nous allons progressivement les mettre en évidences pour amener des solutions paliatives.
+
 === Exercice
 
 Exercice 1 dans le TP : déployer une application `war` dans Tomcat.
@@ -199,16 +211,6 @@ Le déploiement distribué pose de nombreux problèmes passionnants :
 - mise à l'échelle automatique,
 - gestion des resources,
 - tolérance aux pannes...
-
-=== Le modèle mémoire de Java EE
-
-Trois niveau de mémoire :
-
-- les objets du serveur,
-- les sessions http (en standard en mémoire avec flush disque),
-- les bases de donnée (distribuées ou pas elle sont vues comme un service).
-
-Les deux premiers posent des problèmes de répartition.
 
 === Cluster classique
 

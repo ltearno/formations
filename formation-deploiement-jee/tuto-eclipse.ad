@@ -1,0 +1,60 @@
+
+
+
+Changez le contenu de la JSP pour :
+
+[source,jsp]
+----
+Server Id : <%= ManagementFactory.getRuntimeMXBean().getName() %><br/>
+<br /> Le répertoire de déploiement est :
+<%=System.getProperty("catalina.base")%><br />
+
+Identifiant de session : <%=session.getId()%><br />
+<!-- Session Java EE -->
+<%
+	String valeur = (String) session.getAttribute("VALEUR");
+%>
+
+La clé 'VALEUR' de la session est : <%=valeur%><br />
+<%
+	if (valeur == null) {
+		valeur = "VALEUR_" + UUID.randomUUID().toString();
+		session.setAttribute("VALEUR", valeur);
+		%>
+		Création de la VALEUR de session : <%=valeur %><br />
+		<%
+	}
+%>
+
+<!-- Utilisation d'un cookie -->
+<%
+	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
+%>
+La valeur du cookie MONCOOKIE est : <%=valeurCookie%><br />
+<%
+	if (valeurCookie == null) {
+		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
+		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
+		%>
+		Création du cookie MONCOOKIE : <%=valeurCookie %><br />
+		<%
+	}
+%>
+----
+
+La classe `Tools` est à écrire par vos soins. En particulier la méthode `getCookie` permet à partir d'un objet `HttpServletRequest` et d'un nom de cookie, de retrouver la valeur de ce cookie (`String`) ou `null` si aucun cookie n'est présent.
+
+Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur 
+contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
+
+
+
+
+
+
+=== Importation du projet Maven dans Eclipse
+
+Dans Eclipse, menu `File`, `Import...`, dans la zone de filtre taper `maven`, `Existing Maven Project`, `Next`.
+
+Choisir le répertoire du projet (celui dans lequel on trouve le fichier `pom.xml`).
+
