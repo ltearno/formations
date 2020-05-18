@@ -22,17 +22,13 @@ UTI Blagnac - 2019 - Stack Labs
 
 == Arnaud Tournier
 
-Directeur Recherche et Développement à **Stack Labs**.
-
 Architecte, Développeur, Formateur et Speaker
 
 Spécialiste en systèmes distribués et en cybersécurité
 
-Email : arnaud.tournier@stack-labs.com
+Email : ltearno@gmail.com
 
 Twitter : @ltearno
-
-Web : www.stack-labs.com
 
 Full stack (x86_64 to JavaScript)
 
@@ -75,7 +71,7 @@ image::dataCenter.jpg[height=400]
 - **déploiement** et mises à jour,
 - surveillance, interventions d'urgence...*.
 
-Métier formalisé comme SRE : Service Reliability Engineer
+Métier formalisé comme SRE (dans de grosses boîtes comme Google) : Service Reliability Engineer
 
 === Qualité et vitesse
 

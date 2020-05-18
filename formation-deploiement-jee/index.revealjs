@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier"><title>Déploiement Java EE</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Déploiement Java EE</h1><p><small>Arnaud Tournier</small></p></section><section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Directeur Recherche et Développement à <strong>Stack Labs</strong>.</p></div><div class="paragraph"><p>Architecte, Développeur, Formateur et Speaker</p></div><div class="paragraph"><p>Spécialiste en systèmes distribués et en cybersécurité</p></div><div class="paragraph"><p>Email : <a href="mailto:arnaud.tournier@stack-labs.com">arnaud.tournier@stack-labs.com</a></p></div><div class="paragraph"><p>Twitter : @ltearno</p></div><div class="paragraph"><p>Web : www.stack-labs.com</p></div><div class="paragraph"><p>Full stack (x86_64 to JavaScript)</p></div></section><section id="_urls"><h2>URLs</h2><div class="paragraph"><p><a href="http://lteconsulting.fr/formations/deploiement-jee/">lteconsulting.fr/formations/deploiement-jee/</a></p></div>
+<div class="paragraph"><p>TP : <a href="http://lteconsulting.fr/formations/deploiement-jee/tp.html">lteconsulting.fr/formations/deploiement-jee/tp.html</a></p></div></section></section>
+<section><section id="_quest_ce_que_le_déploiement"><h2>Qu&#8217;est-ce que le déploiement ?</h2></section><section id="_passer_de_çà"><h2>Passer de çà</h2><div class="imageblock" style=""><div class="content"><img src="images/developpeur.jpg" alt="developpeur"></div></div>
+<aside class="notes"><div class="paragraph"><p>Environnement de développement
+Plein de choses instables
+Pas forcément la même version que le serveur de prod (grace à la norme JEE)</p></div></aside></section><section id="_a_çà"><h2>A çà</h2><div class="imageblock" style=""><div class="content"><img src="images/dataCenter.jpg" alt="dataCenter" height="400"></div></div></section><section id="_définition"><h2>Définition</h2><div class="ulist"><ul><li><p><strong>Passer du dev à la prod</strong>.</p></li><li><p>Installer ou mettre à jour une application dans un serveur d&#8217;application.</p></li><li><p>Gestion de l&#8217;exploitation du code depuis sa production par le développeur jusqu&#8217;à sa mise en production pour le(s) client(s).</p></li></ul></div></section></section>
+<section><section id="_processus_impliqués"><h2>Processus impliqués</h2><div class="ulist"><ul><li><p>gestion de version,</p></li><li><p>compilation,</p></li><li><p>packaging,</p></li><li><p>vérifications,</p></li><li><p>tests,</p></li><li><p><strong>déploiement</strong> et mises à jour,</p></li><li><p>surveillance, interventions d&#8217;urgence&#8230;&#8203;*.</p></li></ul></div><div class="paragraph"><p>Métier formalisé comme SRE : Service Reliability Engineer</p></div></section><section id="_qualité_et_vitesse"><h2>Qualité et vitesse</h2><div class="paragraph"><p>Il faut aller vite et bien.</p></div>
+<div class="paragraph"><p>Le code en attente dans le repo, c&#8217;est du <strong>stock</strong> !</p></div></section><section id="_dev_ops"><h2>Dev Ops</h2><div class="paragraph"><p>Historiquement les métiers de développeur et d&#8217;exploitant étaient cloisonnés.</p></div>
+<div class="paragraph"><p>Mouvement DevOps pour favoriser une intéraction fluide nécessaire pour les déploiements modernes.</p></div></section><section id="_réalité"><h2>Réalité</h2><div class="paragraph"><p>Développement et Exploitation sont complémentaires :</p></div>
+<div class="paragraph"><p><strong>Le code impacte les choix d&#8217;infrastructure, et l&#8217;infrastructure impose des contraintes sur le code</strong>.</p></div>
+<aside class="notes"><div class="paragraph"><p>En fait (<strong>on le constatera dans les exercices</strong>), ces deux domaines ne sont pas imperméables bien au contraire : le code a un impact sur l&#8217;infrastructure possible pour le déploiement, et l&#8217;infrastructure donne des contraintes sur le code.</p></div>
+<div class="paragraph"><p>Si les deux parties ne s&#8217;entendent ni ne se comprennent, on n&#8217;aura jamais quelque chose qui fonctionne correctement.</p></div>
+<div class="paragraph"><p>Idéalement on prend même en compte les besoins du client, leur formulation et les retours d&#8217;utilisation.</p></div></aside></section><section id="_métier_du_déploiement"><h2>Métier du déploiement</h2><div class="paragraph"><p>Afin de réduire le laps de temps entre l&#8217;écriture du code et sa mise à disposition pour l&#8217;utilisateur, on cherche à améliorer les processus impliqués par :</p></div>
+<div class="ulist"><ul><li><p>Collaboration des métiers dev et ops,</p></li><li><p><strong>Automatisation</strong>,</p></li><li><p>Utilisation des retours d&#8217;expérience.</p></li></ul></div></section></section>
+<section id="_les_enjeux"><h2>Les enjeux ?</h2><div class="ulist"><ul><li><p>Haute disponibilité,</p></li><li><p>Bande passante,</p></li><li><p>Performances,</p></li><li><p>Mise à l&#8217;échelle&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p>Impacts commerciaux évidemment&#8230;&#8203;</p></div></section>
+<section><section id="_déploiement_dans_java_ee"><h2>Déploiement dans Java EE</h2><div class="paragraph"><p>Java EE spécifie la façon de packager une application.</p></div><div class="paragraph"><p>Mais pas la façon de déployer un cluster ! Néanmois adapté&#8230;&#8203;</p></div></section><section id="_le_war"><h2>Le WAR</h2><div class="paragraph"><p>Un Web Application aRchive contient :</p></div>
+<div class="ulist"><ul><li><p><code>WEB-INF/web.xml</code> avec le descripteur de déploiement,</p></li><li><p><code>WEB-INF/classes</code> avec des classes Java,</p></li><li><p><code>WEB-INF/lib</code> avec des <strong>jar</strong>,</p></li><li><p>des <strong>jsp</strong>,</p></li><li><p>fichiers statiques.</p></li></ul></div></section><section id="_lear"><h2>L&#8217;EAR</h2><div class="paragraph"><p>Un Enterprise Application aRchive contient :</p></div>
+<div class="ulist"><ul><li><p><code>META-INF/application.xml</code> pour décrire les modules et <code>context-root</code>,</p></li><li><p>des <strong>war</strong>,</p></li><li><p>des <strong>ejb</strong>,</p></li><li><p>des <strong>jar</strong>.</p></li></ul></div></section><section id="_implémentations_java_ee"><h2>Implémentations Java EE</h2><div class="paragraph"><p>La norme Java EE est implémentée par des fournisseurs apportant leurs spécificités à :</p></div>
+<div class="ulist"><ul><li><p>Commandes de contrôle (start, stop, &#8230;&#8203;),</p></li><li><p>Outillage de développement,</p></li><li><p>Répertoires de déploiment,</p></li><li><p>Configuration avancée,</p></li><li><p>Gestion d&#8217;un cluster.</p></li></ul></div></section><section id="_exercice"><h2>Exercice</h2><div class="paragraph"><p>Exercice 1 dans le TP : déployer une application <code>war</code> dans Tomcat.</p></div></section><section id="_répondre_à_la_charge"><h2>Répondre à la charge&#8230;&#8203;</h2><div class="paragraph"><p>Il n&#8217;est pas possible d&#8217;augmenter indéfiniment les performances d&#8217;un seul serveur.</p></div>
+<div class="paragraph"><p><strong>Scalabitilité verticale</strong>.</p></div></section><section id="_surcharge"><h2>Surcharge !</h2><div class="imageblock" style=""><div class="content"><img src="images/monoServeur.png" alt="monoServeur"></div></div></section><section id="_multiplier_les_serveurs"><h2>Multiplier les serveurs</h2><div class="paragraph"><p><strong>Scalabilité horizontale</strong>.</p></div>
+<div class="paragraph"><p>En adaptant le logiciel, on peut répliquer l&#8217;application sur plusieurs serveurs (cluster).</p></div>
+<div class="paragraph"><p>Ceci va permettre de s&#8217;appuyer sur du matériel grand public (avec assez peu de performances).</p></div></section><section id="_web_2_0"><h2>Web 2.0</h2><div class="paragraph"><p>Le serveur n&#8217;a plus à conserver l&#8217;état conversationnel (GUI) de ses clients (Ajax et SPA).</p></div>
+<div class="paragraph"><p>Ceci encourage à créer des <strong>architectures orientées service</strong> et a se concentrer sur le <strong>traitement des données</strong>, de façon <strong>distribuée</strong>.</p></div></section><section id="_le_cloud"><h2>Le cloud</h2><div class="paragraph"><p>Les architectures modernes sont composées de multiples serveurs exécutant de multiples applications collaborant entre elles (<strong>par internet</strong>).</p></div>
+<div class="paragraph"><p>Elles fournissent des services universellement accessibles.</p></div>
+<div class="paragraph"><p>Elles répondent dynamiquement à la charge, tout en optimisant le coût des resources informatiques.</p></div></section></section>
+<section><section id="_déploiement_distribué"><h2>Déploiement distribué</h2><div class="paragraph"><p>Le déploiement distribué pose de nombreux problèmes passionnants :</p></div><div class="ulist"><ul><li><p>état de l&#8217;application,</p></li><li><p>stockage, mise à disposition et réplication des données,</p></li><li><p>cohérence des données,</p></li><li><p>haute disponibilité,</p></li><li><p>mise à l&#8217;échelle automatique,</p></li><li><p>gestion des resources,</p></li><li><p>tolérance aux pannes&#8230;&#8203;</p></li></ul></div></section><section id="_le_modèle_mémoire_de_java_ee"><h2>Le modèle mémoire de Java EE</h2><div class="paragraph"><p>Trois niveau de mémoire :</p></div>
+<div class="ulist"><ul><li><p>les objets du serveur,</p></li><li><p>les sessions http (en standard en mémoire avec flush disque),</p></li><li><p>les bases de donnée (distribuées ou pas elle sont vues comme un service).</p></li></ul></div>
+<div class="paragraph"><p>Les deux premiers posent des problèmes de répartition.</p></div></section><section id="_cluster_classique"><h2>Cluster classique</h2><div class="paragraph"><p>On utilise la solution propriétaire du fournisseur de serveur d&#8217;application (JBoss, WebLogic, Tomcat, &#8230;&#8203;).</p></div>
+<div class="paragraph"><p>Inconvénients :</p></div>
+<div class="ulist"><ul><li><p>pas standard,</p></li><li><p>pas extensible au monde non java,</p></li><li><p>limites imposées par le fournisseur&#8230;&#8203;</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>limites : load balancing round robin, &#8230;&#8203;</p></div></aside></section><section id="_déploiement_moderne"><h2>Déploiement moderne</h2><div class="ulist"><ul><li><p>Architecture "stateless",</p></li><li><p>Les objets ne sont pas partagés entre serveurs (EJB, &#8230;&#8203;),</p></li><li><p>On déporte le stockage des sessions http en dehors des serveurs,</p></li><li><p>Utilisation de caches et de bases de données distribués,</p></li><li><p>Traffic réparti sur les noeuds par load balancing,</p></li><li><p>On évite les <strong>Single Point Of Failure</strong> !</p></li></ul></div></section><section id="_déploiement_moderne_2"><h2>Déploiement moderne</h2><div class="imageblock" style=""><div class="content"><img src="images/deploiementModerne.png" alt="deploiementModerne" height="400"></div></div>
+<aside class="notes"><div class="paragraph"><p>parler du load balancer</p></div>
+<div class="paragraph"><p>stateless application servers</p></div>
+<div class="paragraph"><p>utilisent d&#8217;autres services déployés de la même façon</p></div></aside></section><section id="_exercice_2"><h2>Exercice</h2><div class="paragraph"><p>Exercice 2 dans le TP : déployer l&#8217;application sur deux Tomcat avec load balancing.</p></div></section><section id="_en_résumé"><h2>En résumé</h2><div class="paragraph"><p>Une application n&#8217;existe finalement que pour être <strong>exploitée</strong>.</p></div>
+<div class="paragraph"><p>Une application n&#8217;est pas seulement le <strong>code</strong>. C&#8217;est aussi un <strong>déploiement</strong>.</p></div>
+<div class="paragraph"><p>Les aspects architecture logicielle et infrastructure sont interdépendants.</p></div>
+<div class="paragraph"><p>Quand on cherche à augmenter les performances d&#8217;un systèmes, la mise à l&#8217;échelle verticale a ses limites.</p></div>
+<div class="ulist"><ul><li><p>Inconvénient : très cher. Limité.</p></li></ul></div>
+<div class="paragraph"><p>On va donc augmenter le nombre de machines.</p></div>
+<div class="ulist"><ul><li><p>Avantages : pas cher (machines grand public).</p></li><li><p>Inconvénients : il faut faire attention à la cohérence de l&#8217;application.</p></li></ul></div></section><section id="_pour_être_capable_de_déployer_en_cluster"><h2>Pour être capable de déployer en cluster</h2><div class="paragraph"><p>Une instance de l&#8217;application peut travailler avec des données :</p></div>
+<div class="ulist"><ul><li><p>contextuelles (cookies, paramètres d&#8217;une requête http, d&#8217;appel de méthode distant&#8230;&#8203;).</p></li><li><p>interne à l&#8217;instance de l&#8217;application (variables statiques, fichiers&#8230;&#8203;)</p></li><li><p>externe à l&#8217;instance (service de gestion de base de données).</p></li></ul></div>
+<div class="paragraph"><p>On peut s&#8217;appliquer quelques règles :</p></div>
+<div class="ulist"><ul><li><p>Les données de l&#8217;application ne sont jamais stockées sur la machine (pas de variables statiques, pas de stockage en fichier locaux).</p></li><li><p>Dès que l&#8217;on veut stocker des données on utilise un service lui-même clusterisable.</p></li><li><p>On limite au <strong>maximum</strong> la gestion <em>ad-hoc</em> des problèmes de gestion distribuées des données (trop compliqué).</p></li><li><p>On peut aussi utiliser des outils fait pour la répartition : Hadoop, Hazelcast, &#8230;&#8203;</p></li></ul></div></section><section id="_attention"><h2>Attention</h2><div class="paragraph"><p>Avec un système ainsi distribué il faut faire attentions :</p></div>
+<div class="ulist"><ul><li><p>au <em>Single point of Failure</em>.</p></li><li><p>aux goulets d&#8217;étranglement.</p></li></ul></div></section><section id="_jwt"><h2>JWT</h2><div class="paragraph"><p>Déporter des données vers le contexte d&#8217;appel en utilisant les cookie.</p></div>
+<div class="paragraph"><p>Ce qu&#8217;il faut poour sécuriser les données.</p></div></section><section id="_exemples_de_schémas_de_déploiement"><h2>Exemples de schémas de déploiement</h2><div class="ulist"><ul><li><p>déploiement sur un serveur</p></li><li><p>déploiement sur plusieurs serveurs avec load balancer</p></li><li><p>gestion des sessions</p></li><li><p>sticky sessions</p></li><li><p>sessions stockées en base de données</p></li><li><p>sessions avec JWT</p></li><li><p>architectures en micro-services (attention la complexité intrinsèque ne change pas !).</p></li></ul></div></section><section id="_montées_de_version_et_gestion_du_parc"><h2>Montées de version et gestion du parc</h2><div class="paragraph"><p>La taille de notre cluster est seulement de deux serveurs, allons plus loin !</p></div>
+<div class="paragraph"><p>Il est possible de continuer de la même façon et de créer un 3ème, 4ème déploiement etc.</p></div>
+<div class="paragraph"><p>Mais les tâches de montée de version sont compliquées si <strong>n</strong> est trop grand.</p></div>
+<div class="paragraph"><p>On va donc chercher à automatiser et rationaliser la gestion des serveurs.</p></div></section></section>
+<section><section id="_containerisation"><h2>Containerisation</h2><div class="paragraph"><p>Docker ou Rocket permettent la spécification complète de l&#8217;environnement de l&#8217;application.</p></div><div class="paragraph"><p>Puis d&#8217;exécuter celle-ci depuis n&#8217;importe quel système compatible.</p></div></section><section id="_exercice_3"><h2>Exercice</h2><div class="paragraph"><p>Exercice 3 dans le TP : déploiement de l&#8217;application avec Docker.</p></div></section></section>
+<section><section id="_orchestrateur"><h2>Orchestrateur</h2><div class="paragraph"><p>Organisation (automatique) de la gestion d&#8217;un cluster :</p></div><div class="ulist"><ul><li><p>mise à l&#8217;échelle,</p></li><li><p>montée de version,</p></li><li><p>création des LB frontaux,</p></li><li><p>allocation des interfaces de service, dns&#8230;&#8203;</p></li></ul></div></section><section id="_kubernetes"><h2>Kubernetes</h2><div class="paragraph"><p>Kubernetes est un très bon candidat.</p></div>
+<div class="paragraph"><p>Docker Swarm, Apache Mesos, &#8230;&#8203;</p></div></section><section id="_exercice_4"><h2>Exercice</h2><div class="paragraph"><p>Exercice 4 dans le TP : Gérer notre application avec Kubernetes</p></div></section></section>
+<section id="_conclusion"><h2>Conclusion</h2><div class="paragraph"><p><strong>Automatisation</strong> !</p></div>
+<div class="paragraph"><p>Le monde bouge sans cesse.</p></div>
+<div class="paragraph"><p>Amusez-vous bien !</p></div></section>
+<section><section id="_mots_clés"><h2>Mots clés</h2><div class="paragraph"><p>Lean software dev, continuous delivery, A/B testing, Blue Green Deployment, Canary Testing, Architectures Stateless/Stateful, HA, Load Balancing, Failover.</p></div></section><section id="_contacts"><h2>Contacts</h2><div class="paragraph"><p>Twitter : <code>@ltearno</code></p></div>
+<div class="paragraph"><p>email : <code>ltearno@gmail.com</code></p></div>
+<div class="paragraph"><p>LTE Consulting : <a href="http://www.lteconsulting.fr">lteconsulting.fr</a></p></div>
+<div class="paragraph"><p>LinkedIn : <a href="https://fr.linkedin.com/in/lteconsulting">fr.linkedin.com/in/lteconsulting</a></p></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'moon',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'fast',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1600,
+  height: 1200,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

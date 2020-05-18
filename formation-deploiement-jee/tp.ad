@@ -24,9 +24,11 @@ Ce cours est open source et est disponible en ligne :
 
 Télécharger Tomcat en version 8.5 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
 
-=== Installer Eclipse
+=== Développement
 
-Utiliser la dernière version d'Eclipse dans la variante "Java EE" de façon à profiter des outils Java EE.
+Vous pouvez utiliser les outils de votre choix (IDE comme Eclipse, IntelliJ, VSCode, ou autre vi, emacs...).
+
+Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.
 
 === Création d'une application vraiment très simple
 
@@ -36,11 +38,10 @@ Avec Eclipse, créer une application *Dynamic Web Application* avec un seul JSP 
 
 [source,jsp]
 ----
-Le répertoire de déploiement est :
-<%= System.getProperty("catalina.base") %>
+Hello world, le répertoire de déploiement est <%= System.getProperty("catalina.base") %>
 ----
 
-C'est une application vraiment simple (pas d'état car pas de session).
+C'est une application vraiment simple (ne possédant pas d'état).
 
 Cette application affiche la propriété `catalina.base` qui reflète le répertoire d'installation de Tomcat.
 
@@ -48,15 +49,15 @@ Cette application affiche la propriété `catalina.base` qui reflète le répert
 
 Pour créer le fichier `.war`, utiliser le menu `Fichier`/`Exporter...` d'Eclipse.
 
-_Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._
+_Normalement on fait cela avec un outil de build comme `Maven`, `Gradle`, `Ant` ou autre..._. Nous ferons ceci lors des étapes suivantes.
 
 == Exercice 1 : déployer l'application dans Tomcat
 
 Le déploiement de l'application peut se faire depuis Eclipse ou en général n'importe quel IDE. Néanmoins, il est interressant 
 de savoir déployer une application à la main.
 
-Dans un environnement d'usine logicielle, il serait de toute façon inenvisageable d'utiliser Eclipse ou 
-un IDE pour produire et déployer l'application!
+Dans un environnement d'usine logicielle, il serait de toutes façons inenvisageable d'utiliser Eclipse ou 
+un IDE pour construire et déployer l'application !
 
 === Déploiement de l'application dans le serveur Tomcat
 
@@ -73,18 +74,31 @@ version Windows Batch (`.bat`)).
 
 Vous devez pouvoir accéder à l'adresse `http://localhost:8080/NOM_DE_VOTRE_APPLICATION}` dans un navigateur.
 
+Normalement, la page s'affichant dans le navigateur correspond à l'exécution du fichier `index.jsp`.
+
 == Exercice 2 : ajouter un état à l'application
 
 === Une application à état (simple)
 
-Une application a très souvent besoin de stocker l'état conversationnel http entre les clients et le 
-serveur : c'est la **session**. Il s'agit souvent de l'utilisateur connecté ou encore du panier 
-associé pour un site de commerce, bref d'une information contextuelle liée à l'utilisateur et 
-stockée par le serveur.
+Une application a très souvent besoin de stocker en plus de son état global l'état conversationnel http entre elle et chacun de ses clients : c'est la **session**. 
+Il s'agit souvent de l'_utilisateur connecté_ ou encore du _panier_ 
+dans le cas d'un site de commerce.
+
+Bref, il s'agit d'une information contextuelle liée à l'utilisateur et stockée par le serveur.
 
 Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.
 
-Nous allons introduire un état dans l'application en utilisant la session utilisateur et un cookie. Changez le contenu de la JSP pour :
+Nous allons introduire un état dans l'application en utilisant la session utilisateur et un cookie.
+
+Cependant afin de nous concentrer sur les notions qui nous interressents, l'application restera extrêmement simple, avec une seule page qui affiche :
+
+- l'identifiant technique du serveur (obtenu avec la méthode `ManagementFactory.getRuntimeMXBean().getName()`),
+- le répertoire de déploiement de l'instance Tomcat (obtenu grâce à `System.getProperty("catalina.base")`),
+- l'identifiant de session (`session.getId()`),
+- une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d'une session,
+- une chaine de caractère provenant du cookie `MONCOOKIE` apporté par le client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et la retourner au client comme cookie `MONCOOKIE`.
+
+Changez le contenu de la JSP pour :
 
 [source,jsp]
 ----
@@ -130,6 +144,10 @@ La classe `Tools` est à écrire par vos soins. En particulier la méthode `getC
 Ce code permet d'afficher : l'identifiant du serveur, le répertoire de déploiement, l'identifiant de session et la valeur 
 contenue dans celle-ci, ainsi qu'une valeur contenue dans un cookie.
 
+
+
+
+
 Déployer et vérifier que l'application fonctionne.
 
 A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est 
@@ -141,11 +159,19 @@ telle application.
 Ajoutez maintenant le code nécessaire pour qu'un compteur s'affiche sur la page.
 
 Ce compteur doit compter uniquement le nombre d'affichages particulier à chaque session. Par exemple, si
-votre utilisateur ouvre un onglet avec navigation privée, le compteur doit recommencer de zéro.
+votre utilisateur ouvre un onglet avec navigation privée, le compteur doit repartir de zéro.
 
 === Comment fonctionne le principe de session ?
 
-Expliquez le mécanisme associé aux sessions (c'est un mécanisme assez universel, identique à celui de PHP par exemple).
+Expliquez le mécanisme associé aux sessions (c'est un mécanisme universel que vous retrouverez partout, identique à celui de PHP par exemple).
+
+
+
+
+
+
+
+
 
 == Exercice 3 : utilisation de Maven pour construire le fichier `.war`
 
@@ -205,6 +231,24 @@ Mais quels sont les problèmes ?
 - Crash serveur = arrêt du service
 - Montée de version = arrêt du service
 - Montée en charge (ok, si on peut fixer le nombre d'utilisateurs à l'avance).
+- et bien d'autres, lesquels ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 == Exercice 4 : déployer l'application sur deux Tomcat avec load balancing
 
