@@ -514,6 +514,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </li>
 <li><a href="#_exercice_8_utilisation_de_jmeter_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 <li><a href="#_bilan">Bilan</a></li>
+<li><a href="#_barême">Barême</a></li>
 <li><a href="#_troubleshooting_problèmes_courants">Troubleshooting / Problèmes courants</a>
 <ul class="sectlevel2">
 <li><a href="#_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</a></li>
@@ -1822,6 +1823,62 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </div>
 </div>
 <div class="sect1">
+<h2 id="_barême">Barême</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Mise en place du projet Maven : 1 point</p>
+</li>
+<li>
+<p>Ecriture du code Java / JSP du premier exercice : 1 point</p>
+</li>
+<li>
+<p>Installation et configuration du deuxième Tomcat : 1 point</p>
+</li>
+<li>
+<p>Installation et configuration de Nginx : 1 point</p>
+</li>
+<li>
+<p>Ecriture des scripts d&#8217;automatisation (build maven, copie du war) : 2 points</p>
+</li>
+<li>
+<p>Déploiement en mode Load Balancer avec deux Tomcat : 2 points</p>
+</li>
+<li>
+<p>Configuration des Tomcats pour déporter les sessions en bases de données : 2 points</p>
+</li>
+<li>
+<p>Mise en place des jetons JWT : 2 points</p>
+</li>
+<li>
+<p>Stockage du pseudo de l&#8217;utilisateur dans un token JWT : 2 points</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Total de 14 points ajusté avec une règle de trois pour arriver à une note de 20.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Le QCM sera noté sur 10 points.</p>
+</div>
+<div class="paragraph">
+<p>La somme de ces notes sera ramenée également à une note de 20. Le TP est donc deux fois plus important que le QCM (pour les points).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_troubleshooting_problèmes_courants">Troubleshooting / Problèmes courants</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -1883,7 +1940,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-26 13:53:39 +0200
+Last updated 2020-05-26 14:04:59 +0200
 </div>
 </div>
 </body>
