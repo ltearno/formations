@@ -458,7 +458,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <div id="toc" class="toc">
 <div id="toctitle" class="title">Plan des exercices</div>
 <ul class="sectlevel1">
-<li><a href="#_exercice_création_dune_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</a>
+<li><a href="#_exercice_1_création_dune_application_java_ee_très_simple">Exercice 1 : création d&#8217;une application Java EE très simple</a>
 <ul class="sectlevel2">
 <li><a href="#_outils_de_développement">Outils de développement</a></li>
 <li><a href="#_télécharger_tomcat">Télécharger Tomcat</a></li>
@@ -484,24 +484,37 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_au_passage_quels_ont_été_les_freins_à_lautomatisation">Au passage, quels ont été les freins à l&#8217;automatisation ?</a></li>
 <li><a href="#_déployer_sur_les_deux_tomcats">Déployer sur les deux Tomcats</a></li>
 <li><a href="#_problème_des_sessions">Problème des sessions</a></li>
-<li><a href="#_trois_solutions">Trois solutions</a></li>
+<li><a href="#_trois_solutions_enisageables">Trois solutions enisageables</a></li>
+</ul>
+</li>
+<li><a href="#_exercice_3_déport_de_la_session_dans_une_base_externe">Exercice 3 : Déport de la session dans une base externe</a>
+<ul class="sectlevel2">
+<li><a href="#_préparation_de_mysql">Préparation de MySQL</a></li>
+<li><a href="#_paramétrage_de_tomcat">Paramétrage de Tomcat</a></li>
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_8_déploiement_de_lapplication_avec_docker">Exercice 8 : Déploiement de l&#8217;application avec Docker.</a>
+<li><a href="#_exercice_4_utilisation_de_jwt">Exercice 4 : Utilisation de JWT</a></li>
+<li><a href="#_exercice_5_stockage_dune_information_de_session_dans_un_jeton_jwt">Exercice 5 : stockage d&#8217;une information de session dans un jeton JWT</a>
+<ul class="sectlevel2">
+<li><a href="#_et_la_sécurité">Et la sécurité ?</a></li>
+<li><a href="#_conclusion_2">Conclusion</a></li>
+</ul>
+</li>
+<li><a href="#_exercice_6_déploiement_de_lapplication_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_de_docker">Installation de Docker</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_9_gérer_notre_application_avec_kubernetes">Exercice 9 : Gérer notre application avec Kubernetes</a>
+<li><a href="#_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</a>
 <ul class="sectlevel2">
 <li><a href="#_installation_et_création_dun_cluster_de_développement">Installation et création d&#8217;un cluster de développement</a></li>
 <li><a href="#_exécution_de_lapplication">Exécution de l&#8217;application</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_10_utilisation_de_jmeter_pour_analyser_les_stratégies_de_déploiement">Exercice 10 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
+<li><a href="#_exercice_8_utilisation_de_jmeter_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</a></li>
 <li><a href="#_bilan">Bilan</a></li>
-<li><a href="#_troubleshooting">Troubleshooting</a>
+<li><a href="#_troubleshooting_problèmes_courants">Troubleshooting / Problèmes courants</a>
 <ul class="sectlevel2">
 <li><a href="#_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</a></li>
 <li><a href="#_jre_home_java_home_nest_pas_défini"><code>JRE_HOME</code> / <code>JAVA_HOME</code> n&#8217;est pas défini</a></li>
@@ -512,7 +525,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_création_dune_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</h2>
+<h2 id="_exercice_1_création_dune_application_java_ee_très_simple">Exercice 1 : création d&#8217;une application Java EE très simple</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_outils_de_développement">Outils de développement</h3>
@@ -832,7 +845,7 @@ Ceci se fait avec la commande <code>ln</code> :</p>
 <p>Passons à l&#8217;installation du répartiteur de charge <code>nginx</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="_sous_linux">Sous Linux</h4>
+<h4 id="_sous_linux_famille_debianubuntu">Sous Linux, famille Debian/Ubuntu</h4>
 <div class="paragraph">
 <p>Tapez la commande suivante pour installer <code>nginx</code> :</p>
 </div>
@@ -856,28 +869,38 @@ Ceci se fait avec la commande <code>ln</code> :</p>
 <div class="listingblock">
 <div class="content">
 <pre>http {
+	# déclaration des backends
 	upstream application {
+		# premiere instance de Tomcat
 		server 127.0.0.1:8080;
+		# deuxième instance de Tomcat
 		server 127.0.0.1:8081;
 	}
 
+	# configuration du serveur Web
 	server {
+		# Nginx écoutera sur le port 80 (par défaut en HTTP)
 		listen 80;
 
+		# toutes les URLs sont redirigées vers nos deux backends Tomcat
 		location / {
+			# référence à la partie upstream de la configuration
 			proxy_pass http://application;
+			# temps avant de considérer un backend comme défaillant
 			proxy_connect_timeout 1;
 		}
 	}
 }
 
 events {
+	# nombre de connexions simultanées
 	worker_connections 768;
 }</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Lancez nginx (<code>sudo service nginx start</code>, ou <code>nginx.exe</code> sous Windows) et vérifiez que celui ce fonctionne et redirige les requêtes vers les tomcats.</p>
+<p>Lancez nginx (<code>sudo service nginx start</code>, ou <code>nginx.exe</code> sous Windows) et vérifiez que celui ce fonctionne (le processus est présent et actif, le port 80 est ouvert, vérifier les logs de nginx sinon).
+Nginx doit rediriger les requêtes sur le port 80 vers les tomcats (écoutant sur les ports 8080 et 8081).</p>
 </div>
 <div class="paragraph">
 <p>Le serveur nginx répond sur le port 80, il faut donc adapter l&#8217;url dans le navigateur. Rechargez plusieurs fois la page pour vérifier que le load balancing se fait bien alternativement entre les deux serveurs (le répertoire de déploiement affiché doit changer une fois sur deux).</p>
@@ -910,6 +933,9 @@ events {
 </table>
 </div>
 <div class="paragraph">
+<p>On peut également utiliser le script <code>shutdown.sh</code> (ou <code>shutdown.bat</code> sous Windows) dans le répertoire de Tomcat pour tuer le processus de la façon recommandée (mais cela correspond moins à une panne intempestive que l&#8217;on souhaite simuler).</p>
+</div>
+<div class="paragraph">
 <p>Vérifier que l&#8217;application fonctionne toujours quand on y accède par nginx.</p>
 </div>
 <div class="paragraph">
@@ -921,9 +947,6 @@ events {
 <h3 id="_au_passage_quels_ont_été_les_freins_à_lautomatisation">Au passage, quels ont été les freins à l&#8217;automatisation ?</h3>
 <div class="ulist">
 <ul>
-<li>
-<p>La dépendance à Eclipse ne permet pas de construire les projets en ligne de commande, il faut utiliser un gestionnaire de build (maven, gradle, ant etc).</p>
-</li>
 <li>
 <p>Copie du fichier <code>.war</code> à la main, difficilement automatisable.</p>
 </li>
@@ -960,7 +983,7 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 </div>
 </div>
 <div class="sect2">
-<h3 id="_trois_solutions">Trois solutions</h3>
+<h3 id="_trois_solutions_enisageables">Trois solutions enisageables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -977,7 +1000,7 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 <div class="sect3">
 <h4 id="_sticky_load_balancer">Sticky load balancer</h4>
 <div class="paragraph">
-<p>Le Load Balancer (Nginx) calcule un hash basé sur l&#8217;adresse IP du client et route la requête  vers le serveur correspondant.</p>
+<p>Le Load Balancer (Nginx) calcule un hash basé sur l&#8217;adresse IP du client et route la requête vers le serveur correspondant. Une même IP cliente est donc toujours routée vers la même instance du backend.</p>
 </div>
 <div class="paragraph">
 <p>Rajouter <code>ip_hash;</code> dans la section <code>upstream</code> de la configuration de Nginx.</p>
@@ -1017,11 +1040,18 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 </li>
 </ul>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_exercice_5_déport_de_la_session_dans_une_base_externe">Exercice 5 : Déport de la session dans une base externe</h4>
 <div class="paragraph">
-<p>Le phénomène de perte de session précédent est l&#8217;effet du standard Java EE.</p>
+<p>Pour les détails de la configuration de Nginx en load balancer, on peut se référer à cette page : <a href="http://nginx.org/en/docs/http/load_balancing.html" class="bare">http://nginx.org/en/docs/http/load_balancing.html</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercice_3_déport_de_la_session_dans_une_base_externe">Exercice 3 : Déport de la session dans une base externe</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le phénomène de perte de session précédent est l&#8217;effet du fonctionnement interne du serveur d&#8217;application Java EE.</p>
 </div>
 <div class="paragraph">
 <p>Pour le résoudre, on déporte le stockage des données de session (l'"état" de l&#8217;application à chaque requête) à l&#8217;extérieur des serveurs d&#8217;application Java EE.</p>
@@ -1030,7 +1060,7 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 <p>On peut soit utiliser des solutions de clustering propre à chaque distributeur (JBoss, WebLogic, &#8230;&#8203;).</p>
 </div>
 <div class="paragraph">
-<p>Ou bien implémenter sa propre solution.</p>
+<p>Ou bien implémenter sa propre solution, afin de comprendre les mécanismes en jeu.</p>
 </div>
 <div class="paragraph">
 <p>Nous allons utiliser une solution simple proposée en standard par Apache Tomcat : le stockage des sessions dans une base de donnée MySQL.</p>
@@ -1038,14 +1068,16 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 <div class="paragraph">
 <p>Retirer <code>ip_hash;</code> de la configuration de Nginx et redémarrer celui-ci.</p>
 </div>
+<div class="sect2">
+<h3 id="_préparation_de_mysql">Préparation de MySQL</h3>
 <div class="paragraph">
 <p>On va utiliser MySQL, mais il est plus intéressant dans un contexte distribué d&#8217;utiliser une base de données distribuée (Hazelcast, Redis, Memcached, CouchDB ou autre&#8230;&#8203;)</p>
 </div>
 <div class="paragraph">
-<p>Installer MariaDB :</p>
+<p>Installer MariaDB, une version open source 100% compatible avec MySQL :</p>
 </div>
-<div class="sect4">
-<h5 id="_sous_linux_2">Sous Linux</h5>
+<div class="sect3">
+<h4 id="_sous_linux">Sous Linux</h4>
 <div class="literalblock">
 <div class="content">
 <pre>apt install mariadb-server</pre>
@@ -1055,8 +1087,8 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 <p>Ne pas donner de mot de passe.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_sous_windows_2">Sous Windows</h5>
+<div class="sect3">
+<h4 id="_sous_windows_2">Sous Windows</h4>
 <div class="paragraph">
 <p>Sous Windows une façon simple d&#8217;installer MySQL est d&#8217;installer <a href="http://www.wampserver.com/">WAMP</a> puis de ne démarrer que le serveur MySQL (on ne démarre pas Apache).</p>
 </div>
@@ -1078,11 +1110,10 @@ qui exécute la requête ne trouve pas la session puisqu&#8217;il s&#8217;agit e
 </table>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_création_de_lutilisateur_tomcat">Création de l&#8217;utilisateur <code>tomcat</code></h5>
+<div class="sect3">
+<h4 id="_création_de_lutilisateur_tomcat">Création de l&#8217;utilisateur <code>tomcat</code></h4>
 <div class="paragraph">
 <p>Créez un utilisateur <code>tomcat</code> dans le serveur MySQL. Cet utilisateur sera utilisé pour connecter le serveur Tomcat à la base de données.</p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="_création_de_la_base_de_données_des_sessions">Création de la base de données des sessions</h5>
@@ -1107,18 +1138,37 @@ create table tomcat_sessions (
 <p>Donnez à l&#8217;utilisateur <code>tomcat</code> tous les droits d&#8217;accès en lecture et d&#8217;écriture à la base <code>tomcat_sessions</code>.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_paramétrage_de_tomcat">Paramétrage de Tomcat</h5>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_paramétrage_de_tomcat">Paramétrage de Tomcat</h3>
 <div class="paragraph">
-<p>Utiliser cette <a href="http://search.maven.org">url</a> et rechercher l&#8217;artéfact <code>mysql:mysql-connector-java</code> pour télécharger le connecteur JDBC pour MySql. Prendre la dernière <code>5.1.x</code>.</p>
+<p>Télécharger le connecteur JDBC pour MySQL qui est requis pour que Tomcat puisse accéder à la base de données.</p>
+</div>
+<div class="paragraph">
+<p>Le fichier JAR est disponible à cette adresse : <a href="https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" class="bare">https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Pour trouver l&#8217;adresse du fichier jar lorsqu&#8217;une nouvelle version sera sortie, on pourra utiliser cette <a href="http://search.maven.org">url</a> et rechercher l&#8217;artéfact <code>mysql:mysql-connector-java</code> pour télécharger le connecteur JDBC pour MySql. Il faudra prendre la dernière <code>5.1.x</code>.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Copier le connecteur MySql dans le répertoire lib des deux tomcats :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35/lib/
-cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
+<pre>cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
+cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1177,6 +1227,9 @@ cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
 <div class="paragraph">
 <p>La session reste stable même si le serveur d&#8217;application sollicité change.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_conclusion">Conclusion</h3>
 <div class="paragraph">
 <p>AVANTAGES:</p>
 </div>
@@ -1214,13 +1267,29 @@ cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_exercice_6_utilisation_de_jwt">Exercice 6 : Utilisation de JWT</h4>
+</div>
+<div class="sect1">
+<h2 id="_exercice_4_utilisation_de_jwt">Exercice 4 : Utilisation de JWT</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Il est possible de déporter les données de sessions directement dans le navigateur !</p>
+<p>Il est possible de déporter les données de sessions directement dans le navigateur des utilisateur, et ce de manière sécurisée !</p>
 </div>
 <div class="paragraph">
-<p>Pour cela on chiffre les données sur le serveur avec une clée privée et on positionne le résultat du chiffrement dans un cookie.</p>
+<p>Pour cela on chiffre les données sur le serveur avec une clée privée (donc secrète) et on positionne le résultat du chiffrement dans un cookie.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Il est également possible de simplement <em>signer</em> les informations de session. Elles seront lisibles par l&#8217;utilisateur mais il ne pourra pas les modifier sans passer inaperçu.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Au traitement des requêtes suivantes, il suffit de déchiffrer le cookie pour retrouver l&#8217;information et s&#8217;assurer de leur non-altération.</p>
@@ -1243,14 +1312,19 @@ cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/</pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Pour un projet n&#8217;utilisant pas Maven, vous pouvez télécharger le fichier jar en allant sur <a href="http://search.maven.org">maven central</a> et en recherchant l&#8217;artéfact <code>jjwt</code>. Le fichier jar est disponible en cliquant sur le lien <code>jar</code> qui doit apparaitre en résultat de recherche.</p>
+<p>Pour un projet n&#8217;utilisant pas Maven, vous pouvez télécharger le fichier jar en allant sur <a href="http://search.maven.org">maven central</a> et en recherchant l&#8217;artéfact <code>jjwt</code>. Le fichier jar est disponible en cliquant sur le lien <code>jar</code> qui doit apparaitre en résultat de recherche. Ce fichier sera à copier dans le répertoire <code>WEB-INF/lib</code> de votre application (à créer si nécessaire).</p>
 </div>
-<div class="paragraph">
-<p>Ce fichier est à copier dans le répertoire <code>WEB-INF/lib</code> de votre application (à créer si nécessaire).</p>
-</div>
-<div class="paragraph">
-<p>Si votre projet n&#8217;est pas géré avec Maven, vous pouvez télécharger directement toutes les dépendances de JJWT avec le <a href="http://lteconsulting.fr/javaee-deploiement/jjwt-dependencies.zip">lien</a>.</p>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1273,8 +1347,10 @@ Key createKey() {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_exercice_7_stockage_dune_information_de_session_dans_un_jeton_jwt">Exercice 7 : stockage d&#8217;une information de session dans un jeton JWT</h4>
+</div>
+<div class="sect1">
+<h2 id="_exercice_5_stockage_dune_information_de_session_dans_un_jeton_jwt">Exercice 5 : stockage d&#8217;une information de session dans un jeton JWT</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le <em>pseudo</em> de l&#8217;utilisateur.</p>
 </div>
@@ -1313,8 +1389,8 @@ Key createKey() {
 </li>
 </ul>
 </div>
-<div class="sect4">
-<h5 id="_et_la_sécurité">Et la sécurité ?</h5>
+<div class="sect2">
+<h3 id="_et_la_sécurité">Et la sécurité ?</h3>
 <div class="paragraph">
 <p>Attention à la gestion des clés avec l&#8217;utilisation de JWT !</p>
 </div>
@@ -1325,10 +1401,8 @@ Key createKey() {
 <p>Ne pas oublier cette dimension qui n&#8217;a été que très peu abordée dans ce cours&#8230;&#8203;</p>
 </div>
 </div>
-</div>
-</div>
 <div class="sect2">
-<h3 id="_conclusion">Conclusion</h3>
+<h3 id="_conclusion_2">Conclusion</h3>
 <div class="paragraph">
 <p>Toujours une histoire de compromis, il faut choisir le meilleur entre :</p>
 </div>
@@ -1349,7 +1423,7 @@ Key createKey() {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_8_déploiement_de_lapplication_avec_docker">Exercice 8 : Déploiement de l&#8217;application avec Docker.</h2>
+<h2 id="_exercice_6_déploiement_de_lapplication_avec_docker">Exercice 6 : Déploiement de l&#8217;application avec Docker.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_installation_de_docker">Installation de Docker</h3>
@@ -1511,7 +1585,7 @@ docker rm $(docker ps -a -q)</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_9_gérer_notre_application_avec_kubernetes">Exercice 9 : Gérer notre application avec Kubernetes</h2>
+<h2 id="_exercice_7_gérer_notre_application_avec_kubernetes">Exercice 7 : Gérer notre application avec Kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Voir la <a href="http://kubernetes.io/docs/getting-started-guides/docker/">doc</a> pour commencer.</p>
@@ -1609,7 +1683,7 @@ kubectl delete pod application</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_10_utilisation_de_jmeter_pour_analyser_les_stratégies_de_déploiement">Exercice 10 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h2>
+<h2 id="_exercice_8_utilisation_de_jmeter_pour_analyser_les_stratégies_de_déploiement">Exercice 8 : Utilisation de <code>JMeter</code> pour analyser les stratégies de déploiement</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Groupez vous par groupe de 8 personnes.</p>
@@ -1748,7 +1822,7 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </div>
 </div>
 <div class="sect1">
-<h2 id="_troubleshooting">Troubleshooting</h2>
+<h2 id="_troubleshooting_problèmes_courants">Troubleshooting / Problèmes courants</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</h3>
@@ -1809,7 +1883,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-18 16:02:34 +0200
+Last updated 2020-05-26 13:53:39 +0200
 </div>
 </div>
 </body>

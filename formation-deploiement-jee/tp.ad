@@ -20,7 +20,7 @@ Ce cours est open source et est disponible en ligne :
 - exercices en ligne : http://lteconsulting.fr/javaee-deploiement/tp.html
 ////
 
-== Exercice : création d'une application Java EE très simple
+== Exercice 1 : création d'une application Java EE très simple
 
 === Outils de développement
 
@@ -233,7 +233,7 @@ Vérifiez dans un navigateur que les deux Tomcat sont lancés sur les ports 8080
 
 Passons à l'installation du répartiteur de charge `nginx`.
 
-==== Sous Linux
+==== Sous Linux, famille Debian/Ubuntu
 
 Tapez la commande suivante pour installer `nginx` :
 
@@ -251,27 +251,37 @@ Configurez NGINX en Load Balancer avec la configuration suivante dans `/etc/ngin
 
 ----
 http {
+	# déclaration des backends
 	upstream application {
+		# premiere instance de Tomcat
 		server 127.0.0.1:8080;
+		# deuxième instance de Tomcat
 		server 127.0.0.1:8081;
 	}
 
+	# configuration du serveur Web
 	server {
+		# Nginx écoutera sur le port 80 (par défaut en HTTP)
 		listen 80;
 
+		# toutes les URLs sont redirigées vers nos deux backends Tomcat
 		location / {
+			# référence à la partie upstream de la configuration
 			proxy_pass http://application;
+			# temps avant de considérer un backend comme défaillant
 			proxy_connect_timeout 1;
 		}
 	}
 }
 
 events {
+	# nombre de connexions simultanées
 	worker_connections 768;
 }
 ----
 
-Lancez nginx (`sudo service nginx start`, ou `nginx.exe` sous Windows) et vérifiez que celui ce fonctionne et redirige les requêtes vers les tomcats. 
+Lancez nginx (`sudo service nginx start`, ou `nginx.exe` sous Windows) et vérifiez que celui ce fonctionne (le processus est présent et actif, le port 80 est ouvert, vérifier les logs de nginx sinon).
+Nginx doit rediriger les requêtes sur le port 80 vers les tomcats (écoutant sur les ports 8080 et 8081). 
 
 Le serveur nginx répond sur le port 80, il faut donc adapter l'url dans le navigateur. Rechargez plusieurs fois la page pour vérifier que le load balancing se fait bien alternativement entre les deux serveurs (le répertoire de déploiement affiché doit changer une fois sur deux).
 
@@ -285,13 +295,14 @@ Tuez un des deux serveurs :
 Sous Windows, utilisez l'utilitaire approprié pour repérer et tuer le processus, par exemple `Process Explorer`.
 ====
 
+On peut également utiliser le script `shutdown.sh` (ou `shutdown.bat` sous Windows) dans le répertoire de Tomcat pour tuer le processus de la façon recommandée (mais cela correspond moins à une panne intempestive que l'on souhaite simuler).
+
 Vérifier que l'application fonctionne toujours quand on y accède par nginx.
 
 *Nginx détecte l'erreur sur le serveur arrêté et poursuit sur le serveur qui fonctionne.*
 
 === Au passage, quels ont été les freins à l'automatisation ?
 
-- La dépendance à Eclipse ne permet pas de construire les projets en ligne de commande, il faut utiliser un gestionnaire de build (maven, gradle, ant etc).
 - Copie du fichier `.war` à la main, difficilement automatisable.
 - Lancement et arrêt des serveurs manuel.
 - Et en plus, les sources ne sont pas versionnées !
@@ -313,7 +324,7 @@ Java EE ne prévoit pas de façon standardisée le stockage des sessions en envi
 
 En standard Java EE prévoit que les données de session soient stokées relativement au serveur qui s'exécute.
 
-=== Trois solutions
+=== Trois solutions enisageables
 
 - Faire du sticky session. Nginx peut être configuré pour envoyer les clients sur le même serveur.
 
@@ -323,7 +334,7 @@ En standard Java EE prévoit que les données de session soient stokées relativ
 
 ==== Sticky load balancer
 
-Le Load Balancer (Nginx) calcule un hash basé sur l'adresse IP du client et route la requête  vers le serveur correspondant.
+Le Load Balancer (Nginx) calcule un hash basé sur l'adresse IP du client et route la requête vers le serveur correspondant. Une même IP cliente est donc toujours routée vers la même instance du backend.
 
 Rajouter `ip_hash;` dans la section `upstream` de la configuration de Nginx.
 
@@ -344,31 +355,44 @@ INCONVENIENTS :
 - mauvaise répartition de la charge.
 - Quand un des serveurs crashe on perd les sessions de tous les utilisateurs qui y étaient connectés. Pas très bon pour les affaires...
 
-==== Exercice 5 : Déport de la session dans une base externe
+Pour les détails de la configuration de Nginx en load balancer, on peut se référer à cette page : http://nginx.org/en/docs/http/load_balancing.html.
 
-Le phénomène de perte de session précédent est l'effet du standard Java EE.
+
+
+
+
+
+
+
+
+
+== Exercice 3 : Déport de la session dans une base externe
+
+Le phénomène de perte de session précédent est l'effet du fonctionnement interne du serveur d'application Java EE.
 
 Pour le résoudre, on déporte le stockage des données de session (l'"état" de l'application à chaque requête) à l'extérieur des serveurs d'application Java EE.
 
 On peut soit utiliser des solutions de clustering propre à chaque distributeur (JBoss, WebLogic, ...).
 
-Ou bien implémenter sa propre solution.
+Ou bien implémenter sa propre solution, afin de comprendre les mécanismes en jeu.
 
 Nous allons utiliser une solution simple proposée en standard par Apache Tomcat : le stockage des sessions dans une base de donnée MySQL.
 
 Retirer `ip_hash;` de la configuration de Nginx et redémarrer celui-ci.
 
+=== Préparation de MySQL
+
 On va utiliser MySQL, mais il est plus intéressant dans un contexte distribué d'utiliser une base de données distribuée (Hazelcast, Redis, Memcached, CouchDB ou autre...)
 
-Installer MariaDB :
+Installer MariaDB, une version open source 100% compatible avec MySQL :
 
-===== Sous Linux
+==== Sous Linux
 
 		apt install mariadb-server
 
 Ne pas donner de mot de passe.
 
-===== Sous Windows
+==== Sous Windows
 
 Sous Windows une façon simple d'installer MySQL est d'installer http://www.wampserver.com/[WAMP] puis de ne démarrer que le serveur MySQL (on ne démarre pas Apache). 
 
@@ -379,7 +403,7 @@ Ensuite on crée la base de donnée et la table qui va stocker les données de s
 Sous Windows, on peut utiliser PhpMyAdmin pour exécuter des instructions SQL. PhpMyAdmin est installé par défaut avec WAMP.
 ====
 
-===== Création de l'utilisateur `tomcat`
+==== Création de l'utilisateur `tomcat`
 
 Créez un utilisateur `tomcat` dans le serveur MySQL. Cet utilisateur sera utilisé pour connecter le serveur Tomcat à la base de données.
 
@@ -403,15 +427,22 @@ create table tomcat_sessions (
 
 Donnez à l'utilisateur `tomcat` tous les droits d'accès en lecture et d'écriture à la base `tomcat_sessions`.
 
-===== Paramétrage de Tomcat
+=== Paramétrage de Tomcat
 
-Utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql:mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Prendre la dernière `5.1.x`.
+Télécharger le connecteur JDBC pour MySQL qui est requis pour que Tomcat puisse accéder à la base de données.
+
+Le fichier JAR est disponible à cette adresse : https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
+
+[NOTE]
+====
+Pour trouver l'adresse du fichier jar lorsqu'une nouvelle version sera sortie, on pourra utiliser cette http://search.maven.org[url] et rechercher l'artéfact `mysql:mysql-connector-java` pour télécharger le connecteur JDBC pour MySql. Il faudra prendre la dernière `5.1.x`.
+====
 
 Copier le connecteur MySql dans le répertoire lib des deux tomcats :
 
 ----
-cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35/lib/
-cp mysql-connector-java-5.1.39.jar ~/apache-tomcat-8.0.35-bis/lib/
+cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
+cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/
 ----
 
 Créer un fichier de contexte pour l'application, de façon à spécifier au serveur d'application (Tomcat) que l'on désire stocker les sessions à l'extérieur sur une base de donnée. Le fichier à créer est `src/main/webapp/META-INF/context.xml` pour un projet Maven, et dans `WebContent/META-INF/context.xml`.
@@ -451,6 +482,8 @@ Rafraîchir la page, que se passe-t-il ?
 
 La session reste stable même si le serveur d'application sollicité change.
 
+=== Conclusion
+
 AVANTAGES:
 
 - compatible Java EE, l'utilisation de l'API des sessions ne change pas
@@ -464,11 +497,19 @@ INCONVENIENTS:
 - on a un serveur de base de donnée à gérer en plus !
 - les resources ne sont pas forcément bien gérées non plus : on va avoir tendance à ne pas remplir les serveurs ce qui empêche de les mettre à l'arrêt... Solution : remettre les sticky-sessions pour avoir le meilleur des deux mondes.
 
-==== Exercice 6 : Utilisation de JWT
 
-Il est possible de déporter les données de sessions directement dans le navigateur !
 
-Pour cela on chiffre les données sur le serveur avec une clée privée et on positionne le résultat du chiffrement dans un cookie.
+
+== Exercice 4 : Utilisation de JWT
+
+Il est possible de déporter les données de sessions directement dans le navigateur des utilisateur, et ce de manière sécurisée !
+
+Pour cela on chiffre les données sur le serveur avec une clée privée (donc secrète) et on positionne le résultat du chiffrement dans un cookie.
+
+[NOTE]
+====
+Il est également possible de simplement _signer_ les informations de session. Elles seront lisibles par l'utilisateur mais il ne pourra pas les modifier sans passer inaperçu.
+====
 
 Au traitement des requêtes suivantes, il suffit de déchiffrer le cookie pour retrouver l'information et s'assurer de leur non-altération.
 
@@ -487,11 +528,14 @@ Pour un projet utilisant Maven, vous pouvez simplement ajouter ce bout de XML da
 </dependency>
 ----
 
-Pour un projet n'utilisant pas Maven, vous pouvez télécharger le fichier jar en allant sur http://search.maven.org[maven central] et en recherchant l'artéfact `jjwt`. Le fichier jar est disponible en cliquant sur le lien `jar` qui doit apparaitre en résultat de recherche.
+[NOTE]
+====
+Pour un projet n'utilisant pas Maven, vous pouvez télécharger le fichier jar en allant sur http://search.maven.org[maven central] et en recherchant l'artéfact `jjwt`. Le fichier jar est disponible en cliquant sur le lien `jar` qui doit apparaitre en résultat de recherche. Ce fichier sera à copier dans le répertoire `WEB-INF/lib` de votre application (à créer si nécessaire).
+====
 
-Ce fichier est à copier dans le répertoire `WEB-INF/lib` de votre application (à créer si nécessaire).
-
+////
 Si votre projet n'est pas géré avec Maven, vous pouvez télécharger directement toutes les dépendances de JJWT avec le http://lteconsulting.fr/javaee-deploiement/jjwt-dependencies.zip[lien].
+////
 
 [source,java]
 ----
@@ -513,7 +557,7 @@ Key createKey() {
 }
 ----
 
-==== Exercice 7 : stockage d'une information de session dans un jeton JWT
+== Exercice 5 : stockage d'une information de session dans un jeton JWT
 
 Ecrivez maintenant le code nécessaire pour stocker dans le jeton JWT le _pseudo_ de l'utilisateur.
 
@@ -531,7 +575,7 @@ INCONVENIENTS:
 - le stockage et la gestion des clés privés peut être problématique
 - impraticable pour stocker des données volumineuses
 
-===== Et la sécurité ?
+=== Et la sécurité ?
 
 Attention à la gestion des clés avec l'utilisation de JWT !
 
@@ -547,7 +591,7 @@ Toujours une histoire de compromis, il faut choisir le meilleur entre :
 - complexité de la solution,
 - productivité.
 
-== Exercice 8 : Déploiement de l'application avec Docker.
+== Exercice 6 : Déploiement de l'application avec Docker.
 
 === Installation de Docker
 
@@ -657,7 +701,7 @@ Avec le navigateur, constater que les dix serveurs Tomcat sont alternativement u
 
 Tuer quelques containers pour constater que l'application n'est nullement dérangée.
 
-== Exercice 9 : Gérer notre application avec Kubernetes
+== Exercice 7 : Gérer notre application avec Kubernetes
 
 Voir la http://kubernetes.io/docs/getting-started-guides/docker/[doc] pour commencer.
 
@@ -741,7 +785,7 @@ kubectl delete pod application
 
 Ceci termine l'exercice d'introduction à Kubernetes.
 
-== Exercice 10 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
+== Exercice 8 : Utilisation de `JMeter` pour analyser les stratégies de déploiement
 
 Groupez vous par groupe de 8 personnes.
 
@@ -802,7 +846,7 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 |JMeter
 |==================
 
-== Troubleshooting
+== Troubleshooting / Problèmes courants
 
 === Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"
 
