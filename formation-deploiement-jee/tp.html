@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>IUT Blagnac LP APSIO - 2019 - LTE Consulting</p>
+<p>IUT Blagnac LP APSIO - 2020 - LTE Consulting</p>
 </div>
 <div class="paragraph">
 <p>Exercices liés au déploiement d&#8217;application Java EE.
@@ -460,37 +460,23 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <ul class="sectlevel1">
 <li><a href="#_exercice_création_dune_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</a>
 <ul class="sectlevel2">
+<li><a href="#_outils_de_développement">Outils de développement</a></li>
 <li><a href="#_télécharger_tomcat">Télécharger Tomcat</a></li>
-<li><a href="#_installer_eclipse">Installer Eclipse</a></li>
-<li><a href="#_création_dune_application_vraiment_très_simple">Création d&#8217;une application vraiment très simple</a></li>
-<li><a href="#_création_du_fichier_war">Création du fichier <code>.war</code></a></li>
-</ul>
-</li>
-<li><a href="#_exercice_1_déployer_lapplication_dans_tomcat">Exercice 1 : déployer l&#8217;application dans Tomcat</a>
-<ul class="sectlevel2">
-<li><a href="#_déploiement_de_lapplication_dans_le_serveur_tomcat">Déploiement de l&#8217;application dans le serveur Tomcat</a></li>
+<li><a href="#_télécharger_maven">Télécharger Maven</a></li>
+<li><a href="#_extraire_maven_et_son_installation">Extraire Maven et son installation</a></li>
+<li><a href="#_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</a></li>
+<li><a href="#_déploiement_de_lapplication_dans_tomcat">Déploiement de l&#8217;application dans Tomcat</a></li>
 <li><a href="#_lancement_de_tomcat">Lancement de Tomcat</a></li>
-</ul>
-</li>
-<li><a href="#_exercice_2_ajouter_un_état_à_lapplication">Exercice 2 : ajouter un état à l&#8217;application</a>
-<ul class="sectlevel2">
+<li><a href="#_accéder_à_lapplication_avec_votre_navigateur">Accéder à l&#8217;application avec votre navigateur.</a></li>
 <li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
 <li><a href="#_ajout_dun_compteur">Ajout d&#8217;un compteur</a></li>
 <li><a href="#_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</a></li>
-</ul>
-</li>
-<li><a href="#_exercice_3_utilisation_de_maven_pour_construire_le_fichier_war">Exercice 3 : utilisation de Maven pour construire le fichier <code>.war</code></a>
-<ul class="sectlevel2">
-<li><a href="#_télécharger_maven">Télécharger Maven</a></li>
-<li><a href="#_extraire_maven">Extraire Maven</a></li>
-<li><a href="#_installation">Installation</a></li>
-<li><a href="#_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</a></li>
-<li><a href="#_importation_du_projet_maven_dans_eclipse">Importation du projet Maven dans Eclipse</a></li>
 <li><a href="#_cycle_de_développement">Cycle de développement</a></li>
+<li><a href="#_automatisation">Automatisation</a></li>
 <li><a href="#_conclusions">Conclusions</a></li>
 </ul>
 </li>
-<li><a href="#_exercice_4_déployer_lapplication_sur_deux_tomcat_avec_load_balancing">Exercice 4 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
+<li><a href="#_exercice_2_déployer_lapplication_sur_deux_tomcat_avec_load_balancing">Exercice 2 : déployer l&#8217;application sur deux Tomcat avec load balancing</a>
 <ul class="sectlevel2">
 <li><a href="#_comment_faire_face_au_problème_de_crash_serveur">Comment faire face au problème de crash serveur ?</a></li>
 <li><a href="#_installer_la_seconde_instance_de_tomcat">Installer la seconde instance de Tomcat</a></li>
@@ -523,86 +509,83 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Ce cours est open source et est disponible en ligne :</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>QCM de validation : <a href="https://docs.google.com/forms/d/e/1FAIpQLSdTEX66_9kIJtjgRwegxnzWVMZBvbfnjt0KQVHuTTgeZ4QfhA/viewform?usp=pp_url" class="bare">https://docs.google.com/forms/d/e/1FAIpQLSdTEX66_9kIJtjgRwegxnzWVMZBvbfnjt0KQVHuTTgeZ4QfhA/viewform?usp=pp_url</a></p>
-</li>
-<li>
-<p>cours en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/" class="bare">http://lteconsulting.fr/javaee-deploiement/</a></p>
-</li>
-<li>
-<p>exercices en ligne : <a href="http://lteconsulting.fr/javaee-deploiement/tp.html" class="bare">http://lteconsulting.fr/javaee-deploiement/tp.html</a></p>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_exercice_création_dune_application_java_ee_très_simple">Exercice : création d&#8217;une application Java EE très simple</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_outils_de_développement">Outils de développement</h3>
+<div class="paragraph">
+<p>Vous pouvez utiliser les outils de votre choix (IDE comme Eclipse, IntelliJ, VSCode, ou autre vi, emacs&#8230;&#8203;).</p>
+</div>
+<div class="paragraph">
+<p>Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.</p>
+</div>
+<div class="paragraph">
+<p>Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l&#8217;IDE dans ces exercices.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_télécharger_tomcat">Télécharger Tomcat</h3>
 <div class="paragraph">
-<p>Télécharger Tomcat en version 8.5 et l&#8217;extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d&#8217;espace).</p>
+<p>Télécharger Tomcat en version 8.5.55 et l&#8217;extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d&#8217;espace).</p>
+</div>
+<div class="paragraph">
+<p>Lien : <a href="https://tomcat.apache.org/download-80.cgi" class="bare">https://tomcat.apache.org/download-80.cgi</a> (distribution binaire, core)</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installer_eclipse">Installer Eclipse</h3>
+<h3 id="_télécharger_maven">Télécharger Maven</h3>
 <div class="paragraph">
-<p>Utiliser la dernière version d&#8217;Eclipse dans la variante "Java EE" de façon à profiter des outils Java EE.</p>
+<p>Maven sera utilisé pour construire le fichier <code>.war</code> qui sera ensuite déployé dans Tomcat.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Lien : <a href="https://maven.apache.org/download.cgi" class="bare">https://maven.apache.org/download.cgi</a></p>
+</li>
+<li>
+<p>Télécharger le fichier <code>apache-maven-3.6.3-bin.zip</code> (ou <code>.tar.gz</code>)</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_création_dune_application_vraiment_très_simple">Création d&#8217;une application vraiment très simple</h3>
+<h3 id="_extraire_maven_et_son_installation">Extraire Maven et son installation</h3>
 <div class="paragraph">
-<p>Avec Eclipse, créer une application <strong>Dynamic Web Application</strong> avec un seul JSP simple qui affiche le répertoire de Tomcat.</p>
-</div>
-<div class="paragraph">
-<p><code>index.jsp</code> :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-jsp" data-lang="jsp">Le répertoire de déploiement est :
-&lt;%= System.getProperty("catalina.base") %&gt;</code></pre>
-</div>
+<p>Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n&#8217;utilisez pas le répertoire <code>Program Files</code>).</p>
 </div>
 <div class="paragraph">
-<p>C&#8217;est une application vraiment simple (pas d&#8217;état car pas de session).</p>
+<p>Ajouter le répertoire <code>VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin</code> dans la variable d&#8217;environnement <code>PATH</code>.</p>
 </div>
 <div class="paragraph">
-<p>Cette application affiche la propriété <code>catalina.base</code> qui reflète le répertoire d&#8217;installation de Tomcat.</p>
+<p>Pour vérifier, vous devez pouvoir lancer <code>mvn -v</code>, maven imprimera sa version à l&#8217;écran.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_création_du_fichier_war">Création du fichier <code>.war</code></h3>
+<h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
 <div class="paragraph">
-<p>Pour créer le fichier <code>.war</code>, utiliser le menu <code>Fichier</code>/<code>Exporter&#8230;&#8203;</code> d&#8217;Eclipse.</p>
-</div>
-<div class="paragraph">
-<p><em>Normalement on fait cela avec un outil de build comme <code>Maven</code>, <code>Gradle</code>, <code>Ant</code> ou autre&#8230;&#8203;</em></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exercice_1_déployer_lapplication_dans_tomcat">Exercice 1 : déployer l&#8217;application dans Tomcat</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Le déploiement de l&#8217;application peut se faire depuis Eclipse ou en général n&#8217;importe quel IDE. Néanmoins, il est interressant
-de savoir déployer une application à la main.</p>
+<p>Télécharger <a href="https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip" class="bare">https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip</a> c&#8217;est un squelette de projet de type <em>hello world</em>.</p>
 </div>
 <div class="paragraph">
-<p>Dans un environnement d&#8217;usine logicielle, il serait de toute façon inenvisageable d&#8217;utiliser Eclipse ou
-un IDE pour produire et déployer l&#8217;application!</p>
+<p>Aller dans le répertoire d&#8217;extraction</p>
+</div>
+<div class="paragraph">
+<p>Taper <code>mvn install</code></p>
+</div>
+<div class="paragraph">
+<p>Normalement il télécharge plein de choses (la première fois), puis il finit par un message <em>success</em>.</p>
+</div>
+<div class="paragraph">
+<p>Maven a construit le fichier <code>.war</code> contenant toutes les informations dont Tomcat a besoin pour exécuter notre application. Ce fichier <code>.war</code> se trouve
+dans le sous répertoire <code>target</code>.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_déploiement_de_lapplication_dans_le_serveur_tomcat">Déploiement de l&#8217;application dans le serveur Tomcat</h3>
+<h3 id="_déploiement_de_lapplication_dans_tomcat">Déploiement de l&#8217;application dans Tomcat</h3>
 <div class="paragraph">
-<p>Pour déployer l&#8217;application dans le serveur Tomcat, vous copiez le fichier <code>.war</code> dans
+<p>Pour déployer l&#8217;application dans le serveur Tomcat, vous copiez le fichier <code>target/tp-deploiement-1.0-SNAPSHOT.war</code> dans
 le sous-répertoire <code>webapps</code> de l&#8217;installation de Tomcat, que l&#8217;on appelle également le répertoire de déploiement.</p>
 </div>
 <div class="paragraph">
@@ -613,77 +596,69 @@ déploiement de Tomcat, celui-ci relance l&#8217;application (c&#8217;est le com
 <div class="sect2">
 <h3 id="_lancement_de_tomcat">Lancement de Tomcat</h3>
 <div class="paragraph">
-<p>Lancer Tomcat avec le script <code>bin/startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la
+<p>Lancez Tomcat avec le script <code>bin/startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la
 version Windows Batch (<code>.bat</code>)).</p>
 </div>
 <div class="paragraph">
-<p>Vous devez pouvoir accéder à l&#8217;adresse <code><a href="http://localhost:8080/NOM_DE_VOTRE_APPLICATION}" class="bare">http://localhost:8080/NOM_DE_VOTRE_APPLICATION}</a></code> dans un navigateur.</p>
+<p>Le programme indique que Tomcat est lancé. Par défaut il répondra avec le protocole HTTP sur le port 8080.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_accéder_à_lapplication_avec_votre_navigateur">Accéder à l&#8217;application avec votre navigateur.</h3>
+<div class="paragraph">
+<p>Vous devez pouvoir accéder à l&#8217;adresse <code><a href="http://localhost:8080/tp-deploiement-1.0-SNAPSHOT/" class="bare">http://localhost:8080/tp-deploiement-1.0-SNAPSHOT/</a></code> dans un navigateur.</p>
+</div>
+<div class="paragraph">
+<p>Normalement, la page s&#8217;affichant dans le navigateur correspond à l&#8217;exécution du fichier <code>index.jsp</code>.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est une application vraiment simple (qui ne possède aucun état).</p>
+</div>
+<div class="paragraph">
+<p>Cette application affiche la propriété <code>catalina.base</code> qui reflète le répertoire d&#8217;installation de Tomcat.
+Cette information nous sera utile quand nous déploierons de multiples instances de Tomcat pour gérer la haute-disponibilité.</p>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_exercice_2_ajouter_un_état_à_lapplication">Exercice 2 : ajouter un état à l&#8217;application</h2>
-<div class="sectionbody">
 <div class="sect2">
 <h3 id="_une_application_à_état_simple">Une application à état (simple)</h3>
 <div class="paragraph">
-<p>Une application a très souvent besoin de stocker l&#8217;état conversationnel http entre les clients et le
-serveur : c&#8217;est la <strong>session</strong>. Il s&#8217;agit souvent de l&#8217;utilisateur connecté ou encore du panier
-associé pour un site de commerce, bref d&#8217;une information contextuelle liée à l&#8217;utilisateur et
-stockée par le serveur.</p>
+<p>Une application a très souvent besoin de stocker en plus de son état global l&#8217;état conversationnel http entre elle et chacun de ses clients : c&#8217;est la <strong>session</strong>.
+Il s&#8217;agit souvent de l'<em>utilisateur connecté</em> ou encore du <em>panier</em>
+dans le cas d&#8217;un site de commerce.</p>
+</div>
+<div class="paragraph">
+<p>Bref, il s&#8217;agit d&#8217;une information contextuelle liée à l&#8217;utilisateur et stockée par le serveur.</p>
 </div>
 <div class="paragraph">
 <p>Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
 </div>
 <div class="paragraph">
-<p>Nous allons introduire un état dans l&#8217;application en utilisant la session utilisateur et un cookie. Changez le contenu de la JSP pour :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-jsp" data-lang="jsp">Server Id : &lt;%= ManagementFactory.getRuntimeMXBean().getName() %&gt;&lt;br/&gt;
-&lt;br /&gt; Le répertoire de déploiement est :
-&lt;%=System.getProperty("catalina.base")%&gt;&lt;br /&gt;
-
-Identifiant de session : &lt;%=session.getId()%&gt;&lt;br /&gt;
-&lt;!-- Session Java EE --&gt;
-&lt;%
-	String valeur = (String) session.getAttribute("VALEUR");
-%&gt;
-
-La clé 'VALEUR' de la session est : &lt;%=valeur%&gt;&lt;br /&gt;
-&lt;%
-	if (valeur == null) {
-		valeur = "VALEUR_" + UUID.randomUUID().toString();
-		session.setAttribute("VALEUR", valeur);
-		%&gt;
-		Création de la VALEUR de session : &lt;%=valeur %&gt;&lt;br /&gt;
-		&lt;%
-	}
-%&gt;
-
-&lt;!-- Utilisation d'un cookie --&gt;
-&lt;%
-	String valeurCookie = Tools.getCookie(request, "MONCOOKIE");
-%&gt;
-La valeur du cookie MONCOOKIE est : &lt;%=valeurCookie%&gt;&lt;br /&gt;
-&lt;%
-	if (valeurCookie == null) {
-		valeurCookie = "COOKIE_" + UUID.randomUUID().toString();
-		response.addCookie(new Cookie("MONCOOKIE", valeurCookie));
-		%&gt;
-		Création du cookie MONCOOKIE : &lt;%=valeurCookie %&gt;&lt;br /&gt;
-		&lt;%
-	}
-%&gt;</code></pre>
-</div>
+<p>Nous allons introduire un état dans l&#8217;application en utilisant la session utilisateur et un cookie.</p>
 </div>
 <div class="paragraph">
-<p>La classe <code>Tools</code> est à écrire par vos soins. En particulier la méthode <code>getCookie</code> permet à partir d&#8217;un objet <code>HttpServletRequest</code> et d&#8217;un nom de cookie, de retrouver la valeur de ce cookie (<code>String</code>) ou <code>null</code> si aucun cookie n&#8217;est présent.</p>
+<p>Cependant afin de nous concentrer sur les notions qui nous interressents, l&#8217;application restera extrêmement simple, avec une seule page qui affiche :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>l&#8217;identifiant technique du serveur (obtenu avec la méthode <code>ManagementFactory.getRuntimeMXBean().getName()</code>),</p>
+</li>
+<li>
+<p>le répertoire de déploiement de l&#8217;instance Tomcat (obtenu grâce à <code>System.getProperty("catalina.base")</code>),</p>
+</li>
+<li>
+<p>l&#8217;identifiant de session (<code>session.getId()</code>),</p>
+</li>
+<li>
+<p>une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d&#8217;une session,</p>
+</li>
+<li>
+<p>une chaine de caractère provenant du cookie <code>MONCOOKIE</code> apporté par le client. Si le client n&#8217;apporte pas de cookie, l&#8217;application devra générer une chaine aléatoire et la retourner au client comme cookie <code>MONCOOKIE</code>.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Ce code permet d&#8217;afficher : l&#8217;identifiant du serveur, le répertoire de déploiement, l&#8217;identifiant de session et la valeur
-contenue dans celle-ci, ainsi qu&#8217;une valeur contenue dans un cookie.</p>
+<p>Implémentez la page et testez l&#8217;application.</p>
 </div>
 <div class="paragraph">
 <p>Déployer et vérifier que l&#8217;application fonctionne.</p>
@@ -701,85 +676,13 @@ telle application.</p>
 </div>
 <div class="paragraph">
 <p>Ce compteur doit compter uniquement le nombre d&#8217;affichages particulier à chaque session. Par exemple, si
-votre utilisateur ouvre un onglet avec navigation privée, le compteur doit recommencer de zéro.</p>
+votre utilisateur ouvre un onglet avec navigation privée, le compteur doit repartir de zéro.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</h3>
 <div class="paragraph">
-<p>Expliquez le mécanisme associé aux sessions (c&#8217;est un mécanisme assez universel, identique à celui de PHP par exemple).</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exercice_3_utilisation_de_maven_pour_construire_le_fichier_war">Exercice 3 : utilisation de Maven pour construire le fichier <code>.war</code></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_télécharger_maven">Télécharger Maven</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Dans google : "Apache Maven"</p>
-</li>
-<li>
-<p>Cliquer sur 'Download'</p>
-</li>
-<li>
-<p>Cliquer sur le lien suggéré</p>
-</li>
-<li>
-<p>Choisir le répertoire <code>maven/maven-3/3.5.3/binaries/</code></p>
-</li>
-<li>
-<p>Télécharger le fichier <code>apache-maven-3.5.3-bin.zip</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_extraire_maven">Extraire Maven</h3>
-<div class="paragraph">
-<p>Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n&#8217;utilisez pas le répertoire <code>Program Files</code>).</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_installation">Installation</h3>
-<div class="paragraph">
-<p>Ajouter le répertoire <code>VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin</code> dans la variable d&#8217;environnement <code>PATH</code>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
-<div class="paragraph">
-<p>Télécharger <a href="http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip" class="bare">http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip</a></p>
-</div>
-<div class="paragraph">
-<p>Intégrez votre travail de l&#8217;exercice précédent dans ce squelette. Vous pouvez également continuer votre travail précédent en intégrant le <code>pom.xml</code> du squelette.</p>
-</div>
-<div class="paragraph">
-<p>Aller dans le répertoire d&#8217;extraction</p>
-</div>
-<div class="paragraph">
-<p>Taper <code>mvn install</code></p>
-</div>
-<div class="paragraph">
-<p>Normalement il télécharge plein de choses (la première fois), puis il finit par un message <em>success</em>.</p>
-</div>
-<div class="paragraph">
-<p>Déployer le fichier <em>war</em> que vous trouvez dans le sous répertoire <code>target</code> dans votre serveur Tomcat.</p>
-</div>
-<div class="paragraph">
-<p>Accéder à l&#8217;application avec votre navigateur.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_importation_du_projet_maven_dans_eclipse">Importation du projet Maven dans Eclipse</h3>
-<div class="paragraph">
-<p>Dans Eclipse, menu <code>File</code>, <code>Import&#8230;&#8203;</code>, dans la zone de filtre taper <code>maven</code>, <code>Existing Maven Project</code>, <code>Next</code>.</p>
-</div>
-<div class="paragraph">
-<p>Choisir le répertoire du projet (celui dans lequel on trouve le fichier <code>pom.xml</code>).</p>
+<p>Expliquez le mécanisme associé aux sessions (c&#8217;est un mécanisme universel que vous retrouverez partout, identique à celui de PHP par exemple).</p>
 </div>
 </div>
 <div class="sect2">
@@ -790,7 +693,7 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 <div class="ulist">
 <ul>
 <li>
-<p>coder dans Eclipse, sauvegarder</p>
+<p>coder dans Eclipse ou autre éditeur/IDE, sauvegarder</p>
 </li>
 <li>
 <p>en ligne de commande dans le projet : <code>mvn install</code></p>
@@ -800,6 +703,25 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 </li>
 <li>
 <p>actualisation dans le navigateur</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_automatisation">Automatisation</h3>
+<div class="paragraph">
+<p>Maintenant écrivez des scripts pour ne pas avoir à retaper les tâches manuelles répétitives (qui sont d&#8217;ailleurs très souvent source d&#8217;erreur).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>construction du war (simple appel à <code>mvn install</code>)</p>
+</li>
+<li>
+<p>copie du war dans le répertoire de Tomcat</p>
+</li>
+<li>
+<p>lancement de Tomcat.</p>
 </li>
 </ul>
 </div>
@@ -823,13 +745,16 @@ votre utilisateur ouvre un onglet avec navigation privée, le compteur doit reco
 <li>
 <p>Montée en charge (ok, si on peut fixer le nombre d&#8217;utilisateurs à l&#8217;avance).</p>
 </li>
+<li>
+<p>et bien d&#8217;autres, lesquels ?</p>
+</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exercice_4_déployer_lapplication_sur_deux_tomcat_avec_load_balancing">Exercice 4 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
+<h2 id="_exercice_2_déployer_lapplication_sur_deux_tomcat_avec_load_balancing">Exercice 2 : déployer l&#8217;application sur deux Tomcat avec load balancing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Nous allons voir par la pratique comment les différentes façons de déployer notre application en cluster
@@ -1884,7 +1809,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-18 12:37:42 +0200
+Last updated 2020-05-18 16:02:34 +0200
 </div>
 </div>
 </body>

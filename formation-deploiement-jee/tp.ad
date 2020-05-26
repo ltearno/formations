@@ -4,25 +4,23 @@
 :toc: macro
 :toc-title: Plan des exercices
 
-IUT Blagnac LP APSIO - 2019 - LTE Consulting
+IUT Blagnac LP APSIO - 2020 - LTE Consulting
 
 Exercices liés au déploiement d'application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
 
 toc::[]
 
+////
 Ce cours est open source et est disponible en ligne :
 
 - QCM de validation : https://docs.google.com/forms/d/e/1FAIpQLSdTEX66_9kIJtjgRwegxnzWVMZBvbfnjt0KQVHuTTgeZ4QfhA/viewform?usp=pp_url
 
 - cours en ligne : http://lteconsulting.fr/javaee-deploiement/
 - exercices en ligne : http://lteconsulting.fr/javaee-deploiement/tp.html
+////
 
 == Exercice : création d'une application Java EE très simple
-
-=== Télécharger Tomcat
-
-Télécharger Tomcat en version 8.5 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
 
 === Outils de développement
 
@@ -30,15 +28,20 @@ Vous pouvez utiliser les outils de votre choix (IDE comme Eclipse, IntelliJ, VSC
 
 Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.
 
+Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l'IDE dans ces exercices.
+
+=== Télécharger Tomcat
+
+Télécharger Tomcat en version 8.5.55 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
+
+Lien : https://tomcat.apache.org/download-80.cgi (distribution binaire, core)
+
 === Télécharger Maven
 
 Maven sera utilisé pour construire le fichier `.war` qui sera ensuite déployé dans Tomcat.
 
-- Dans google : "Apache Maven"
-- Cliquer sur 'Download'
-- Cliquer sur le lien suggéré
-- Choisir le répertoire `maven/maven-3/3.5.3/binaries/`
-- Télécharger le fichier `apache-maven-3.5.3-bin.zip`
+- Lien : https://maven.apache.org/download.cgi
+- Télécharger le fichier `apache-maven-3.6.3-bin.zip` (ou `.tar.gz`)
 
 === Extraire Maven et son installation
 
@@ -46,9 +49,11 @@ Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n'util
 
 Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la variable d'environnement `PATH`.
 
+Pour vérifier, vous devez pouvoir lancer `mvn -v`, maven imprimera sa version à l'écran.
+
 === Compilation du squelette de projet Java EE Maven
 
-Télécharger http://lteconsulting.fr/formations/deploiement-jee/squelette-tp.zip c'est un squelette de projet de type _hello world_.
+Télécharger https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip c'est un squelette de projet de type _hello world_.
 
 Aller dans le répertoire d'extraction
 
@@ -59,22 +64,24 @@ Normalement il télécharge plein de choses (la première fois), puis il finit p
 Maven a construit le fichier `.war` contenant toutes les informations dont Tomcat a besoin pour exécuter notre application. Ce fichier `.war` se trouve 
 dans le sous répertoire `target`.
 
-== Déploiement de l'application dans Tomcat
+=== Déploiement de l'application dans Tomcat
 
-Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `.war` dans 
+Pour déployer l'application dans le serveur Tomcat, vous copiez le fichier `target/tp-deploiement-1.0-SNAPSHOT.war` dans 
 le sous-répertoire `webapps` de l'installation de Tomcat, que l'on appelle également le répertoire de déploiement.
 
 A chaque fois que vous copierez une nouvelle version du `war` dans le répertoire de 
 déploiement de Tomcat, celui-ci relance l'application (c'est le comportement par défaut, il est configurable).
 
-== Lancement de Tomcat
+=== Lancement de Tomcat
 
 Lancez Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
 version Windows Batch (`.bat`)).
 
-== Accéder à l'application avec votre navigateur.
+Le programme indique que Tomcat est lancé. Par défaut il répondra avec le protocole HTTP sur le port 8080.
 
-Vous devez pouvoir accéder à l'adresse `http://localhost:8080/NOM_DE_VOTRE_APPLICATION}` dans un navigateur.
+=== Accéder à l'application avec votre navigateur.
+
+Vous devez pouvoir accéder à l'adresse `http://localhost:8080/tp-deploiement-1.0-SNAPSHOT/` dans un navigateur.
 
 Normalement, la page s'affichant dans le navigateur correspond à l'exécution du fichier `index.jsp`.
 
@@ -144,7 +151,7 @@ Expliquez le mécanisme associé aux sessions (c'est un mécanisme universel que
 - copie du `target/XXXX.war` dans le répertoire de déploiement de Tomcat
 - actualisation dans le navigateur
 
-== Automatisation
+=== Automatisation
 
 Maintenant écrivez des scripts pour ne pas avoir à retaper les tâches manuelles répétitives (qui sont d'ailleurs très souvent source d'erreur).
 

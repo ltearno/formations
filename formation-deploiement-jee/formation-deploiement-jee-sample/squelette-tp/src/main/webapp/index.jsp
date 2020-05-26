@@ -10,5 +10,7 @@
 	Coucou il est <%= new java.util.Date() %>
 	<br/>
 	Le répertoire de déploiement est <%= System.getProperty("catalina.base") %>
+
+	<%= request.getSession().getId() %>
 </body>
 </html>
