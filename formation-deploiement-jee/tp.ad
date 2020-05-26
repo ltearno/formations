@@ -407,6 +407,11 @@ Sous Windows, on peut utiliser PhpMyAdmin pour exécuter des instructions SQL. P
 
 Créez un utilisateur `tomcat` dans le serveur MySQL. Cet utilisateur sera utilisé pour connecter le serveur Tomcat à la base de données.
 
+
+////
+TODO: Ajouter un mot de passe
+////
+
 ===== Création de la base de données des sessions
 
 ----
@@ -475,6 +480,10 @@ Voici le contenu de ce fichier :
 <3> utilisation du stockage par JDBC (implémentation de `org.apache.catalina.Store`)
 <4> url JDBC de connexion à la bdd des sessions
 <5> nom de la table utilisée pour le stockage les sessions
+
+////
+TODO: Utiliser le mot de passe dans la connexion JDBC et non pas le user root
+////
 
 Construire le projet (`mvn install` avec Maven, ou exporter un WAR avec Eclipse) et le déployer sur les deux Tomcats. Vérifier que Nginx est toujours actif.
 
