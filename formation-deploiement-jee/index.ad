@@ -154,6 +154,14 @@ La norme Java EE est implémentée par des fournisseurs apportant leurs spécifi
 
 === Le modèle mémoire de Java EE
 
+Trois niveaux logiques de persistence d'information (portée) :
+
+- durée de traitement d'une requête,
+- une session,
+- toute la vie de l'application.
+
+=== Le modèle mémoire de Java EE
+
 Trois niveau de mémoire :
 
 - les objets du serveur,
@@ -364,7 +372,5 @@ Lean software dev, continuous delivery, A/B testing, Blue Green Deployment, Cana
 Twitter : `@ltearno`
 
 email : `ltearno@gmail.com`
-
-LTE Consulting : http://www.lteconsulting.fr[lteconsulting.fr]
 
 LinkedIn : https://fr.linkedin.com/in/lteconsulting[fr.linkedin.com/in/lteconsulting]
