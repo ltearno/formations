@@ -152,7 +152,7 @@ La norme Java EE est implémentée par des fournisseurs apportant leurs spécifi
 - Configuration avancée,
 - Gestion d'un cluster.
 
-=== Le modèle mémoire de Java EE
+=== Le modèle mémoire de Java EE (1)
 
 Trois niveaux logiques de persistence d'information (portée) :
 
@@ -160,7 +160,7 @@ Trois niveaux logiques de persistence d'information (portée) :
 - une session,
 - toute la vie de l'application.
 
-=== Le modèle mémoire de Java EE
+=== Le modèle mémoire de Java EE (2)
 
 Trois niveau de mémoire :
 
