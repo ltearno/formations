@@ -1,6 +1,6 @@
 = Kubernetes
-:author: Arnaud Tournier - @ltearno - Stack Labs - 2020 - Toulouse
-:email: arnaud.tournier@stack-labs.com
+:author: Arnaud Tournier - @ltearno - Rezilio - 2020 - Toulouse
+:email: ltearno@gmail.com
 :backend: revealjs
 :imagesdir: images
 :revealjs_theme: white
@@ -21,13 +21,13 @@
 
 == Arnaud Tournier
 
-Directeur R&D chez Stack Labs, fondateur de LTE Consulting
+Fondateur de Rezilio, ex-directeur R&D Stack Labs, LTE Consulting
 
-Email: arnaud.tournier@stack-labs.com
+Email: ltearno@gmail.com
 
 Twitter: https://twitter.com/ltearno[@ltearno]
 
-Web: http://www.stack-labs.com[stack-labs.com]
+Web: http://www.rezil.io[rezil.io]
 
 Speaker à Java One, Devoxx, GDG, JUG, GWTCon...
 
