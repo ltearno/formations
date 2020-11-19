@@ -1,14 +1,14 @@
 #!/bin/bash
 
-curl http://localhost:8080/toto &
+curl http://localhost/toto &
 sleep 1
-curl http://localhost:8080/toto &
+curl http://localhost/toto &
 sleep 1
-curl http://localhost:8080/toto &
+curl http://localhost/toto &
 sleep 1
-curl http://localhost:8080/toto &
+curl http://localhost/toto &
 sleep 1
-curl http://localhost:8080/toto &
+curl http://localhost/toto &
 sleep 1
 
-curl http://localhost:8080/stop
+#curl http://localhost/stop

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: tp-kubernetes:1.1
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 1
+          periodSeconds: 3
+          httpGet:
+            path: /health
+            port: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - "curl"
+                - "http://localhost:8080/stop"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: web-server
+  type: LoadBalancer
