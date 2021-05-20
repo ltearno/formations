@@ -1,4 +1,6 @@
 #!/bin/bash
 
-asciidoctor -T asciidoctor-reveal.js/templates/slim index.ad
-asciidoctor tp.ad
+# sudo gem install tilt slim concurrent-ruby
+
+asciidoctor -T asciidoctor-reveal.js/templates/slim index.ad -o index.html
+asciidoctor tp.ad -o tp.html
