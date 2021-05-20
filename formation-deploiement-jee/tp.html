@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>IUT Blagnac LP APSIO - 2020 - LTE Consulting</p>
+<p>IUT Blagnac LP APSIO - 2021 - LTE Consulting</p>
 </div>
 <div class="paragraph">
 <p>Exercices liés au déploiement d&#8217;application Java EE.
@@ -469,6 +469,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_lancement_de_tomcat">Lancement de Tomcat</a></li>
 <li><a href="#_accéder_à_lapplication_avec_votre_navigateur">Accéder à l&#8217;application avec votre navigateur.</a></li>
 <li><a href="#_une_application_à_état_simple">Une application à état (simple)</a></li>
+<li><a href="#_comment_effacer_les_cookies">Comment effacer les cookies ?</a></li>
 <li><a href="#_ajout_dun_compteur">Ajout d&#8217;un compteur</a></li>
 <li><a href="#_comment_fonctionne_le_principe_de_session">Comment fonctionne le principe de session ?</a></li>
 <li><a href="#_cycle_de_développement">Cycle de développement</a></li>
@@ -537,7 +538,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <p>Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.</p>
 </div>
 <div class="paragraph">
-<p>Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l&#8217;IDE dans ces exercices.</p>
+<p>Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l&#8217;IDE dans ces exercices. Nous allons tout faire en ligne de commande.</p>
 </div>
 </div>
 <div class="sect2">
@@ -546,7 +547,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <p>Télécharger Tomcat en version 8.5.55 et l&#8217;extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d&#8217;espace).</p>
 </div>
 <div class="paragraph">
-<p>Lien : <a href="https://tomcat.apache.org/download-80.cgi" class="bare">https://tomcat.apache.org/download-80.cgi</a> (distribution binaire, core)</p>
+<p>Lien : <a href="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz" class="bare">https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz</a> (il existe aussi en zip)</p>
 </div>
 </div>
 <div class="sect2">
@@ -560,7 +561,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <p>Lien : <a href="https://maven.apache.org/download.cgi" class="bare">https://maven.apache.org/download.cgi</a></p>
 </li>
 <li>
-<p>Télécharger le fichier <code>apache-maven-3.6.3-bin.zip</code> (ou <code>.tar.gz</code>)</p>
+<p>Télécharger le fichier <code>apache-maven-3.8.1-bin.zip</code> (ou <code>.tar.gz</code>)</p>
 </li>
 </ul>
 </div>
@@ -574,13 +575,23 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <p>Ajouter le répertoire <code>VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin</code> dans la variable d&#8217;environnement <code>PATH</code>.</p>
 </div>
 <div class="paragraph">
-<p>Pour vérifier, vous devez pouvoir lancer <code>mvn -v</code>, maven imprimera sa version à l&#8217;écran.</p>
+<p>Pour vérifier, vous devez pouvoir lancer <code>mvn -v</code>, maven imprimera sa version à l&#8217;écran, comme ceci :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ mvn -v
+Apache Maven 3.8.1 (05c21c65bdfed0f71a2f2ada8b84da59348c4c5d)
+Maven home: /.../formation-deploiement-jee/tp/etape-01/apache-maven-3.8.1
+Java version: 11.0.11, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: fr_FR, platform encoding: UTF-8
+OS name: "linux", version: "5.8.0-53-generic", arch: "amd64", family: "unix"</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
 <div class="paragraph">
-<p>Télécharger <a href="https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip" class="bare">https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip</a> c&#8217;est un squelette de projet de type <em>hello world</em>.</p>
+<p>Télécharger <a href="http://rezil.io:8080/squelette-tp.zip" class="bare">http://rezil.io:8080/squelette-tp.zip</a> c&#8217;est un squelette de projet de type <em>hello world</em>.</p>
 </div>
 <div class="paragraph">
 <p>Aller dans le répertoire d&#8217;extraction</p>
@@ -610,7 +621,7 @@ déploiement de Tomcat, celui-ci relance l&#8217;application (c&#8217;est le com
 <div class="sect2">
 <h3 id="_lancement_de_tomcat">Lancement de Tomcat</h3>
 <div class="paragraph">
-<p>Lancez Tomcat avec le script <code>bin/startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la
+<p>Lancez Tomcat depuis le répertoire <code>bin/</code> de Tomcat avec le script <code>startup.sh</code> (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la
 version Windows Batch (<code>.bat</code>)).</p>
 </div>
 <div class="paragraph">
@@ -636,21 +647,42 @@ Cette information nous sera utile quand nous déploierons de multiples instances
 <div class="sect2">
 <h3 id="_une_application_à_état_simple">Une application à état (simple)</h3>
 <div class="paragraph">
-<p>Une application a très souvent besoin de stocker en plus de son état global l&#8217;état conversationnel http entre elle et chacun de ses clients : c&#8217;est la <strong>session</strong>.
-Il s&#8217;agit souvent de l'<em>utilisateur connecté</em> ou encore du <em>panier</em>
-dans le cas d&#8217;un site de commerce.</p>
+<p>Maintenant, c&#8217;est à vous de continuer le développement en codant !</p>
 </div>
 <div class="paragraph">
-<p>Bref, il s&#8217;agit d&#8217;une information contextuelle liée à l&#8217;utilisateur et stockée par le serveur.</p>
+<p>Nous allons introduire un état conversationnel entre l&#8217;utilisateur et l&#8217;application, de façon à pouvoir étudier ensuite ce qu&#8217;il se
+produira lorsque nous voudrons ajouter des fonctionalités d&#8217;élasticité et de haute disponibilité à celle-ci.</p>
 </div>
 <div class="paragraph">
-<p>Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
+<p>Une application, même des plus simple, a très souvent besoin de stocker l&#8217;état conversationnel entre elle et chacun de ses clients : c&#8217;est ce que l&#8217;on nomme en général la <strong>session</strong>.
+Il s&#8217;agit souvent de l'<em>utilisateur connecté</em> ou encore du <em>panier d&#8217;achats</em> dans le cas d&#8217;un site de commerce.</p>
+</div>
+<div class="paragraph">
+<p>La façon la plus courante d&#8217;implémenter ce mécanisme fait appel aux cookies et à un espace mémoire dans l&#8217;application. Lorsque le navigateur fait sa première requête au serveur, celui-ci
+ajoute dans sa réponse http un header spécial <code>Set-Cookie</code> contenant une valeur aléatoire générée par l&#8217;application et seulement connue d&#8217;elle. L&#8217;application stocke ensuite dans une mémoire
+associative (hash map ou table sql par exemple) l&#8217;association entre le nombre aléatoire et les informations de sessions, qui seront mises à jour au fur et à mesure du dialogue avec l&#8217;utilisateur.</p>
+</div>
+<div class="paragraph">
+<p>Le protocole http stipule que le navigateur doit à partir de ce moment, toujours inclure ce <em>cookie</em> dans les requêtes qu&#8217;il envoie à notre serveur (il fait cela en ajoutant aux requêtes un header <code>Cookie</code> correspondant). Ainsi dans le traitement des requêtes
+suivantes, le serveur peut retrouver dans la mémoire associative les données associées à son dialogue avec l&#8217;utilisateur.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est ainsi que l&#8217;application peut faire le lien entre les différentes requêtes d&#8217;un utilisateur, et se souvenir par exemple, qu&#8217;il est correctement authentifié ou pas. Sans ce mécanisme, il faudrait
+resaisir son login et mot de passe à chaque requête ! Il est assez sécurisé car le nombre étant aléatoire et secret, il sera impossible à deviner par un attaquant (pourvu qu&#8217;il soit grand,
+vraiment aléatoire et qu&#8217;on protège notre application par du <em>rate limiting</em>).</p>
+</div>
+<div class="paragraph">
+<p>La norme Java EE fournit un mécanisme de HttpSession fonctionnant de cette façon (vous pouvez voir le cookie <code>JSESSIONID</code> dans les requêtes de votre navigateur vers des applications servies par Tomcat).
+Nous allons dans l&#8217;exercice suivant utiliser ces fonctionalités offertes, mais aussi manipuler nous-mêmes un cookie, de façon à bien comprendre le mécanisme.</p>
+</div>
+<div class="paragraph">
+<p>Notons au passage que par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.</p>
 </div>
 <div class="paragraph">
 <p>Nous allons introduire un état dans l&#8217;application en utilisant la session utilisateur et un cookie.</p>
 </div>
 <div class="paragraph">
-<p>Cependant afin de nous concentrer sur les notions qui nous interressents, l&#8217;application restera extrêmement simple, avec une seule page qui affiche :</p>
+<p>Notre application restera extrêmement simple, afin de nous concentrer sur les notions qui nous interressent. Elle ne contiendra qu&#8217;une seule page qui affiche :</p>
 </div>
 <div class="ulist">
 <ul>
@@ -661,26 +693,40 @@ dans le cas d&#8217;un site de commerce.</p>
 <p>le répertoire de déploiement de l&#8217;instance Tomcat (obtenu grâce à <code>System.getProperty("catalina.base")</code>),</p>
 </li>
 <li>
-<p>l&#8217;identifiant de session (<code>session.getId()</code>),</p>
+<p>l&#8217;identifiant de session (<code>session.getId()</code>, <code>session</code> étant obtenu à partir de l&#8217;objet <code>HttpRequest</code> venant du serveur d&#8217;application),</p>
+</li>
+<li>
+<p>une chaine de caractère provenant du cookie <code>MONCOOKIE</code> que l&#8217;on trouve dans la requête HttpRequest du client. Si le client n&#8217;apporte pas de cookie, l&#8217;application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie <code>MONCOOKIE</code> (on utilisera <code>response.setCookie(&#8230;&#8203;)</code>).</p>
 </li>
 <li>
 <p>une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d&#8217;une session,</p>
 </li>
-<li>
-<p>une chaine de caractère provenant du cookie <code>MONCOOKIE</code> apporté par le client. Si le client n&#8217;apporte pas de cookie, l&#8217;application devra générer une chaine aléatoire et la retourner au client comme cookie <code>MONCOOKIE</code>.</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Implémentez la page et testez l&#8217;application.</p>
+<p>Implémentez la page en modifiant le fichier <code>index.jsp</code> du projet squelette (si vous partez du projet squelette, mais ce n&#8217;est pas obligatoire). Vous pouvez bien sûr ajouter vos propres classes, faites comme vous l&#8217;entendez.</p>
 </div>
 <div class="paragraph">
-<p>Déployer et vérifier que l&#8217;application fonctionne.</p>
+<p>Déployez et vérifiez que l&#8217;application fonctionne.</p>
 </div>
 <div class="paragraph">
 <p>A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est
-valorisée et stable au fur et à mesure des rafraichissements. C&#8217;est le comportement attendu d&#8217;une
-telle application.</p>
+valorisée et stable au fur et à mesure des rafraichissements. Il en va de même pour la valeur issue du cookie.
+C&#8217;est le comportement attendu d&#8217;une telle application.</p>
+</div>
+<div class="paragraph">
+<p>Voici un exemple de rendu :</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tp-etape-01.png" alt="tp etape 01">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comment_effacer_les_cookies">Comment effacer les cookies ?</h3>
+<div class="paragraph">
+<p>Pour repartir de zéro sans cookie et un session vide, il suffit de supprimer tous les cookies associés à <code>localhost</code> dans votre navigateur, avec les outils de développement.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1940,7 +1986,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-06 06:52:39 +0100
+Last updated 2021-05-20 13:53:36 +0200
 </div>
 </div>
 </body>

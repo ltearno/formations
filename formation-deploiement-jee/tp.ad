@@ -3,8 +3,9 @@
 :email: ltearno@gmail.com
 :toc: macro
 :toc-title: Plan des exercices
+:imagesdir: images
 
-IUT Blagnac LP APSIO - 2020 - LTE Consulting
+IUT Blagnac LP APSIO - 2021 - LTE Consulting
 
 Exercices liés au déploiement d'application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
@@ -28,20 +29,20 @@ Vous pouvez utiliser les outils de votre choix (IDE comme Eclipse, IntelliJ, VSC
 
 Si vous choisissez Eclipse, optez pour la variante "Java EE" de façon à profiter des outils Java EE dédiés.
 
-Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l'IDE dans ces exercices.
+Cependant, comme nous nous interressons aux tâches de CI (continuous integration) exécutées par des serveurs, nous ne focalisons pas sur l'IDE dans ces exercices. Nous allons tout faire en ligne de commande.
 
 === Télécharger Tomcat
 
 Télécharger Tomcat en version 8.5.55 et l'extraire dans un répertoire (faites attention à ce que le chemin du répertoire de tomcat ne contienne pas d'espace).
 
-Lien : https://tomcat.apache.org/download-80.cgi (distribution binaire, core)
+Lien : https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz (il existe aussi en zip)
 
 === Télécharger Maven
 
 Maven sera utilisé pour construire le fichier `.war` qui sera ensuite déployé dans Tomcat.
 
 - Lien : https://maven.apache.org/download.cgi
-- Télécharger le fichier `apache-maven-3.6.3-bin.zip` (ou `.tar.gz`)
+- Télécharger le fichier `apache-maven-3.8.1-bin.zip` (ou `.tar.gz`)
 
 === Extraire Maven et son installation
 
@@ -49,11 +50,20 @@ Extraire le fichier zip dans un répertoire de votre choix (sous Windows, n'util
 
 Ajouter le répertoire `VOTRE_REPERTOIRE/apache-maven-3.5.3-bin/bin` dans la variable d'environnement `PATH`.
 
-Pour vérifier, vous devez pouvoir lancer `mvn -v`, maven imprimera sa version à l'écran.
+Pour vérifier, vous devez pouvoir lancer `mvn -v`, maven imprimera sa version à l'écran, comme ceci :
+
+```bash
+$ mvn -v
+Apache Maven 3.8.1 (05c21c65bdfed0f71a2f2ada8b84da59348c4c5d)
+Maven home: /.../formation-deploiement-jee/tp/etape-01/apache-maven-3.8.1
+Java version: 11.0.11, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: fr_FR, platform encoding: UTF-8
+OS name: "linux", version: "5.8.0-53-generic", arch: "amd64", family: "unix"
+```
 
 === Compilation du squelette de projet Java EE Maven
 
-Télécharger https://home.lteconsulting.fr/public/deploiement-jee/squelette-tp.zip c'est un squelette de projet de type _hello world_.
+Télécharger http://rezil.io:8080/squelette-tp.zip c'est un squelette de projet de type _hello world_.
 
 Aller dans le répertoire d'extraction
 
@@ -74,7 +84,7 @@ déploiement de Tomcat, celui-ci relance l'application (c'est le comportement pa
 
 === Lancement de Tomcat
 
-Lancez Tomcat avec le script `bin/startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
+Lancez Tomcat depuis le répertoire `bin/` de Tomcat avec le script `startup.sh` (si vous êtes dans un bash CygWIN ou MinGW, sinon utilisez la 
 version Windows Batch (`.bat`)).
 
 Le programme indique que Tomcat est lancé. Par défaut il répondra avec le protocole HTTP sur le port 8080.
@@ -92,42 +102,58 @@ Cette information nous sera utile quand nous déploierons de multiples instances
 
 === Une application à état (simple)
 
-Une application a très souvent besoin de stocker en plus de son état global l'état conversationnel http entre elle et chacun de ses clients : c'est la **session**. 
-Il s'agit souvent de l'_utilisateur connecté_ ou encore du _panier_ 
-dans le cas d'un site de commerce.
+Maintenant, c'est à vous de continuer le développement en codant !
 
-Bref, il s'agit d'une information contextuelle liée à l'utilisateur et stockée par le serveur.
+Nous allons introduire un état conversationnel entre l'utilisateur et l'application, de façon à pouvoir étudier ensuite ce qu'il se
+produira lorsque nous voudrons ajouter des fonctionalités d'élasticité et de haute disponibilité à celle-ci.
 
-Par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.
+Une application, même des plus simple, a très souvent besoin de stocker l'état conversationnel entre elle et chacun de ses clients : c'est ce que l'on nomme en général la **session**.
+Il s'agit souvent de l'_utilisateur connecté_ ou encore du _panier d'achats_ dans le cas d'un site de commerce.
+
+La façon la plus courante d'implémenter ce mécanisme fait appel aux cookies et à un espace mémoire dans l'application. Lorsque le navigateur fait sa première requête au serveur, celui-ci
+ajoute dans sa réponse http un header spécial `Set-Cookie` contenant une valeur aléatoire générée par l'application et seulement connue d'elle. L'application stocke ensuite dans une mémoire
+associative (hash map ou table sql par exemple) l'association entre le nombre aléatoire et les informations de sessions, qui seront mises à jour au fur et à mesure du dialogue avec l'utilisateur.
+
+Le protocole http stipule que le navigateur doit à partir de ce moment, toujours inclure ce _cookie_ dans les requêtes qu'il envoie à notre serveur (il fait cela en ajoutant aux requêtes un header `Cookie` correspondant). Ainsi dans le traitement des requêtes
+suivantes, le serveur peut retrouver dans la mémoire associative les données associées à son dialogue avec l'utilisateur.
+
+C'est ainsi que l'application peut faire le lien entre les différentes requêtes d'un utilisateur, et se souvenir par exemple, qu'il est correctement authentifié ou pas. Sans ce mécanisme, il faudrait
+resaisir son login et mot de passe à chaque requête ! Il est assez sécurisé car le nombre étant aléatoire et secret, il sera impossible à deviner par un attaquant (pourvu qu'il soit grand, 
+vraiment aléatoire et qu'on protège notre application par du _rate limiting_).
+
+
+La norme Java EE fournit un mécanisme de HttpSession fonctionnant de cette façon (vous pouvez voir le cookie `JSESSIONID` dans les requêtes de votre navigateur vers des applications servies par Tomcat).
+Nous allons dans l'exercice suivant utiliser ces fonctionalités offertes, mais aussi manipuler nous-mêmes un cookie, de façon à bien comprendre le mécanisme.
+
+Notons au passage que par défaut, Tomcat stocke les données de session en mémoire vive et les vide sur disque en cas de plantage.
 
 Nous allons introduire un état dans l'application en utilisant la session utilisateur et un cookie.
 
-Cependant afin de nous concentrer sur les notions qui nous interressents, l'application restera extrêmement simple, avec une seule page qui affiche :
+Notre application restera extrêmement simple, afin de nous concentrer sur les notions qui nous interressent. Elle ne contiendra qu'une seule page qui affiche :
 
 - l'identifiant technique du serveur (obtenu avec la méthode `ManagementFactory.getRuntimeMXBean().getName()`),
 - le répertoire de déploiement de l'instance Tomcat (obtenu grâce à `System.getProperty("catalina.base")`),
-- l'identifiant de session (`session.getId()`),
+- l'identifiant de session (`session.getId()`, `session` étant obtenu à partir de l'objet `HttpRequest` venant du serveur d'application),
+- une chaine de caractère provenant du cookie `MONCOOKIE` que l'on trouve dans la requête HttpRequest du client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie `MONCOOKIE` (on utilisera `response.setCookie(...)`).
 - une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d'une session,
-- une chaine de caractère provenant du cookie `MONCOOKIE` apporté par le client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et la retourner au client comme cookie `MONCOOKIE`.
 
-Implémentez la page et testez l'application.
+Implémentez la page en modifiant le fichier `index.jsp` du projet squelette (si vous partez du projet squelette, mais ce n'est pas obligatoire). Vous pouvez bien sûr ajouter vos propres classes, faites comme vous l'entendez.
 
-
-
-
-
-
-
-Déployer et vérifier que l'application fonctionne.
+Déployez et vérifiez que l'application fonctionne.
 
 A la première connexion la page doit afficher une valeur de session nulle, puis cette valeur est 
-valorisée et stable au fur et à mesure des rafraichissements. C'est le comportement attendu d'une
-telle application.
+valorisée et stable au fur et à mesure des rafraichissements. Il en va de même pour la valeur issue du cookie.
+C'est le comportement attendu d'une telle application.
 
 
+Voici un exemple de rendu :
+
+image::tp-etape-01.png[]
 
 
+=== Comment effacer les cookies ?
 
+Pour repartir de zéro sans cookie et un session vide, il suffit de supprimer tous les cookies associés à `localhost` dans votre navigateur, avec les outils de développement.
 
 === Ajout d'un compteur
 

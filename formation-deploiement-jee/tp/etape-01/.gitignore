@@ -1,0 +1,5 @@
+apache-maven-3.8.1/
+apache-tomcat-8.5.55/
+squelette-tp/target/
+*.zip
+*.tar.gz
