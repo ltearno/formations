@@ -34,9 +34,9 @@ Full stack (x86_64 to JavaScript)
 
 === URLs
 
-http://lteconsulting.fr/formations/deploiement-jee/[lteconsulting.fr/formations/deploiement-jee/]
+http://rezil.io:8080[rezil.io:8080]
 
-TP : http://lteconsulting.fr/formations/deploiement-jee/tp.html[lteconsulting.fr/formations/deploiement-jee/tp.html]
+TP : http://rezil.io:8080/tp.html[rezil.io:8080/tp.html]
 
 == Qu'est-ce que le déploiement ?
 
