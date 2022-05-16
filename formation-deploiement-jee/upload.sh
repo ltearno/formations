@@ -1,3 +1,3 @@
 #!/bin/sh
 
-scp *.html arnaud@lteconsulting.fr:/var/www/lteconsulting.mano/formations/deploiement-jee/
+scp *.html arnaud@rezil.io:/var/www/html/javaee/
