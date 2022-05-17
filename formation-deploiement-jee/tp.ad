@@ -5,7 +5,7 @@
 :toc-title: Plan des exercices
 :imagesdir: images
 
-IUT Blagnac LP APSIO - 2021 - LTE Consulting
+IUT Blagnac LP APSIO - 2022 - LTE Consulting
 
 Exercices liés au déploiement d'application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
@@ -17,8 +17,8 @@ Ce cours est open source et est disponible en ligne :
 
 - QCM de validation : https://docs.google.com/forms/d/e/1FAIpQLSdTEX66_9kIJtjgRwegxnzWVMZBvbfnjt0KQVHuTTgeZ4QfhA/viewform?usp=pp_url
 
-- cours en ligne : http://rezil.io:8080
-- exercices en ligne : http://rezil.io:8080/tp.html
+- cours en ligne : http://rezil.io/javaee/
+- exercices en ligne : http://rezil.io/javaee/tp.html
 ////
 
 == Exercice 1 : création d'une application Java EE très simple
@@ -63,7 +63,7 @@ OS name: "linux", version: "5.8.0-53-generic", arch: "amd64", family: "unix"
 
 === Compilation du squelette de projet Java EE Maven
 
-Télécharger http://rezil.io:8080/squelette-tp.zip c'est un squelette de projet de type _hello world_.
+Télécharger http://rezil.io/javaee/squelette-tp.zip c'est un squelette de projet de type _hello world_.
 
 Aller dans le répertoire d'extraction
 
@@ -131,10 +131,10 @@ Nous allons introduire un état dans l'application en utilisant la session utili
 
 Notre application restera extrêmement simple, afin de nous concentrer sur les notions qui nous interressent. Elle ne contiendra qu'une seule page qui affiche :
 
-- l'identifiant technique du serveur (obtenu avec la méthode `ManagementFactory.getRuntimeMXBean().getName()`),
+- l'identifiant technique du serveur (obtenu avec la méthode `java.lang.management.ManagementFactory.getRuntimeMXBean().getName()`),
 - le répertoire de déploiement de l'instance Tomcat (obtenu grâce à `System.getProperty("catalina.base")`),
 - l'identifiant de session (`session.getId()`, `session` étant obtenu à partir de l'objet `HttpRequest` venant du serveur d'application),
-- une chaine de caractère provenant du cookie `MONCOOKIE` que l'on trouve dans la requête HttpRequest du client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie `MONCOOKIE` (on utilisera `response.setCookie(...)`).
+- une chaine de caractère provenant du cookie `MONCOOKIE` que l'on trouve dans la requête HttpRequest du client. Si le client n'apporte pas de cookie, l'application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie `MONCOOKIE` (on utilisera `response.addCookie(...)`).
 - une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d'une session,
 
 Implémentez la page en modifiant le fichier `index.jsp` du projet squelette (si vous partez du projet squelette, mais ce n'est pas obligatoire). Vous pouvez bien sûr ajouter vos propres classes, faites comme vous l'entendez.
@@ -919,7 +919,7 @@ La somme de ces notes sera ramenée également à une note de 20. Le TP est donc
 
 Ne pas prendre en compte cette erreur, c'est juste Eclipse qui est à la rue !
 
-=== `JRE_HOME` / `JAVA_HOME` n'est pas défini
+=== `JAVA_HOME` n'est pas défini
 
 En ligne de commande, le démarrage de Tomcat échoue à cause de cette erreur.
 
@@ -929,7 +929,7 @@ d'installation de la version de Java à utiliser.
 Solution :
 
 - trouver le répertoire d'installation de Java (choisir un JDK et non un JRE) (sous Windows, c'est souvent : `C:\Program Files\Java\jdk1.8`)
-- alimenter laes variables d'environnement avec ce répertoire.
+- alimenter la variable d'environnement avec ce répertoire.
 
 ==== Sous Windows
 
@@ -937,5 +937,4 @@ Solution :
 - Choisir "Utilisateur" (bouton "Pour votre compte..."),
 - Choisir "Nouvelle ..."
 - Nom de la variable : `JAVA_HOME`, et comme valeur le chemin d'installation de Java
-- Faire pareil pour la variable `JRE_HOME`
-- A ce stde les variables sont positionnées, **MAIS** il faut redémarrer la console ligne de commande pour qu'elles soient prises en compte
+- A ce stade les variables sont positionnées, **MAIS** il faut redémarrer la console ligne de commande pour qu'elles soient prises en compte

@@ -449,7 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>IUT Blagnac LP APSIO - 2021 - LTE Consulting</p>
+<p>IUT Blagnac LP APSIO - 2022 - LTE Consulting</p>
 </div>
 <div class="paragraph">
 <p>Exercices liés au déploiement d&#8217;application Java EE.
@@ -519,7 +519,7 @@ Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fort
 <li><a href="#_troubleshooting_problèmes_courants">Troubleshooting / Problèmes courants</a>
 <ul class="sectlevel2">
 <li><a href="#_sous_eclipse_une_erreur_dans_un_fichier_jsp_javax_servlet_httpservletrequest_has_not_been_found_in_the_java_build_path">Sous Eclipse, une erreur dans un fichier .jsp : "javax.servlet.HttpServletRequest has not been found in the Java Build Path"</a></li>
-<li><a href="#_jre_home_java_home_nest_pas_défini"><code>JRE_HOME</code> / <code>JAVA_HOME</code> n&#8217;est pas défini</a></li>
+<li><a href="#_java_home_nest_pas_défini"><code>JAVA_HOME</code> n&#8217;est pas défini</a></li>
 </ul>
 </li>
 </ul>
@@ -591,7 +591,7 @@ OS name: "linux", version: "5.8.0-53-generic", arch: "amd64", family: "unix"</co
 <div class="sect2">
 <h3 id="_compilation_du_squelette_de_projet_java_ee_maven">Compilation du squelette de projet Java EE Maven</h3>
 <div class="paragraph">
-<p>Télécharger <a href="http://rezil.io:8080/squelette-tp.zip" class="bare">http://rezil.io:8080/squelette-tp.zip</a> c&#8217;est un squelette de projet de type <em>hello world</em>.</p>
+<p>Télécharger <a href="http://rezil.io/javaee/squelette-tp.zip" class="bare">http://rezil.io/javaee/squelette-tp.zip</a> c&#8217;est un squelette de projet de type <em>hello world</em>.</p>
 </div>
 <div class="paragraph">
 <p>Aller dans le répertoire d&#8217;extraction</p>
@@ -687,7 +687,7 @@ Nous allons dans l&#8217;exercice suivant utiliser ces fonctionalités offertes,
 <div class="ulist">
 <ul>
 <li>
-<p>l&#8217;identifiant technique du serveur (obtenu avec la méthode <code>ManagementFactory.getRuntimeMXBean().getName()</code>),</p>
+<p>l&#8217;identifiant technique du serveur (obtenu avec la méthode <code>java.lang.management.ManagementFactory.getRuntimeMXBean().getName()</code>),</p>
 </li>
 <li>
 <p>le répertoire de déploiement de l&#8217;instance Tomcat (obtenu grâce à <code>System.getProperty("catalina.base")</code>),</p>
@@ -696,7 +696,7 @@ Nous allons dans l&#8217;exercice suivant utiliser ces fonctionalités offertes,
 <p>l&#8217;identifiant de session (<code>session.getId()</code>, <code>session</code> étant obtenu à partir de l&#8217;objet <code>HttpRequest</code> venant du serveur d&#8217;application),</p>
 </li>
 <li>
-<p>une chaine de caractère provenant du cookie <code>MONCOOKIE</code> que l&#8217;on trouve dans la requête HttpRequest du client. Si le client n&#8217;apporte pas de cookie, l&#8217;application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie <code>MONCOOKIE</code> (on utilisera <code>response.setCookie(&#8230;&#8203;)</code>).</p>
+<p>une chaine de caractère provenant du cookie <code>MONCOOKIE</code> que l&#8217;on trouve dans la requête HttpRequest du client. Si le client n&#8217;apporte pas de cookie, l&#8217;application devra générer une chaine aléatoire et demander au navigateur de la stocker comme cookie <code>MONCOOKIE</code> (on utilisera <code>response.addCookie(&#8230;&#8203;)</code>).</p>
 </li>
 <li>
 <p>une chaine de caractère stockée dans la session et générée la première fois que la page est vue au cours d&#8217;une session,</p>
@@ -1934,7 +1934,7 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jre_home_java_home_nest_pas_défini"><code>JRE_HOME</code> / <code>JAVA_HOME</code> n&#8217;est pas défini</h3>
+<h3 id="_java_home_nest_pas_défini"><code>JAVA_HOME</code> n&#8217;est pas défini</h3>
 <div class="paragraph">
 <p>En ligne de commande, le démarrage de Tomcat échoue à cause de cette erreur.</p>
 </div>
@@ -1951,7 +1951,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 <p>trouver le répertoire d&#8217;installation de Java (choisir un JDK et non un JRE) (sous Windows, c&#8217;est souvent : <code>C:\Program Files\Java\jdk1.8</code>)</p>
 </li>
 <li>
-<p>alimenter laes variables d&#8217;environnement avec ce répertoire.</p>
+<p>alimenter la variable d&#8217;environnement avec ce répertoire.</p>
 </li>
 </ul>
 </div>
@@ -1972,10 +1972,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 <p>Nom de la variable : <code>JAVA_HOME</code>, et comme valeur le chemin d&#8217;installation de Java</p>
 </li>
 <li>
-<p>Faire pareil pour la variable <code>JRE_HOME</code></p>
-</li>
-<li>
-<p>A ce stde les variables sont positionnées, <strong>MAIS</strong> il faut redémarrer la console ligne de commande pour qu&#8217;elles soient prises en compte</p>
+<p>A ce stade les variables sont positionnées, <strong>MAIS</strong> il faut redémarrer la console ligne de commande pour qu&#8217;elles soient prises en compte</p>
 </li>
 </ul>
 </div>
@@ -1986,7 +1983,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-16 05:57:19 +0200
+Last updated 2022-05-17 17:05:17 +0200
 </div>
 </div>
 </body>
