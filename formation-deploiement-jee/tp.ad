@@ -537,7 +537,7 @@ INCONVENIENTS:
 
 == Exercice 4 : Utilisation de JWT
 
-Il est possible de déporter les données de sessions directement dans le navigateur des utilisateur, et ce de manière sécurisée !
+Il est également possible de stocker des données directement dans le navigateur des utilisateurs, et ce de manière sécurisée !
 
 Pour cela on chiffre les données sur le serveur avec une clée privée (donc secrète) et on positionne le résultat du chiffrement dans un cookie.
 
