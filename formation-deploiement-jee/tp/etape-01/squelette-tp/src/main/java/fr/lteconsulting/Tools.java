@@ -18,7 +18,7 @@ public class Tools {
 		for (int i = 0; i < cookies.length; i++)
 			if (cookieName.equals(cookies[i].getName()))
 				return cookies[i].getValue();
-
+		
 		return null;
 	}
 }

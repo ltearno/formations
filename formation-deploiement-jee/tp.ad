@@ -643,7 +643,7 @@ sudo apt-get install docker.io
 Téléchargement de l'image officielle de Tomcat en version 8.0.35, avec un environnement Java 8 :
 
 ----
-sudo docker pull tomcat:8.0.35-jre8
+docker pull tomcat:8.0.35-jre8
 ----
 
 Nous créons un fichier `Dockerfile` pour créer une image consistant en :
@@ -663,7 +663,7 @@ COPY target/deploiement-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ <2>
 Ensuite nous créons effectivement l'image à partir du `Dockerfile` :
 
 ----
-sudo docker build -t ltearno/application:latest .
+docker build -t ltearno/application:latest .
 
 # => Successfully built a867b1c2e8ae
 ----
@@ -671,7 +671,7 @@ sudo docker build -t ltearno/application:latest .
 Lancez l'image en intéractif pour voir :
 
 ----
-sudo docker run  -it --rm -p 8080:8080 ltearno/application:latest
+docker run  -it --rm -p 8080:8080 ltearno/application:latest
 ----
 
 Vous devez voir les logs de Tomcat s'imprimer à l'écran jusqu'au message de fin de démarrage.
@@ -684,16 +684,16 @@ Tuez l'image avec `Ctrl+C`.
 Lancer l'image dix fois, en mode démon (`-d`) :
 
 ----
-sudo docker run -d -p 8080:8080 ltearno/application:latest
-sudo docker run -d -p 8081:8080 ltearno/application:latest
-sudo docker run -d -p 8082:8080 ltearno/application:latest
-sudo docker run -d -p 8083:8080 ltearno/application:latest
-sudo docker run -d -p 8084:8080 ltearno/application:latest
-sudo docker run -d -p 8085:8080 ltearno/application:latest
-sudo docker run -d -p 8086:8080 ltearno/application:latest
-sudo docker run -d -p 8087:8080 ltearno/application:latest
-sudo docker run -d -p 8088:8080 ltearno/application:latest
-sudo docker run -d -p 8089:8080 ltearno/application:latest
+docker run -d -p 8080:8080 ltearno/application:latest
+docker run -d -p 8081:8080 ltearno/application:latest
+docker run -d -p 8082:8080 ltearno/application:latest
+docker run -d -p 8083:8080 ltearno/application:latest
+docker run -d -p 8084:8080 ltearno/application:latest
+docker run -d -p 8085:8080 ltearno/application:latest
+docker run -d -p 8086:8080 ltearno/application:latest
+docker run -d -p 8087:8080 ltearno/application:latest
+docker run -d -p 8088:8080 ltearno/application:latest
+docker run -d -p 8089:8080 ltearno/application:latest
 ----
 
 [NOTE]
@@ -870,7 +870,7 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 |Installation de NGINX
 |Déploiement en mode un LB et deux AP (Application Serveur, les deux Tomcat)
 |Pourquoi les sessions ne sont-elles pas stables ?
-|Configuration en _stocky session_
+|Configuration en _sticky session_
 |Installation de MySQL
 |Configuration des Tomcat pour déporter les sessions en base de données
 |Mise en place de JWT
