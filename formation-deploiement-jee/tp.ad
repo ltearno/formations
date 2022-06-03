@@ -451,7 +451,7 @@ Donnez à l'utilisateur `tomcat` tous les droits d'accès en lecture et d'écrit
 
 Télécharger le connecteur JDBC pour MySQL qui est requis pour que Tomcat puisse accéder à la base de données.
 
-Le fichier JAR est disponible à cette adresse : https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
+Le fichier JAR est disponible à cette adresse : https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.29/mysql-connector-java-8.0.29.jar
 
 [NOTE]
 ====
@@ -461,8 +461,8 @@ Pour trouver l'adresse du fichier jar lorsqu'une nouvelle version sera sortie, o
 Copier le connecteur MySql dans le répertoire lib des deux tomcats :
 
 ----
-cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
-cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/
+cp mysql-connector-java-8.0.29.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
+cp mysql-connector-java-8.0.29.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/
 ----
 
 Créer un fichier de contexte pour l'application, de façon à spécifier au serveur d'application (Tomcat) que l'on désire stocker les sessions à l'extérieur sur une base de donnée. Le fichier à créer est `src/main/webapp/META-INF/context.xml` pour un projet Maven.
