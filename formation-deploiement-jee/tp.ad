@@ -240,17 +240,6 @@ Editez le ficher `server.xml` de la deuxième installation et changez les ports 
 
 Déployer l'application précédente sur les **deux** serveurs Tomcat.
 
-[NOTE]
-====
-On peut faire un lien symbolique du war crée avec maven vers les répertoire de déploiement des Tomcat, ceci vous évitera des opérations répétitives !
-Ceci se fait avec la commande `ln` :
-
-[source,bash]
-----
-ln -s cible nom_du_lien
-----
-====
-
 Dans deux terminaux différents, lancez chacun des Tomcat.
 
 Vérifiez dans un navigateur que les deux Tomcat sont lancés sur les ports 8080 et 8081 et que l'application est bien déployée sur les deux serveurs.
@@ -476,7 +465,7 @@ cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
 cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/
 ----
 
-Créer un fichier de contexte pour l'application, de façon à spécifier au serveur d'application (Tomcat) que l'on désire stocker les sessions à l'extérieur sur une base de donnée. Le fichier à créer est `src/main/webapp/META-INF/context.xml` pour un projet Maven, et dans `WebContent/META-INF/context.xml`.
+Créer un fichier de contexte pour l'application, de façon à spécifier au serveur d'application (Tomcat) que l'on désire stocker les sessions à l'extérieur sur une base de donnée. Le fichier à créer est `src/main/webapp/META-INF/context.xml` pour un projet Maven.
 
 Voici le contenu de ce fichier :
 
@@ -584,6 +573,7 @@ Jwts.parser().setSigningKey(key).parseClaimsJws(s).getBody().getSubject(); // re
 Key createKey() {
 	SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
+	// octets de la clé de chiffrement, à stocker dans un lieu sûr !
 	byte[] apiKeySecretBytes = "alja lkejhe kjhdaoiuha ofygfakhfkjhg".getBytes();
 
 	Key key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
@@ -887,6 +877,7 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 
 == Barême
 
+- Lire l'énoncé jusqu'ici : 0.5 point
 - Mise en place du projet Maven : 1 point
 - Ecriture du code Java / JSP du premier exercice : 1 point
 - Installation et configuration du deuxième Tomcat : 1 point
@@ -897,7 +888,7 @@ Voici les étapes successives réalisées pendant ces travaux pratiques.
 - Mise en place des jetons JWT : 2 points
 - Stockage du pseudo de l'utilisateur dans un token JWT : 2 points
 
-Total de 14 points ajusté avec une règle de trois pour arriver à une note de 20.
+Total de 14.5 points ajusté avec une règle de trois pour arriver à une note de 20.
 
 [NOTE]
 ====

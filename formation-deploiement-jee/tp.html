@@ -859,26 +859,6 @@ C&#8217;est le Load Balancer, il répartit les requêtes entrantes sur les serve
 <div class="paragraph">
 <p>Déployer l&#8217;application précédente sur les <strong>deux</strong> serveurs Tomcat.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>On peut faire un lien symbolique du war crée avec maven vers les répertoire de déploiement des Tomcat, ceci vous évitera des opérations répétitives !
-Ceci se fait avec la commande <code>ln</code> :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">ln -s cible nom_du_lien</code></pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Dans deux terminaux différents, lancez chacun des Tomcat.</p>
 </div>
@@ -1219,7 +1199,7 @@ cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Créer un fichier de contexte pour l&#8217;application, de façon à spécifier au serveur d&#8217;application (Tomcat) que l&#8217;on désire stocker les sessions à l&#8217;extérieur sur une base de donnée. Le fichier à créer est <code>src/main/webapp/META-INF/context.xml</code> pour un projet Maven, et dans <code>WebContent/META-INF/context.xml</code>.</p>
+<p>Créer un fichier de contexte pour l&#8217;application, de façon à spécifier au serveur d&#8217;application (Tomcat) que l&#8217;on désire stocker les sessions à l&#8217;extérieur sur une base de donnée. Le fichier à créer est <code>src/main/webapp/META-INF/context.xml</code> pour un projet Maven.</p>
 </div>
 <div class="paragraph">
 <p>Voici le contenu de ce fichier :</p>
@@ -1319,7 +1299,7 @@ cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/</pre>
 <h2 id="_exercice_4_utilisation_de_jwt">Exercice 4 : Utilisation de JWT</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Il est possible de déporter les données de sessions directement dans le navigateur des utilisateur, et ce de manière sécurisée !</p>
+<p>Il est également possible de stocker des données directement dans le navigateur des utilisateurs, et ce de manière sécurisée !</p>
 </div>
 <div class="paragraph">
 <p>Pour cela on chiffre les données sur le serveur avec une clée privée (donc secrète) et on positionne le résultat du chiffrement dans un cookie.</p>
@@ -1385,6 +1365,7 @@ Jwts.parser().setSigningKey(key).parseClaimsJws(s).getBody().getSubject(); // re
 Key createKey() {
 	SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
+	// octets de la clé de chiffrement, à stocker dans un lieu sûr !
 	byte[] apiKeySecretBytes = "alja lkejhe kjhdaoiuha ofygfakhfkjhg".getBytes();
 
 	Key key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
@@ -1491,7 +1472,7 @@ sudo apt-get install docker.io</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>sudo docker pull tomcat:8.0.35-jre8</pre>
+<pre>docker pull tomcat:8.0.35-jre8</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1531,7 +1512,7 @@ COPY target/deploiement-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ <b class="co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>sudo docker build -t ltearno/application:latest .
+<pre>docker build -t ltearno/application:latest .
 
 # =&gt; Successfully built a867b1c2e8ae</pre>
 </div>
@@ -1541,7 +1522,7 @@ COPY target/deploiement-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ <b class="co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>sudo docker run  -it --rm -p 8080:8080 ltearno/application:latest</pre>
+<pre>docker run  -it --rm -p 8080:8080 ltearno/application:latest</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1559,16 +1540,16 @@ COPY target/deploiement-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ <b class="co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>sudo docker run -d -p 8080:8080 ltearno/application:latest
-sudo docker run -d -p 8081:8080 ltearno/application:latest
-sudo docker run -d -p 8082:8080 ltearno/application:latest
-sudo docker run -d -p 8083:8080 ltearno/application:latest
-sudo docker run -d -p 8084:8080 ltearno/application:latest
-sudo docker run -d -p 8085:8080 ltearno/application:latest
-sudo docker run -d -p 8086:8080 ltearno/application:latest
-sudo docker run -d -p 8087:8080 ltearno/application:latest
-sudo docker run -d -p 8088:8080 ltearno/application:latest
-sudo docker run -d -p 8089:8080 ltearno/application:latest</pre>
+<pre>docker run -d -p 8080:8080 ltearno/application:latest
+docker run -d -p 8081:8080 ltearno/application:latest
+docker run -d -p 8082:8080 ltearno/application:latest
+docker run -d -p 8083:8080 ltearno/application:latest
+docker run -d -p 8084:8080 ltearno/application:latest
+docker run -d -p 8085:8080 ltearno/application:latest
+docker run -d -p 8086:8080 ltearno/application:latest
+docker run -d -p 8087:8080 ltearno/application:latest
+docker run -d -p 8088:8080 ltearno/application:latest
+docker run -d -p 8089:8080 ltearno/application:latest</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1838,7 +1819,7 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 <td class="tableblock halign-left valign-top"><p class="tableblock">Pourquoi les sessions ne sont-elles pas stables ?</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration en <em>stocky session</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration en <em>sticky session</em></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Installation de MySQL</p></td>
@@ -1874,6 +1855,9 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 <div class="ulist">
 <ul>
 <li>
+<p>Lire l&#8217;énoncé jusqu&#8217;ici : 0.5 point</p>
+</li>
+<li>
 <p>Mise en place du projet Maven : 1 point</p>
 </li>
 <li>
@@ -1903,7 +1887,7 @@ aux erreurs matérielles comme par exemple extinction brutale d&#8217;un des ser
 </ul>
 </div>
 <div class="paragraph">
-<p>Total de 14 points ajusté avec une règle de trois pour arriver à une note de 20.</p>
+<p>Total de 14.5 points ajusté avec une règle de trois pour arriver à une note de 20.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1983,7 +1967,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-17 17:05:17 +0200
+Last updated 2022-06-03 14:39:41 +0200
 </div>
 </div>
 </body>
