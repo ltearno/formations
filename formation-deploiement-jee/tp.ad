@@ -10,12 +10,39 @@ IUT Blagnac LP APSIO - 2022 - LTE Consulting
 Exercices liés au déploiement d'application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.
 
+////
+== Devoir à rendre
+
+Il y a d'abord le QCM à remplir individuellement : https://docs.google.com/forms/d/e/1FAIpQLSeePTIJACKoF33FWOkAFknE7zhGgH2f-71qPqvdBPKIuTndUw/viewform?usp=sf_link
+
+Ensuite, par groupe, vous m'envoyez un fichier `NOMS-PRENOMS.zip` nommé avec vos noms et prénoms, contenant seulement les fichiers nécessaires pour construire et lancer votre projet (plus les scripts d'automatisation).
+
+[NOTE]
+====
+**Ne mettez pas le répertoire `target`, au besoin vous pouvez faire `mvn clean` pour nettoyer les fichiers de compilation avant de créer le fichier `zip`**.
+====
+
+
+Voici l'arborescence typique:
+
+```
+README.txt : contient vos noms et prénoms, avec des notes si quelque chose a besoin d'être précisé
+script.bat : votre (vos) script(s) d'automatisation (il peut y en avoir plusieurs bien sur)
+tp/        : répertoire des sources de votre projet
+    pom.xml
+	src/
+	    ...
+```
+
+Pour envoyer le fichier zip, utilisez ce formulaire : https://docs.google.com/forms/d/e/1FAIpQLSfTmmokKSb-12GfJUWButxSftxTg3giPlhRaL0IbFZmOE__ug/viewform?usp=sf_link
+
+
 toc::[]
+////
 
 ////
 Ce cours est open source et est disponible en ligne :
 
-- QCM de validation : https://docs.google.com/forms/d/e/1FAIpQLSdTEX66_9kIJtjgRwegxnzWVMZBvbfnjt0KQVHuTTgeZ4QfhA/viewform?usp=pp_url
 
 - cours en ligne : http://rezil.io/javaee/
 - exercices en ligne : http://rezil.io/javaee/tp.html

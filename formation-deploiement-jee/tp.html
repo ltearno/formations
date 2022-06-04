@@ -455,9 +455,51 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Exercices liés au déploiement d&#8217;application Java EE.
 Les principes mis en oeuvre ne sont pas spécifiques à Java EE mais y sont fortement adaptés.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_devoir_à_rendre">Devoir à rendre</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Il y a d&#8217;abord le QCM à remplir individuellement : <a href="https://docs.google.com/forms/d/e/1FAIpQLSeePTIJACKoF33FWOkAFknE7zhGgH2f-71qPqvdBPKIuTndUw/viewform?usp=sf_link" class="bare">https://docs.google.com/forms/d/e/1FAIpQLSeePTIJACKoF33FWOkAFknE7zhGgH2f-71qPqvdBPKIuTndUw/viewform?usp=sf_link</a></p>
+</div>
+<div class="paragraph">
+<p>Ensuite, par groupe, vous m&#8217;envoyez un fichier <code>NOMS-PRENOMS.zip</code> nommé avec vos noms et prénoms, contenant seulement les fichiers nécessaires pour construire et lancer votre projet (plus les scripts d&#8217;automatisation).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Ne mettez pas le répertoire <code>target</code>, au besoin vous pouvez faire <code>mvn clean</code> pour nettoyer les fichiers de compilation avant de créer le fichier <code>zip</code></strong>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Voici l&#8217;arborescence typique:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>README.txt : contient vos noms et prénoms, avec des notes si quelque chose a besoin d'être précisé
+script.bat : votre (vos) script(s) d'automatisation (il peut y en avoir plusieurs bien sur)
+tp/        : répertoire des sources de votre projet
+    pom.xml
+	src/
+	    ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pour envoyer le fichier zip, utilisez ce formulaire : <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTmmokKSb-12GfJUWButxSftxTg3giPlhRaL0IbFZmOE__ug/viewform?usp=sf_link" class="bare">https://docs.google.com/forms/d/e/1FAIpQLSfTmmokKSb-12GfJUWButxSftxTg3giPlhRaL0IbFZmOE__ug/viewform?usp=sf_link</a></p>
+</div>
 <div id="toc" class="toc">
 <div id="toctitle" class="title">Plan des exercices</div>
 <ul class="sectlevel1">
+<li><a href="#_devoir_à_rendre">Devoir à rendre</a></li>
 <li><a href="#_exercice_1_création_dune_application_java_ee_très_simple">Exercice 1 : création d&#8217;une application Java EE très simple</a>
 <ul class="sectlevel2">
 <li><a href="#_outils_de_développement">Outils de développement</a></li>
@@ -1173,7 +1215,7 @@ create table tomcat_sessions (
 <p>Télécharger le connecteur JDBC pour MySQL qui est requis pour que Tomcat puisse accéder à la base de données.</p>
 </div>
 <div class="paragraph">
-<p>Le fichier JAR est disponible à cette adresse : <a href="https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" class="bare">https://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar</a></p>
+<p>Le fichier JAR est disponible à cette adresse : <a href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.29/mysql-connector-java-8.0.29.jar" class="bare">https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.29/mysql-connector-java-8.0.29.jar</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1194,8 +1236,8 @@ create table tomcat_sessions (
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
-cp mysql-connector-java-5.1.47.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/</pre>
+<pre>cp mysql-connector-java-8.0.29.jar REPERTOIRE_DU_PREMIER_TOMCAT/lib/
+cp mysql-connector-java-8.0.29.jar REPERTOIRE_DU_DEUXIEME_TOMCAT/lib/</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1967,7 +2009,7 @@ d&#8217;installation de la version de Java à utiliser.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-03 14:39:41 +0200
+Last updated 2022-06-03 16:45:30 +0200
 </div>
 </div>
 </body>
